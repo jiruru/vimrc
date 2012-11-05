@@ -82,6 +82,7 @@ highlight TabLineSel ctermbg=5
 highlight Search ctermbg=3 ctermfg=0
 highlight MatchParen cterm=bold,underline "ctermfg=11 ctermbg=3
 
+
 "-------------------------------------------------------------------------------"
 " Mapping
 "-------------------------------------------------------------------------------"
@@ -201,7 +202,6 @@ if !exists("g:autoPairState")
 	" call g:toggleAutoPair()
 endif
 
-
 " 自動括弧閉じ切り替え
 nnoremap taup :call g:toggleAutoPair()<Return>
 
@@ -223,6 +223,7 @@ nnoremap <silent> ev :tabnew $MYVIMRC<Return>
 
 " 検索ハイライト消去
 noremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -274,6 +275,7 @@ augroup C_Cpp
 	autocmd BufRead *.c,*.cpp call s:setC_Cpp()
 augroup END
 
+
 "-------------------------------------------------------------------------------"
 " myCommand
 "-------------------------------------------------------------------------------"
@@ -298,6 +300,7 @@ function! s:offIndentAndComment()
 endfunction
 
 command! ToInsert call s:offIndentAndComment()
+
 
 "-------------------------------------------------------------------------------"
 " Plugin
