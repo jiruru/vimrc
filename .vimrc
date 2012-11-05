@@ -48,18 +48,18 @@ set listchars=eol:$,tab:>\ ,trail:\|,extends:<,precedes:<
 
 set backspace=2 				" Backspaceの動作
 set helplang=ja,en				" ヘルプ検索で日本語を優先
-set viewoptions=cursor,folds 	" :mkviewで保存する設定
+set viewoptions=cursor,folds	" :mkviewで保存する設定
 set whichwrap=b,s,h,l,<,>,[,]	" カーソルを行頭、行末で止まらないようにする
 set wildmenu 					" コマンドの補完候補を表示
 
 " 折りたたみ関連
-" set foldclose=all		" fold外に移動しfoldlevelより深ければ閉じる
-set foldcolumn=2		" 左側に折りたたみガイド表示$
 set foldenable
-set foldlevel=0			" 折りたたみの具合
+set foldcolumn=2		" 左側に折りたたみガイド表示$
 set foldmethod=indent
-set foldnestmax=2		" 最大折りたたみ深度$
-" set foldopen=all		" fold内に移動すれば自動で開く
+set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
+" set foldclose=all		" fold外に移動しfoldlevelより深ければ閉じる
+" set foldlevel=3			" 開いた時にどの深度から折りたたむか
+" set foldnestmax=2		" 最大折りたたみ深度$
 
 " 見た目関連の設定
 set ambiwidth=double	" マルチバイト文字や記号でずれないようにする
@@ -96,6 +96,25 @@ highlight MatchParen cterm=bold,underline "ctermfg=11 ctermbg=3
 "-------------------------------------------------------------------------------"
 " <Leader>を変更
 let mapleader = ","
+
+" tab
+nnoremap to :tabnew<Space>
+nnoremap <silent> tn :tabnext<CR>
+nnoremap <silent> tp :tabprevious<CR>
+
+" 画面分割
+noremap <silent> <F5> :split<Return>
+noremap <silent> <F6> :vsplit<Return>
+
+" 短縮形の設定 マップを展開しない
+noreabbrev #b /****************************************
+noreabbrev #e <Space>****************************************/
+
+" .vimrcを開く
+nnoremap <silent> ev :tabnew $MYVIMRC<Return>
+
+" 検索ハイライト消去
+noremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 
 " 自動で括弧内に移動を切り替え
 function! g:toggleAutoBack()
@@ -150,7 +169,6 @@ nnoremap taub :call g:toggleAutoBack()<Return>
 
 " 自動で括弧を閉じる
 function! g:toggleAutoPair()
-
 	" 重くなるだけなのでOFF
 	if(1 == g:autoBackState)
 		call g:toggleAutoBack()
@@ -205,24 +223,45 @@ endif
 " 自動括弧閉じ切り替え
 nnoremap taup :call g:toggleAutoPair()<Return>
 
-" tab
-nnoremap to :tabnew<Space>
-nnoremap <silent> tn :tabnext<CR>
-nnoremap <silent> tp :tabprevious<CR>
+" Mac の辞書.appで開く from http://qiita.com/items/6928282c5c843aad81d4
+if ("Darwin" == substitute(system("uname"), "\n", "", "g"))
+	" 引数に渡したワードを検索
+	command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
+	" カーソル下のワードを検索
+	command! -nargs=0 MacDictCWord call system('open '.shellescape('dict://'.shellescape(expand('<cword>'))))
+	" 辞書.app を閉じる
+	command! -nargs=0 MacDictClose call system("osascript -e 'tell application \"Dictionary\" to quit'")
+	" 辞書にフォーカスを当てる
+	command! -nargs=0 MacDictFocus call system("osascript -e 'tell application \"Dictionary\" to activate'")
+	" キーマッピング
+	nnoremap <silent> <Leader>do :<C-u>MacDictCWord<CR>
+	vnoremap <silent> <Leader>do y:<C-u>MacDict<Space><C-r>*<CR>
+	nnoremap <silent> <Leader>dc :<C-u>MacDictClose<CR>
+	nnoremap <silent> <Leader>df :<C-u>MacDictFocus<CR>
+endif
 
-" 画面分割
-noremap <silent> <F5> :split<Return>
-noremap <silent> <F6> :vsplit<Return>
+" バイナリで表示
+command! Binary :%!xxd
 
-" 短縮形の設定 マップを展開しない
-noreabbrev #b /****************************************
-noreabbrev #e <Space>****************************************/
+" ターミナルから貼り付ける時の設定
+function! s:offIndentAndComment()
+	" 自動改行OFF
+	setlocal formatoptions-=ro
+	" インデントOFF
+	setlocal noautoindent
+	setlocal nosmartindent
+	setlocal nocindent
+	" Map Off
+	if(g:autoBackState == 1)
+		call g:toggleAutoBack()
+	endif
+	if(g:autoPairState == 1)
+		call g:toggleAutoPair()
+	endif
+endfunction
 
-" .vimrcを開く
-nnoremap <silent> ev :tabnew $MYVIMRC<Return>
+command! ToInsert call s:offIndentAndComment()
 
-" 検索ハイライト消去
-noremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 
 
 "-------------------------------------------------------------------------------"
@@ -274,33 +313,6 @@ augroup C_Cpp
 	endfunction
 	autocmd BufRead *.c,*.cpp call s:setC_Cpp()
 augroup END
-
-
-"-------------------------------------------------------------------------------"
-" myCommand
-"-------------------------------------------------------------------------------"
-" バイナリで表示
-command! Binary :%!xxd
-
-" ターミナルから貼り付ける時の設定
-function! s:offIndentAndComment()
-	" 自動改行OFF
-	setlocal formatoptions-=ro
-	" インデントOFF
-	setlocal noautoindent
-	setlocal nosmartindent
-	setlocal nocindent
-	" Map Off
-	if(g:autoBackState == 1)
-		call g:toggleAutoBack()
-	endif
-	if(g:autoPairState == 1)
-		call g:toggleAutoPair()
-	endif
-endfunction
-
-command! ToInsert call s:offIndentAndComment()
-
 
 "-------------------------------------------------------------------------------"
 " Plugin
