@@ -10,19 +10,20 @@
 "                                                    |___/                |_|   |_|
 "---------------------------------------------------------------------------------------"
 
+
 autocmd!
 filetype plugin indent on
 
 " viとの互換をオフ
 set nocompatible
 
-" バックアップ作成
+" バックアップファイルと一時ファイル設定
+if (isdirectory(expand('~/.vim_backup')))
+	set backupdir=~/.vim_backup
+	set directory=~/.vim_backup
+endif
 set backup
-set backupdir=$HOME/\.vim_backup
 set writebackup		" 上書き前にバックアップ作成
-
-" スワップファイルを作成する
-set directory=$HOME/\.vim_backup
 set swapfile
 
 " インデント設定
@@ -42,15 +43,13 @@ set fileencodings=utf-8,euc-jp,sjis	" 既存ファイルを開く際の文字コ
 set hlsearch	" 検索結果強調-:nohで解除
 set incsearch	" インクリメンタルサーチを有効
 
-" 特殊文字表示設定
-set list
-set listchars=eol:$,tab:>\ ,trail:\|,extends:<,precedes:<
-
+" その他
 set backspace=2 				" Backspaceの動作
 set helplang=ja,en				" ヘルプ検索で日本語を優先
 set viewoptions=cursor,folds	" :mkviewで保存する設定
 set whichwrap=b,s,h,l,<,>,[,]	" カーソルを行頭、行末で止まらないようにする
 set wildmenu 					" コマンドの補完候補を表示
+set pastetoggle=pp				" Pasteモード切り替えキーを設定
 
 " 折りたたみ関連
 set foldenable
@@ -61,18 +60,19 @@ set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold�
 " set foldlevel=3			" 開いた時にどの深度から折りたたむか
 " set foldnestmax=2		" 最大折りたたみ深度$
 
-" 見た目関連の設定
+" 見た目の設定
 set ambiwidth=double	" マルチバイト文字や記号でずれないようにする
 set cmdheight=2			" コマンドラインの行数
 set cursorline			" 現在行に下線表示
 set laststatus=2		" ステータスラインを表示する時
+set list
+set listchars=eol:$,tab:>\ ,trail:\|,extends:<,precedes:<
 set nowrap				" はみ出しの折り返し設定
 set number				" 行番号表示
 set ruler				" カーソルの現在地表示
 set showcmd				" 入力中のコマンド表示
 set showmatch			" 括弧強調
 set showtabline=2		" タブバーを常に表示
-" set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
 syntax on			" 強調表示有効
 colorscheme desert
 highlight Folded cterm=bold,underline ctermfg=14 ctermbg=55
@@ -116,7 +116,7 @@ nnoremap <silent> ev :tabnew $MYVIMRC<Return>
 " 検索ハイライト消去
 noremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 
-" 自動で括弧内に移動を切り替え
+" 自動で括弧内に移動
 function! g:toggleAutoBack()
 	if(0 == g:autoBackState)
 		inoremap {} {}<Left>
@@ -148,11 +148,11 @@ function! g:toggleAutoBack()
 		if(hasmapto('<>', 'i'))
 			iunmap <>
 		endif
-		
+
 		if !has('vim_starting')
 			echo "AutoBack is OFF"
 		endif
-		
+
 		let g:autoBackState = 0
 	endif
 endfunction
@@ -164,7 +164,7 @@ if !exists("g:autoBackState")
 	call g:toggleAutoBack()
 endif
 
-" 括弧移動切り替え
+" 自動括弧移動切り替え
 nnoremap taub :call g:toggleAutoBack()<Return>
 
 " 自動で括弧を閉じる
@@ -204,11 +204,11 @@ function! g:toggleAutoPair()
 		if(hasmapto('<', 'i'))
 			iunmap <
 		endif
-		
+
 		if !has('vim_starting')
 			echo "AutoPair is OFF"
 		endif
-		
+
 		let g:autoPairState = 0
 	endif
 endfunction
@@ -243,27 +243,6 @@ endif
 " バイナリで表示
 command! Binary :%!xxd
 
-" ターミナルから貼り付ける時の設定
-function! s:offIndentAndComment()
-	" 自動改行OFF
-	setlocal formatoptions-=ro
-	" インデントOFF
-	setlocal noautoindent
-	setlocal nosmartindent
-	setlocal nocindent
-	" Map Off
-	if(g:autoBackState == 1)
-		call g:toggleAutoBack()
-	endif
-	if(g:autoPairState == 1)
-		call g:toggleAutoPair()
-	endif
-endfunction
-
-command! ToInsert call s:offIndentAndComment()
-
-
-
 "-------------------------------------------------------------------------------"
 " autocmd
 "-------------------------------------------------------------------------------"
@@ -286,7 +265,6 @@ augroup Vimrc
 		silent! call Pl#Load()
 	endif
 augroup END
-
 
 " Lisp設定
 augroup Lisp
@@ -317,6 +295,13 @@ augroup END
 "-------------------------------------------------------------------------------"
 " Plugin
 "-------------------------------------------------------------------------------"
+
+" neobundleが存在しない場合これ以降を読み込まない
+if (!isdirectory(expand('~/.vim/bundle/neobundle.vim')))
+	set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
+	finish
+endif
+
 filetype off
 filetype plugin indent off
 
