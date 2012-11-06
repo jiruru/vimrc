@@ -49,7 +49,7 @@ set helplang=ja,en				" ヘルプ検索で日本語を優先
 set viewoptions=cursor,folds	" :mkviewで保存する設定
 set whichwrap=b,s,h,l,<,>,[,]	" カーソルを行頭、行末で止まらないようにする
 set wildmenu 					" コマンドの補完候補を表示
-set pastetoggle=pp				" Pasteモード切り替えキーを設定
+set pastetoggle=tps				" Pasteモード切り替えキーを設定
 
 " 折りたたみ関連
 set foldenable
@@ -312,6 +312,7 @@ endif
 call neobundle#rc(expand('~/.vim/bundle/'))
 
 NeoBundle 'QuickBuf'
+NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/neocomplcache.git'
@@ -349,6 +350,9 @@ xmap <Space>D <Plug>(textmanip-duplicate-up)
 set t_Co=256
 " let g:Powerline_symbols = 'unicode'
 let g:Powerline_stl_path_style = 'short'
+
+" vim-easymotion
+let g:EasyMotion_leader_key = '<Leader>'
 
 " NERDCommenter
 let NERDSpaceDelims = 1
