@@ -288,6 +288,7 @@ augroup C_Cpp
 	function! s:setC_Cpp()
 		nnoremap <silent> .gcc <Esc>:!gcc %<Return>
 		set cindent
+		" :source ~/.vim/bundle/cpp-vim/syntax/c.vim
 	endfunction
 	autocmd BufRead *.c,*.cpp call s:setC_Cpp()
 augroup END
@@ -306,27 +307,31 @@ filetype off
 filetype plugin indent off
 
 if has('vim_starting')
-	set runtimepath+=~/.vim/bundle/neobundle.vim/
+	set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
 
-NeoBundle 'QuickBuf'
+" NeoBundle 'QuickBuf'
+" NeoBundle 'git://github.com/scrooloose/nerdtree.git'
+" NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
+" NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
+" NeoBundle 'git://github.com/wesleyche/Trinity.git'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/vimfiler.git'
+NeoBundle 'git://github.com/Shougo/vimproc.git'
+NeoBundle 'git://github.com/Shougo/vimshell.git'
 NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/t9md/vim-textmanip.git'
+NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
+NeoBundle 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
-" NeoBundle 'git://github.com/scrooloose/nerdtree.git'
-" NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
-" NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
-" NeoBundle 'git://github.com/wesleyche/Trinity.git'
 
 filetype plugin indent on
 
@@ -345,7 +350,6 @@ xmap <C-l> <Plug>(textmanip-move-right)
 xmap <Space>d <Plug>(textmanip-duplicate-down)
 xmap <Space>D <Plug>(textmanip-duplicate-up)
 
-
 " vim-powerline
 set t_Co=256
 " let g:Powerline_symbols = 'unicode'
@@ -353,6 +357,9 @@ let g:Powerline_stl_path_style = 'short'
 
 " vim-easymotion
 let g:EasyMotion_leader_key = '<Leader>'
+
+" vimshell
+nnoremap <silent> <Leader>sh :VimShell<Return>
 
 " NERDCommenter
 let NERDSpaceDelims = 1
