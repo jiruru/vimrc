@@ -359,7 +359,28 @@ let g:Powerline_stl_path_style = 'short'
 let g:EasyMotion_leader_key = '<Leader>'
 
 " vimshell
-nnoremap <silent> <Leader>sh :VimShell<Return>
+nnoremap <silent> <Leader>sh :VimShellPop<Return>
+
+let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
+let g:vimshell_right_prompt = 'vcs#info("(%s)-[%b]", "(%s)-[%b|%a]")'
+let g:vimshell_enable_smart_case = 1
+" Initialize execute file list.
+let g:vimshell_execute_file_list = {}
+call vimshell#set_execute_file('txt,vim,c,h,cpp,d,xml,java', 'vim')
+call vimshell#set_execute_file('html,xhtml', 'gexe firefox')
+autocmd FileType vimshell
+			\ call vimshell#altercmd#define('g', 'git')
+			\| call vimshell#altercmd#define('i', 'iexe')
+			\| call vimshell#altercmd#define('ll', 'gls -hlF --color')
+			\| call vimshell#altercmd#define('ls', 'gls -hF --color')
+			\| call vimshell#altercmd#define('la', 'gls -ahF --color')
+			\| call vimshell#altercmd#define('cl', 'clear')
+			\| call vimshell#altercmd#define('gcc', '/opt/local/bin/gcc-mp-4.8 -Wall')
+			\| call vimshell#altercmd#define('g++', '/opt/local/bin/g++-mp-4.8 -Wall')
+			\| call vimshell#hook#add('chpwd', 'my_chpwd', 'g:my_chpwd')
+function! g:my_chpwd(args, context)
+	call vimshell#execute('ls')
+endfunction
 
 " NERDCommenter
 let NERDSpaceDelims = 1
