@@ -190,13 +190,15 @@ endif
 "-------------------------------------------------------------------------------"
 " Mapping
 "-------------------------------------------------------------------------------"
-" コマンド       ノーマルモード 挿入モード コマンドラインモード ビジュアルモード
-" map /noremap           @            -              -                  @
-" nmap / nnoremap        @            -              -                  -
-" imap / inoremap        -            @              -                  -
-" cmap / cnoremap        -            -              @                  -
-" vmap / vnoremap        -            -              -                  @
-" map! / noremap!        -            @              @                  -
+" コマンド          ノーマル  挿入  コマンドライン  ビジュアル  選択  演算待ち
+" map /noremap         @       -          -             @        @       @
+" cmap / cnoremap      -       -          @             -        -       -
+" imap / inoremap      -       @          -             -        -       -
+" nmap / nnoremap      @       -          -             -        -       -
+" omap / onoremap      -       -          -             -        @       @
+" vmap / vnoremap      -       -          -             @        @       -
+" xmap / xnoremap      -       -          -             @        -       @
+" map! / noremap!      -       @          @             -        -       -
 "-------------------------------------------------------------------------------"
 " <Leader>を変更
 let mapleader = ","
@@ -306,6 +308,7 @@ augroup C_Cpp
 	autocmd BufRead *.c,*.cpp call s:setC_Cpp()
 augroup END
 
+
 "-------------------------------------------------------------------------------"
 " Plugin
 "-------------------------------------------------------------------------------"
@@ -377,17 +380,18 @@ vmap ,, <Plug>NERDCommenterNested
 
 " VimFiler
 let g:vimfiler_as_default_explorer=1
+let g:vimfiler_safe_mode_by_default = 0
 let g:vimfiler_file_icon = '-'
 let g:vimfiler_marked_file_icon = '*'
-let g:vimfiler_safe_mode_by_default = 0
 let g:vimfiler_tree_closed_icon = '▸'
 let g:vimfiler_tree_leaf_icon = '|'
 let g:vimfiler_tree_opened_icon = '▾'
 noremap <silent> <F9> :VimFiler -split -simple -winwidth=30 -toggle -no-quit<Return>
 noremap <silent> <F10> :VimFilerBufferDir -quit<Return>
 augroup VimFiler
-	" autocmd VimEnter * if !argc() \:VimFiler \endif
-	" autocmd VimEnter * :VimFiler -split -simple -winwidth=35 -toggle -quit<Return>
+	if has('vim_starting') &&  !argc()
+		autocmd VimEnter * VimFiler -quit
+	endif
 augroup END
 
 " VimShell
