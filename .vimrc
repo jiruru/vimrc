@@ -56,7 +56,7 @@ set foldcolumn=2		" 左側に折りたたみガイド表示$
 set foldmethod=indent
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
 " set foldclose=all		" fold外に移動しfoldlevelより深ければ閉じる
-" set foldlevel=3			" 開いた時にどの深度から折りたたむか
+" set foldlevel=3		" 開いた時にどの深度から折りたたむか
 " set foldnestmax=2		" 最大折りたたみ深度$
 
 " 見た目の設定
@@ -83,45 +83,9 @@ highlight MatchParen cterm=bold,underline "ctermfg=11 ctermbg=3
 
 
 "-------------------------------------------------------------------------------"
-" Mapping
+" Functions
 "-------------------------------------------------------------------------------"
-" コマンド       ノーマルモード 挿入モード コマンドラインモード ビジュアルモード
-" map /noremap           @            -              -                  @
-" nmap / nnoremap        @            -              -                  -
-" imap / inoremap        -            @              -                  -
-" cmap / cnoremap        -            -              @                  -
-" vmap / vnoremap        -            -              -                  @
-" map! / noremap!        -            @              @                  -
-"-------------------------------------------------------------------------------"
-" <Leader>を変更
-let mapleader = ","
-
-" tab
-nnoremap to :tabnew
-nnoremap <silent> tn :tabnext<CR>
-nnoremap <silent> tp :tabprevious<CR>
-
-" 画面分割
-noremap <F5> :split<Space>
-noremap <F6> :vsplit<Space>
-
-" サイズ変更
-noremap <F7> <C-w>+
-
-" 短縮形の設定 マップを展開しない
-noreabbrev #b /****************************************
-noreabbrev #e <Space>****************************************/
-
-" .vimrcを開く
-nnoremap <silent> ev :tabnew $MYVIMRC<Return>
-
-" 検索ハイライト消去
-noremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
-
-" 貼り付け設定反転
-noremap <silent> <Leader>pp :set invpaste<Return>
-
-" 自動で括弧内に移動
+" 入力時に自動で括弧内に移動
 function! g:toggleAutoBack()
 	if(0 == g:autoBackState)
 		inoremap {} {}<Left>
@@ -169,10 +133,7 @@ if !exists("g:autoBackState")
 	call g:toggleAutoBack()
 endif
 
-" 自動括弧移動切り替え
-nnoremap taub :call g:toggleAutoBack()<Return>
-
-" 自動で括弧を閉じる
+" 入力時に自動で括弧を閉じる
 function! g:toggleAutoPair()
 	" 重くなるだけなのでOFF
 	if(1 == g:autoBackState)
@@ -225,8 +186,57 @@ if !exists("g:autoPairState")
 	" call g:toggleAutoPair()
 endif
 
+
+"-------------------------------------------------------------------------------"
+" Mapping
+"-------------------------------------------------------------------------------"
+" コマンド       ノーマルモード 挿入モード コマンドラインモード ビジュアルモード
+" map /noremap           @            -              -                  @
+" nmap / nnoremap        @            -              -                  -
+" imap / inoremap        -            @              -                  -
+" cmap / cnoremap        -            -              @                  -
+" vmap / vnoremap        -            -              -                  @
+" map! / noremap!        -            @              @                  -
+"-------------------------------------------------------------------------------"
+" <Leader>を変更
+let mapleader = ","
+
+" tab
+nnoremap to :tabnew<Space>
+nnoremap <silent> tn :tabnext<CR>
+nnoremap <silent> tp :tabprevious<CR>
+
+" 画面分割
+noremap <F5> :split<Space>
+noremap <F6> :vsplit<Space>
+
+" サイズ変更
+noremap <F7> <C-w>+
+noremap <F8> <C-w>-
+noremap <S-F7> <C-w><
+noremap <S-F8> <C-w>>
+
+" .vimrcを開く
+nnoremap <silent> ev :tabnew $MYVIMRC<Return>
+
+" 検索ハイライト消去
+noremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
+
+" 貼り付け設定反転
+noremap <silent> <Leader>pp :set invpaste<Return>
+
+" 自動括弧移動切り替え
+nnoremap <Leader>aub :call g:toggleAutoBack()<Return>
+
 " 自動括弧閉じ切り替え
-nnoremap taup :call g:toggleAutoPair()<Return>
+nnoremap <Leader>aup :call g:toggleAutoPair()<Return>
+
+" 短縮形の設定 マップを展開しない
+noreabbrev #b /****************************************
+noreabbrev #e <Space>****************************************/
+
+" バイナリで表示
+command! Binary :%!xxd
 
 " Mac の辞書.appで開く from http://qiita.com/items/6928282c5c843aad81d4
 if ("Darwin" == substitute(system("uname"), "\n", "", "g"))
@@ -245,8 +255,6 @@ if ("Darwin" == substitute(system("uname"), "\n", "", "g"))
 	nnoremap <silent> <Leader>df :<C-u>MacDictFocus<CR>
 endif
 
-" バイナリで表示
-command! Binary :%!xxd
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -331,7 +339,6 @@ NeoBundle 'git://github.com/Shougo/vimproc.git'
 NeoBundle 'git://github.com/Shougo/vimshell.git'
 NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
-NeoBundle 'git://github.com/scrooloose/nerdtree.git'
 NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
@@ -368,13 +375,22 @@ let g:NERDSpaceDelims = 1
 nmap ,, <Plug>NERDCommenterToggle
 vmap ,, <Plug>NERDCommenterNested
 
-" NERDtree
-noremap <F9> :NERDTreeToggle<Return>
-let g:NERDChristmasTree = 1
-let g:NERDTreeDirArrows = 0
-let g:NERDTreeShowHidden = 1
+" VimFiler
+let g:vimfiler_as_default_explorer=1
+let g:vimfiler_file_icon = '-'
+let g:vimfiler_marked_file_icon = '*'
+let g:vimfiler_safe_mode_by_default = 0
+let g:vimfiler_tree_closed_icon = '▸'
+let g:vimfiler_tree_leaf_icon = '|'
+let g:vimfiler_tree_opened_icon = '▾'
+noremap <silent> <F9> :VimFiler -split -simple -winwidth=30 -toggle -no-quit<Return>
+noremap <silent> <F10> :VimFilerBufferDir -quit<Return>
+augroup VimFiler
+	" autocmd VimEnter * if !argc() \:VimFiler \endif
+	" autocmd VimEnter * :VimFiler -split -simple -winwidth=35 -toggle -quit<Return>
+augroup END
 
-" vimshell
+" VimShell
 nnoremap <silent> <Leader>sh :VimShellPop<Return>
 let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
 let g:vimshell_right_prompt = 'vcs#info("(%s)-[%b]", "(%s)-[%b|%a]")'
@@ -385,13 +401,13 @@ call vimshell#set_execute_file('txt,vim,c,h,cpp,d,xml,java', 'vim')
 call vimshell#set_execute_file('html,xhtml', 'gexe firefox')
 autocmd FileType vimshell
 			\ call vimshell#altercmd#define('g', 'git')
+			\| call vimshell#altercmd#define('cl', 'clear')
+			\| call vimshell#altercmd#define('g++', '/opt/local/bin/g++-mp-4.8 -Wall')
+			\| call vimshell#altercmd#define('gcc', '/opt/local/bin/gcc-mp-4.8 -Wall')
 			\| call vimshell#altercmd#define('i', 'iexe')
+			\| call vimshell#altercmd#define('la', 'gls -ahF --color')
 			\| call vimshell#altercmd#define('ll', 'gls -hlF --color')
 			\| call vimshell#altercmd#define('ls', 'gls -hF --color')
-			\| call vimshell#altercmd#define('la', 'gls -ahF --color')
-			\| call vimshell#altercmd#define('cl', 'clear')
-			\| call vimshell#altercmd#define('gcc', '/opt/local/bin/gcc-mp-4.8 -Wall')
-			\| call vimshell#altercmd#define('g++', '/opt/local/bin/g++-mp-4.8 -Wall')
 			\| call vimshell#hook#add('chpwd', 'my_chpwd', 'g:my_chpwd')
 function! g:my_chpwd(args, context)
 	call vimshell#execute('ls')
