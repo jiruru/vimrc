@@ -49,7 +49,6 @@ set helplang=ja,en				" ヘルプ検索で日本語を優先
 set viewoptions=cursor,folds	" :mkviewで保存する設定
 set whichwrap=b,s,h,l,<,>,[,]	" カーソルを行頭、行末で止まらないようにする
 set wildmenu 					" コマンドの補完候補を表示
-set pastetoggle=tps				" Pasteモード切り替えキーを設定
 
 " 折りたたみ関連
 set foldenable
@@ -98,13 +97,16 @@ highlight MatchParen cterm=bold,underline "ctermfg=11 ctermbg=3
 let mapleader = ","
 
 " tab
-nnoremap to :tabnew<Space>
+nnoremap to :tabnew
 nnoremap <silent> tn :tabnext<CR>
 nnoremap <silent> tp :tabprevious<CR>
 
 " 画面分割
-noremap <silent> <F5> :split<Return>
-noremap <silent> <F6> :vsplit<Return>
+noremap <F5> :split<Space>
+noremap <F6> :vsplit<Space>
+
+" サイズ変更
+noremap <F7> <C-w>+
 
 " 短縮形の設定 マップを展開しない
 noreabbrev #b /****************************************
@@ -115,6 +117,9 @@ nnoremap <silent> ev :tabnew $MYVIMRC<Return>
 
 " 検索ハイライト消去
 noremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
+
+" 貼り付け設定反転
+noremap <silent> <Leader>pp :set invpaste<Return>
 
 " 自動で括弧内に移動
 function! g:toggleAutoBack()
@@ -312,11 +317,10 @@ endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
 
-" NeoBundle 'QuickBuf'
-" NeoBundle 'git://github.com/scrooloose/nerdtree.git'
 " NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
 " NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
 " NeoBundle 'git://github.com/wesleyche/Trinity.git'
+NeoBundle 'project.tar.gz'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
@@ -327,6 +331,7 @@ NeoBundle 'git://github.com/Shougo/vimproc.git'
 NeoBundle 'git://github.com/Shougo/vimshell.git'
 NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
+NeoBundle 'git://github.com/scrooloose/nerdtree.git'
 NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
@@ -358,9 +363,19 @@ let g:Powerline_stl_path_style = 'short'
 " vim-easymotion
 let g:EasyMotion_leader_key = '<Leader>'
 
+" NERDCommenter
+let g:NERDSpaceDelims = 1
+nmap ,, <Plug>NERDCommenterToggle
+vmap ,, <Plug>NERDCommenterNested
+
+" NERDtree
+noremap <F9> :NERDTreeToggle<Return>
+let g:NERDChristmasTree = 1
+let g:NERDTreeDirArrows = 0
+let g:NERDTreeShowHidden = 1
+
 " vimshell
 nnoremap <silent> <Leader>sh :VimShellPop<Return>
-
 let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
 let g:vimshell_right_prompt = 'vcs#info("(%s)-[%b]", "(%s)-[%b|%a]")'
 let g:vimshell_enable_smart_case = 1
@@ -381,8 +396,3 @@ autocmd FileType vimshell
 function! g:my_chpwd(args, context)
 	call vimshell#execute('ls')
 endfunction
-
-" NERDCommenter
-let NERDSpaceDelims = 1
-nmap ,, <Plug>NERDCommenterToggle
-vmap ,, <Plug>NERDCommenterNested
