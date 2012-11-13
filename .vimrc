@@ -191,7 +191,7 @@ endif
 " Mapping
 "-------------------------------------------------------------------------------"
 " コマンド          ノーマル  挿入  コマンドライン  ビジュアル  選択  演算待ち
-" map /noremap         @       -          -             @        @       @
+" map  / noremap       @       -          -             @        @       @
 " cmap / cnoremap      -       -          @             -        -       -
 " imap / inoremap      -       @          -             -        -       -
 " nmap / nnoremap      @       -          -             -        -       -
@@ -212,26 +212,26 @@ nnoremap <silent> tp :tabprevious<CR>
 noremap <F5> :split<Space>
 noremap <F6> :vsplit<Space>
 
-" サイズ変更
-noremap <F7> <C-w>+
-noremap <F8> <C-w>-
-noremap <S-F7> <C-w><
-noremap <S-F8> <C-w>>
+" Windowサイズ変更
+nnoremap <silent> <S-Left> :wincmd <<CR>
+nnoremap <silent> <S-Right> :wincmd ><CR>
+nnoremap <silent> <S-Up> :wincmd -<CR>
+nnoremap <silent> <S-Down> :wincmd +<CR>
 
 " .vimrcを開く
-nnoremap <silent> ev :tabnew $MYVIMRC<Return>
+nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
 
 " 検索ハイライト消去
-noremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 
 " 貼り付け設定反転
-noremap <silent> <Leader>pp :set invpaste<Return>
+nnoremap <silent> <Leader>pp :set invpaste<CR>
 
 " 自動括弧移動切り替え
-nnoremap <Leader>aub :call g:toggleAutoBack()<Return>
+nnoremap <Leader>aub :call g:toggleAutoBack()<CR>
 
 " 自動括弧閉じ切り替え
-nnoremap <Leader>aup :call g:toggleAutoPair()<Return>
+nnoremap <Leader>aup :call g:toggleAutoPair()<CR>
 
 " 短縮形の設定 マップを展開しない
 noreabbrev #b /****************************************
@@ -285,9 +285,7 @@ augroup END
 augroup Lisp
 	autocmd!
 	function! s:setLispConfig()
-		noremap <silent> .li <Esc>:!sbcl --script %<Return>
-		" iunmap ()
-		" inoremap <silent> ( ()<Left>
+		nnoremap <silent> <Leader>li <Esc>:!sbcl --script %<CR>
 		setlocal nocindent
 		setlocal autoindent
 		setlocal lisp
@@ -301,7 +299,7 @@ augroup END
 " C/C++設定
 augroup C_Cpp
 	function! s:setC_Cpp()
-		nnoremap <silent> .gcc <Esc>:!gcc %<Return>
+		nnoremap <silent> .gcc <Esc>:!gcc %<CR>
 		set cindent
 		" :source ~/.vim/bundle/cpp-vim/syntax/c.vim
 	endfunction
@@ -341,34 +339,32 @@ NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git'
 NeoBundle 'git://github.com/Shougo/vimshell.git'
 NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
+NeoBundle 'git://github.com/nathanaelkane/vim-indent-guides.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
+NeoBundle 'git://github.com/yuratomo/w3m.vim.git'
+
 NeoBundle 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
+
 
 filetype plugin indent on
 
 " Neocomplcache
-" 起動時に有効化
 let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_smart_case = 1
+let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
-
-" textmanip
-" 選択したテキストの移動
-xmap <C-j> <Plug>(textmanip-move-down)
-xmap <C-k> <Plug>(textmanip-move-up)
-xmap <C-h> <Plug>(textmanip-move-left)
-xmap <C-l> <Plug>(textmanip-move-right)
-" 行の複製
-xmap <Space>d <Plug>(textmanip-duplicate-down)
-xmap <Space>D <Plug>(textmanip-duplicate-up)
 
 " vim-powerline
 set t_Co=256
-" let g:Powerline_symbols = 'unicode'
 let g:Powerline_stl_path_style = 'short'
+
+" Vim-indent-guides
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 2
 
 " vim-easymotion
 let g:EasyMotion_leader_key = '<Leader>'
@@ -378,6 +374,14 @@ let g:NERDSpaceDelims = 1
 nmap ,, <Plug>NERDCommenterToggle
 vmap ,, <Plug>NERDCommenterNested
 
+" textmanip
+xmap <C-j> <Plug>(textmanip-move-down)
+xmap <C-k> <Plug>(textmanip-move-up)
+xmap <C-h> <Plug>(textmanip-move-left)
+xmap <C-l> <Plug>(textmanip-move-right)
+xmap <Space>d <Plug>(textmanip-duplicate-down)
+xmap <Space>D <Plug>(textmanip-duplicate-up)
+
 " VimFiler
 let g:vimfiler_as_default_explorer=1
 let g:vimfiler_safe_mode_by_default = 0
@@ -386,8 +390,8 @@ let g:vimfiler_marked_file_icon = '*'
 let g:vimfiler_tree_closed_icon = '▸'
 let g:vimfiler_tree_leaf_icon = '|'
 let g:vimfiler_tree_opened_icon = '▾'
-noremap <silent> <F9> :VimFiler -split -simple -winwidth=30 -toggle -no-quit<Return>
-noremap <silent> <F10> :VimFilerBufferDir -quit<Return>
+nnoremap <silent> <F9> :VimFiler -split -simple -winwidth=40 -toggle -no-quit<CR>
+nnoremap <silent> <F10> :VimFilerBufferDir -quit<CR>
 augroup VimFiler
 	if has('vim_starting') &&  !argc()
 		autocmd VimEnter * VimFiler -quit
@@ -395,18 +399,14 @@ augroup VimFiler
 augroup END
 
 " VimShell
-nnoremap <silent> <Leader>sh :VimShellPop<Return>
-let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
-let g:vimshell_right_prompt = 'vcs#info("(%s)-[%b]", "(%s)-[%b|%a]")'
+nnoremap <silent> <Leader>sh :VimShellPop<CR>
+let g:vimshell_prompt = $USER."% "
 let g:vimshell_enable_smart_case = 1
-" Initialize execute file list.
 let g:vimshell_execute_file_list = {}
 call vimshell#set_execute_file('txt,vim,c,h,cpp,d,xml,java', 'vim')
 call vimshell#set_execute_file('html,xhtml', 'gexe firefox')
-autocmd FileType vimshell
-			\ call vimshell#altercmd#define('g', 'git')
-			\| call vimshell#altercmd#define('cl', 'clear')
-			\| call vimshell#altercmd#define('g++', '/opt/local/bin/g++-mp-4.8 -Wall')
+autocmd FileType vimshell call vimshell#altercmd#define('cl', 'clear')
+			\|call vimshell#altercmd#define('g++', '/opt/local/bin/g++-mp-4.8 -Wall')
 			\| call vimshell#altercmd#define('gcc', '/opt/local/bin/gcc-mp-4.8 -Wall')
 			\| call vimshell#altercmd#define('i', 'iexe')
 			\| call vimshell#altercmd#define('la', 'gls -ahF --color')
