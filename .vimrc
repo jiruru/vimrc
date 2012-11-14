@@ -23,7 +23,7 @@ if (isdirectory(expand('~/.vim_backup')))
     set directory=~/.vim_backup
 endif
 set backup
-set writebackup        " 上書き前にバックアップ作成
+set writebackup     " 上書き前にバックアップ作成
 set swapfile
 
 " インデント設定
@@ -37,43 +37,43 @@ set softtabstop=4   " <Tab>, <BS>が対応する空白の数
 " エンコーディング関連
 set charconvert=utf-8               " 文字エンコーディングに使われるexpressionを定める
 set encoding=utf-8                  " vim内部で通常使用する文字エンコーディングを設定
-set fileencoding=utf-8                " バッファのファイルエンコーディングを指定
-set fileencodings=utf-8,euc-jp,sjis    " 既存ファイルを開く際の文字コード自動判別
+set fileencoding=utf-8              " バッファのファイルエンコーディングを指定
+set fileencodings=utf-8,euc-jp,sjis " 既存ファイルを開く際の文字コード自動判別
 
 " 検索設定
 set hlsearch    " 検索結果強調-:nohで解除
-set incsearch    " インクリメンタルサーチを有効
+set incsearch   " インクリメンタルサーチを有効
 
 " その他
 set backspace=2                 " Backspaceの動作
-set helplang=ja,en                " ヘルプ検索で日本語を優先
+set helplang=ja,en              " ヘルプ検索で日本語を優先
 set viewoptions=cursor,folds    " :mkviewで保存する設定
-set whichwrap=b,s,h,l,<,>,[,]    " カーソルを行頭、行末で止まらないようにする
-set wildmenu                     " コマンドの補完候補を表示
+set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
+set wildmenu                    " コマンドの補完候補を表示
 
 " 折りたたみ関連
 set foldenable
 set foldcolumn=2        " 左側に折りたたみガイド表示$
 set foldmethod=indent
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
-" set foldclose=all        " fold外に移動しfoldlevelより深ければ閉じる
-" set foldlevel=3        " 開いた時にどの深度から折りたたむか
-" set foldnestmax=2        " 最大折りたたみ深度$
+" set foldclose=all     " fold外に移動しfoldlevelより深ければ閉じる
+" set foldlevel=3       " 開いた時にどの深度から折りたたむか
+" set foldnestmax=2     " 最大折りたたみ深度$
 
 " 見た目の設定
 set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
-set cmdheight=2            " コマンドラインの行数
-set cursorline            " 現在行に下線表示
+set cmdheight=2         " コマンドラインの行数
+set cursorline          " 現在行に下線表示
 set laststatus=2        " ステータスラインを表示する時
 set list
 set listchars=eol:$,tab:>\ ,trail:\|,extends:<,precedes:<
-set nowrap                " はみ出しの折り返し設定
-set number                " 行番号表示
-set ruler                " カーソルの現在地表示
-set showcmd                " 入力中のコマンド表示
-set showmatch            " 括弧強調
-set showtabline=2        " タブバーを常に表示
-syntax on            " 強調表示有効
+set nowrap              " はみ出しの折り返し設定
+set number              " 行番号表示
+set ruler               " カーソルの現在地表示
+set showcmd             " 入力中のコマンド表示
+set showmatch           " 括弧強調
+set showtabline=2       " タブバーを常に表示
+syntax on               " 強調表示有効
 colorscheme desert
 highlight Cursor ctermbg=55
 highlight FoldColumn ctermfg=130
