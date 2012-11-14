@@ -19,8 +19,8 @@ set nocompatible
 
 " バックアップファイルと一時ファイル設定
 if (isdirectory(expand('~/.vim_backup')))
-	set backupdir=~/.vim_backup
-	set directory=~/.vim_backup
+    set backupdir=~/.vim_backup
+    set directory=~/.vim_backup
 endif
 set backup
 set writebackup		" 上書き前にバックアップ作成
@@ -28,14 +28,15 @@ set swapfile
 
 " インデント設定
 set cindent
-set noexpandtab		" Tabをスペースにしない
-set shiftwidth=4	" 自動インデントの空白の数
-set smarttab		" 行頭にTabでshiftwidth分インデントする
-set tabstop=4		" 画面上のTab幅
+set expandtab       " <Tab>の代わりに空白
+set shiftwidth=4    " 自動インデントなどでずれる幅
+set smarttab        " 行頭に<Tab>でshiftwidth分インデント
+set tabstop=4       " 画面上で<Tab>文字が占める幅
+set softtabstop=4   " <Tab>, <BS>が対応する空白の数
 
 " エンコーディング関連
-set charconvert=utf-8				" 文字エンコーディングに使われるexpressionを定める
-set encoding=utf-8					" vim内部で通常使用する文字エンコーディングを設定
+set charconvert=utf-8               " 文字エンコーディングに使われるexpressionを定める
+set encoding=utf-8                  " vim内部で通常使用する文字エンコーディングを設定
 set fileencoding=utf-8				" バッファのファイルエンコーディングを指定
 set fileencodings=utf-8,euc-jp,sjis	" 既存ファイルを開く際の文字コード自動判別
 
@@ -74,12 +75,12 @@ set showmatch			" 括弧強調
 set showtabline=2		" タブバーを常に表示
 syntax on			" 強調表示有効
 colorscheme desert
-highlight Folded cterm=bold,underline ctermfg=14 ctermbg=55
 highlight Cursor ctermbg=55
 highlight FoldColumn ctermfg=130
-highlight TabLineSel ctermbg=5
-highlight Search ctermbg=3 ctermfg=0
+highlight Folded cterm=bold,underline ctermfg=14 ctermbg=55
 highlight MatchParen cterm=bold,underline "ctermfg=11 ctermbg=3
+highlight Search ctermbg=3 ctermfg=0
+highlight TabLineSel ctermbg=5
 
 
 "-------------------------------------------------------------------------------"
@@ -87,103 +88,103 @@ highlight MatchParen cterm=bold,underline "ctermfg=11 ctermbg=3
 "-------------------------------------------------------------------------------"
 " 入力時に自動で括弧内に移動
 function! g:toggleAutoBack()
-	if(0 == g:autoBackState)
-		inoremap {} {}<Left>
-		inoremap [] []<Left>
-		inoremap () ()<Left>
-		inoremap "" ""<Left>
-		inoremap '' ''<Left>
-		inoremap <> <><Left>
-		if !has('vim_starting')
-			echo "AutoBack is ON"
-		endif
-		let g:autoBackState = 1
-	else
-		if(hasmapto('{}', 'i'))
-			iunmap {}
-		endif
-		if(hasmapto('[]', 'i'))
-			iunmap []
-		endif
-		if(hasmapto('()', 'i'))
-			iunmap ()
-		endif
-		if(hasmapto('""', 'i'))
-			iunmap ""
-		endif
-		if(hasmapto('''''', 'i'))
-			iunmap ''
-		endif
-		if(hasmapto('<>', 'i'))
-			iunmap <>
-		endif
+    if(0 == g:autoBackState)
+        inoremap {} {}<Left>
+        inoremap [] []<Left>
+        inoremap () ()<Left>
+        inoremap "" ""<Left>
+        inoremap '' ''<Left>
+        inoremap <> <><Left>
+        if !has('vim_starting')
+            echo "AutoBack is ON"
+        endif
+        let g:autoBackState = 1
+    else
+        if(hasmapto('{}', 'i'))
+            iunmap {}
+        endif
+        if(hasmapto('[]', 'i'))
+            iunmap []
+        endif
+        if(hasmapto('()', 'i'))
+            iunmap ()
+        endif
+        if(hasmapto('""', 'i'))
+            iunmap ""
+        endif
+        if(hasmapto('''''', 'i'))
+            iunmap ''
+        endif
+        if(hasmapto('<>', 'i'))
+            iunmap <>
+        endif
 
-		if !has('vim_starting')
-			echo "AutoBack is OFF"
-		endif
+        if !has('vim_starting')
+            echo "AutoBack is OFF"
+        endif
 
-		let g:autoBackState = 0
-	endif
+        let g:autoBackState = 0
+    endif
 endfunction
 
 " 起動時のみ自動実行
 if !exists("g:autoBackState")
-	" 初期値
-	let g:autoBackState = 0
-	call g:toggleAutoBack()
+    " 初期値
+    let g:autoBackState = 0
+    call g:toggleAutoBack()
 endif
 
 " 入力時に自動で括弧を閉じる
 function! g:toggleAutoPair()
-	" 重くなるだけなのでOFF
-	if(1 == g:autoBackState)
-		call g:toggleAutoBack()
-	endif
+    " 重くなるだけなのでOFF
+    if(1 == g:autoBackState)
+        call g:toggleAutoBack()
+    endif
 
-	if(0 == g:autoPairState)
-		inoremap { {}
-		inoremap [ []
-		inoremap ( ()
-		inoremap " ""
-		inoremap ' ''
-		inoremap < <>
-		if !has('vim_starting')
-			echo "AutoPair is ON"
-		endif
-		let g:autoPairState = 1
-	else
-		if(hasmapto('{', 'i'))
-			iunmap {
-		endif
-		if(hasmapto('[', 'i'))
-			iunmap [
-		endif
-		if(hasmapto('(', 'i'))
-			iunmap (
-		endif
-		if(hasmapto('"', 'i'))
-			iunmap "
-		endif
-		if(hasmapto('''', 'i'))
-			iunmap '
-		endif
-		if(hasmapto('<', 'i'))
-			iunmap <
-		endif
+    if(0 == g:autoPairState)
+        inoremap { {}
+        inoremap [ []
+        inoremap ( ()
+        inoremap " ""
+        inoremap ' ''
+        inoremap < <>
+        if !has('vim_starting')
+            echo "AutoPair is ON"
+        endif
+        let g:autoPairState = 1
+    else
+        if(hasmapto('{', 'i'))
+            iunmap {
+        endif
+        if(hasmapto('[', 'i'))
+            iunmap [
+        endif
+        if(hasmapto('(', 'i'))
+            iunmap (
+        endif
+        if(hasmapto('"', 'i'))
+            iunmap "
+        endif
+        if(hasmapto('''', 'i'))
+            iunmap '
+        endif
+        if(hasmapto('<', 'i'))
+            iunmap <
+        endif
 
-		if !has('vim_starting')
-			echo "AutoPair is OFF"
-		endif
+        if !has('vim_starting')
+            echo "AutoPair is OFF"
+        endif
 
-		let g:autoPairState = 0
-	endif
+        let g:autoPairState = 0
+    endif
 endfunction
 
 " 起動時のみ自動実行
 if !exists("g:autoPairState")
-	" 初期値
-	let g:autoPairState = 0
-	" call g:toggleAutoPair()
+    " 初期値
+    let g:autoPairState = 0
+    " call g:toggleAutoPair()
 endif
 
 
@@ -242,19 +243,19 @@ command! Binary :%!xxd
 
 " Mac の辞書.appで開く from http://qiita.com/items/6928282c5c843aad81d4
 if ("Darwin" == substitute(system("uname"), "\n", "", "g"))
-	" 引数に渡したワードを検索
-	command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
-	" カーソル下のワードを検索
-	command! -nargs=0 MacDictCWord call system('open '.shellescape('dict://'.shellescape(expand('<cword>'))))
-	" 辞書.app を閉じる
-	command! -nargs=0 MacDictClose call system("osascript -e 'tell application \"Dictionary\" to quit'")
-	" 辞書にフォーカスを当てる
-	command! -nargs=0 MacDictFocus call system("osascript -e 'tell application \"Dictionary\" to activate'")
-	" キーマッピング
-	nnoremap <silent> <Leader>do :<C-u>MacDictCWord<CR>
-	vnoremap <silent> <Leader>do y:<C-u>MacDict<Space><C-r>*<CR>
-	nnoremap <silent> <Leader>dc :<C-u>MacDictClose<CR>
-	nnoremap <silent> <Leader>df :<C-u>MacDictFocus<CR>
+    " 引数に渡したワードを検索
+    command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
+    " カーソル下のワードを検索
+    command! -nargs=0 MacDictCWord call system('open '.shellescape('dict://'.shellescape(expand('<cword>'))))
+    " 辞書.app を閉じる
+    command! -nargs=0 MacDictClose call system("osascript -e 'tell application \"Dictionary\" to quit'")
+    " 辞書にフォーカスを当てる
+    command! -nargs=0 MacDictFocus call system("osascript -e 'tell application \"Dictionary\" to activate'")
+    " キーマッピング
+    nnoremap <silent> <Leader>do :<C-u>MacDictCWord<CR>
+    vnoremap <silent> <Leader>do y:<C-u>MacDict<Space><C-r>*<CR>
+    nnoremap <silent> <Leader>dc :<C-u>MacDictClose<CR>
+    nnoremap <silent> <Leader>df :<C-u>MacDictFocus<CR>
 endif
 
 
@@ -263,47 +264,47 @@ endif
 "-------------------------------------------------------------------------------"
 " ファイル全般に設定
 augroup General
-	autocmd!
-	" 設定の保存と復元
-	if filewritable(expand('%'))
-		autocmd BufWinLeave ?* silent mkview
-		autocmd BufWinEnter ?* silent loadview
-	endif
+    autocmd!
+    " 設定の保存と復元
+    if filewritable(expand('%'))
+        autocmd BufWinLeave ?* silent mkview
+        autocmd BufWinEnter ?* silent loadview
+    endif
 augroup END
 
 " .vimrc
 augroup Vimrc
-	autocmd!
-	" .vimrcを保存した際に自動再読み込み
-	autocmd BufWritePost $MYVIMRC source $MYVIMRC
-	if exists('g:Powerline_loaded')
-		silent! call Pl#Load()
-	endif
+    autocmd!
+    " .vimrcを保存した際に自動再読み込み
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+    if exists('g:Powerline_loaded')
+        silent! call Pl#Load()
+    endif
 augroup END
 
 " Lisp設定
 augroup Lisp
-	autocmd!
-	function! s:setLispConfig()
-		nnoremap <silent> <Leader>li <Esc>:!sbcl --script %<CR>
-		setlocal nocindent
-		setlocal autoindent
-		setlocal lisp
-		setlocal lispwords=define
-		let g:lisp_rainbow = 1
-		let g:lisp_instring = 1
-	endfunction
-	autocmd BufRead *.lisp call s:setLispConfig()
+    autocmd!
+    function! s:setLispConfig()
+        nnoremap <silent> <Leader>li <Esc>:!sbcl --script %<CR>
+        setlocal nocindent
+        setlocal autoindent
+        setlocal lisp
+        setlocal lispwords=define
+        let g:lisp_rainbow = 1
+        let g:lisp_instring = 1
+    endfunction
+    autocmd BufRead *.lisp call s:setLispConfig()
 augroup END
 
 " C/C++設定
 augroup C_Cpp
-	function! s:setC_Cpp()
-		nnoremap <silent> .gcc <Esc>:!gcc %<CR>
-		set cindent
-		" :source ~/.vim/bundle/cpp-vim/syntax/c.vim
-	endfunction
-	autocmd BufRead *.c,*.cpp call s:setC_Cpp()
+    function! s:setC_Cpp()
+        nnoremap <silent> .gcc <Esc>:!gcc %<CR>
+        set cindent
+        " :source ~/.vim/bundle/cpp-vim/syntax/c.vim
+    endfunction
+    autocmd BufRead *.c,*.cpp call s:setC_Cpp()
 augroup END
 
 
@@ -313,15 +314,15 @@ augroup END
 
 " neobundleが存在しない場合これ以降を読み込まない
 if (!isdirectory(expand('~/.vim/bundle/neobundle.vim')))
-	set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
-	finish
+    set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
+    finish
 endif
 
 filetype off
 filetype plugin indent off
 
 if has('vim_starting')
-	set runtimepath+=~/.vim/bundle/neobundle.vim
+    set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
@@ -363,8 +364,13 @@ set t_Co=256
 let g:Powerline_stl_path_style = 'short'
 
 " Vim-indent-guides
+let g:indent_guides_enable_on_vim_startup = 1
 let g:indent_guides_guide_size = 1
 let g:indent_guides_start_level = 2
+let g:indent_guides_auto_colors = 0
+autocmd VimEnter,Colorscheme * :highlight IndentGuidesOdd ctermbg=12
+autocmd VimEnter,Colorscheme * :highlight IndentGuidesEven ctermbg=10
+nmap <silent> <Leader>ig <Plug>IndentGuidesToggle
 
 " vim-easymotion
 let g:EasyMotion_leader_key = '<Leader>'
@@ -393,9 +399,9 @@ let g:vimfiler_tree_opened_icon = '▾'
 nnoremap <silent> <F9> :VimFiler -split -simple -winwidth=40 -toggle -no-quit<CR>
 nnoremap <silent> <F10> :VimFilerBufferDir -quit<CR>
 augroup VimFiler
-	if has('vim_starting') &&  !argc()
-		autocmd VimEnter * VimFiler -quit
-	endif
+    if has('vim_starting') &&  !argc()
+        autocmd VimEnter * VimFiler -quit
+    endif
 augroup END
 
 " VimShell
@@ -406,13 +412,13 @@ let g:vimshell_execute_file_list = {}
 call vimshell#set_execute_file('txt,vim,c,h,cpp,d,xml,java', 'vim')
 call vimshell#set_execute_file('html,xhtml', 'gexe firefox')
 autocmd FileType vimshell call vimshell#altercmd#define('cl', 'clear')
-			\|call vimshell#altercmd#define('g++', '/opt/local/bin/g++-mp-4.8 -Wall')
-			\| call vimshell#altercmd#define('gcc', '/opt/local/bin/gcc-mp-4.8 -Wall')
-			\| call vimshell#altercmd#define('i', 'iexe')
-			\| call vimshell#altercmd#define('la', 'gls -ahF --color')
-			\| call vimshell#altercmd#define('ll', 'gls -hlF --color')
-			\| call vimshell#altercmd#define('ls', 'gls -hF --color')
-			\| call vimshell#hook#add('chpwd', 'my_chpwd', 'g:my_chpwd')
+            \|call vimshell#altercmd#define('g++', '/opt/local/bin/g++-mp-4.8 -Wall')
+            \| call vimshell#altercmd#define('gcc', '/opt/local/bin/gcc-mp-4.8 -Wall')
+            \| call vimshell#altercmd#define('i', 'iexe')
+            \| call vimshell#altercmd#define('la', 'gls -ahF --color')
+            \| call vimshell#altercmd#define('ll', 'gls -hlF --color')
+            \| call vimshell#altercmd#define('ls', 'gls -hF --color')
+            \| call vimshell#hook#add('chpwd', 'my_chpwd', 'g:my_chpwd')
 function! g:my_chpwd(args, context)
-	call vimshell#execute('ls')
+    call vimshell#execute('ls')
 endfunction
