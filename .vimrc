@@ -219,6 +219,12 @@ nnoremap <silent> <S-Right> :wincmd ><CR>
 nnoremap <silent> <S-Up> :wincmd -<CR>
 nnoremap <silent> <S-Down> :wincmd +<CR>
 
+" 移動
+nnoremap <S-h> ^
+nnoremap <S-j> G
+nnoremap <S-k> gg
+nnoremap <S-l> $
+
 " .vimrcを開く
 nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
 
