@@ -50,6 +50,7 @@ set helplang=ja,en              " ヘルプ検索で日本語を優先
 set viewoptions=cursor,folds    " :mkviewで保存する設定
 set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
 set wildmenu                    " コマンドの補完候補を表示
+set fileformat=unix             " 改行文字設定
 
 " 折りたたみ関連
 set foldenable
@@ -73,6 +74,7 @@ set ruler               " カーソルの現在地表示
 set showcmd             " 入力中のコマンド表示
 set showmatch           " 括弧強調
 set showtabline=2       " タブバーを常に表示
+set t_Co=256
 syntax on               " 強調表示有効
 colorscheme desert
 highlight Cursor ctermbg=55
@@ -191,39 +193,49 @@ endif
 "-------------------------------------------------------------------------------"
 " Mapping
 "-------------------------------------------------------------------------------"
-" コマンド          ノーマル  挿入  コマンドライン  ビジュアル  選択  演算待ち
-" map  / noremap       @       -          -             @        @       @
-" cmap / cnoremap      -       -          @             -        -       -
-" imap / inoremap      -       @          -             -        -       -
-" nmap / nnoremap      @       -          -             -        -       -
-" omap / onoremap      -       -          -             -        @       @
-" vmap / vnoremap      -       -          -             @        @       -
-" xmap / xnoremap      -       -          -             @        -       @
-" map! / noremap!      -       @          @             -        -       -
+" コマンド        | ノーマル  挿入  コマンドライン  ビジュアル  選択  演算待ち
+" map  / noremap  |    @       -          -             @        @       @
+" nmap / nnoremap |    @       -          -             -        -       -
+" vmap / vnoremap |    -       -          -             @        @       -
+" omap / onoremap |    -       -          -             -        -       @
+" xmap / xnoremap |    -       -          -             @        -       -
+" smap / snoremap |    -       -          -             @        -       -
+" map! / noremap! |    -       @          @             -        -       -
+" imap / inoremap |    -       @          -             -        -       -
+" cmap / cnoremap |    -       -          @             -        -       -
 "-------------------------------------------------------------------------------"
+
 " <Leader>を変更
 let mapleader = ","
 
 " tab
-nnoremap to :tabnew<Space>
-nnoremap <silent> tn :tabnext<CR>
-nnoremap <silent> tp :tabprevious<CR>
+noremap to :tabnew<Space>
+noremap <silent> tn :tabnext<CR>
+noremap <silent> tp :tabprevious<CR>
 
 " 画面分割
 noremap <F5> :split<Space>
 noremap <F6> :vsplit<Space>
 
-" Windowサイズ変更
-nnoremap <silent> <S-Left> :wincmd <<CR>
-nnoremap <silent> <S-Right> :wincmd ><CR>
-nnoremap <silent> <S-Up> :wincmd -<CR>
-nnoremap <silent> <S-Down> :wincmd +<CR>
+" バッファ移動
+noremap <silent> <F7> :bprevious<CR>
+noremap <silent> <F8> :bnext<CR>
 
-" 移動
-nnoremap <S-h> ^
-nnoremap <S-j> G
-nnoremap <S-k> gg
-nnoremap <S-l> $
+" Windowサイズ変更
+noremap <silent> <S-Left> :wincmd <<CR>
+noremap <silent> <S-Right> :wincmd ><CR>
+noremap <silent> <S-Up> :wincmd -<CR>
+noremap <silent> <S-Down> :wincmd +<CR>
+
+" 端に移動
+nnoremap <C-h> ^
+nnoremap <C-j> G
+nnoremap <C-k> gg
+nnoremap <C-l> $
+
+" 検索時に中央へ
+nnoremap n nzz
+nnoremap N Nzz
 
 " .vimrcを開く
 nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
@@ -234,10 +246,8 @@ nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 " 貼り付け設定反転
 nnoremap <silent> <Leader>pp :set invpaste<CR>
 
-" 自動括弧移動切り替え
+" 括弧補完切り替え
 nnoremap <Leader>aub :call g:toggleAutoBack()<CR>
-
-" 自動括弧閉じ切り替え
 nnoremap <Leader>aup :call g:toggleAutoPair()<CR>
 
 " 短縮形の設定 マップを展開しない
@@ -295,6 +305,7 @@ augroup Lisp
         nnoremap <silent> <Leader>li <Esc>:!sbcl --script %<CR>
         setlocal nocindent
         setlocal autoindent
+        setlocal nosmartindent
         setlocal lisp
         setlocal lispwords=define
         let g:lisp_rainbow = 1
@@ -305,12 +316,10 @@ augroup END
 
 " C/C++設定
 augroup C_Cpp
-    function! s:setC_Cpp()
-        nnoremap <silent> .gcc <Esc>:!gcc %<CR>
-        set cindent
-        " :source ~/.vim/bundle/cpp-vim/syntax/c.vim
-    endfunction
-    autocmd BufRead *.c,*.cpp call s:setC_Cpp()
+    setlocal nosmartindent
+    setlocal nocindent
+    setlocal autoindent
+    autocmd BufRead *.c,*.cpp setlocal cindent
 augroup END
 
 
@@ -333,6 +342,8 @@ endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
 
+" NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
+" NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 " NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
 " NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
 " NeoBundle 'git://github.com/wesleyche/Trinity.git'
@@ -345,17 +356,13 @@ NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git'
 NeoBundle 'git://github.com/Shougo/vimshell.git'
-NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 NeoBundle 'git://github.com/nathanaelkane/vim-indent-guides.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/t9md/vim-textmanip.git'
-NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
-NeoBundle 'git://github.com/yuratomo/w3m.vim.git'
-
 NeoBundle 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
-
+NeoBundle 'git://github.com/yuratomo/w3m.vim.git'
 
 filetype plugin indent on
 
@@ -366,7 +373,6 @@ let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
 
 " vim-powerline
-set t_Co=256
 let g:Powerline_stl_path_style = 'short'
 
 " Vim-indent-guides
@@ -391,8 +397,6 @@ xmap <C-j> <Plug>(textmanip-move-down)
 xmap <C-k> <Plug>(textmanip-move-up)
 xmap <C-h> <Plug>(textmanip-move-left)
 xmap <C-l> <Plug>(textmanip-move-right)
-xmap <Space>d <Plug>(textmanip-duplicate-down)
-xmap <Space>D <Plug>(textmanip-duplicate-up)
 
 " VimFiler
 let g:vimfiler_as_default_explorer=1
