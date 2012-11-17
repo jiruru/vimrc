@@ -54,12 +54,37 @@ set fileformat=unix             " 改行文字設定
 
 " 折りたたみ関連
 set foldenable
-set foldcolumn=2        " 左側に折りたたみガイド表示$
-set foldmethod=indent
+set foldcolumn=3        " 左側に折りたたみガイド表示$
+set foldmethod=indent   " 折畳の判別
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
+set foldnestmax=4     " 最大折りたたみ深度$
+function! g:toFoldFunc()
+    " 折りたたみ開始行取得
+    let l:line = getline(v:foldstart)
+
+    " 行頭の空白数計算
+    let l:list = split(l:line, " ")
+    let l:headSpNum = stridx(l:line, l:list[0])
+
+    " 行頭の空白を置換
+    if (l:headSpNum == 1)
+        let l:line = substitute(l:line, "\ ", '-', '')
+    elseif (1 < l:headSpNum)
+        let l:line = substitute(l:line, "\ ", '+', '')
+
+        " 区切りとして空白2つは残す
+        let l:i = 2
+        while i < l:headSpNum
+            let l:line = substitute(l:line, "\ ", '-', '')
+            let i += 1
+        endwhile
+    endif
+
+    return printf('%s %s [%2d Lines Lv%02d] %s', l:line, v:folddashes, (v:foldend-v:foldstart+1), v:foldlevel, v:folddashes)
+endfunction
+set foldtext=g:toFoldFunc()
 " set foldclose=all     " fold外に移動しfoldlevelより深ければ閉じる
 " set foldlevel=3       " 開いた時にどの深度から折りたたむか
-" set foldnestmax=2     " 最大折りたたみ深度$
 
 " 見た目の設定
 set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
@@ -316,6 +341,7 @@ augroup END
 
 " C/C++設定
 augroup C_Cpp
+    autocmd!
     setlocal nosmartindent
     setlocal nocindent
     setlocal autoindent
@@ -344,6 +370,7 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 " NeoBundle 'git://github.com/thinca/vim-quickrun.git'
+" NeoBundle 'git://github.com/ujihisa/neco-look.git'
 " NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
 " NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
 " NeoBundle 'git://github.com/wesleyche/Trinity.git'
@@ -356,6 +383,7 @@ NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git'
 NeoBundle 'git://github.com/Shougo/vimshell.git'
+NeoBundle 'git://github.com/bkad/CamelCaseMotion.git'
 NeoBundle 'git://github.com/nathanaelkane/vim-indent-guides.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/t9md/vim-textmanip.git'
@@ -409,6 +437,7 @@ let g:vimfiler_tree_opened_icon = '▾'
 nnoremap <silent> <F9> :VimFiler -split -simple -winwidth=40 -toggle -no-quit<CR>
 nnoremap <silent> <F10> :VimFilerBufferDir -quit<CR>
 augroup VimFiler
+    autocmd!
     if has('vim_starting') &&  !argc()
         autocmd VimEnter * VimFiler -quit
     endif
@@ -421,14 +450,17 @@ let g:vimshell_enable_smart_case = 1
 let g:vimshell_execute_file_list = {}
 call vimshell#set_execute_file('txt,vim,c,h,cpp,d,xml,java', 'vim')
 call vimshell#set_execute_file('html,xhtml', 'gexe firefox')
-autocmd FileType vimshell call vimshell#altercmd#define('cl', 'clear')
-            \|call vimshell#altercmd#define('g++', '/opt/local/bin/g++-mp-4.8 -Wall')
-            \| call vimshell#altercmd#define('gcc', '/opt/local/bin/gcc-mp-4.8 -Wall')
-            \| call vimshell#altercmd#define('i', 'iexe')
-            \| call vimshell#altercmd#define('la', 'gls -ahF --color')
-            \| call vimshell#altercmd#define('ll', 'gls -hlF --color')
-            \| call vimshell#altercmd#define('ls', 'gls -hF --color')
-            \| call vimshell#hook#add('chpwd', 'my_chpwd', 'g:my_chpwd')
-function! g:my_chpwd(args, context)
-    call vimshell#execute('ls')
-endfunction
+augroup VimShell
+    autocmd!
+    autocmd FileType vimshell call vimshell#altercmd#define('cl', 'clear')
+                \|call vimshell#altercmd#define('g++', '/opt/local/bin/g++-mp-4.8 -Wall')
+                \| call vimshell#altercmd#define('gcc', '/opt/local/bin/gcc-mp-4.8 -Wall')
+                \| call vimshell#altercmd#define('i', 'iexe')
+                \| call vimshell#altercmd#define('la', 'gls -ahF --color')
+                \| call vimshell#altercmd#define('ll', 'gls -hlF --color')
+                \| call vimshell#altercmd#define('ls', 'gls -hF --color')
+                \| call vimshell#hook#add('chpwd', 'my_chpwd', 'g:my_chpwd')
+    function! g:my_chpwd(args, context)
+        call vimshell#execute('ls')
+    endfunction
+augroup END
