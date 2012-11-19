@@ -12,6 +12,7 @@
 
 
 autocmd!
+filetype off
 filetype plugin indent on
 
 " viとの互換をオフ
@@ -46,45 +47,21 @@ set incsearch   " インクリメンタルサーチを有効
 
 " その他
 set backspace=2                 " Backspaceの動作
+set fileformat=unix             " 改行文字設定
 set helplang=ja,en              " ヘルプ検索で日本語を優先
 set viewoptions=cursor,folds    " :mkviewで保存する設定
 set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
 set wildmenu                    " コマンドの補完候補を表示
-set fileformat=unix             " 改行文字設定
 
 " 折りたたみ関連
 set foldenable
-set foldcolumn=3        " 左側に折りたたみガイド表示$
-set foldmethod=indent   " 折畳の判別
+set foldcolumn=3            " 左側に折りたたみガイド表示$
+set foldmethod=indent       " 折畳の判別
+set foldtext=g:toFoldFunc() " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
-set foldnestmax=4     " 最大折りたたみ深度$
-function! g:toFoldFunc()
-    " 折りたたみ開始行取得
-    let l:line = getline(v:foldstart)
-
-    " 行頭の空白数計算
-    let l:list = split(l:line, " ")
-    let l:headSpNum = stridx(l:line, l:list[0])
-
-    " 行頭の空白を置換
-    if (l:headSpNum == 1)
-        let l:line = substitute(l:line, "\ ", '-', '')
-    elseif (1 < l:headSpNum)
-        let l:line = substitute(l:line, "\ ", '+', '')
-
-        " 区切りとして空白2つは残す
-        let l:i = 2
-        while i < l:headSpNum
-            let l:line = substitute(l:line, "\ ", '-', '')
-            let i += 1
-        endwhile
-    endif
-
-    return printf('%s %s [%2d Lines Lv%02d] %s', l:line, v:folddashes, (v:foldend-v:foldstart+1), v:foldlevel, v:folddashes)
-endfunction
-set foldtext=g:toFoldFunc()
-" set foldclose=all     " fold外に移動しfoldlevelより深ければ閉じる
-" set foldlevel=3       " 開いた時にどの深度から折りたたむか
+" set foldnestmax=4         " 最大折りたたみ深度$
+" set foldclose=all         " fold外に移動しfoldlevelより深ければ閉じる
+" set foldlevel=3           " 開いた時にどの深度から折りたたむか
 
 " 見た目の設定
 set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
@@ -113,6 +90,31 @@ highlight TabLineSel ctermbg=5
 "-------------------------------------------------------------------------------"
 " Functions
 "-------------------------------------------------------------------------------"
+" 折り畳み時表示テキスト設定用関数
+function! g:toFoldFunc()
+    " 折りたたみ開始行取得
+    let l:line = getline(v:foldstart)
+
+    " 行頭の空白数計算 - 空白で分割→先頭の一致部分を検索しインデックスをheadSpNumに設定
+    let l:headSpNum = stridx(l:line, split(l:line, " ")[0])
+
+    " 行頭の空白を置換
+    if (l:headSpNum == 1)
+        let l:line = substitute(l:line, "\ ", '-', '')
+    elseif (1 < l:headSpNum)
+        let l:line = substitute(l:line, "\ ", '+', '')
+
+        " 区切りとして空白を2つ残す
+        let l:i = 2
+        while (l:i < l:headSpNum)
+            let l:line = substitute(l:line, "\ ", '-', '')
+            let l:i += 1
+        endwhile
+    endif
+
+    return printf('%s %s [ %2d Lines Lv%02d ] %s', l:line, v:folddashes, (v:foldend-v:foldstart+1), v:foldlevel, v:folddashes)
+endfunction
+
 " 入力時に自動で括弧内に移動
 function! g:toggleAutoBack()
     if(0 == g:autoBackState)
@@ -215,20 +217,20 @@ if !exists("g:autoPairState")
 endif
 
 
-"-------------------------------------------------------------------------------"
-" Mapping
-"-------------------------------------------------------------------------------"
-" コマンド        | ノーマル  挿入  コマンドライン  ビジュアル  選択  演算待ち
-" map  / noremap  |    @       -          -             @        @       @
-" nmap / nnoremap |    @       -          -             -        -       -
-" vmap / vnoremap |    -       -          -             @        @       -
-" omap / onoremap |    -       -          -             -        -       @
-" xmap / xnoremap |    -       -          -             @        -       -
-" smap / snoremap |    -       -          -             @        -       -
-" map! / noremap! |    -       @          @             -        -       -
-" imap / inoremap |    -       @          -             -        -       -
-" cmap / cnoremap |    -       -          @             -        -       -
-"-------------------------------------------------------------------------------"
+"-----------------------------------------------------------------------------------"
+" Mapping                                                                           |
+"-----------------------------------------------------------------------------------"
+" コマンド        | ノーマル | 挿入 | コマンドライン | ビジュアル | 選択 | 演算待ち |
+" map  / noremap  |    @     |  -   |       -        |     @      |  @   |    @     |
+" nmap / nnoremap |    @     |  -   |       -        |     -      |  -   |    -     |
+" vmap / vnoremap |    -     |  -   |       -        |     @      |  @   |    -     |
+" omap / onoremap |    -     |  -   |       -        |     -      |  -   |    @     |
+" xmap / xnoremap |    -     |  -   |       -        |     @      |  -   |    -     |
+" smap / snoremap |    -     |  -   |       -        |     @      |  -   |    -     |
+" map! / noremap! |    -     |  @   |       @        |     -      |  -   |    -     |
+" imap / inoremap |    -     |  @   |       -        |     -      |  -   |    -     |
+" cmap / cnoremap |    -     |  -   |       @        |     -      |  -   |    -     |
+"-----------------------------------------------------------------------------------"
 
 " <Leader>を変更
 let mapleader = ","
@@ -253,6 +255,10 @@ noremap <silent> <S-Up> :wincmd -<CR>
 noremap <silent> <S-Down> :wincmd +<CR>
 
 " 端に移動
+onoremap <C-h> ^
+onoremap <C-j> G
+onoremap <C-k> gg
+onoremap <C-l> $
 nnoremap <C-h> ^
 nnoremap <C-j> G
 nnoremap <C-k> gg
@@ -269,7 +275,7 @@ nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
 nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 
 " 貼り付け設定反転
-nnoremap <silent> <Leader>pp :set invpaste<CR>
+nnoremap <silent> <Leader>pp :set paste!<CR>
 
 " 括弧補完切り替え
 nnoremap <Leader>aub :call g:toggleAutoBack()<CR>
@@ -279,6 +285,10 @@ nnoremap <Leader>aup :call g:toggleAutoPair()<CR>
 noreabbrev #b /****************************************
 noreabbrev #e <Space>****************************************/
 
+
+"-----------------------------------------------------------------------------------"
+" Command                                                                           |
+"-----------------------------------------------------------------------------------"
 " バイナリで表示
 command! Binary :%!xxd
 
@@ -360,7 +370,6 @@ if (!isdirectory(expand('~/.vim/bundle/neobundle.vim')))
 endif
 
 filetype off
-filetype plugin indent off
 
 if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim
@@ -374,7 +383,6 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
 " NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
 " NeoBundle 'git://github.com/wesleyche/Trinity.git'
-NeoBundle 'project.tar.gz'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
@@ -391,6 +399,7 @@ NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
 NeoBundle 'git://github.com/yuratomo/w3m.vim.git'
+NeoBundle 'project.tar.gz'
 
 filetype plugin indent on
 
