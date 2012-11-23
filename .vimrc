@@ -235,6 +235,18 @@ endif
 " <Leader>を変更
 let mapleader = ","
 
+" 矯正
+inoremap <BS> <Nop>
+inoremap <Left> <Nop>
+inoremap <Right> <Nop>
+inoremap <Up> <Nop>
+inoremap <Down> <Nop>
+noremap <BS> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+noremap <Up> <Nop>
+noremap <Down> <Nop>
+
 " tab
 noremap to :tabnew<Space>
 noremap <silent> tn :tabnext<CR>
@@ -254,11 +266,14 @@ noremap <silent> <S-Right> :wincmd ><CR>
 noremap <silent> <S-Up> :wincmd -<CR>
 noremap <silent> <S-Down> :wincmd +<CR>
 
-" 端に移動
+" 端に移動(演算待ち)
 onoremap <C-h> ^
 onoremap <C-j> G
 onoremap <C-k> gg
 onoremap <C-l> $
+
+" 端に移動(ノーマルモード)
+onoremap <C-h> ^
 nnoremap <C-h> ^
 nnoremap <C-j> G
 nnoremap <C-k> gg
