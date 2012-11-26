@@ -59,7 +59,7 @@ set foldcolumn=3            " 左側に折りたたみガイド表示$
 set foldmethod=indent       " 折畳の判別
 set foldtext=g:toFoldFunc() " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
-" set foldnestmax=4         " 最大折りたたみ深度$
+set foldnestmax=4         " 最大折りたたみ深度$
 " set foldclose=all         " fold外に移動しfoldlevelより深ければ閉じる
 " set foldlevel=3           " 開いた時にどの深度から折りたたむか
 
