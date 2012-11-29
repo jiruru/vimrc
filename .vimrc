@@ -40,6 +40,7 @@ set charconvert=utf-8               " 文字エンコーディングに使われ
 set encoding=utf-8                  " vim内部で通常使用する文字エンコーディングを設定
 set fileencoding=utf-8              " バッファのファイルエンコーディングを指定
 set fileencodings=utf-8,euc-jp,sjis " 既存ファイルを開く際の文字コード自動判別
+set fileformats=unix,mac,dos        " 改行文字設定
 
 " 検索設定
 set hlsearch    " 検索結果強調-:nohで解除
@@ -47,7 +48,6 @@ set incsearch   " インクリメンタルサーチを有効
 
 " その他
 set backspace=2                 " Backspaceの動作
-set fileformat=unix             " 改行文字設定
 set helplang=ja,en              " ヘルプ検索で日本語を優先
 set viewoptions=cursor,folds    " :mkviewで保存する設定
 set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
@@ -253,12 +253,12 @@ noremap <silent> tn :tabnext<CR>
 noremap <silent> tp :tabprevious<CR>
 
 " 画面分割
-noremap <F5> :split<Space>
-noremap <F6> :vsplit<Space>
+noremap <F2> :split<Space>
+noremap <F3> :vsplit<Space>
 
 " バッファ移動
-noremap <silent> <F7> :bprevious<CR>
-noremap <silent> <F8> :bnext<CR>
+noremap <silent> <F4> :bprevious<CR>
+noremap <silent> <F5> :bnext<CR>
 
 " Windowサイズ変更
 noremap <silent> <S-Left> :wincmd <<CR>
@@ -393,11 +393,7 @@ endif
 call neobundle#rc(expand('~/.vim/bundle/'))
 
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
-" NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
-" NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
-" NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
-" NeoBundle 'git://github.com/wesleyche/Trinity.git'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
@@ -410,9 +406,12 @@ NeoBundle 'git://github.com/bkad/CamelCaseMotion.git'
 NeoBundle 'git://github.com/nathanaelkane/vim-indent-guides.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/t9md/vim-textmanip.git'
+NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
+NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
+NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
 NeoBundle 'git://github.com/yuratomo/w3m.vim.git'
 NeoBundle 'project.tar.gz'
 
@@ -458,8 +457,8 @@ let g:vimfiler_marked_file_icon = '*'
 let g:vimfiler_tree_closed_icon = '▸'
 let g:vimfiler_tree_leaf_icon = '|'
 let g:vimfiler_tree_opened_icon = '▾'
-nnoremap <silent> <F9> :VimFiler -split -simple -winwidth=40 -toggle -no-quit<CR>
-nnoremap <silent> <F10> :VimFilerBufferDir -quit<CR>
+nnoremap <silent> <F6> :VimFiler -split -simple -winwidth=40 -toggle -no-quit<CR>
+nnoremap <silent> <F7> :VimFilerBufferDir -quit<CR>
 augroup VimFiler
     autocmd!
     if has('vim_starting') &&  !argc()
