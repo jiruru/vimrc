@@ -45,6 +45,8 @@ set fileformats=unix,mac,dos        " 改行文字設定
 " 検索設定
 set hlsearch    " 検索結果強調-:nohで解除
 set incsearch   " インクリメンタルサーチを有効
+set ignorecase  " 大文字小文字無視
+set smartcase   " 大文字があれば通常の検索
 
 " その他
 set backspace=2                 " Backspaceの動作
@@ -266,18 +268,11 @@ noremap <silent> <S-Right> :wincmd ><CR>
 noremap <silent> <S-Up> :wincmd -<CR>
 noremap <silent> <S-Down> :wincmd +<CR>
 
-" 端に移動(演算待ち)
-onoremap <C-h> ^
-onoremap <C-j> G
-onoremap <C-k> gg
-onoremap <C-l> $
-
-" 端に移動(ノーマルモード)
-onoremap <C-h> ^
-nnoremap <C-h> ^
-nnoremap <C-j> G
-nnoremap <C-k> gg
-nnoremap <C-l> $
+" 端に移動
+noremap <C-h> ^
+noremap <C-j> G
+noremap <C-k> gg
+noremap <C-l> $
 
 " 検索時に中央へ
 nnoremap n nzz
@@ -394,6 +389,7 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
+" NeoBundle 'project.tar.gz'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
@@ -413,7 +409,6 @@ NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
 NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
 NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
 NeoBundle 'git://github.com/yuratomo/w3m.vim.git'
-NeoBundle 'project.tar.gz'
 
 filetype plugin indent on
 
@@ -444,10 +439,10 @@ nmap ,, <Plug>NERDCommenterToggle
 vmap ,, <Plug>NERDCommenterNested
 
 " textmanip
-xmap <C-j> <Plug>(textmanip-move-down)
-xmap <C-k> <Plug>(textmanip-move-up)
-xmap <C-h> <Plug>(textmanip-move-left)
-xmap <C-l> <Plug>(textmanip-move-right)
+xmap <C-y> <Plug>(textmanip-move-down)
+xmap <C-u> <Plug>(textmanip-move-up)
+xmap <C-i> <Plug>(textmanip-move-left)
+xmap <C-o> <Plug>(textmanip-move-right)
 
 " VimFiler
 let g:vimfiler_as_default_explorer=1
