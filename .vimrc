@@ -274,15 +274,26 @@ noremap <C-j> G
 noremap <C-k> gg
 noremap <C-l> $
 
+" コマンドラインモードでの移動
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <C-F> <Right>
+cnoremap <C-B> <Left>
+cnoremap <C-j> <Down>
+cnoremap <C-k> <Up>
+
+" カーソル下のwordをhelpする
+nnoremap <silent> <Leader>h <C-U>:help <C-R><C-W><CR>
+
 " 検索時に中央へ
 nnoremap n nzz
 nnoremap N Nzz
 
-" .vimrcを開く
-nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
-
 " 検索ハイライト消去
 nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
+
+" .vimrcを開く
+nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
 
 " 貼り付け設定反転
 nnoremap <silent> <Leader>pp :set paste!<CR>
@@ -291,7 +302,7 @@ nnoremap <silent> <Leader>pp :set paste!<CR>
 nnoremap <Leader>aub :call g:toggleAutoBack()<CR>
 nnoremap <Leader>aup :call g:toggleAutoPair()<CR>
 
-" 短縮形の設定 マップを展開しない
+" 短縮形の設定
 noreabbrev #b /****************************************
 noreabbrev #e <Space>****************************************/
 
@@ -327,7 +338,7 @@ endif
 augroup General
     autocmd!
     " 設定の保存と復元
-    if filewritable(expand('%'))
+    if filewritable(expand('%')) && (isdirectory(expand('~/.vim')))
         autocmd BufWinLeave ?* silent mkview
         autocmd BufWinEnter ?* silent loadview
     endif
@@ -387,7 +398,9 @@ endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
 
+" NeoBundle 'git://github.com/Shougo/vimshell.git'
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
+" NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
 " NeoBundle 'project.tar.gz'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
@@ -397,11 +410,11 @@ NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git'
-NeoBundle 'git://github.com/Shougo/vimshell.git'
 NeoBundle 'git://github.com/bkad/CamelCaseMotion.git'
+NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
+NeoBundle 'git://github.com/kana/vim-textobj-user.git'
 NeoBundle 'git://github.com/nathanaelkane/vim-indent-guides.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
-NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/cpp-vim.git'
@@ -462,23 +475,23 @@ augroup VimFiler
 augroup END
 
 " VimShell
-nnoremap <silent> <Leader>sh :VimShellPop<CR>
-let g:vimshell_prompt = $USER."% "
-let g:vimshell_enable_smart_case = 1
-let g:vimshell_execute_file_list = {}
-call vimshell#set_execute_file('txt,vim,c,h,cpp,d,xml,java', 'vim')
-call vimshell#set_execute_file('html,xhtml', 'gexe firefox')
-augroup VimShell
-    autocmd!
-    autocmd FileType vimshell call vimshell#altercmd#define('cl', 'clear')
-                \|call vimshell#altercmd#define('g++', '/opt/local/bin/g++-mp-4.8 -Wall')
-                \| call vimshell#altercmd#define('gcc', '/opt/local/bin/gcc-mp-4.8 -Wall')
-                \| call vimshell#altercmd#define('i', 'iexe')
-                \| call vimshell#altercmd#define('la', 'gls -ahF --color')
-                \| call vimshell#altercmd#define('ll', 'gls -hlF --color')
-                \| call vimshell#altercmd#define('ls', 'gls -hF --color')
-                \| call vimshell#hook#add('chpwd', 'my_chpwd', 'g:my_chpwd')
-    function! g:my_chpwd(args, context)
-        call vimshell#execute('ls')
-    endfunction
-augroup END
+" nnoremap <silent> <Leader>sh :VimShellPop<CR>
+" let g:vimshell_prompt = $USER."% "
+" let g:vimshell_enable_smart_case = 1
+" let g:vimshell_execute_file_list = {}
+" call vimshell#set_execute_file('txt,vim,c,h,cpp,d,xml,java', 'vim')
+" call vimshell#set_execute_file('html,xhtml', 'gexe firefox')
+" augroup VimShell
+"     autocmd!
+"     autocmd FileType vimshell call vimshell#altercmd#define('cl', 'clear')
+"                 \|call vimshell#altercmd#define('g++', '/opt/local/bin/g++-mp-4.8 -Wall')
+"                 \| call vimshell#altercmd#define('gcc', '/opt/local/bin/gcc-mp-4.8 -Wall')
+"                 \| call vimshell#altercmd#define('i', 'iexe')
+"                 \| call vimshell#altercmd#define('la', 'gls -ahF --color')
+"                 \| call vimshell#altercmd#define('ll', 'gls -hlF --color')
+"                 \| call vimshell#altercmd#define('ls', 'gls -hF --color')
+"                 \| call vimshell#hook#add('chpwd', 'my_chpwd', 'g:my_chpwd')
+"     function! g:my_chpwd(args, context)
+"         call vimshell#execute('ls')
+"     endfunction
+" augroup END
