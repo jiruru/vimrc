@@ -269,16 +269,17 @@ noremap <silent> <S-Up> :wincmd -<CR>
 noremap <silent> <S-Down> :wincmd +<CR>
 
 " 端に移動
-noremap <C-h> ^
-noremap <C-j> G
-noremap <C-k> gg
-noremap <C-l> $
+noremap <C-H> ^
+noremap <C-J> G
+noremap <C-K> gg
+noremap <C-L> $
 
 " コマンドラインモードでの移動
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <C-F> <Right>
 cnoremap <C-B> <Left>
+
 cnoremap <C-j> <Down>
 cnoremap <C-k> <Up>
 
@@ -400,9 +401,12 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 
 " NeoBundle 'git://github.com/Shougo/vimshell.git'
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
+" NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
+" NeoBundle 'git://github.com/kana/vim-textobj-user.git'
 " NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
 " NeoBundle 'project.tar.gz'
+
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
@@ -411,8 +415,6 @@ NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git'
 NeoBundle 'git://github.com/bkad/CamelCaseMotion.git'
-NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
-NeoBundle 'git://github.com/kana/vim-textobj-user.git'
 NeoBundle 'git://github.com/nathanaelkane/vim-indent-guides.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
@@ -451,12 +453,6 @@ let g:NERDSpaceDelims = 1
 nmap ,, <Plug>NERDCommenterToggle
 vmap ,, <Plug>NERDCommenterNested
 
-" textmanip
-xmap <C-y> <Plug>(textmanip-move-down)
-xmap <C-u> <Plug>(textmanip-move-up)
-xmap <C-i> <Plug>(textmanip-move-left)
-xmap <C-o> <Plug>(textmanip-move-right)
-
 " VimFiler
 let g:vimfiler_as_default_explorer=1
 let g:vimfiler_safe_mode_by_default = 0
@@ -473,6 +469,12 @@ augroup VimFiler
         autocmd VimEnter * VimFiler -quit
     endif
 augroup END
+
+" textmanip
+" xmap <C-y> <Plug>(textmanip-move-down)
+" xmap <C-u> <Plug>(textmanip-move-up)
+" xmap <C-i> <Plug>(textmanip-move-left)
+" xmap <C-o> <Plug>(textmanip-move-right)
 
 " VimShell
 " nnoremap <silent> <Leader>sh :VimShellPop<CR>
