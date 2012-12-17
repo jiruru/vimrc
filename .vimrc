@@ -36,10 +36,9 @@ set tabstop=4       " 画面上で<Tab>文字が占める幅
 set softtabstop=4   " <Tab>, <BS>が対応する空白の数
 
 " エンコーディング関連
-set charconvert=utf-8               " 文字エンコーディングに使われるexpressionを定める
 set encoding=utf-8                  " vim内部で通常使用する文字エンコーディングを設定
-set fileencoding=utf-8              " バッファのファイルエンコーディングを指定
-set fileencodings=utf-8,euc-jp,sjis " 既存ファイルを開く際の文字コード自動判別
+" set fileencodings=sjis,cp932,euc-jp,utf-8 " 既存ファイルを開く際の文字コード自動判別
+set fileencodings=sjis,cp932,utf-8
 set fileformats=unix,mac,dos        " 改行文字設定
 
 " 検索設定
@@ -218,7 +217,6 @@ if !exists("g:autoPairState")
     " call g:toggleAutoPair()
 endif
 
-
 "-----------------------------------------------------------------------------------"
 " Mapping                                                                           |
 "-----------------------------------------------------------------------------------"
@@ -283,8 +281,11 @@ cnoremap <C-B> <Left>
 cnoremap <C-j> <Down>
 cnoremap <C-k> <Up>
 
+" 末尾までYank
+nnoremap Y y$
+
 " カーソル下のwordをhelpする
-nnoremap <silent> <Leader>h <C-U>:help <C-R><C-W><CR>
+nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
 
 " 検索時に中央へ
 nnoremap n nzz
@@ -399,6 +400,7 @@ endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
 
+" NeoBundle 'git://github.com/Shougo/vimfiler.git'
 " NeoBundle 'git://github.com/Shougo/vimshell.git'
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
@@ -412,7 +414,6 @@ NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
-NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git'
 NeoBundle 'git://github.com/bkad/CamelCaseMotion.git'
 NeoBundle 'git://github.com/nathanaelkane/vim-indent-guides.git'
@@ -453,22 +454,23 @@ let g:NERDSpaceDelims = 1
 nmap ,, <Plug>NERDCommenterToggle
 vmap ,, <Plug>NERDCommenterNested
 
+" UNUSED PLUGIN
 " VimFiler
-let g:vimfiler_as_default_explorer=1
-let g:vimfiler_safe_mode_by_default = 0
-let g:vimfiler_file_icon = '-'
-let g:vimfiler_marked_file_icon = '*'
-let g:vimfiler_tree_closed_icon = '▸'
-let g:vimfiler_tree_leaf_icon = '|'
-let g:vimfiler_tree_opened_icon = '▾'
-nnoremap <silent> <F6> :VimFiler -split -simple -winwidth=40 -toggle -no-quit<CR>
-nnoremap <silent> <F7> :VimFilerBufferDir -quit<CR>
-augroup VimFiler
-    autocmd!
-    if has('vim_starting') &&  !argc()
-        autocmd VimEnter * VimFiler -quit
-    endif
-augroup END
+" let g:vimfiler_as_default_explorer=1
+" let g:vimfiler_safe_mode_by_default = 0
+" let g:vimfiler_file_icon = '-'
+" let g:vimfiler_marked_file_icon = '*'
+" let g:vimfiler_tree_closed_icon = '▸'
+" let g:vimfiler_tree_leaf_icon = '|'
+" let g:vimfiler_tree_opened_icon = '▾'
+" nnoremap <silent> <F6> :VimFiler -split -simple -winwidth=40 -toggle -no-quit<CR>
+" nnoremap <silent> <F7> :VimFilerBufferDir -quit<CR>
+" augroup VimFiler
+    " autocmd!
+    " if has('vim_starting') &&  !argc()
+        " autocmd VimEnter * VimFiler -quit
+    " endif
+" augroup END
 
 " textmanip
 " xmap <C-y> <Plug>(textmanip-move-down)
