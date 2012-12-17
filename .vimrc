@@ -400,7 +400,6 @@ endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
 
-" NeoBundle 'git://github.com/Shougo/vimfiler.git'
 " NeoBundle 'git://github.com/Shougo/vimshell.git'
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
@@ -409,6 +408,7 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
 " NeoBundle 'project.tar.gz'
 
+NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
@@ -424,7 +424,6 @@ NeoBundle 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
 NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
 NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
-NeoBundle 'git://github.com/yuratomo/w3m.vim.git'
 
 filetype plugin indent on
 
@@ -456,21 +455,16 @@ vmap ,, <Plug>NERDCommenterNested
 
 " UNUSED PLUGIN
 " VimFiler
-" let g:vimfiler_as_default_explorer=1
-" let g:vimfiler_safe_mode_by_default = 0
-" let g:vimfiler_file_icon = '-'
-" let g:vimfiler_marked_file_icon = '*'
-" let g:vimfiler_tree_closed_icon = '▸'
-" let g:vimfiler_tree_leaf_icon = '|'
-" let g:vimfiler_tree_opened_icon = '▾'
-" nnoremap <silent> <F6> :VimFiler -split -simple -winwidth=40 -toggle -no-quit<CR>
-" nnoremap <silent> <F7> :VimFilerBufferDir -quit<CR>
-" augroup VimFiler
-    " autocmd!
-    " if has('vim_starting') &&  !argc()
-        " autocmd VimEnter * VimFiler -quit
-    " endif
-" augroup END
+let g:vimfiler_as_default_explorer=1
+let g:vimfiler_safe_mode_by_default = 0
+let g:vimfiler_file_icon = '-'
+let g:vimfiler_marked_file_icon = '*'
+let g:vimfiler_tree_closed_icon = '▸'
+let g:vimfiler_tree_leaf_icon = '|'
+let g:vimfiler_tree_opened_icon = '▾'
+let g:vimfiler_edit_action = 'tabopen'
+nnoremap <silent> <F6> :VimFiler -split -simple -winwidth=40 -toggle -no-quit<CR>
+nnoremap <silent> <F7> :VimFilerBufferDir -quit<CR>
 
 " textmanip
 " xmap <C-y> <Plug>(textmanip-move-down)
