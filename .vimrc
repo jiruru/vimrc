@@ -215,7 +215,7 @@ if !exists("g:autoPairState")
     " call g:toggleAutoPair()
 endif
 
-" 区切り文字までを削除する
+" 設定された区切り文字までを削除する
 " @isInsert 削除後に挿入するか否か
 " @isInclude 区切り文字を含むか否か
 function! g:deleteDelimitChar(isInsert, isInclude)
@@ -243,11 +243,6 @@ function! g:deleteDelimitChar(isInsert, isInclude)
         endif
     endfor
 endfunction
-
-noremap dli :call g:deleteDelimitChar(0, 1)<CR>
-noremap dla :call g:deleteDelimitChar(0, 0)<CR>
-noremap cli :call g:deleteDelimitChar(1, 1)<CR>
-noremap cla :call g:deleteDelimitChar(1, 0)<CR>
 
 "-----------------------------------------------------------------------------------"
 " Mapping                                                                           |
@@ -323,6 +318,10 @@ nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
 nnoremap n nzz
 nnoremap N Nzz
 
+" 移動時に中央へ
+nnoremap '. '.zz
+nnoremap '' ''zz
+
 " 検索ハイライト消去
 nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 
@@ -335,6 +334,12 @@ nnoremap <silent> <Leader>pp :set paste!<CR>
 " 括弧補完切り替え
 nnoremap <Leader>aub :call g:toggleAutoBack()<CR>
 nnoremap <Leader>aup :call g:toggleAutoPair()<CR>
+
+" 区切り文字まで削除
+noremap <silent> dli :call g:deleteDelimitChar(0, 1)<CR>
+noremap <silent> dla :call g:deleteDelimitChar(0, 0)<CR>
+noremap <silent> cli :call g:deleteDelimitChar(1, 1)<CR>
+noremap <silent> cla :call g:deleteDelimitChar(1, 0)<CR>
 
 " 短縮形の設定
 noreabbrev #b /****************************************
