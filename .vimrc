@@ -36,10 +36,9 @@ set tabstop=4       " 画面上で<Tab>文字が占める幅
 set softtabstop=4   " <Tab>, <BS>が対応する空白の数
 
 " エンコーディング関連
-set encoding=utf-8                  " vim内部で通常使用する文字エンコーディングを設定
-" set fileencodings=sjis,cp932,euc-jp,utf-8 " 既存ファイルを開く際の文字コード自動判別
-set fileencodings=sjis,cp932,utf-8
-set fileformats=unix,mac,dos        " 改行文字設定
+set encoding=utf-8                          " vim内部で通常使用する文字エンコーディングを設定
+set fileencodings=utf-8,sjis,cp932,euc-jp   " 既存ファイルを開く際の文字コード自動判別
+set fileformats=unix,mac,dos                " 改行文字設定
 
 " 検索設定
 set hlsearch    " 検索結果強調-:nohで解除
@@ -118,6 +117,8 @@ endfunction
 
 " 入力時に自動で括弧内に移動
 function! g:toggleAutoBack()
+    let l:parenList = ['{}', '[]', '()', '""', '''''', '<>']
+
     if(0 == g:autoBackState)
         inoremap {} {}<Left>
         inoremap [] []<Left>
@@ -130,9 +131,6 @@ function! g:toggleAutoBack()
         endif
         let g:autoBackState = 1
     else
-        if(hasmapto('{}', 'i'))
-            iunmap {}
-        endif
         if(hasmapto('[]', 'i'))
             iunmap []
         endif
@@ -216,6 +214,40 @@ if !exists("g:autoPairState")
     let g:autoPairState = 0
     " call g:toggleAutoPair()
 endif
+
+" 区切り文字までを削除する
+" @isInsert 削除後に挿入するか否か
+" @isInclude 区切り文字を含むか否か
+function! g:deleteDelimitChar(isInsert, isInclude)
+    " 区切り文字リスト 優先順位はリストの並びごとに高→低
+    let l:delimitList = [';', ':', ')', '}', ']', '.', '"', '''']
+    " [bufnum, lnum, col, off]
+    let l:cursolPos = getpos('.')
+    " 現在カーソルのある列、以降の文字列を取得(カーソル文字も含む)
+    let l:afterCursolStr =  strpart(getline(line('.')), remove(l:cursolPos, 2) - 1)
+
+    " 区切り文字のいずれかがあるか検出
+    for l:i in l:delimitList
+        " 区切り文字が存在すれば削除処理開始
+        if(-1 != stridx(l:afterCursolStr, l:i))
+            " 検出された区切り文字の前まで削除 引数で動作変化
+            execute "normal d".['t', 'f'][a:isInclude].l:i
+
+            " 削除後に入力するか否か
+            if(1 == a:isInsert)
+                startinsert
+            endif
+
+            " 削除したのでループを抜ける
+            break
+        endif
+    endfor
+endfunction
+
+noremap dli :call g:deleteDelimitChar(0, 1)<CR>
+noremap dla :call g:deleteDelimitChar(0, 0)<CR>
+noremap cli :call g:deleteDelimitChar(1, 1)<CR>
+noremap cla :call g:deleteDelimitChar(1, 0)<CR>
 
 "-----------------------------------------------------------------------------------"
 " Mapping                                                                           |
@@ -381,6 +413,12 @@ augroup C_Cpp
     autocmd BufRead *.c,*.cpp setlocal cindent
 augroup END
 
+" nask設定
+augroup nask
+    autocmd!
+    autocmd BufRead *.nas setlocal filetype=NASM
+augroup END
+
 
 "-------------------------------------------------------------------------------"
 " Plugin
@@ -408,14 +446,15 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
 " NeoBundle 'project.tar.gz'
 
-NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
+NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git'
 NeoBundle 'git://github.com/bkad/CamelCaseMotion.git'
+NeoBundle 'git://github.com/h1mesuke/unite-outline.git'
 NeoBundle 'git://github.com/nathanaelkane/vim-indent-guides.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
@@ -426,6 +465,9 @@ NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
 NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
 
 filetype plugin indent on
+
+" Unite
+nnoremap <silent> <Leader>uo :<C-u>Unite -no-quit -vertical -winwidth=30 outline<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
@@ -453,7 +495,6 @@ let g:NERDSpaceDelims = 1
 nmap ,, <Plug>NERDCommenterToggle
 vmap ,, <Plug>NERDCommenterNested
 
-" UNUSED PLUGIN
 " VimFiler
 let g:vimfiler_as_default_explorer=1
 let g:vimfiler_safe_mode_by_default = 0
@@ -466,6 +507,7 @@ let g:vimfiler_edit_action = 'tabopen'
 nnoremap <silent> <F6> :VimFiler -split -simple -winwidth=40 -toggle -no-quit<CR>
 nnoremap <silent> <F7> :VimFilerBufferDir -quit<CR>
 
+" UNUSED PLUGIN
 " textmanip
 " xmap <C-y> <Plug>(textmanip-move-down)
 " xmap <C-u> <Plug>(textmanip-move-up)
