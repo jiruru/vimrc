@@ -260,7 +260,7 @@ endfunction
 "-----------------------------------------------------------------------------------"
 
 " <Leader>を変更
-let mapleader = ","
+let mapleader = " "
 
 " 矯正
 inoremap <BS> <Nop>
@@ -276,8 +276,6 @@ noremap <Down> <Nop>
 
 " tab
 noremap to :tabnew<Space>
-noremap <silent> tn :tabnext<CR>
-noremap <silent> tp :tabprevious<CR>
 
 " 画面分割
 noremap <F2> :split<Space>
@@ -305,10 +303,10 @@ cnoremap <C-E> <End>
 cnoremap <C-F> <Right>
 cnoremap <C-B> <Left>
 
-cnoremap <C-j> <Down>
-cnoremap <C-k> <Up>
+cnoremap <C-J> <Down>
+cnoremap <C-K> <Up>
 
-" 末尾までYank
+" 行の末尾までYank
 nnoremap Y y$
 
 " カーソル下のwordをhelpする
@@ -336,10 +334,10 @@ nnoremap <Leader>aub :call g:toggleAutoBack()<CR>
 nnoremap <Leader>aup :call g:toggleAutoPair()<CR>
 
 " 区切り文字まで削除
-noremap <silent> dli :call g:deleteDelimitChar(0, 1)<CR>
-noremap <silent> dla :call g:deleteDelimitChar(0, 0)<CR>
-noremap <silent> cli :call g:deleteDelimitChar(1, 1)<CR>
-noremap <silent> cla :call g:deleteDelimitChar(1, 0)<CR>
+noremap <silent> <Leader>di :call g:deleteDelimitChar(0, 1)<CR>
+noremap <silent> <Leader>da :call g:deleteDelimitChar(0, 0)<CR>
+noremap <silent> <Leader>ci :call g:deleteDelimitChar(1, 1)<CR>
+noremap <silent> <Leader>ca :call g:deleteDelimitChar(1, 0)<CR>
 
 " 短縮形の設定
 noreabbrev #b /****************************************
@@ -468,11 +466,24 @@ NeoBundle 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
 NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
 NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
+NeoBundle 'git://github.com/rhysd/unite-n3337.git'
 
 filetype plugin indent on
 
 " Unite
 nnoremap <silent> <Leader>uo :<C-u>Unite -no-quit -vertical -winwidth=30 outline<CR>
+" バッファ一覧
+nnoremap <silent> <Leader>ub :<C-u>Unite buffer<CR>
+" ファイル一覧
+nnoremap <silent> <Leader>uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+" レジスタ一覧
+nnoremap <silent> <Leader>ur :<C-u>Unite -buffer-name=register register<CR>
+" 最近使用したファイル一覧
+nnoremap <silent> <Leader>um :<C-u>Unite file_mru<CR>
+" 常用セット
+nnoremap <silent> <Leader>uu :<C-u>Unite buffer file_mru<CR>
+" 全部乗せ
+nnoremap <silent> <Leader>ua :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
@@ -497,8 +508,8 @@ let g:EasyMotion_leader_key = '<Leader>'
 
 " NERDCommenter
 let g:NERDSpaceDelims = 1
-nmap ,, <Plug>NERDCommenterToggle
-vmap ,, <Plug>NERDCommenterNested
+nmap <Leader><Leader> <Plug>NERDCommenterToggle
+vmap <Leader><Leader> <Plug>NERDCommenterNested
 
 " VimFiler
 let g:vimfiler_as_default_explorer=1
