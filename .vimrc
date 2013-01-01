@@ -112,105 +112,84 @@ function! g:toFoldFunc()
     return printf('%s %s [ %2d Lines Lv%02d ] %s', l:line, v:folddashes, (v:foldend-v:foldstart+1), v:foldlevel, v:folddashes)
 endfunction
 
+" 自動的に操作する対象の括弧
+let s:parenList = ['{}', '[]', '()', '""', '''''', '<>']
+
 " 入力時に自動で括弧内に移動
 function! g:toggleAutoBack()
-    let l:parenList = ['{}', '[]', '()', '""', '''''', '<>']
+    " 同時有効にはしない
+    if(1 == g:autoPairState)
+        call g:toggleAutoPair()
+    endif
 
     if(0 == g:autoBackState)
-        inoremap {} {}<Left>
-        inoremap [] []<Left>
-        inoremap () ()<Left>
-        inoremap "" ""<Left>
-        inoremap '' ''<Left>
-        inoremap <> <><Left>
+        " 各map実行
+        for l:i in s:parenList
+            execute 'inoremap '.l:i.' '.l:i.'<Left>'
+        endfor
+
+        " log出力
         if !has('vim_starting')
             echo "AutoBack is ON"
         endif
+
+        " フラグON
         let g:autoBackState = 1
     else
-        if(hasmapto('[]', 'i'))
-            iunmap []
-        endif
-        if(hasmapto('()', 'i'))
-            iunmap ()
-        endif
-        if(hasmapto('""', 'i'))
-            iunmap ""
-        endif
-        if(hasmapto('''''', 'i'))
-            iunmap ''
-        endif
-        if(hasmapto('<>', 'i'))
-            iunmap <>
-        endif
+        " 各unmap実行
+        for l:i in s:parenList
+            if(hasmapto(l:i, 'i'))
+                execute 'iunmap '.l:i
+            endif
+        endfor
 
+        " log出力
         if !has('vim_starting')
             echo "AutoBack is OFF"
         endif
 
+        " フラグOFF
         let g:autoBackState = 0
     endif
 endfunction
 
-" 起動時のみ自動実行
-if !exists("g:autoBackState")
-    " 初期値
-    let g:autoBackState = 0
-    call g:toggleAutoBack()
-endif
-
 " 入力時に自動で括弧を閉じる
 function! g:toggleAutoPair()
-    " 重くなるだけなのでOFF
+    " 同時有効にはしない
     if(1 == g:autoBackState)
         call g:toggleAutoBack()
     endif
 
     if(0 == g:autoPairState)
-        inoremap { {}
-        inoremap [ []
-        inoremap ( ()
-        inoremap " ""
-        inoremap ' ''
-        inoremap < <>
+        " 各map実行
+        for l:i in s:parenList
+            execute 'inoremap '.l:i[0].' '.l:i
+        endfor
+
+        " log出力
         if !has('vim_starting')
             echo "AutoPair is ON"
         endif
+
+        " フラグON
         let g:autoPairState = 1
     else
-        if(hasmapto('{', 'i'))
-            iunmap {
-        endif
-        if(hasmapto('[', 'i'))
-            iunmap [
-        endif
-        if(hasmapto('(', 'i'))
-            iunmap (
-        endif
-        if(hasmapto('"', 'i'))
-            iunmap "
-        endif
-        if(hasmapto('''', 'i'))
-            iunmap '
-        endif
-        if(hasmapto('<', 'i'))
-            iunmap <
-        endif
+        " 各unmap実行
+        for l:i in s:parenList
+            if(hasmapto(l:i[0], 'i'))
+                execute 'iunmap '.l:i
+            endif
+        endfor
 
+        " log出力
         if !has('vim_starting')
             echo "AutoPair is OFF"
         endif
 
+        " フラグOFF
         let g:autoPairState = 0
     endif
 endfunction
-
-" 起動時のみ自動実行
-if !exists("g:autoPairState")
-    " 初期値
-    let g:autoPairState = 0
-    " call g:toggleAutoPair()
-endif
 
 " 設定された区切り文字までを削除する
 " @isInsert 削除後に挿入するか否か
@@ -240,6 +219,17 @@ function! g:deleteDelimitChar(isInsert, isInclude)
         endif
     endfor
 endfunction
+
+if !exists("g:autoPairState")
+    " 初期値
+    let g:autoPairState = 0
+endif
+
+if !exists("g:autoBackState")
+    " 初期値
+    let g:autoBackState = 0
+    call g:toggleAutoBack()
+endif
 
 "-----------------------------------------------------------------------------------"
 " Mapping                                                                           |
@@ -274,6 +264,9 @@ noremap <Down> <Nop>
 " tab
 noremap to :tabnew<Space>
 
+" shell
+noremap <Leader>sh :shell<CR>
+
 " 画面分割
 noremap <F2> :split<Space>
 noremap <F3> :vsplit<Space>
@@ -299,7 +292,6 @@ cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <C-F> <Right>
 cnoremap <C-B> <Left>
-
 cnoremap <C-J> <Down>
 cnoremap <C-K> <Up>
 
@@ -309,11 +301,10 @@ nnoremap Y y$
 " カーソル下のwordをhelpする
 nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
 
-" 検索時に中央へ
+" 中央へ
 nnoremap n nzz
 nnoremap N Nzz
-
-" 移動時に中央へ
+nnoremap * *zz
 nnoremap '. '.zz
 nnoremap '' ''zz
 
@@ -383,7 +374,6 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 
 " NeoBundle 'git://github.com/Shougo/vimshell.git'
 " NeoBundle 'git://github.com/bkad/CamelCaseMotion.git'
-" NeoBundle 'git://github.com/h1mesuke/unite-outline.git'
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-user.git'
@@ -392,7 +382,7 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
 " NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
-" NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
+" NeoBundle 'git://github.com/Rykka/colorv.vim.git'
 " NeoBundle 'project.tar.gz'
 
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
@@ -408,6 +398,9 @@ NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
+NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git'
+NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git'
+NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git'
 
 filetype plugin indent on
 
@@ -428,9 +421,16 @@ nnoremap <silent> <Leader>ua :<C-u>UniteWithBufferDir -buffer-name=files buffer 
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_camel_case_completion = 1
+let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_underbar_completion = 1
+let g:neocomplcache_max_list=1000
+
+" Neocomplcache-clang
+let g:neocomplcache_clang_use_library = 0
+let g:neocomplcache_clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
+let g:neocomplcache_clang_user_options = '-I /opt/local/include -I /opt/local/include/boost'
+let g:neocomplcache_clang_executable_path = '/opt/local/bin/'
 
 " vim-powerline
 let g:Powerline_stl_path_style = 'short'
@@ -454,7 +454,7 @@ let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_edit_action = 'tabopen'
 let g:vimfiler_split_action = 'above'
 nnoremap <silent> fvs :VimFiler -split -simple -winwidth=40 -toggle -quit<CR>
-nnoremap <silent> fvo :VimFilerTab -quit<CR>
+nnoremap <silent> fvo :VimFilerTab -no-quit<CR>
 
 
 "-------------------------------------------------------------------------------"
@@ -493,6 +493,7 @@ augroup General
 
     " C/C++設定
     autocmd BufRead *.c,*.cpp NeoBundleSource cpp-vim
+    autocmd BufRead *.c,*.cpp NeoBundleSource neocomplcache-clang
     autocmd BufRead *.c,*.cpp setlocal nosmartindent
     autocmd BufRead *.c,*.cpp setlocal nocindent
     autocmd BufRead *.c,*.cpp setlocal autoindent
