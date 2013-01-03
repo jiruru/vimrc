@@ -48,7 +48,6 @@ set viewoptions=cursor,folds                 " :mkviewで保存する設定
 set whichwrap=b,s,h,l,<,>,[,]                " カーソルを行頭、行末で止まらないようにする
 set wildmenu                                 " コマンドの補完候補を表示
 set path=.,/opt/local/include,/usr/include   " ファイルの検索パス指定
-set clipboard+=unnamed
 
 " 折りたたみ関連
 set foldenable
@@ -87,24 +86,25 @@ highlight TabLineSel ctermbg=5
 "-------------------------------------------------------------------------------"
 " Functions
 "-------------------------------------------------------------------------------"
+" TODO:Backscratcher
 " 折り畳み時表示テキスト設定用関数
 function! g:toFoldFunc()
     " 折りたたみ開始行取得
     let l:line = getline(v:foldstart)
 
     " 行頭の空白数計算 - 空白で分割→先頭の一致部分を検索しインデックスをheadSpNumに設定
-    let l:headSpNum = stridx(l:line, split(l:line, " ")[0])
+    let l:headSpNum = stridx(l:line, split(l:line, ' ')[0])
 
     " 行頭の空白を置換
     if (l:headSpNum == 1)
-        let l:line = substitute(l:line, "\ ", '-', '')
+        let l:line = substitute(l:line, '\ ', '-', '')
     elseif (1 < l:headSpNum)
-        let l:line = substitute(l:line, "\ ", '+', '')
+        let l:line = substitute(l:line, '\ ', '+', '')
 
         " 区切りとして空白を2つ残す
         let l:i = 2
         while (l:i < l:headSpNum)
-            let l:line = substitute(l:line, "\ ", '-', '')
+            let l:line = substitute(l:line, '\ ', '-', '')
             let l:i += 1
         endwhile
     endif
@@ -130,7 +130,7 @@ function! g:toggleAutoBack()
 
         " log出力
         if !has('vim_starting')
-            echo "AutoBack is ON"
+            echo 'AutoBack is ON'
         endif
 
         " フラグON
@@ -145,7 +145,7 @@ function! g:toggleAutoBack()
 
         " log出力
         if !has('vim_starting')
-            echo "AutoBack is OFF"
+            echo 'AutoBack is OFF'
         endif
 
         " フラグOFF
@@ -168,7 +168,7 @@ function! g:toggleAutoPair()
 
         " log出力
         if !has('vim_starting')
-            echo "AutoPair is ON"
+            echo 'AutoPair is ON'
         endif
 
         " フラグON
@@ -183,7 +183,7 @@ function! g:toggleAutoPair()
 
         " log出力
         if !has('vim_starting')
-            echo "AutoPair is OFF"
+            echo 'AutoPair is OFF'
         endif
 
         " フラグOFF
@@ -207,7 +207,7 @@ function! g:deleteDelimitChar(isInsert, isInclude)
         " 区切り文字が存在すれば削除処理開始
         if(-1 != stridx(l:afterCursolStr, l:i))
             " 検出された区切り文字の前まで削除 引数で動作変化
-            execute "normal d".['t', 'f'][a:isInclude].l:i
+            execute 'normal d'.['t', 'f'][a:isInclude].l:i
 
             " 削除後に入力するか否か
             if(1 == a:isInsert)
@@ -247,7 +247,7 @@ endif
 "-----------------------------------------------------------------------------------"
 
 " <Leader>を変更
-let mapleader = " "
+let mapleader = ' '
 
 " 矯正
 inoremap <BS> <Nop>
@@ -263,6 +263,8 @@ noremap <Down> <Nop>
 
 " tab
 noremap to :tabnew<Space>
+noremap <silent> <C-M> gt
+noremap <silent> <C-N> gT
 
 " shell
 noremap <Leader>sh :shell<CR>
@@ -282,9 +284,9 @@ noremap <silent> <S-Up> :wincmd -<CR>
 noremap <silent> <S-Down> :wincmd +<CR>
 
 " 端に移動
-noremap <C-H> ^
 noremap <C-J> G
 noremap <C-K> gg
+noremap <C-H> ^
 noremap <C-L> $
 
 " コマンドラインモードでの移動
@@ -327,16 +329,11 @@ noremap <silent> <Leader>da :call g:deleteDelimitChar(0, 0)<CR>
 noremap <silent> <Leader>dci :call g:deleteDelimitChar(1, 1)<CR>
 noremap <silent> <Leader>dca :call g:deleteDelimitChar(1, 0)<CR>
 
-" 短縮形の設定
-noreabbrev #b /****************************************
-noreabbrev #e <Space>****************************************/
-
-
 "-----------------------------------------------------------------------------------"
 " Command                                                                           |
 "-----------------------------------------------------------------------------------"
 " Macのみの設定
-if ("Darwin" == substitute(system("uname"), "\n", "", "g"))
+if ('Darwin' == substitute(system('uname'), "\n", '', 'g'))
     " Mac の辞書.appで開く from http://qiita.com/items/6928282c5c843aad81d4
     " 引数に渡したワードを検索
     command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
@@ -372,8 +369,10 @@ endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
 
+" NeoBundle 'git://github.com/Rykka/colorv.vim.git'
 " NeoBundle 'git://github.com/Shougo/vimshell.git'
 " NeoBundle 'git://github.com/bkad/CamelCaseMotion.git'
+" NeoBundle 'git://github.com/deton/tcvime.git'
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-user.git'
@@ -382,7 +381,6 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
 " NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
-" NeoBundle 'git://github.com/Rykka/colorv.vim.git'
 " NeoBundle 'project.tar.gz'
 
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
@@ -392,32 +390,34 @@ NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 NeoBundle 'git://github.com/Shougo/unite-outline.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/vimfiler.git'
-NeoBundle 'git://github.com/Shougo/vimproc.git'
+NeoBundle 'git://github.com/Shougo/vimproc.git', {'build' : {'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak',},}
+NeoBundle 'git://github.com/mattn/excitetranslate-vim.git'
+NeoBundle 'git://github.com/mattn/webapi-vim.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
+NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
+NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
-NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git'
-NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git'
 
 filetype plugin indent on
 
 " Unite
-nnoremap <silent> <Leader>uo :<C-u>Unite -no-quit outline<CR>
+nnoremap <silent> <Leader>uo :Unite -no-quit outline<CR>
 " バッファ一覧
-nnoremap <silent> <Leader>ub :<C-u>Unite buffer<CR>
+nnoremap <silent> <Leader>ub :Unite buffer<CR>
 " ファイル一覧
-nnoremap <silent> <Leader>uf :<C-u>UniteWithBufferDir -buffer-name=files file<CR>
+nnoremap <silent> <Leader>uf :UniteWithBufferDir -buffer-name=files file<CR>
 " レジスタ一覧
-nnoremap <silent> <Leader>ur :<C-u>Unite -buffer-name=register register<CR>
+nnoremap <silent> <Leader>ur :Unite -buffer-name=register register<CR>
 " 最近使用したファイル一覧
-nnoremap <silent> <Leader>um :<C-u>Unite file_mru<CR>
+nnoremap <silent> <Leader>um :Unite file_mru<CR>
 " 常用セット
-nnoremap <silent> <Leader>uu :<C-u>Unite buffer file_mru<CR>
+nnoremap <silent> <Leader>uu :Unite buffer file_mru<CR>
 " 全部乗せ
-nnoremap <silent> <Leader>ua :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
+nnoremap <silent> <Leader>ua :UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
@@ -456,11 +456,10 @@ let g:vimfiler_split_action = 'above'
 nnoremap <silent> fvs :VimFiler -split -simple -winwidth=40 -toggle -quit<CR>
 nnoremap <silent> fvo :VimFilerTab -no-quit<CR>
 
-
 "-------------------------------------------------------------------------------"
 " autocmd
 "-------------------------------------------------------------------------------"
-augroup General
+augroup general
     autocmd!
 
     " 設定の保存と復元
@@ -492,12 +491,15 @@ augroup General
     autocmd BufRead *.lisp call s:setLispConfig()
 
     " C/C++設定
-    autocmd BufRead *.c,*.cpp NeoBundleSource cpp-vim
-    autocmd BufRead *.c,*.cpp NeoBundleSource neocomplcache-clang
-    autocmd BufRead *.c,*.cpp setlocal nosmartindent
-    autocmd BufRead *.c,*.cpp setlocal nocindent
-    autocmd BufRead *.c,*.cpp setlocal autoindent
-    autocmd BufRead *.c,*.cpp setlocal cindent
+    function! s:setCCPPConfig()
+        NeoBundleSource cpp-vim
+        NeoBundleSource neocomplcache-clang
+        setlocal nosmartindent
+        setlocal nocindent
+        setlocal autoindent
+        setlocal cindent
+    endfunction
+    autocmd BufRead *.c,*.cpp,*.h,*.hpp call s:setCCPPConfig()
 
     " nask設定
     autocmd BufRead *.nas setlocal filetype=NASM
