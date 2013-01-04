@@ -87,6 +87,7 @@ highlight TabLineSel ctermbg=5
 " Functions
 "-------------------------------------------------------------------------------"
 " TODO:Backscratcher
+
 " 折り畳み時表示テキスト設定用関数
 function! g:toFoldFunc()
     " 折りたたみ開始行取得
@@ -112,124 +113,6 @@ function! g:toFoldFunc()
     return printf('%s %s [ %2d Lines Lv%02d ] %s', l:line, v:folddashes, (v:foldend-v:foldstart+1), v:foldlevel, v:folddashes)
 endfunction
 
-" 自動的に操作する対象の括弧
-let s:parenList = ['{}', '[]', '()', '""', '''''', '<>']
-
-" 入力時に自動で括弧内に移動
-function! g:toggleAutoBack()
-    " 同時有効にはしない
-    if(1 == g:autoPairState)
-        call g:toggleAutoPair()
-    endif
-
-    if(0 == g:autoBackState)
-        " 各map実行
-        for l:i in s:parenList
-            execute 'inoremap '.l:i.' '.l:i.'<Left>'
-        endfor
-
-        " log出力
-        if !has('vim_starting')
-            echo 'AutoBack is ON'
-        endif
-
-        " フラグON
-        let g:autoBackState = 1
-    else
-        " 各unmap実行
-        for l:i in s:parenList
-            if(hasmapto(l:i, 'i'))
-                execute 'iunmap '.l:i
-            endif
-        endfor
-
-        " log出力
-        if !has('vim_starting')
-            echo 'AutoBack is OFF'
-        endif
-
-        " フラグOFF
-        let g:autoBackState = 0
-    endif
-endfunction
-
-" 入力時に自動で括弧を閉じる
-function! g:toggleAutoPair()
-    " 同時有効にはしない
-    if(1 == g:autoBackState)
-        call g:toggleAutoBack()
-    endif
-
-    if(0 == g:autoPairState)
-        " 各map実行
-        for l:i in s:parenList
-            execute 'inoremap '.l:i[0].' '.l:i
-        endfor
-
-        " log出力
-        if !has('vim_starting')
-            echo 'AutoPair is ON'
-        endif
-
-        " フラグON
-        let g:autoPairState = 1
-    else
-        " 各unmap実行
-        for l:i in s:parenList
-            if(hasmapto(l:i[0], 'i'))
-                execute 'iunmap '.l:i
-            endif
-        endfor
-
-        " log出力
-        if !has('vim_starting')
-            echo 'AutoPair is OFF'
-        endif
-
-        " フラグOFF
-        let g:autoPairState = 0
-    endif
-endfunction
-
-" 設定された区切り文字までを削除する
-" @isInsert 削除後に挿入するか否か
-" @isInclude 区切り文字を含むか否か
-function! g:deleteDelimitChar(isInsert, isInclude)
-    " 区切り文字リスト 優先順位はリストの並びごとに高→低
-    let l:delimitList = [';', ':', ')', '}', ']', '.', ',', '"', '''']
-    " [bufnum, lnum, col, off]
-    let l:cursolPos = getpos('.')
-    " 現在カーソルのある列、以降の文字列を取得(カーソル文字も含む)
-    let l:afterCursolStr =  strpart(getline(line('.')), remove(l:cursolPos, 2) - 1)
-
-    " 区切り文字のいずれかがあるか検出
-    for l:i in l:delimitList
-        " 区切り文字が存在すれば削除処理開始
-        if(-1 != stridx(l:afterCursolStr, l:i))
-            " 検出された区切り文字の前まで削除 引数で動作変化
-            execute 'normal d'.['t', 'f'][a:isInclude].l:i
-
-            " 削除後に入力するか否か
-            if(1 == a:isInsert)
-                startinsert
-            endif
-
-            " 削除したのでループを抜ける
-            break
-        endif
-    endfor
-endfunction
-
-if !exists("g:autoPairState")
-    " 初期値
-    let g:autoPairState = 0
-endif
-
-if !exists("g:autoBackState")
-    " 初期値
-    let g:autoBackState = 0
-    call g:toggleAutoBack()
-endif
 
 "-----------------------------------------------------------------------------------"
 " Mapping                                                                           |
@@ -319,15 +202,6 @@ nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
 " 貼り付け設定反転
 nnoremap <silent> <Leader>pp :set paste!<CR>
 
-" 括弧補完切り替え
-nnoremap <Leader>aub :call g:toggleAutoBack()<CR>
-nnoremap <Leader>aup :call g:toggleAutoPair()<CR>
-
-" 区切り文字まで削除
-noremap <silent> <Leader>di :call g:deleteDelimitChar(0, 1)<CR>
-noremap <silent> <Leader>da :call g:deleteDelimitChar(0, 0)<CR>
-noremap <silent> <Leader>dci :call g:deleteDelimitChar(1, 1)<CR>
-noremap <silent> <Leader>dca :call g:deleteDelimitChar(1, 0)<CR>
 
 "-----------------------------------------------------------------------------------"
 " Command                                                                           |
@@ -381,6 +255,7 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
 " NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
+" NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
 " NeoBundle 'project.tar.gz'
 
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
@@ -393,12 +268,13 @@ NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git', {'build' : {'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak',},}
 NeoBundle 'git://github.com/mattn/excitetranslate-vim.git'
 NeoBundle 'git://github.com/mattn/webapi-vim.git'
+NeoBundle 'git://github.com/mopp/backscratcher.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
-NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git'
+NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git'
 
@@ -436,7 +312,7 @@ let g:neocomplcache_clang_executable_path = '/opt/local/bin/'
 let g:Powerline_stl_path_style = 'short'
 
 " vim-easymotion
-let g:EasyMotion_leader_key = '<Leader>'
+let g:EasyMotion_leader_key = ','
 
 " NERDCommenter
 let g:NERDSpaceDelims = 1
@@ -455,6 +331,7 @@ let g:vimfiler_edit_action = 'tabopen'
 let g:vimfiler_split_action = 'above'
 nnoremap <silent> fvs :VimFiler -split -simple -winwidth=40 -toggle -quit<CR>
 nnoremap <silent> fvo :VimFilerTab -no-quit<CR>
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -503,4 +380,7 @@ augroup general
 
     " nask設定
     autocmd BufRead *.nas setlocal filetype=NASM
+
+    " markdown設定
+    autocmd BufRead *.md NeoBundleSource vim-markdown
 augroup END
