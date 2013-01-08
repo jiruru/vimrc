@@ -44,10 +44,10 @@ set smartcase   " 大文字があれば通常の検索
 " その他
 set backspace=2                              " Backspaceの動作
 set helplang=ja,en                           " ヘルプ検索で日本語を優先
+set path=.,/opt/local/include,/usr/include   " ファイルの検索パス指定
 set viewoptions=cursor,folds                 " :mkviewで保存する設定
 set whichwrap=b,s,h,l,<,>,[,]                " カーソルを行頭、行末で止まらないようにする
 set wildmenu                                 " コマンドの補完候補を表示
-set path=.,/opt/local/include,/usr/include   " ファイルの検索パス指定
 
 " 折りたたみ関連
 set foldenable
@@ -55,7 +55,7 @@ set foldcolumn=3            " 左側に折りたたみガイド表示$
 set foldmethod=indent       " 折畳の判別
 set foldtext=g:toFoldFunc() " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
-set foldnestmax=4         " 最大折りたたみ深度$
+set foldnestmax=4           " 最大折りたたみ深度$
 " set foldclose=all         " fold外に移動しfoldlevelより深ければ閉じる
 " set foldlevel=3           " 開いた時にどの深度から折りたたむか
 
@@ -86,8 +86,6 @@ highlight TabLineSel ctermbg=5
 "-------------------------------------------------------------------------------"
 " Functions
 "-------------------------------------------------------------------------------"
-" TODO:Backscratcher
-
 " 折り畳み時表示テキスト設定用関数
 function! g:toFoldFunc()
     " 折りたたみ開始行取得
@@ -151,6 +149,9 @@ noremap <silent> <C-N> gT
 
 " shell
 noremap <Leader>sh :shell<CR>
+
+" バッファのディレクトリへ移動
+nnoremap <Leader>cd :cd %:h<CR>
 
 " 画面分割
 noremap <F2> :split<Space>
@@ -281,19 +282,21 @@ NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git'
 filetype plugin indent on
 
 " Unite
-nnoremap <silent> <Leader>uo :Unite -no-quit outline<CR>
-" バッファ一覧
-nnoremap <silent> <Leader>ub :Unite buffer<CR>
-" ファイル一覧
-nnoremap <silent> <Leader>uf :UniteWithBufferDir -buffer-name=files file<CR>
-" レジスタ一覧
-nnoremap <silent> <Leader>ur :Unite -buffer-name=register register<CR>
-" 最近使用したファイル一覧
-nnoremap <silent> <Leader>um :Unite file_mru<CR>
-" 常用セット
-nnoremap <silent> <Leader>uu :Unite buffer file_mru<CR>
-" 全部乗せ
-nnoremap <silent> <Leader>ua :UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
+let g:unite_source_file_mru_limit = 50
+let g:unite_cursor_line_highlight = 'TabLineSel'
+let g:unite_enable_short_source_names = 1
+nnoremap [unite] <Nop>
+nmap f [unite]
+nnoremap <silent> [unite]c :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file -no-quit<CR>
+nnoremap <silent> [unite]b :<C-u>UniteWithBufferDir -buffer-name=files -prompt=% buffer file_mru bookmark file -no-quit<CR>
+nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register -no-quit<CR>
+nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
+" nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=resume resume -no-quit<CR>
+nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=files -default-action=lcd directory_mru -no-quit<CR>
+nnoremap <silent> [unite]ma :<C-u>Unite mapping -no-quit<CR>
+nnoremap <silent> [unite]me :<C-u>Unite output:message -no-quit<CR>
+nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files -no-split jump_point file_point buffer_tab file_rec:! file file/new file_mru -no-quit<CR>
+nnoremap  [unite]f  :<C-u>Unite source -no-quit<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
@@ -308,7 +311,7 @@ let g:neocomplcache_clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
 let g:neocomplcache_clang_user_options = '-I /opt/local/include -I /opt/local/include/boost'
 let g:neocomplcache_clang_executable_path = '/opt/local/bin/'
 
-" vim-powerline
+" vim-Powerline
 let g:Powerline_stl_path_style = 'short'
 
 " vim-easymotion
@@ -329,7 +332,7 @@ let g:vimfiler_tree_leaf_icon = '|'
 let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_edit_action = 'tabopen'
 let g:vimfiler_split_action = 'above'
-nnoremap <silent> fvs :VimFiler -split -simple -winwidth=40 -toggle -quit<CR>
+nnoremap <silent> fvs :VimFiler -split -simple -winwidth=32 -toggle -no-quit<CR>
 nnoremap <silent> fvo :VimFilerTab -no-quit<CR>
 
 
@@ -339,22 +342,36 @@ nnoremap <silent> fvo :VimFilerTab -no-quit<CR>
 augroup general
     autocmd!
 
-    " 設定の保存と復元
-    if filewritable(expand('%')) && (isdirectory(expand('~/.vim')))
-        autocmd BufWinLeave ?* silent mkview
-        autocmd BufWinEnter ?* silent loadview
-    endif
-
     " .vimrc
-    " .vimrcを保存した際に自動再読み込み
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
+
+    autocmd FileType vimfiler nmap <buffer> ma <Plug>(vimfiler_toggle_mark_current_line)
+    autocmd FileType vimfiler vmap <buffer> ma <Plug>(vimfiler_toggle_mark_selected_lines)
 
     " PowerLineの再読み込み
     if exists('g:Powerline_loaded')
         silent! call Pl#Load()
     endif
 
-    " Lisp設定
+    " Unite
+    function! s:unite_my_settings()
+        " Overwrite settings.
+        imap <buffer> <TAB> <Plug>(unite_select_next_line)
+        imap <buffer> jj <Plug>(unite_insert_leave)
+        nmap <buffer> ' <Plug>(unite_quick_match_default_action)
+        nmap <buffer> x <Plug>(unite_quick_match_choose_action)
+        nnoremap <silent><buffer><expr> l unite#smart_map('l', unite#do_action('default'))
+        nnoremap <silent><buffer><expr> t unite#do_action('tabopen')
+    endfunction
+    autocmd FileType unite call s:unite_my_settings()
+
+    " 状態の保存と復元
+    if filewritable(expand('%')) && (isdirectory(expand('~/.vim')))
+        autocmd BufWinLeave ?* silent mkview
+        autocmd BufWinEnter ?* silent loadview
+    endif
+
+    " Lisp
     function! s:setLispConfig()
         nnoremap <silent> <Leader>li <Esc>:!sbcl --script %<CR>
         setlocal nocindent
@@ -367,7 +384,7 @@ augroup general
     endfunction
     autocmd BufRead *.lisp call s:setLispConfig()
 
-    " C/C++設定
+    " C/C++
     function! s:setCCPPConfig()
         NeoBundleSource cpp-vim
         NeoBundleSource neocomplcache-clang
@@ -378,9 +395,11 @@ augroup general
     endfunction
     autocmd BufRead *.c,*.cpp,*.h,*.hpp call s:setCCPPConfig()
 
-    " nask設定
+    " nask
     autocmd BufRead *.nas setlocal filetype=NASM
 
-    " markdown設定
+    " markdown
     autocmd BufRead *.md NeoBundleSource vim-markdown
 augroup END
+
+" set runtimepath+=~/Dropbox/Program/Vim/backscratcher
