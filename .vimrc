@@ -14,7 +14,7 @@
 set nocompatible
 
 " バックアップファイルと一時ファイル設定
-if (isdirectory(expand('~/.vim_backup')))
+if isdirectory(expand('~/.vim_backup'))
     set backupdir=~/.vim_backup
     set directory=~/.vim_backup
 endif
@@ -44,7 +44,6 @@ set smartcase   " 大文字があれば通常の検索
 " その他
 set backspace=2                              " Backspaceの動作
 set helplang=ja,en                           " ヘルプ検索で日本語を優先
-set path=.,/opt/local/include,/usr/include   " ファイルの検索パス指定
 set viewoptions=cursor,folds                 " :mkviewで保存する設定
 set whichwrap=b,s,h,l,<,>,[,]                " カーソルを行頭、行末で止まらないようにする
 set wildmenu                                 " コマンドの補完候補を表示
@@ -151,7 +150,7 @@ noremap <silent> <C-N> gT
 noremap <Leader>sh :shell<CR>
 
 " バッファのディレクトリへ移動
-nnoremap <Leader>cd :cd %:h<CR>
+nnoremap <Leader>cd :cd %<CR>
 
 " 画面分割
 noremap <F2> :split<Space>
@@ -205,10 +204,10 @@ nnoremap <silent> <Leader>pp :set paste!<CR>
 
 
 "-----------------------------------------------------------------------------------"
-" Command                                                                           |
+" 環境依存設定                                                                      |
 "-----------------------------------------------------------------------------------"
 " Macのみの設定
-if ('Darwin' == substitute(system('uname'), "\n", '', 'g'))
+if "Darwin\n" == system('uname')
     " Mac の辞書.appで開く from http://qiita.com/items/6928282c5c843aad81d4
     " 引数に渡したワードを検索
     command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
@@ -223,6 +222,11 @@ if ('Darwin' == substitute(system('uname'), "\n", '', 'g'))
     vnoremap <silent> <Leader>do y:<C-u>MacDict<Space><C-r>*<CR>
     nnoremap <silent> <Leader>dc :<C-u>MacDictClose<CR>
     nnoremap <silent> <Leader>df :<C-u>MacDictFocus<CR>
+
+    set path=.,/opt/local/include,/usr/include   " ファイルの検索パス指定
+
+    " Macフラグ
+    let s:isDarwin = 1
 endif
 
 
@@ -267,13 +271,13 @@ NeoBundle 'git://github.com/Shougo/unite-outline.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git', {'build' : {'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak',},}
-NeoBundle 'git://github.com/mattn/excitetranslate-vim.git'
-NeoBundle 'git://github.com/mattn/webapi-vim.git'
 NeoBundle 'git://github.com/mopp/backscratcher.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
+NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git'
+NeoBundleLazy 'git://github.com/mattn/webapi-vim.git'
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git'
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
@@ -306,16 +310,18 @@ let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_max_list=1000
 
 " Neocomplcache-clang
-let g:neocomplcache_clang_use_library = 0
-let g:neocomplcache_clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
-let g:neocomplcache_clang_user_options = '-I /opt/local/include -I /opt/local/include/boost'
-let g:neocomplcache_clang_executable_path = '/opt/local/bin/'
+if exists('s:isDarwin')
+    let g:neocomplcache_clang_use_library = 0
+    let g:neocomplcache_clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
+    let g:neocomplcache_clang_user_options = '-I /opt/local/include -I /opt/local/include/boost'
+    let g:neocomplcache_clang_executable_path = '/opt/local/bin/'
+endif
 
 " vim-Powerline
 let g:Powerline_stl_path_style = 'short'
 
 " vim-easymotion
-let g:EasyMotion_leader_key = ','
+let g:EasyMotion_leader_key = '<Leader>'
 
 " NERDCommenter
 let g:NERDSpaceDelims = 1
