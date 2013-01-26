@@ -141,17 +141,6 @@ noremap <Right> <Nop>
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 
-" tab
-noremap to :tabnew<Space>
-noremap <silent> <C-M> gt
-noremap <silent> <C-N> gT
-
-" shell
-noremap <Leader>sh :shell<CR>
-
-" バッファのディレクトリへ移動
-nnoremap <Leader>cd :cd %<CR>
-
 " 画面分割
 noremap <F2> :split<Space>
 noremap <F3> :vsplit<Space>
@@ -166,19 +155,37 @@ noremap <silent> <S-Right> :wincmd ><CR>
 noremap <silent> <S-Up> :wincmd -<CR>
 noremap <silent> <S-Down> :wincmd +<CR>
 
-" 端に移動
-noremap <C-J> G
-noremap <C-K> gg
-noremap <C-H> ^
-noremap <C-L> $
+" tab操作
+noremap to :tabnew<Space>
+noremap <silent> <C-M> gt
+noremap <silent> <C-N> gT
 
 " コマンドラインモードでの移動
 cnoremap <C-A> <Home>
 cnoremap <C-E> <End>
 cnoremap <C-F> <Right>
 cnoremap <C-B> <Left>
-cnoremap <C-J> <Down>
-cnoremap <C-K> <Up>
+cnoremap <C-N> <Down>
+cnoremap <C-P> <Up>
+
+" 端に移動
+noremap <C-J> G
+noremap <C-K> gg
+noremap <C-H> ^
+noremap <C-L> $
+
+" 検索とジャンプで中央へ
+nnoremap n nzz
+nnoremap N Nzz
+nnoremap * *zz
+nnoremap '. '.zz
+nnoremap '' ''zz
+
+" delete動作
+inoremap <C-B> <Del>
+
+" 検索ハイライト消去
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 
 " 行の末尾までYank
 nnoremap Y y$
@@ -186,21 +193,17 @@ nnoremap Y y$
 " カーソル下のwordをhelpする
 nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
 
-" 中央へ
-nnoremap n nzz
-nnoremap N Nzz
-nnoremap * *zz
-nnoremap '. '.zz
-nnoremap '' ''zz
-
-" 検索ハイライト消去
-nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
-
 " .vimrcを開く
 nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
 
 " 貼り付け設定反転
 nnoremap <silent> <Leader>pp :set paste!<CR>
+
+" shell
+noremap <Leader>sh :shell<CR>
+
+" カレントウィンドウのカレントディレクトリを変更る
+nnoremap <Leader>cd :lcd %<CR>
 
 
 "-----------------------------------------------------------------------------------"
@@ -248,23 +251,26 @@ endif
 
 call neobundle#rc(expand('~/.vim/bundle/'))
 
-" NeoBundle 'git://github.com/Rykka/colorv.vim.git'
 " NeoBundle 'git://github.com/Shougo/vimshell.git'
 " NeoBundle 'git://github.com/bkad/CamelCaseMotion.git'
 " NeoBundle 'git://github.com/deton/tcvime.git'
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-user.git'
+" NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
 " NeoBundle 'git://github.com/nathanaelkane/vim-indent-guides.git'
 " NeoBundle 'git://github.com/rhysd/unite-n3337.git'
 " NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
 " NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
-" NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
 " NeoBundle 'project.tar.gz'
 
-NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
+" NeoBundle 'git://github.com/Lokaltog/powerline.git'
+" python from powerline.bindings.vim import source_plugin; source_plugin()
+" source ~/.vim/bundle/powerline/powerline/bindings/vim/plugin/source_plugin.vim
+
+NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 NeoBundle 'git://github.com/Shougo/unite-outline.git'
@@ -276,9 +282,9 @@ NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
+NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git'
 NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git'
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git'
-NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git'
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git'
