@@ -10,6 +10,10 @@
 "                                                    |___/                |_|   |_|
 "---------------------------------------------------------------------------------------"
 
+
+
+set encoding=utf-8
+
 " viとの互換をオフ
 set nocompatible
 
@@ -42,13 +46,13 @@ set ignorecase  " 大文字小文字無視
 set smartcase   " 大文字があれば通常の検索
 
 " その他
-set backspace=2                              " Backspaceの動作
-set helplang=ja,en                           " ヘルプ検索で日本語を優先
-set viewoptions=cursor,folds                 " :mkviewで保存する設定
-set whichwrap=b,s,h,l,<,>,[,]                " カーソルを行頭、行末で止まらないようにする
-set wildmenu                                 " コマンドの補完候補を表示
+set backspace=2                  " Backspaceの動作
+set helplang=ja                  " ヘルプ検索で日本語を優先
+set viewoptions=cursor,folds     " :mkviewで保存する設定
+set whichwrap=b,s,h,l,<,>,[,]    " カーソルを行頭、行末で止まらないようにする
+set wildmenu                     " コマンドの補完候補を表示
 
-" 折りたたみ関連
+" 折りたたみ
 set foldenable
 set foldcolumn=3            " 左側に折りたたみガイド表示$
 set foldmethod=indent       " 折畳の判別
@@ -58,12 +62,13 @@ set foldnestmax=4           " 最大折りたたみ深度$
 " set foldclose=all         " fold外に移動しfoldlevelより深ければ閉じる
 " set foldlevel=3           " 開いた時にどの深度から折りたたむか
 
-" 見た目の設定
+" 外観設定
 set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
 set cmdheight=2         " コマンドラインの行数
 set cursorline          " 現在行に下線表示
 set laststatus=2        " ステータスラインを表示する時
 set list
+set noequalalways
 set listchars=eol:$,tab:>\ ,trail:\|,extends:<,precedes:<
 set nowrap              " はみ出しの折り返し設定
 set number              " 行番号表示
@@ -110,7 +115,6 @@ function! g:toFoldFunc()
     return printf('%s %s [ %2d Lines Lv%02d ] %s', l:line, v:folddashes, (v:foldend-v:foldstart+1), v:foldlevel, v:folddashes)
 endfunction
 
-
 "-----------------------------------------------------------------------------------"
 " Mapping                                                                           |
 "-----------------------------------------------------------------------------------"
@@ -127,7 +131,7 @@ endfunction
 "-----------------------------------------------------------------------------------"
 
 " <Leader>を変更
-let mapleader = ' '
+let g:mapleader = ' '
 
 " 矯正
 inoremap <BS> <Nop>
@@ -142,12 +146,12 @@ noremap <Up> <Nop>
 noremap <Down> <Nop>
 
 " 画面分割
-noremap <F2> :split<Space>
-noremap <F3> :vsplit<Space>
+noremap <Leader>sp :split<Space>
+noremap <Leader>vsp :vsplit<Space>
 
 " バッファ移動
-noremap <silent> <F4> :bprevious<CR>
-noremap <silent> <F5> :bnext<CR>
+noremap <Leader>bp :bprevious<CR>
+noremap <Leader>bn :bnext<CR>
 
 " Windowサイズ変更
 noremap <silent> <S-Left> :wincmd <<CR>
@@ -181,14 +185,17 @@ nnoremap * *zz
 nnoremap '. '.zz
 nnoremap '' ''zz
 
-" delete動作
-inoremap <C-B> <Del>
-
 " 検索ハイライト消去
 nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 
+" delete動作
+inoremap <C-B> <Del>
+
 " 行の末尾までYank
 nnoremap Y y$
+
+" ESC代替操作
+inoremap jj <Esc>
 
 " カーソル下のwordをhelpする
 nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
@@ -202,8 +209,8 @@ nnoremap <silent> <Leader>pp :set paste!<CR>
 " shell
 noremap <Leader>sh :shell<CR>
 
-" カレントウィンドウのカレントディレクトリを変更る
-nnoremap <Leader>cd :lcd %<CR>
+" カレントウィンドウのカレントディレクトリを変更
+nnoremap <Leader>cd :lcd %:p:h<CR>
 
 
 "-----------------------------------------------------------------------------------"
@@ -255,6 +262,7 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " NeoBundle 'git://github.com/bkad/CamelCaseMotion.git'
 " NeoBundle 'git://github.com/deton/tcvime.git'
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
+" NeoBundle 'git://github.com/kana/vim-smartchr.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-user.git'
 " NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
@@ -263,22 +271,24 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
 " NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
-" NeoBundle 'project.tar.gz'
 
-NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 " NeoBundle 'git://github.com/Lokaltog/powerline.git'
+" NeoBundle 'project.tar.gz'
 " python from powerline.bindings.vim import source_plugin; source_plugin()
 " source ~/.vim/bundle/powerline/powerline/bindings/vim/plugin/source_plugin.vim
 
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
+NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/neocomplcache.git'
 NeoBundle 'git://github.com/Shougo/unite-outline.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/vimfiler.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git', {'build' : {'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak',},}
+NeoBundle 'git://github.com/majutsushi/tagbar.git'
 NeoBundle 'git://github.com/mopp/backscratcher.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
+NeoBundle 'git://github.com/taku-o/vim-toggle.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
@@ -288,7 +298,6 @@ NeoBundleLazy 'git://github.com/mattn/webapi-vim.git'
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git'
-
 filetype plugin indent on
 
 " Unite
@@ -301,7 +310,7 @@ nnoremap <silent> [unite]c :<C-u>UniteWithCurrentDir -buffer-name=files buffer f
 nnoremap <silent> [unite]b :<C-u>UniteWithBufferDir -buffer-name=files -prompt=% buffer file_mru bookmark file -no-quit<CR>
 nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register -no-quit<CR>
 nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
-" nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=resume resume -no-quit<CR>
+nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=resume resume -no-quit<CR>
 nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=files -default-action=lcd directory_mru -no-quit<CR>
 nnoremap <silent> [unite]ma :<C-u>Unite mapping -no-quit<CR>
 nnoremap <silent> [unite]me :<C-u>Unite output:message -no-quit<CR>
@@ -344,7 +353,7 @@ let g:vimfiler_tree_leaf_icon = '|'
 let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_edit_action = 'tabopen'
 let g:vimfiler_split_action = 'above'
-nnoremap <silent> fvs :VimFiler -split -simple -winwidth=32 -toggle -no-quit<CR>
+nnoremap <silent> fvs :VimFilerExplorer -no-quit<CR>
 nnoremap <silent> fvo :VimFilerTab -no-quit<CR>
 
 
@@ -357,8 +366,10 @@ augroup general
     " .vimrc
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
-    autocmd FileType vimfiler nmap <buffer> ma <Plug>(vimfiler_toggle_mark_current_line)
-    autocmd FileType vimfiler vmap <buffer> ma <Plug>(vimfiler_toggle_mark_selected_lines)
+    " VimFiler
+    " autocmd FileType vimfiler nmap ; <Plug>(vimfiler_toggle_mark_current_line)
+    " autocmd FileType vimfiler vmap ; <Plug>(vimfiler_toggle_mark_selected_lines)
+    autocmd FileType vimfiler nmap <buffer><Space> <Leader>
 
     " PowerLineの再読み込み
     if exists('g:Powerline_loaded')
