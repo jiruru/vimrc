@@ -11,7 +11,6 @@
 "---------------------------------------------------------------------------------------"
 
 
-
 set encoding=utf-8
 
 " viとの互換をオフ
@@ -51,6 +50,7 @@ set helplang=ja                  " ヘルプ検索で日本語を優先
 set viewoptions=cursor,folds     " :mkviewで保存する設定
 set whichwrap=b,s,h,l,<,>,[,]    " カーソルを行頭、行末で止まらないようにする
 set wildmenu                     " コマンドの補完候補を表示
+set tags=tags
 
 " 折りたたみ
 set foldenable
@@ -68,7 +68,6 @@ set cmdheight=2         " コマンドラインの行数
 set cursorline          " 現在行に下線表示
 set laststatus=2        " ステータスラインを表示する時
 set list
-set noequalalways
 set listchars=eol:$,tab:>\ ,trail:\|,extends:<,precedes:<
 set nowrap              " はみ出しの折り返し設定
 set number              " 行番号表示
@@ -252,10 +251,10 @@ endif
 
 filetype off
 
+" NeoBundle
 if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
-
 call neobundle#rc(expand('~/.vim/bundle/'))
 
 " NeoBundle 'git://github.com/Shougo/vimshell.git'
@@ -270,10 +269,9 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " NeoBundle 'git://github.com/rhysd/unite-n3337.git'
 " NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
-" NeoBundle 'git://github.com/vim-scripts/taglist.vim.git'
+" NeoBundle 'project.tar.gz'
 
 " NeoBundle 'git://github.com/Lokaltog/powerline.git'
-" NeoBundle 'project.tar.gz'
 " python from powerline.bindings.vim import source_plugin; source_plugin()
 " source ~/.vim/bundle/powerline/powerline/bindings/vim/plugin/source_plugin.vim
 
@@ -292,12 +290,13 @@ NeoBundle 'git://github.com/taku-o/vim-toggle.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
+NeoBundle 'git://github.com/wesleyche/SrcExpl.git'
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git'
 NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git'
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git'
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
-NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git'
+
 filetype plugin indent on
 
 " Unite
@@ -332,10 +331,10 @@ if exists('s:isDarwin')
     let g:neocomplcache_clang_executable_path = '/opt/local/bin/'
 endif
 
-" vim-Powerline
+" Powerline
 let g:Powerline_stl_path_style = 'short'
 
-" vim-easymotion
+" Easymotion
 let g:EasyMotion_leader_key = '<Leader>'
 
 " NERDCommenter
@@ -351,10 +350,39 @@ let g:vimfiler_marked_file_icon = '*'
 let g:vimfiler_tree_closed_icon = '▸'
 let g:vimfiler_tree_leaf_icon = '|'
 let g:vimfiler_tree_opened_icon = '▾'
-let g:vimfiler_edit_action = 'tabopen'
-let g:vimfiler_split_action = 'above'
-nnoremap <silent> fvs :VimFilerExplorer -no-quit<CR>
-nnoremap <silent> fvo :VimFilerTab -no-quit<CR>
+let g:vimfiler_preview_action='below'
+" let g:vimfiler_edit_action = 'tabopen'
+let g:vimfiler_split_action = 'right'
+nnoremap <silent> fvs :VimFilerExplorer<CR>
+nnoremap <silent> fvo :VimFilerTab<CR>
+
+" SrcExpl
+nmap <Leader>sc :SrcExplToggle<CR>
+let g:SrcExpl_RefreshTime = 1
+let g:SrcExpl_UpdateTags = 1
+let g:SrcExpl_WinHeight = 12
+let g:SrcExpl_pluginList = ["__Tag_List__", "NERD_tree_1", "Source_Explorer", "*unite*", "*vimfiler* - explorer", "__Tagbar__" ]
+
+" TagBar
+nnoremap <silent> tb :<C-U>TagbarToggle<CR>
+let g:tagbar_width=35
+let g:tagbar_autoshowtag = 1
+let g:tagbar_autofocus = 1
+highlight TagbarScope ctermfg=5
+highlight TagbarType cterm=bold ctermfg=55
+highlight TagbarHighlight cterm=bold,underline ctermfg=1
+highlight TagbarSignature ctermfg=70
+
+" Like A IDE :)
+function! s:likeIDEMode()
+    VimFilerExplorer
+    wincmd l
+    lcd %:p:h
+    TagbarToggle
+    wincmd h
+    SrcExplToggle
+endfunction
+nnoremap <silent> <Leader>id :call <SID>likeIDEMode()<CR>
 
 
 "-------------------------------------------------------------------------------"
@@ -367,9 +395,8 @@ augroup general
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
     " VimFiler
-    " autocmd FileType vimfiler nmap ; <Plug>(vimfiler_toggle_mark_current_line)
-    " autocmd FileType vimfiler vmap ; <Plug>(vimfiler_toggle_mark_selected_lines)
-    autocmd FileType vimfiler nmap <buffer><Space> <Leader>
+    autocmd FileType vimfiler nmap ; <Plug>(vimfiler_toggle_mark_current_line)
+    autocmd FileType vimfiler vmap ; <Plug>(vimfiler_toggle_mark_selected_lines)
 
     " PowerLineの再読み込み
     if exists('g:Powerline_loaded')
