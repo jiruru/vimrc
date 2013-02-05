@@ -26,12 +26,13 @@ set writebackup     " 上書き前にバックアップ作成
 set swapfile
 
 " インデント設定
+set backspace=2     " Backspaceの動作
 set cindent
 set expandtab       " <Tab>の代わりに空白
 set shiftwidth=4    " 自動インデントなどでずれる幅
 set smarttab        " 行頭に<Tab>でshiftwidth分インデント
-set tabstop=4       " 画面上で<Tab>文字が占める幅
 set softtabstop=4   " <Tab>, <BS>が対応する空白の数
+set tabstop=4       " 画面上で<Tab>文字が占める幅
 
 " エンコーディング関連
 set encoding=utf-8                          " vim内部で通常使用する文字エンコーディングを設定
@@ -45,12 +46,13 @@ set ignorecase  " 大文字小文字無視
 set smartcase   " 大文字があれば通常の検索
 
 " その他
-set backspace=2                  " Backspaceの動作
-set helplang=ja                  " ヘルプ検索で日本語を優先
-set viewoptions=cursor,folds     " :mkviewで保存する設定
-set whichwrap=b,s,h,l,<,>,[,]    " カーソルを行頭、行末で止まらないようにする
-set wildmenu                     " コマンドの補完候補を表示
-set tags=tags
+set helplang=ja                 " ヘルプ検索で日本語を優先
+set history=500                 " 検索やコマンドラインの保存履歴数
+set tags=./tags,tags            " タグが検索されるファイル
+set viewoptions=cursor,folds    " :mkviewで保存する設定
+set viminfo='1000,<500,f1       " viminfoへの保存設定
+set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
+set wildmenu                    " コマンドの補完候補を表示
 
 " 折りたたみ
 set foldenable
@@ -114,6 +116,11 @@ function! g:toFoldFunc()
     return printf('%s %s [ %2d Lines Lv%02d ] %s', l:line, v:folddashes, (v:foldend-v:foldstart+1), v:foldlevel, v:folddashes)
 endfunction
 
+function! g:makeCtags()
+    let resultString = system('ctags -R '.expand('%:p:h').'/')
+    echo resultString
+endfunction
+
 "-----------------------------------------------------------------------------------"
 " Mapping                                                                           |
 "-----------------------------------------------------------------------------------"
@@ -144,13 +151,24 @@ noremap <Right> <Nop>
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 
+" コマンドラインモードでの移動
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+cnoremap <C-F> <Right>
+cnoremap <C-B> <Left>
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
+
+" delete動作
+inoremap <C-B> <Del>
+
 " 画面分割
 noremap <Leader>sp :split<Space>
 noremap <Leader>vsp :vsplit<Space>
 
 " バッファ移動
-noremap <Leader>bp :bprevious<CR>
-noremap <Leader>bn :bnext<CR>
+noremap <silent> <C-x> :bprevious<CR>
+noremap <silent> <C-c> :bnext<CR>
 
 " Windowサイズ変更
 noremap <silent> <S-Left> :wincmd <<CR>
@@ -162,14 +180,6 @@ noremap <silent> <S-Down> :wincmd +<CR>
 noremap to :tabnew<Space>
 noremap <silent> <C-M> gt
 noremap <silent> <C-N> gT
-
-" コマンドラインモードでの移動
-cnoremap <C-A> <Home>
-cnoremap <C-E> <End>
-cnoremap <C-F> <Right>
-cnoremap <C-B> <Left>
-cnoremap <C-N> <Down>
-cnoremap <C-P> <Up>
 
 " 端に移動
 noremap <C-J> G
@@ -187,23 +197,18 @@ nnoremap '' ''zz
 " 検索ハイライト消去
 nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 
-" delete動作
-inoremap <C-B> <Del>
-
-" 行の末尾までYank
+" Yand & Paste
 nnoremap Y y$
-
-" ESC代替操作
-inoremap jj <Esc>
+nnoremap <silent> <Leader>pp :set paste!<CR>
+nnoremap <silent> cy ce<C-R>0<ESC>:let @/ = @1<CR>:noh<CR>
+vnoremap <silent> cy c<C-R>0<ESC>:let @/ = @1<CR>:noh<CR>
+nnoremap <silent> ciy ciw<C-R>0<ESC>:let @/ = @1<CR>:noh<CR>
 
 " カーソル下のwordをhelpする
-nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
+nnoremap <silent> <Leader>h :<C-U>help <C-R><C-W><CR>
 
 " .vimrcを開く
 nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
-
-" 貼り付け設定反転
-nnoremap <silent> <Leader>pp :set paste!<CR>
 
 " shell
 noremap <Leader>sh :shell<CR>
@@ -211,6 +216,11 @@ noremap <Leader>sh :shell<CR>
 " カレントウィンドウのカレントディレクトリを変更
 nnoremap <Leader>cd :lcd %:p:h<CR>
 
+" 折りたたみトグル
+nnoremap <Space>f za
+
+" ctagsを作成
+nnoremap <silent> <Leader>mc :<C-U>call g:makeCtags()<CR>
 
 "-----------------------------------------------------------------------------------"
 " 環境依存設定                                                                      |
@@ -314,7 +324,7 @@ nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=files -default-action=lcd di
 nnoremap <silent> [unite]ma :<C-u>Unite mapping -no-quit<CR>
 nnoremap <silent> [unite]me :<C-u>Unite output:message -no-quit<CR>
 nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files -no-split jump_point file_point buffer_tab file_rec:! file file/new file_mru -no-quit<CR>
-nnoremap  [unite]f  :<C-u>Unite source -no-quit<CR>
+nnoremap <silent> [unite]f  :<C-u>Unite source -no-quit<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
@@ -335,7 +345,7 @@ endif
 let g:Powerline_stl_path_style = 'short'
 
 " Easymotion
-let g:EasyMotion_leader_key = '<Leader>'
+let g:EasyMotion_leader_key = '<Leader>e'
 
 " NERDCommenter
 let g:NERDSpaceDelims = 1
@@ -360,7 +370,7 @@ nnoremap <silent> fvo :VimFilerTab<CR>
 nmap <Leader>sc :SrcExplToggle<CR>
 let g:SrcExpl_RefreshTime = 1
 let g:SrcExpl_UpdateTags = 1
-let g:SrcExpl_WinHeight = 12
+let g:SrcExpl_WinHeight = 10
 let g:SrcExpl_pluginList = ["__Tag_List__", "NERD_tree_1", "Source_Explorer", "*unite*", "*vimfiler* - explorer", "__Tagbar__" ]
 
 " TagBar
@@ -375,12 +385,12 @@ highlight TagbarSignature ctermfg=70
 
 " Like A IDE :)
 function! s:likeIDEMode()
+    cd %:p:h
     VimFilerExplorer
     wincmd l
-    lcd %:p:h
     TagbarToggle
     wincmd h
-    SrcExplToggle
+    " SrcExplToggle
 endfunction
 nnoremap <silent> <Leader>id :call <SID>likeIDEMode()<CR>
 
@@ -417,7 +427,7 @@ augroup general
 
     " 状態の保存と復元
     if filewritable(expand('%')) && (isdirectory(expand('~/.vim')))
-        autocmd BufWinLeave ?* silent mkview
+        autocmd BufWinLeave ?* silent mkview!
         autocmd BufWinEnter ?* silent loadview
     endif
 
