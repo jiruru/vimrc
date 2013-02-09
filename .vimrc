@@ -374,7 +374,6 @@ let g:SrcExpl_WinHeight = 10
 let g:SrcExpl_pluginList = ["__Tag_List__", "NERD_tree_1", "Source_Explorer", "*unite*", "*vimfiler* - explorer", "__Tagbar__" ]
 
 " TagBar
-nnoremap <silent> tb :<C-U>TagbarToggle<CR>
 let g:tagbar_width=35
 let g:tagbar_autoshowtag = 1
 let g:tagbar_autofocus = 1
@@ -382,6 +381,7 @@ highlight TagbarScope ctermfg=5
 highlight TagbarType cterm=bold ctermfg=55
 highlight TagbarHighlight cterm=bold,underline ctermfg=1
 highlight TagbarSignature ctermfg=70
+nnoremap <silent> tb :<C-U>TagbarToggle<CR>
 
 " Like A IDE :)
 function! s:likeIDEMode()
@@ -442,7 +442,7 @@ augroup general
         let g:lisp_rainbow = 1
         let g:lisp_instring = 1
     endfunction
-    autocmd BufRead *.lisp call s:setLispConfig()
+    autocmd BufReadPre *.lisp call s:setLispConfig()
 
     " C/C++
     function! s:setCCPPConfig()
@@ -453,13 +453,13 @@ augroup general
         setlocal autoindent
         setlocal cindent
     endfunction
-    autocmd BufRead *.c,*.cpp,*.h,*.hpp call s:setCCPPConfig()
+    autocmd BufReadPre  *.c,*.cpp,*.h,*.hpp call s:setCCPPConfig()
 
     " nask
-    autocmd BufRead *.nas setlocal filetype=NASM
+    autocmd BufReadPre  *.nas setlocal filetype=NASM
 
     " markdown
-    autocmd BufRead *.md NeoBundleSource vim-markdown
+    autocmd BufReadPre  *.md NeoBundleSource vim-markdown
 augroup END
 
 " set runtimepath+=~/Dropbox/Program/Vim/backscratcher
