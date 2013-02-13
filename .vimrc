@@ -253,7 +253,7 @@ endif
 "-------------------------------------------------------------------------------"
 
 " neobundleが存在しない場合これ以降を読み込まない
-if (!isdirectory(expand('~/.vim/bundle/neobundle.vim')))
+if !isdirectory(expand('~/.vim/bundle/neobundle.vim'))
     set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
     finish
 endif
@@ -264,7 +264,7 @@ filetype off
 if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
-call neobundle#rc(expand('~/.vim/bundle/'))
+call neobundle#rc(expand('~/.vim/bundle'))
 
 " NeoBundle 'git://github.com/Shougo/vimshell.git'
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
@@ -287,6 +287,7 @@ NeoBundle 'git://github.com/taku-o/vim-toggle.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
+NeoBundle 'git://github.com/thinca/vim-ref.git'
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'autoload' : { 'insert' : 1 } }
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git', { 'depends' : 'Shougo/unite.vim' }
@@ -298,7 +299,7 @@ NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { '
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 
-if has('python3')|| has('python')
+if has('python')
     NeoBundle 'git://github.com/Lokaltog/powerline.git'
     set runtimepath+=~/.vim/bundle/powerline/powerline/bindings/vim
 else
@@ -392,6 +393,13 @@ function! s:likeIDEMode()
     " SrcExplToggle
 endfunction
 nnoremap <silent> <Leader>id :call <SID>likeIDEMode()<CR>
+
+" Ref-vim
+let g:ref_open='split'
+let g:ref_source_webdict_cmd = 'w3m -t 4 -cols 180 -dump %s'
+let g:ref_source_webdict_sites = { 'Wikipedia:ja' : 'http://ja.wikipedia.org/wiki/%s', 'Weblio' : 'http://ejje.weblio.jp/content/%s', 'Weblio-Thesaurus' : 'http://ejje.weblio.jp/english-thesaurus/content/%s'}
+let g:ref_source_webdict_sites.default = 'Wikipedia:ja'
+let g:ref_detect_filetype = { 'vim' : 'man', 'c': 'man', 'clojure': 'clojure', 'perl': 'perldoc', 'php': 'phpmanual', 'ruby': 'refe', 'erlang': 'erlang', 'python': 'pydoc'}
 
 
 "-------------------------------------------------------------------------------"
