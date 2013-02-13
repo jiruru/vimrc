@@ -10,7 +10,6 @@
 "                                                    |___/                |_|   |_|
 "---------------------------------------------------------------------------------------"
 
-
 set encoding=utf-8
 
 " viとの互換をオフ
@@ -63,12 +62,9 @@ set foldcolumn=3            " 左側に折りたたみガイド表示$
 set foldmethod=indent       " 折畳の判別
 set foldtext=g:toFoldFunc() " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
-set foldnestmax=4           " 最大折りたたみ深度$
-" set foldclose=all         " fold外に移動しfoldlevelより深ければ閉じる
-" set foldlevel=3           " 開いた時にどの深度から折りたたむか
 
 " 外観設定
-set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
+" set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
 set cmdheight=2         " コマンドラインの行数
 set cursorline          " 現在行に下線表示
 set laststatus=2        " ステータスラインを表示する時
@@ -281,16 +277,12 @@ call neobundle#rc(expand('~/.vim/bundle/'))
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
 " NeoBundle 'project.tar.gz'
 
-" NeoBundle 'git://github.com/Lokaltog/powerline.git'
-" python from powerline.bindings.vim import source_plugin; source_plugin()
-" source ~/.vim/bundle/powerline/powerline/bindings/vim/plugin/source_plugin.vim
-
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
-NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/vimfiler.git', { 'depends' : ['Shougo/unite.vim'], 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'] } }
 NeoBundle 'git://github.com/Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'git://github.com/mopp/backscratcher.git'
+NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/taku-o/vim-toggle.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
@@ -303,9 +295,15 @@ NeoBundleLazy 'git://github.com/majutsushi/tagbar.git', { 'autoload' : { 'comman
 NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
-NeoBundleLazy 'git://github.com/scrooloose/nerdcommenter.git', { 'autoload' : { 'mapping' : ['<Plug>NERDCommenterUncomment', '<Plug>NERDCommenterSexy','<Plug>NERDCommenterNested', '<Plug>NERDCommenterToggle'] } }
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
+
+if has('python3')|| has('python')
+    NeoBundle 'git://github.com/Lokaltog/powerline.git'
+    set runtimepath+=~/.vim/bundle/powerline/powerline/bindings/vim
+else
+    NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
+endif
 
 filetype plugin indent on
 
@@ -368,7 +366,7 @@ nnoremap <silent> fvs :VimFilerExplorer<CR>
 nnoremap <silent> fvo :VimFilerTab<CR>
 
 " SrcExpl
-nmap <Leader>sc :SrcExplToggle<CR>
+nmap <silent> <Leader>sc :SrcExplToggle<CR>
 let g:SrcExpl_RefreshTime = 1
 let g:SrcExpl_UpdateTags = 1
 let g:SrcExpl_WinHeight = 10
