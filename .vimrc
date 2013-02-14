@@ -56,6 +56,7 @@ set virtualedit=all             " 文字のないところでも矩形選択を�
 let g:loaded_netrwPlugin=1      " 標準Pluginを読み込まない
 let g:loaded_vimballPlugin=1
 
+
 " 折りたたみ
 set foldenable
 set foldcolumn=3            " 左側に折りたたみガイド表示$
@@ -209,9 +210,6 @@ nnoremap <silent> <Leader>h :<C-U>help <C-R><C-W><CR>
 " .vimrcを開く
 nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
 
-" shell
-noremap <Leader>sh :shell<CR>
-
 " カレントウィンドウのカレントディレクトリを変更
 nnoremap <Leader>cd :lcd %:p:h<CR>
 
@@ -266,28 +264,26 @@ if has('vim_starting')
 endif
 call neobundle#rc(expand('~/.vim/bundle'))
 
-" NeoBundle 'git://github.com/Shougo/vimshell.git'
+NeoBundleFetch 'Shougo/neobundle.vim'
+
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 " NeoBundle 'git://github.com/kana/vim-smartchr.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-user.git'
-" NeoBundle 'git://github.com/mattn/benchvimrc-vim.git'
 " NeoBundle 'git://github.com/rhysd/unite-n3337.git'
 " NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 " NeoBundle 'git://github.com/ujihisa/neco-look.git'
 " NeoBundle 'project.tar.gz'
 
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
-NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/vimfiler.git', { 'depends' : ['Shougo/unite.vim'], 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'] } }
 NeoBundle 'git://github.com/Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'git://github.com/mopp/backscratcher.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/taku-o/vim-toggle.git'
-NeoBundle 'git://github.com/thinca/vim-quickrun.git'
+NeoBundle 'git://github.com/thinca/vim-ref.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
-NeoBundle 'git://github.com/thinca/vim-ref.git'
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'autoload' : { 'insert' : 1 } }
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git', { 'depends' : 'Shougo/unite.vim' }
@@ -296,8 +292,10 @@ NeoBundleLazy 'git://github.com/majutsushi/tagbar.git', { 'autoload' : { 'comman
 NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
+NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
+NeoBundle 'http://conque.googlecode.com/svn/trunk/', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 
 if has('python')
     NeoBundle 'git://github.com/Lokaltog/powerline.git'
@@ -307,6 +305,7 @@ else
 endif
 
 filetype plugin indent on
+NeoBundleCheck
 
 " Unite
 let g:unite_source_file_mru_limit = 50
@@ -323,7 +322,7 @@ nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=files -default-action=lcd di
 nnoremap <silent> [unite]ma :<C-u>Unite mapping -no-quit<CR>
 nnoremap <silent> [unite]me :<C-u>Unite output:message -no-quit<CR>
 nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files -no-split jump_point file_point buffer_tab file_rec:! file file/new file_mru -no-quit<CR>
-nnoremap <silent> [unite]f  :<C-u>Unite source -no-quit<CR>
+nnoremap <silent> [unite]f :<C-u>Unite source -no-quit<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
@@ -331,6 +330,14 @@ let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_max_list=1000
+" Enable heavy omni completion.
+if !exists('g:neocomplcache_omni_patterns')
+    let g:neocomplcache_omni_patterns = {}
+endif
+let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
+let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
 " Neocomplcache-clang
 if exists('s:isDarwin')
@@ -399,7 +406,13 @@ let g:ref_open='split'
 let g:ref_source_webdict_cmd = 'w3m -t 4 -cols 180 -dump %s'
 let g:ref_source_webdict_sites = { 'Wikipedia:ja' : 'http://ja.wikipedia.org/wiki/%s', 'Weblio' : 'http://ejje.weblio.jp/content/%s', 'Weblio-Thesaurus' : 'http://ejje.weblio.jp/english-thesaurus/content/%s'}
 let g:ref_source_webdict_sites.default = 'Wikipedia:ja'
-let g:ref_detect_filetype = { 'vim' : 'man', 'c': 'man', 'clojure': 'clojure', 'perl': 'perldoc', 'php': 'phpmanual', 'ruby': 'refe', 'erlang': 'erlang', 'python': 'pydoc'}
+
+" Conque
+let g:ConqueTerm_ReadUnfocused = 1
+let g:ConqueTerm_CloseOnEnd = 1
+let g:ConqueTerm_StartMessages = 0
+let g:ConqueTerm_CWInsert = 1
+noremap <silent> <Leader>sh :ConqueTermVSplit zsh<CR>
 
 
 "-------------------------------------------------------------------------------"
@@ -419,6 +432,13 @@ augroup general
     if exists('g:Powerline_loaded')
         silent! call Pl#Load()
     endif
+
+    " Conque
+    function! s:delete_ConqueTerm(buffer_name)
+        let term_obj = conque_term#get_instance(a:buffer_name)
+        call term_obj.close()
+    endfunction
+    autocmd BufWinLeave zsh\s-\s? call <SID>delete_ConqueTerm(expand('%'))
 
     " Unite
     function! s:unite_my_settings()
