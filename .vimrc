@@ -160,7 +160,8 @@ cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
 
 " delete動作
-inoremap <C-B> <Del>
+inoremap <C-D> <Del>
+inoremap <C-L> <ESC>
 
 " 画面分割
 noremap <Leader>sp :split<Space>
@@ -176,7 +177,7 @@ noremap <silent> <S-Right> :wincmd ><CR>
 noremap <silent> <S-Up> :wincmd -<CR>
 noremap <silent> <S-Down> :wincmd +<CR>
 
-" tab操作
+" Tab操作
 noremap to :tabnew<Space>
 noremap <silent> <C-M> gt
 noremap <silent> <C-N> gT
@@ -264,19 +265,17 @@ if has('vim_starting')
 endif
 call neobundle#rc(expand('~/.vim/bundle'))
 
-NeoBundleFetch 'Shougo/neobundle.vim'
-
 " NeoBundle 'git://github.com/h1mesuke/vim-alignta.git'
 " NeoBundle 'git://github.com/kana/vim-smartchr.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-user.git'
 " NeoBundle 'git://github.com/rhysd/unite-n3337.git'
 " NeoBundle 'git://github.com/t9md/vim-textmanip.git'
-" NeoBundle 'git://github.com/ujihisa/neco-look.git'
 " NeoBundle 'project.tar.gz'
+" NeoBundle 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'] } }
 
+NeoBundle 'git://github.com/Shougo/neobundle.vim'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
-NeoBundle 'git://github.com/Shougo/vimfiler.git', { 'depends' : ['Shougo/unite.vim'], 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'] } }
 NeoBundle 'git://github.com/Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'git://github.com/mopp/backscratcher.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
@@ -284,10 +283,10 @@ NeoBundle 'git://github.com/taku-o/vim-toggle.git'
 NeoBundle 'git://github.com/thinca/vim-ref.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
+NeoBundle 'git://github.com/Shougo/neocomplcache.git', { 'autoload' : { 'insert' : 1 } }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
-NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'autoload' : { 'insert' : 1 } }
+NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : 'Shougo/unite-outline', 'autoload' : { 'commands' : 'Unite' } }
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git', { 'depends' : 'Shougo/unite.vim' }
-NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'autoload' : { 'commands' : 'Unite' } }
 NeoBundleLazy 'git://github.com/majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
@@ -295,7 +294,18 @@ NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { '
 NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
-NeoBundle 'http://conque.googlecode.com/svn/trunk/', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
+NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
+NeoBundleLazy 'Shougo/vimfiler', {
+            \ 'depends' : 'Shougo/unite.vim',
+            \ 'autoload' : {
+            \    'commands' : [{ 'name' : 'VimFiler',
+            \                    'complete' : 'customlist,vimfiler#complete' },
+            \                  'VimFilerExplorer',
+            \                  'Edit', 'Read', 'Source', 'Write'],
+            \    'mappings' : ['<Plug>(vimfiler_switch)'],
+            \    'explorer' : 1,
+            \ }
+            \ }
 
 if has('python')
     NeoBundle 'git://github.com/Lokaltog/powerline.git'
@@ -305,7 +315,6 @@ else
 endif
 
 filetype plugin indent on
-NeoBundleCheck
 
 " Unite
 let g:unite_source_file_mru_limit = 50
@@ -367,7 +376,6 @@ let g:vimfiler_tree_closed_icon = '▸'
 let g:vimfiler_tree_leaf_icon = '|'
 let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_preview_action='below'
-" let g:vimfiler_edit_action = 'tabopen'
 let g:vimfiler_split_action = 'right'
 let g:vimfiler_sort_type='manual'
 nnoremap <silent> fvs :VimFilerExplorer<CR>
