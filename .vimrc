@@ -158,6 +158,7 @@ cnoremap <C-F> <Right>
 cnoremap <C-B> <Left>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
+cnoremap <C-D> <Del>
 
 " delete動作
 inoremap <C-D> <Del>
@@ -272,8 +273,8 @@ call neobundle#rc(expand('~/.vim/bundle'))
 " NeoBundle 'git://github.com/rhysd/unite-n3337.git'
 " NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 " NeoBundle 'project.tar.gz'
-" NeoBundle 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'] } }
 
+" NeoBundleLazy の 順序注意
 NeoBundle 'git://github.com/Shougo/neobundle.vim'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
@@ -283,29 +284,23 @@ NeoBundle 'git://github.com/taku-o/vim-toggle.git'
 NeoBundle 'git://github.com/thinca/vim-ref.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
-NeoBundle 'git://github.com/Shougo/neocomplcache.git', { 'autoload' : { 'insert' : 1 } }
+
+NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'autoload' : { 'insert' : 1 } }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
+
 NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : 'Shougo/unite-outline', 'autoload' : { 'commands' : 'Unite' } }
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git', { 'depends' : 'Shougo/unite.vim' }
-NeoBundleLazy 'git://github.com/majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
-NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
+NeoBundleLazy 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
+
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
+NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
+
+NeoBundleLazy 'git://github.com/majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
 NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
-NeoBundleLazy 'Shougo/vimfiler', {
-            \ 'depends' : 'Shougo/unite.vim',
-            \ 'autoload' : {
-            \    'commands' : [{ 'name' : 'VimFiler',
-            \                    'complete' : 'customlist,vimfiler#complete' },
-            \                  'VimFilerExplorer',
-            \                  'Edit', 'Read', 'Source', 'Write'],
-            \    'mappings' : ['<Plug>(vimfiler_switch)'],
-            \    'explorer' : 1,
-            \ }
-            \ }
 
 if has('python')
     NeoBundle 'git://github.com/Lokaltog/powerline.git'
