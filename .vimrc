@@ -10,8 +10,6 @@
 "                                                    |___/                |_|   |_|
 "---------------------------------------------------------------------------------------"
 
-set encoding=utf-8
-
 " viとの互換をオフ
 set nocompatible
 
@@ -52,7 +50,7 @@ set viewoptions=cursor,folds    " :mkviewで保存する設定
 set viminfo='1000,<500,f1       " viminfoへの保存設定
 set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
 set wildmenu                    " コマンドの補完候補を表示
-set virtualedit=all             " 文字のないところでも矩形選択を出来るようにする
+" set virtualedit=all             " 文字のないところでも矩形選択を出来るようにする
 let g:loaded_netrwPlugin=1      " 標準Pluginを読み込まない
 let g:loaded_vimballPlugin=1
 
@@ -86,6 +84,8 @@ highlight Folded cterm=bold,underline ctermfg=14 ctermbg=55
 highlight MatchParen cterm=bold,underline "ctermfg=11 ctermbg=3
 highlight Search ctermbg=3 ctermfg=0
 highlight TabLineSel ctermbg=5
+" set runtimepath+=~/Dropbox/Program/Vim/Pastel
+" colorscheme Pastel
 
 
 "-------------------------------------------------------------------------------"
@@ -145,11 +145,6 @@ inoremap <Left> <Nop>
 inoremap <Right> <Nop>
 inoremap <Up> <Nop>
 inoremap <Down> <Nop>
-noremap <BS> <Nop>
-noremap <Left> <Nop>
-noremap <Right> <Nop>
-noremap <Up> <Nop>
-noremap <Down> <Nop>
 
 " コマンドラインモードでの移動
 cnoremap <C-A> <Home>
@@ -221,6 +216,7 @@ nnoremap <Space>f za
 " ctagsを作成
 nnoremap <silent> <Leader>mc :<C-U>call g:makeCtags()<CR>
 
+
 "-----------------------------------------------------------------------------------"
 " 環境依存設定                                                                      |
 "-----------------------------------------------------------------------------------"
@@ -237,7 +233,7 @@ if "Darwin\n" == system('uname')
     command! -nargs=0 MacDictFocus call system("osascript -e 'tell application \"Dictionary\" to activate'")
     " キーマッピング
     nnoremap <silent> <Leader>do :<C-u>MacDictCWord<CR>
-    vnoremap <silent> <Leader>do y:<C-u>MacDict<Space><C-r>*<CR>
+    vnoremap <silent> <Leader>doy :<C-u>MacDict<Space><C-r>*<CR>
     nnoremap <silent> <Leader>dc :<C-u>MacDictClose<CR>
     nnoremap <silent> <Leader>df :<C-u>MacDictFocus<CR>
 
@@ -284,19 +280,24 @@ NeoBundle 'git://github.com/taku-o/vim-toggle.git'
 NeoBundle 'git://github.com/thinca/vim-ref.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
-
+NeoBundle 'git://github.com/modsound/gips-vim.git'
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'autoload' : { 'insert' : 1 } }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 
-NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : 'Shougo/unite-outline', 'autoload' : { 'commands' : 'Unite' } }
+NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : ['Shougo/unite-outline', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' } }
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git', { 'depends' : 'Shougo/unite.vim' }
 NeoBundleLazy 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
+NeoBundleLazy 'git://github.com/basyura/TweetVim.git' , { 'depends' : ['Shougo/Unite', 'basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : 'TweetVimHomeTimeline'} }
+NeoBundleLazy 'git://github.com/basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
+NeoBundleLazy 'git://github.com/tyru/open-browser.vim'
 
+NeoBundleLazy 'git://github.com/Shougo/vinarise.git', { 'autoload' : { 'filetypes' : 'bin', 'commands' : 'Vinarise' } }
 NeoBundleLazy 'git://github.com/majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
+NeoBundleLazy 'git://github.com/thinca/vim-painter.git'
 NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
@@ -327,6 +328,7 @@ nnoremap <silent> [unite]ma :<C-u>Unite mapping -no-quit<CR>
 nnoremap <silent> [unite]me :<C-u>Unite output:message -no-quit<CR>
 nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files -no-split jump_point file_point buffer_tab file_rec:! file file/new file_mru -no-quit<CR>
 nnoremap <silent> [unite]f :<C-u>Unite source -no-quit<CR>
+nnoremap <silent> [unite]t :<C-u>Unite tweetvim -vertical<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
@@ -365,15 +367,12 @@ vmap <Leader><Leader> <Plug>NERDCommenterNested
 " VimFiler
 let g:vimfiler_as_default_explorer=1
 let g:vimfiler_safe_mode_by_default = 0
-let g:vimfiler_file_icon = '-'
-let g:vimfiler_marked_file_icon = '*'
 let g:vimfiler_tree_closed_icon = '▸'
-let g:vimfiler_tree_leaf_icon = '|'
 let g:vimfiler_tree_opened_icon = '▾'
+let g:vimfiler_directory_display_top=1
 let g:vimfiler_preview_action='below'
 let g:vimfiler_split_action = 'right'
-let g:vimfiler_sort_type='manual'
-nnoremap <silent> fvs :VimFilerExplorer<CR>
+nnoremap <silent> fvs :VimFilerExplorer -simple<CR>
 nnoremap <silent> fvo :VimFilerTab<CR>
 
 " SrcExpl
@@ -396,7 +395,7 @@ nnoremap <silent> tb :<C-U>TagbarToggle<CR>
 " Like A IDE :)
 function! s:likeIDEMode()
     cd %:p:h
-    VimFilerExplorer
+    VimFilerExplorer -simple
     wincmd l
     TagbarToggle
     wincmd h
@@ -416,6 +415,12 @@ let g:ConqueTerm_CloseOnEnd = 1
 let g:ConqueTerm_StartMessages = 0
 let g:ConqueTerm_CWInsert = 1
 noremap <silent> <Leader>sh :ConqueTermVSplit zsh<CR>
+
+" TweetVim
+let g:tweetvim_display_source = 1
+let g:tweetvim_display_time = 1
+let g:tweetvim_say_insert_account = 1
+let g:tweetvim_async_post = 1
 
 
 "-------------------------------------------------------------------------------"
@@ -440,6 +445,7 @@ augroup general
     function! s:delete_ConqueTerm(buffer_name)
         let term_obj = conque_term#get_instance(a:buffer_name)
         call term_obj.close()
+        echo 'mopp'
     endfunction
     autocmd BufWinLeave zsh\s-\s? call <SID>delete_ConqueTerm(expand('%'))
 
@@ -488,5 +494,3 @@ augroup general
     " nask
     autocmd BufReadPre  *.nas setlocal filetype=NASM
 augroup END
-
-" set runtimepath+=~/Dropbox/Program/Vim/backscratcher
