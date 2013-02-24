@@ -288,10 +288,10 @@ NeoBundleLazy 'git://github.com/Shougo/unite-outline.git', { 'depends' : 'Shougo
 NeoBundleLazy 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
-NeoBundleLazy 'git://github.com/basyura/TweetVim.git' , { 'depends' : ['Shougo/Unite', 'basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : 'TweetVimHomeTimeline'} }
 NeoBundleLazy 'git://github.com/basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'git://github.com/tyru/open-browser.vim'
+NeoBundleLazy 'git://github.com/basyura/TweetVim.git' , { 'depends' : ['Shougo/unite.vim', 'basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : 'TweetVimHomeTimeline'} }
 
 NeoBundleLazy 'git://github.com/thinca/vim-ref.git', { 'autoload' : { 'insert'  : '1'} }
 NeoBundleLazy 'git://github.com/Shougo/vinarise.git', { 'autoload' : { 'filetypes' : 'bin', 'commands' : 'Vinarise' } }
@@ -328,7 +328,7 @@ nnoremap <silent> [unite]ma :<C-u>Unite mapping -no-quit<CR>
 nnoremap <silent> [unite]me :<C-u>Unite output:message -no-quit<CR>
 nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files -no-split jump_point file_point buffer_tab file_rec:! file file/new file_mru -no-quit<CR>
 nnoremap <silent> [unite]f :<C-u>Unite source -no-quit<CR>
-nnoremap <silent> [unite]t :<C-u>Unite tweetvim -vertical<CR>
+nnoremap <silent> [unite]t :<C-u>Unite tweetvim<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
