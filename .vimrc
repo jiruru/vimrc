@@ -277,7 +277,6 @@ NeoBundle 'git://github.com/Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f 
 NeoBundle 'git://github.com/mopp/backscratcher.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/taku-o/vim-toggle.git'
-NeoBundle 'git://github.com/thinca/vim-ref.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
 NeoBundle 'git://github.com/modsound/gips-vim.git'
@@ -294,6 +293,7 @@ NeoBundleLazy 'git://github.com/basyura/twibill.vim', { 'depends' : 'tyru/open-b
 NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'git://github.com/tyru/open-browser.vim'
 
+NeoBundleLazy 'git://github.com/thinca/vim-ref.git', { 'autoload' : { 'insert'  : '1'} }
 NeoBundleLazy 'git://github.com/Shougo/vinarise.git', { 'autoload' : { 'filetypes' : 'bin', 'commands' : 'Vinarise' } }
 NeoBundleLazy 'git://github.com/majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
