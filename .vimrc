@@ -146,14 +146,14 @@ inoremap <Right> <Nop>
 inoremap <Up> <Nop>
 inoremap <Down> <Nop>
 
-" コマンドラインモードでの移動
-cnoremap <C-A> <Home>
-cnoremap <C-E> <End>
-cnoremap <C-F> <Right>
-cnoremap <C-B> <Left>
+" 移動
+noremap! <C-A> <Home>
+noremap! <C-E> <End>
+noremap! <C-F> <Right>
+noremap! <C-B> <Left>
+noremap! <C-D> <Del>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
-cnoremap <C-D> <Del>
 
 " delete動作
 inoremap <C-D> <Del>
@@ -279,6 +279,8 @@ NeoBundle 'git://github.com/taku-o/vim-toggle.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
 NeoBundle 'git://github.com/modsound/gips-vim.git'
+NeoBundle 'git://github.com/w0ng/vim-hybrid.git'
+NeoBundle 'git://github.com/supermomonga/shaberu.vim.git'
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'autoload' : { 'insert' : 1 } }
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git', { 'depends' : 'Shougo/unite.vim' }
@@ -286,7 +288,7 @@ NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : ['Shougo/un
 NeoBundleLazy 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 NeoBundleLazy 'git://github.com/Shougo/vinarise.git', { 'autoload' : { 'filetypes' : 'bin', 'commands' : 'Vinarise' } }
 
-NeoBundleLazy 'git://github.com/basyura/TweetVim.git', { 'depends' : ['Shougo/unite.vim', 'basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : 'TweetVimHomeTimeline'} }
+NeoBundleLazy 'git://github.com/basyura/TweetVim.git', { 'depends' : ['Shougo/unite.vim', 'basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimCurrentLineSay']} }
 NeoBundleLazy 'git://github.com/basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
@@ -302,6 +304,7 @@ NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'comman
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 
 if has('python')
+    " pip install --user git+git://github.com/Lokaltog/powerline
     NeoBundle 'git://github.com/Lokaltog/powerline.git'
     set runtimepath+=~/.vim/bundle/powerline/powerline/bindings/vim
 else
@@ -415,11 +418,17 @@ let g:ConqueTerm_CWInsert = 1
 noremap <silent> <Leader>sh :ConqueTermVSplit zsh<CR>
 
 " TweetVim
+let g:tweetvim_tweet_per_page = 60
 let g:tweetvim_display_source = 1
 let g:tweetvim_display_time = 1
 let g:tweetvim_say_insert_account = 1
 let g:tweetvim_async_post = 1
 
+" Shaberu
+let g:shaberu_user_define_say_command = 'say -v Kyoko "%%TEXT%%"'
+
+" Gips
+let g:gips_speech_via_shaberu = 1
 
 "-------------------------------------------------------------------------------"
 " autocmd
