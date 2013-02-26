@@ -175,8 +175,8 @@ noremap <silent> <S-Down> :wincmd +<CR>
 
 " Tab操作
 noremap to :tabnew<Space>
-noremap <silent> <C-M> gt
-noremap <silent> <C-N> gT
+noremap <silent> <C-.> gt
+noremap <silent> <C-,> gT
 
 " 端に移動
 noremap <C-J> G
@@ -254,8 +254,6 @@ if !isdirectory(expand('~/.vim/bundle/neobundle.vim'))
     finish
 endif
 
-filetype off
-
 " NeoBundle
 if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim
@@ -303,15 +301,24 @@ NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 
-if has('python')
+if (has('python') || has('python3'))
     " pip install --user git+git://github.com/Lokaltog/powerline
     NeoBundle 'git://github.com/Lokaltog/powerline.git'
     set runtimepath+=~/.vim/bundle/powerline/powerline/bindings/vim
 else
+    " Powerline
     NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
+    let g:Powerline_stl_path_style = 'short'
+
+    " PowerLineの再読み込み
+    if exists('g:Powerline_loaded')
+        silent! call Pl#Load()
+    endif
 endif
 
 filetype plugin indent on
+
+NeoBundleCheck
 
 " Unite
 let g:unite_source_file_mru_limit = 50
@@ -319,16 +326,14 @@ let g:unite_cursor_line_highlight = 'TabLineSel'
 let g:unite_enable_short_source_names = 1
 nnoremap [unite] <Nop>
 nmap f [unite]
-nnoremap <silent> [unite]c :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file -no-quit<CR>
-nnoremap <silent> [unite]b :<C-u>UniteWithBufferDir -buffer-name=files -prompt=% buffer file_mru bookmark file -no-quit<CR>
-nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register -no-quit<CR>
+nnoremap <silent> [unite]b :<C-u>Unite buffer<CR>
+nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=files -default-action=lcd directory_mru<CR>
+nnoremap <silent> [unite]f :<C-u>Unite source<CR>
+nnoremap <silent> [unite]ma :<C-u>Unite mapping<CR>
+nnoremap <silent> [unite]me :<C-u>Unite output:message<CR>
 nnoremap <silent> [unite]o :<C-u>Unite outline<CR>
-nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=resume resume -no-quit<CR>
-nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=files -default-action=lcd directory_mru -no-quit<CR>
-nnoremap <silent> [unite]ma :<C-u>Unite mapping -no-quit<CR>
-nnoremap <silent> [unite]me :<C-u>Unite output:message -no-quit<CR>
-nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files -no-split jump_point file_point buffer_tab file_rec:! file file/new file_mru -no-quit<CR>
-nnoremap <silent> [unite]f :<C-u>Unite source -no-quit<CR>
+nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=register register<CR>
+nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files -no-split jump_point file_point buffer_tab file_rec:! file file/new file_mru<CR>
 nnoremap <silent> [unite]t :<C-u>Unite tweetvim<CR>
 
 " Neocomplcache
@@ -354,9 +359,6 @@ if exists('s:isDarwin')
     let g:neocomplcache_clang_executable_path = '/opt/local/bin/'
 endif
 
-" Powerline
-let g:Powerline_stl_path_style = 'short'
-
 " Easymotion
 let g:EasyMotion_leader_key = '<Leader>e'
 
@@ -373,7 +375,7 @@ let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_directory_display_top=1
 let g:vimfiler_preview_action='below'
 let g:vimfiler_split_action = 'right'
-nnoremap <silent> fvs :VimFilerExplorer -simple<CR>
+nnoremap <silent> fvs :VimFilerExplorer<CR>
 nnoremap <silent> fvo :VimFilerTab<CR>
 
 " SrcExpl
@@ -439,14 +441,12 @@ augroup general
     " .vimrc
     autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
+    " 挿入モード解除時に自動でpasteをoff
+    autocmd InsertLeave * set nopaste
+
     " VimFiler
     autocmd FileType vimfiler nmap ; <Plug>(vimfiler_toggle_mark_current_line)
     autocmd FileType vimfiler vmap ; <Plug>(vimfiler_toggle_mark_selected_lines)
-
-    " PowerLineの再読み込み
-    if exists('g:Powerline_loaded')
-        silent! call Pl#Load()
-    endif
 
     " Conque
     function! s:delete_ConqueTerm(buffer_name)
