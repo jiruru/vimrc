@@ -116,10 +116,6 @@ function! g:toFoldFunc()
     return printf('%s %s [ %2d Lines Lv%02d ] %s', l:line, v:folddashes, (v:foldend-v:foldstart+1), v:foldlevel, v:folddashes)
 endfunction
 
-function! g:makeCtags()
-    let resultString = system('ctags -R '.expand('%:p:h').'/')
-    echo resultString
-endfunction
 
 "-----------------------------------------------------------------------------------"
 " Mapping                                                                           |
@@ -175,8 +171,8 @@ noremap <silent> <S-Down> :wincmd +<CR>
 
 " Tab操作
 noremap to :tabnew<Space>
-noremap <silent> <C-.> gt
-noremap <silent> <C-,> gT
+noremap <silent> <C-M> gt
+noremap <silent> <C-N> gT
 
 " 端に移動
 noremap <C-J> G
@@ -211,10 +207,10 @@ nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
 nnoremap <Leader>cd :lcd %:p:h<CR>
 
 " 折りたたみトグル
-nnoremap <Space>f za
+" nnoremap <Space>f za
 
 " ctagsを作成
-nnoremap <silent> <Leader>mc :<C-U>call g:makeCtags()<CR>
+" nnoremap <silent> <Leader>mc :!ctags -R %:p:h<CR><CR>
 
 
 "-----------------------------------------------------------------------------------"
@@ -286,13 +282,14 @@ NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : ['Shougo/un
 NeoBundleLazy 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 NeoBundleLazy 'git://github.com/Shougo/vinarise.git', { 'autoload' : { 'filetypes' : 'bin', 'commands' : 'Vinarise' } }
 
-NeoBundleLazy 'git://github.com/basyura/TweetVim.git', { 'depends' : ['Shougo/unite.vim', 'basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimCurrentLineSay']} }
+NeoBundleLazy 'git://github.com/basyura/TweetVim.git', { 'depends' : ['Shougo/unite.vim', 'basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay']} }
 NeoBundleLazy 'git://github.com/basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'git://github.com/tyru/open-browser.vim'
 
 NeoBundleLazy 'git://github.com/majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
+NeoBundleLazy 'git://github.com/mattn/benchvimrc-vim.git', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
 NeoBundleLazy 'git://github.com/thinca/vim-painter.git'
 NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git'
@@ -425,12 +422,19 @@ let g:tweetvim_display_source = 1
 let g:tweetvim_display_time = 1
 let g:tweetvim_say_insert_account = 1
 let g:tweetvim_async_post = 1
+let g:tweetvim_open_say_cmd='split'
+if !exists('g:neocomplcache_dictionary_filetype_lists')
+    let g:neocomplcache_dictionary_filetype_lists = {}
+endif
+let neco_dic = g:neocomplcache_dictionary_filetype_lists
+let neco_dic.tweetvim_say = $HOME . '/.tweetvim/screen_name'
 
 " Shaberu
 let g:shaberu_user_define_say_command = 'say -v Kyoko "%%TEXT%%"'
 
 " Gips
 let g:gips_speech_via_shaberu = 1
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
