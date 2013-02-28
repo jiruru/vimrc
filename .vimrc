@@ -206,11 +206,8 @@ nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
 " カレントウィンドウのカレントディレクトリを変更
 nnoremap <Leader>cd :lcd %:p:h<CR>
 
-" 折りたたみトグル
-" nnoremap <Space>f za
-
 " ctagsを作成
-" nnoremap <silent> <Leader>mc :!ctags -R %:p:h<CR><CR>
+nnoremap <silent> <Leader>mc :!ctags -R %:p:h<CR><CR>
 
 
 "-----------------------------------------------------------------------------------"
@@ -266,6 +263,7 @@ call neobundle#rc(expand('~/.vim/bundle'))
 
 NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
+NeoBundle 'git://github.com/scrooloose/syntastic.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'git://github.com/mopp/backscratcher.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
@@ -275,6 +273,7 @@ NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
 NeoBundle 'git://github.com/modsound/gips-vim.git'
 NeoBundle 'git://github.com/w0ng/vim-hybrid.git'
 NeoBundle 'git://github.com/supermomonga/shaberu.vim.git'
+NeoBundleLazy 'git://github.com/tomasr/molokai.git'
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'autoload' : { 'insert' : 1 } }
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git', { 'depends' : 'Shougo/unite.vim' }
