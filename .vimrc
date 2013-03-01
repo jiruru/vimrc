@@ -42,6 +42,13 @@ set incsearch   " インクリメンタルサーチを有効
 set ignorecase  " 大文字小文字無視
 set smartcase   " 大文字があれば通常の検索
 
+" 折りたたみ
+set foldenable
+set foldcolumn=3            " 左側に折りたたみガイド表示$
+set foldmethod=indent       " 折畳の判別
+set foldtext=g:toFoldFunc() " 折りたたみ時の表示設定
+set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
+
 " その他
 set helplang=ja                 " ヘルプ検索で日本語を優先
 set history=500                 " 検索やコマンドラインの保存履歴数
@@ -50,17 +57,15 @@ set viewoptions=cursor,folds    " :mkviewで保存する設定
 set viminfo='1000,<500,f1       " viminfoへの保存設定
 set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
 set wildmenu                    " コマンドの補完候補を表示
-" set virtualedit=all             " 文字のないところでも矩形選択を出来るようにする
-let g:loaded_netrwPlugin=1      " 標準Pluginを読み込まない
-let g:loaded_vimballPlugin=1
-
-
-" 折りたたみ
-set foldenable
-set foldcolumn=3            " 左側に折りたたみガイド表示$
-set foldmethod=indent       " 折畳の判別
-set foldtext=g:toFoldFunc() " 折りたたみ時の表示設定
-set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
+set timeout                     " マッピングのタイムアウト有効
+set timeoutlen=3000             " マッピングのタイムアウト時間
+set ttimeoutlen=100             " キーコードのタイムアウト時間
+let g:loaded_netrwPlugin = 1    " 標準Pluginを読み込まない
+let g:loaded_tar = 1
+let g:loaded_tarPlugin= 1
+let g:loaded_vimballPlugin = 1
+let g:loaded_zip = 1
+let g:loaded_zipPlugin = 1
 
 " 外観設定
 " set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
@@ -146,14 +151,11 @@ inoremap <Down> <Nop>
 noremap! <C-A> <Home>
 noremap! <C-E> <End>
 noremap! <C-F> <Right>
-noremap! <C-B> <Left>
-noremap! <C-D> <Del>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
 
 " delete動作
 inoremap <C-D> <Del>
-inoremap <C-L> <ESC>
 
 " 画面分割
 noremap <Leader>sp :split<Space>
@@ -206,8 +208,9 @@ nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
 " カレントウィンドウのカレントディレクトリを変更
 nnoremap <Leader>cd :lcd %:p:h<CR>
 
-" ctagsを作成
-nnoremap <silent> <Leader>mc :!ctags -R %:p:h<CR><CR>
+" 入れ替え
+noremap ; :
+noremap : ;
 
 
 "-----------------------------------------------------------------------------------"
@@ -448,8 +451,8 @@ augroup general
     autocmd InsertLeave * set nopaste
 
     " VimFiler
-    autocmd FileType vimfiler nmap ; <Plug>(vimfiler_toggle_mark_current_line)
-    autocmd FileType vimfiler vmap ; <Plug>(vimfiler_toggle_mark_selected_lines)
+    autocmd FileType vimfiler nmap <buffer> ; <Plug>(vimfiler_toggle_mark_current_line)
+    autocmd FileType vimfiler vmap <buffer> ; <Plug>(vimfiler_toggle_mark_selected_lines)
 
     " Conque
     function! s:delete_ConqueTerm(buffer_name)
