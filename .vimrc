@@ -151,6 +151,7 @@ inoremap <Down> <Nop>
 noremap! <C-A> <Home>
 noremap! <C-E> <End>
 noremap! <C-F> <Right>
+noremap! <C-B> <Left>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
 
@@ -264,25 +265,26 @@ call neobundle#rc(expand('~/.vim/bundle'))
 " NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 " NeoBundle 'project.tar.gz'
 
-NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
-NeoBundle 'git://github.com/scrooloose/syntastic.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
+NeoBundle 'git://github.com/modsound/gips-vim.git'
 NeoBundle 'git://github.com/mopp/backscratcher.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
+NeoBundle 'git://github.com/scrooloose/syntastic.git'
+NeoBundle 'git://github.com/supermomonga/shaberu.vim.git'
 NeoBundle 'git://github.com/taku-o/vim-toggle.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
-NeoBundle 'git://github.com/modsound/gips-vim.git'
 NeoBundle 'git://github.com/w0ng/vim-hybrid.git'
-NeoBundle 'git://github.com/supermomonga/shaberu.vim.git'
-NeoBundleLazy 'git://github.com/tomasr/molokai.git'
+NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'rev' : 'ver.8', 'autoload' : { 'insert' : 1 } }
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git', { 'depends' : 'Shougo/unite.vim' }
-NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : ['Shougo/unite-outline', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' } }
+NeoBundleLazy 'git://github.com/Shougo/unite-ssh.git', { 'depends' : 'Shougo/unite.vim' }
+NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : ['Shougo/unite-outline', 'basyura/TweetVim', 'Shougo/unite-ssh'], 'autoload' : { 'commands' : 'Unite' } }
 NeoBundleLazy 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 NeoBundleLazy 'git://github.com/Shougo/vinarise.git', { 'autoload' : { 'filetypes' : 'bin'} }
+NeoBundleLazy 'git://github.com/tomasr/molokai.git'
 
 NeoBundleLazy 'git://github.com/basyura/TweetVim.git', { 'depends' : ['Shougo/unite.vim', 'basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay']} }
 NeoBundleLazy 'git://github.com/basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
