@@ -147,41 +147,37 @@ inoremap <Right> <Nop>
 inoremap <Up> <Nop>
 inoremap <Down> <Nop>
 
-" 移動
+" 移動系
 noremap! <C-A> <Home>
 noremap! <C-E> <End>
 noremap! <C-F> <Right>
 noremap! <C-B> <Left>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
-
-" delete動作
 inoremap <C-D> <Del>
+noremap <C-J> G
+noremap <C-K> gg
+noremap <C-H> ^
+noremap <C-L> $
+
+" バッファ操作
+noremap <silent> <C-x> :bprevious<CR>
+noremap <silent> <C-c> :bnext<CR>
+
+" Tab操作
+noremap to :tabnew<Space>
+noremap <Tab> gt
+noremap <S-Tab> gT
 
 " 画面分割
 noremap <Leader>sp :split<Space>
 noremap <Leader>vsp :vsplit<Space>
 
-" バッファ移動
-noremap <silent> <C-x> :bprevious<CR>
-noremap <silent> <C-c> :bnext<CR>
-
 " Windowサイズ変更
-noremap <silent> <S-Left> :wincmd <<CR>
-noremap <silent> <S-Right> :wincmd ><CR>
-noremap <silent> <S-Up> :wincmd -<CR>
-noremap <silent> <S-Down> :wincmd +<CR>
-
-" Tab操作
-noremap to :tabnew<Space>
-noremap <silent> <C-M> gt
-noremap <silent> <C-N> gT
-
-" 端に移動
-noremap <C-J> G
-noremap <C-K> gg
-noremap <C-H> ^
-noremap <C-L> $
+noremap <silent> <S-Left> <C-U>:wincmd <<CR>
+noremap <silent> <S-Right> <C-U>:wincmd ><CR>
+noremap <silent> <S-Up> <C-U>:wincmd -<CR>
+noremap <silent> <S-Down> <C-U>:wincmd +<CR>
 
 " 検索とジャンプで中央へ
 nnoremap n nzz
@@ -190,15 +186,16 @@ nnoremap * *zz
 nnoremap '. '.zz
 nnoremap '' ''zz
 
-" 検索ハイライト消去
-nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
-
 " Yand & Paste
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
 nnoremap <silent> cy ce<C-R>0<ESC>:let @/ = @1<CR>:noh<CR>
 vnoremap <silent> cy c<C-R>0<ESC>:let @/ = @1<CR>:noh<CR>
 nnoremap <silent> ciy ciw<C-R>0<ESC>:let @/ = @1<CR>:noh<CR>
+
+" 入れ替え
+noremap ; :
+noremap : ;
 
 " カーソル下のwordをhelpする
 nnoremap <silent> <Leader>h :<C-U>help <C-R><C-W><CR>
@@ -209,9 +206,11 @@ nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
 " カレントウィンドウのカレントディレクトリを変更
 nnoremap <Leader>cd :lcd %:p:h<CR>
 
-" 入れ替え
-noremap ; :
-noremap : ;
+" 検索ハイライト消去
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
+
+" 空行を追加
+nnoremap <silent> <Leader>o :<C-u>call append('.', '')<CR>
 
 
 "-----------------------------------------------------------------------------------"
@@ -267,6 +266,7 @@ call neobundle#rc(expand('~/.vim/bundle'))
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'git://github.com/kana/vim-operator-user.git'
+NeoBundle 'git://github.com/mattn/learn-vimscript.git'
 NeoBundle 'git://github.com/modsound/gips-vim.git'
 NeoBundle 'git://github.com/mopp/backscratcher.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
@@ -275,22 +275,14 @@ NeoBundle 'git://github.com/taku-o/vim-toggle.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
 NeoBundle 'git://github.com/yomi322/vim-operator-suddendeath.git'
-NeoBundle 'git://github.com/mattn/learn-vimscript.git'
 NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'rev' : 'ver.8', 'autoload' : { 'insert' : 1 } }
-NeoBundleLazy 'git://github.com/Shougo/unite-outline.git', { 'depends' : 'Shougo/unite.vim' }
-NeoBundleLazy 'git://github.com/Shougo/unite-ssh.git', { 'depends' : 'Shougo/unite.vim' }
-NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : ['Shougo/unite-outline', 'basyura/TweetVim', 'Shougo/unite-ssh'], 'autoload' : { 'commands' : 'Unite' } }
+NeoBundleLazy 'git://github.com/Shougo/unite-outline.git'
+NeoBundleLazy 'git://github.com/Shougo/unite-ssh.git'
+NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : ['Shougo/unite-outline', 'thinca/vim-unite-history', 'Shougo/unite-ssh', 'tsukkee/unite-tag', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' } }
 NeoBundleLazy 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 NeoBundleLazy 'git://github.com/Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
-
-NeoBundleLazy 'git://github.com/basyura/TweetVim.git', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay']} }
-NeoBundleLazy 'git://github.com/basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
-NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
-NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
-NeoBundleLazy 'git://github.com/tyru/open-browser.vim', { 'autoload' : { 'mapping'  : '<Plug>(openbrowser-open)' } }
-
 NeoBundleLazy 'git://github.com/majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'git://github.com/mattn/benchvimrc-vim.git', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
@@ -298,15 +290,24 @@ NeoBundleLazy 'git://github.com/scrooloose/syntastic.git', { 'autoload' : { 'ins
 NeoBundleLazy 'git://github.com/thinca/vim-painter.git'
 NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git'
 NeoBundleLazy 'git://github.com/thinca/vim-ref.git', { 'autoload' : { 'insert'  : '1'} }
+NeoBundleLazy 'git://github.com/thinca/vim-unite-history.git'
 NeoBundleLazy 'git://github.com/tomasr/molokai.git'
+NeoBundleLazy 'git://github.com/tsukkee/unite-tag.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/w0ng/vim-hybrid.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 
+NeoBundleLazy 'git://github.com/basyura/TweetVim.git', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay']} }
+NeoBundleLazy 'git://github.com/basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
+NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
+NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
+NeoBundleLazy 'git://github.com/tyru/open-browser.vim', { 'autoload' : { 'mappings'  : '<Plug>(openbrowser-open)' } }
+
 if (has('python') || has('python3'))
     " pip install --user git+git://github.com/Lokaltog/powerline
-    NeoBundle 'git://github.com/Lokaltog/powerline.git', { 'resettable' : 0, 'directory' : 'powerline/powerline/bindings/vim' }
+    " set runtimepath+=~/.vim/bundle/powerline/powerline/bindings/vim
+    NeoBundle 'git://github.com/Lokaltog/powerline.git', { 'directory' : '/powerline/powerline/bindings/vim'}
 else
     " Powerline
     NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
@@ -333,8 +334,13 @@ nnoremap <silent> [unite]ma :<C-u>Unite -buffer-name=mappings mapping<CR>
 nnoremap <silent> [unite]me :<C-u>Unite -buffer-name=messages output:message<CR>
 nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outlines outline<CR>
 nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=registers register<CR>
-nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files -no-split jump_point file_point buffer_tab file_rec:! file file/new file_mru<CR>
+nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files jump_point file_point buffer_tab file_rec:! file file/new file_mru<CR>
 nnoremap <silent> [unite]t :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
+nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=lines line<CR>
+nnoremap <silent> [unite]hc :<C-u>Unite -buffer-name=lines history/command<CR>
+nnoremap <silent> [unite]hs :<C-u>Unite -buffer-name=lines history/search<CR>
+nnoremap <silent> [unite]hy :<C-u>Unite -buffer-name=lines history/yank<CR>
+nnoremap <silent> [unite]ta :<C-u>Unite -buffer-name=tags tag tag/file<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
@@ -442,10 +448,11 @@ let g:gips_speech_via_shaberu = 1
 map X <Plug>(operator-suddendeath)
 
 " Open-Browser
-map <Leader>o <Plug>(openbrowser-open)
+map <Leader>b <Plug>(openbrowser-open)
 
 " learn-vimscript
 nnoremap <Leader>lv :help learn-vimscript.txt@ja<CR> <C-W>L
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
