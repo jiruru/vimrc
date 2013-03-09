@@ -256,7 +256,6 @@ if has('vim_starting')
 endif
 call neobundle#rc(expand('~/.vim/bundle'))
 
-" NeoBundle 'git://github.com/kana/vim-smartchr.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
 " NeoBundle 'git://github.com/kana/vim-textobj-user.git'
 " NeoBundle 'git://github.com/rhysd/unite-n3337.git'
@@ -266,6 +265,7 @@ call neobundle#rc(expand('~/.vim/bundle'))
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'git://github.com/kana/vim-operator-user.git'
+NeoBundle 'git://github.com/kana/vim-smartchr.git'
 NeoBundle 'git://github.com/mattn/learn-vimscript.git'
 NeoBundle 'git://github.com/modsound/gips-vim.git'
 NeoBundle 'git://github.com/mopp/backscratcher.git'
@@ -401,6 +401,26 @@ highlight TagbarHighlight cterm=bold,underline ctermfg=1
 highlight TagbarSignature ctermfg=70
 nnoremap <silent> tb :<C-U>TagbarToggle<CR>
 
+" Smartchr
+inoremap <expr> " search('^#include\%#', 'bcn')? ' "': '"'
+inoremap <expr> % smartchr#one_of(' % ', '%')
+inoremap <expr> & smartchr#one_of(' & ', ' && ', '&')
+inoremap <expr> ( search('\<\if\%#', 'bcn')? ' (': '('
+inoremap <expr> + smartchr#one_of(' + ', '++', '+')
+inoremap <expr> , smartchr#one_of(', ', ',')
+inoremap <expr> - smartchr#one_of(' - ', '--', '-')
+inoremap <expr> . smartchr#loop('.', '->', '...')
+inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
+inoremap <expr> : smartchr#one_of(': ', '::', ':')
+inoremap <expr> ; smartchr#one_of(';', ';<cr>')
+inoremap <expr> < search('^#include\%#', 'bcn')? ' <': smartchr#one_of(' < ', ' << ', '<')
+inoremap <expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>')
+inoremap <expr> = search('\(&\<bar><bar>\<bar>+\<bar>-\<bar>/\<bar>>\<bar><\) \%#', 'bcn')? '<bs>= ' : search('\(*\<bar>!\)\%#', 'bcn') ? '= ' : smartchr#one_of(' = ', ' == ', '=')
+inoremap <expr> > search('^#include <.*\%#', 'bcn')? '>': smartchr#one_of(' > ', ' >> ', '>')
+inoremap <expr> ? smartchr#one_of('? ', '?')
+inoremap <expr> @ search('^\(#.\+\)\?\%#','bcn')? smartchr#one_of('#define', '#include', '#ifdef', '#endif', '@'): '@'
+inoremap <expr> } smartchr#one_of('}', '}<cr>')
+
 " Like A IDE :)
 function! s:likeIDEMode()
     cd %:p:h
@@ -445,13 +465,13 @@ let g:shaberu_user_define_say_command = 'say -v Kyoko "%%TEXT%%"'
 let g:gips_speech_via_shaberu = 1
 
 " SuddenDeath
-map X <Plug>(operator-suddendeath)
+map <Leader>x <Plug>(operator-suddendeath)
 
 " Open-Browser
 map <Leader>b <Plug>(openbrowser-open)
 
 " learn-vimscript
-nnoremap <Leader>lv :help learn-vimscript.txt@ja<CR> <C-W>L
+nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
 
 
 "-------------------------------------------------------------------------------"
