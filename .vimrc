@@ -60,6 +60,7 @@ set wildmenu                    " コマンドの補完候補を表示
 set timeout                     " マッピングのタイムアウト有効
 set timeoutlen=3000             " マッピングのタイムアウト時間
 set ttimeoutlen=100             " キーコードのタイムアウト時間
+set completeopt=menu            " 挿入モードでの補完設定
 let g:loaded_netrwPlugin = 1    " 標準Pluginを読み込まない
 let g:loaded_tar = 1
 let g:loaded_tarPlugin= 1
@@ -273,6 +274,7 @@ NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/supermomonga/shaberu.vim.git'
 NeoBundle 'git://github.com/taku-o/vim-toggle.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
+NeoBundle 'git://github.com/ujihisa/neco-look.git' " 動かない
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
 NeoBundle 'git://github.com/yomi322/vim-operator-suddendeath.git'
 NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
@@ -401,25 +403,24 @@ highlight TagbarHighlight cterm=bold,underline ctermfg=1
 highlight TagbarSignature ctermfg=70
 nnoremap <silent> tb :<C-U>TagbarToggle<CR>
 
-" Smartchr
-inoremap <expr> " search('^#include\%#', 'bcn')? ' "': '"'
+" Smartchr TODO 修正
+inoremap <expr> ( search('\<\if\%#', 'bcn')? ' (': '('
+inoremap <expr> < search('^#include\%#', 'bcn')? ' <': smartchr#one_of(' < ', ' << ', '<')
+inoremap <expr> > search('^#include <.*\%#', 'bcn')? '>': smartchr#one_of(' > ', ' >> ', '>')
+inoremap <expr> @ search('^\(#.\+\)\?\%#','bcn')? smartchr#one_of('#define', '#include', '#ifdef', '#endif', '@'): '@'
+inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
 inoremap <expr> % smartchr#one_of(' % ', '%')
 inoremap <expr> & smartchr#one_of(' & ', ' && ', '&')
-inoremap <expr> ( search('\<\if\%#', 'bcn')? ' (': '('
 inoremap <expr> + smartchr#one_of(' + ', '++', '+')
 inoremap <expr> , smartchr#one_of(', ', ',')
 inoremap <expr> - smartchr#one_of(' - ', '--', '-')
 inoremap <expr> . smartchr#loop('.', '->', '...')
 inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
 inoremap <expr> : smartchr#one_of(': ', '::', ':')
-inoremap <expr> ; smartchr#one_of(';', ';<cr>')
-inoremap <expr> < search('^#include\%#', 'bcn')? ' <': smartchr#one_of(' < ', ' << ', '<')
+inoremap <expr> ; smartchr#one_of(';', ';<CR>')
 inoremap <expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>')
-inoremap <expr> = search('\(&\<bar><bar>\<bar>+\<bar>-\<bar>/\<bar>>\<bar><\) \%#', 'bcn')? '<bs>= ' : search('\(*\<bar>!\)\%#', 'bcn') ? '= ' : smartchr#one_of(' = ', ' == ', '=')
-inoremap <expr> > search('^#include <.*\%#', 'bcn')? '>': smartchr#one_of(' > ', ' >> ', '>')
 inoremap <expr> ? smartchr#one_of('? ', '?')
-inoremap <expr> @ search('^\(#.\+\)\?\%#','bcn')? smartchr#one_of('#define', '#include', '#ifdef', '#endif', '@'): '@'
-inoremap <expr> } smartchr#one_of('}', '}<cr>')
+inoremap <expr> } smartchr#one_of('}', '}<CR>')
 
 " Like A IDE :)
 function! s:likeIDEMode()
