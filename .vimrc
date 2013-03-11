@@ -376,12 +376,12 @@ nmap <Leader><Leader> <Plug>NERDCommenterToggle
 vmap <Leader><Leader> <Plug>NERDCommenterNested
 
 " VimFiler
-let g:vimfiler_as_default_explorer=1
+let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default = 0
 let g:vimfiler_tree_closed_icon = '▸'
 let g:vimfiler_tree_opened_icon = '▾'
-let g:vimfiler_directory_display_top=1
-let g:vimfiler_preview_action='below'
+let g:vimfiler_directory_display_top = 1
+let g:vimfiler_preview_action = 'below'
 let g:vimfiler_split_action = 'right'
 nnoremap <silent> fvs :VimFilerExplorer<CR>
 nnoremap <silent> fvo :VimFilerTab<CR>
@@ -394,7 +394,7 @@ let g:SrcExpl_WinHeight = 10
 let g:SrcExpl_pluginList = ["__Tag_List__", "NERD_tree_1", "Source_Explorer", "*unite*", "*vimfiler* - explorer", "__Tagbar__" ]
 
 " TagBar
-let g:tagbar_width=35
+let g:tagbar_width = 35
 let g:tagbar_autoshowtag = 1
 let g:tagbar_autofocus = 1
 highlight TagbarScope ctermfg=5
@@ -429,18 +429,13 @@ endfunction
 nnoremap <silent> <Leader>id :call <SID>likeIDEMode()<CR>
 
 " Ref-vim
-let g:ref_open='split'
+let g:ref_open = 'split'
 let g:ref_source_webdict_cmd = 'w3m -t 4 -cols 180 -dump %s'
 let g:ref_source_webdict_sites = { 'Wikipedia:ja' : 'http://ja.wikipedia.org/wiki/%s', 'Weblio' : 'http://ejje.weblio.jp/content/%s', 'Weblio-Thesaurus' : 'http://ejje.weblio.jp/english-thesaurus/content/%s'}
 let g:ref_source_webdict_sites.default = 'Wikipedia:ja'
 
 " QuickRun
-let g:quickrun_config = {
-            \ "_" : {
-            \   "runner" : "vimproc",
-            \   "runner/vimproc/updatetime" : 60,
-            \   "outputter/buffer/split" : ":botright",
-            \   "outputter/buffer/close_on_empty" : 1}}
+let g:quickrun_config = { "_" : { "runner" : "vimproc", "runner/vimproc/updatetime" : 60, "outputter/buffer/split" : ":botright", "outputter/buffer/close_on_empty" : 1 }}
 
 " Conque
 let g:ConqueTerm_ReadUnfocused = 1
@@ -455,7 +450,7 @@ let g:tweetvim_display_source = 1
 let g:tweetvim_display_time = 1
 let g:tweetvim_say_insert_account = 1
 let g:tweetvim_async_post = 1
-let g:tweetvim_open_say_cmd='split'
+let g:tweetvim_open_say_cmd = 'split'
 if !exists('g:neocomplcache_dictionary_filetype_lists')
     let g:neocomplcache_dictionary_filetype_lists = {}
 endif
