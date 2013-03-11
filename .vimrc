@@ -404,22 +404,17 @@ highlight TagbarSignature ctermfg=70
 nnoremap <silent> tb :<C-U>TagbarToggle<CR>
 
 " Smartchr TODO 修正
-inoremap <expr> ( search('\<\if\%#', 'bcn')? ' (': '('
-inoremap <expr> < search('^#include\%#', 'bcn')? ' <': smartchr#one_of(' < ', ' << ', '<')
-inoremap <expr> > search('^#include <.*\%#', 'bcn')? '>': smartchr#one_of(' > ', ' >> ', '>')
-inoremap <expr> @ search('^\(#.\+\)\?\%#','bcn')? smartchr#one_of('#define', '#include', '#ifdef', '#endif', '@'): '@'
-inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
 inoremap <expr> % smartchr#one_of(' % ', '%')
 inoremap <expr> & smartchr#one_of(' & ', ' && ', '&')
-inoremap <expr> + smartchr#one_of(' + ', '++', '+')
-inoremap <expr> , smartchr#one_of(', ', ',')
-inoremap <expr> - smartchr#one_of(' - ', '--', '-')
-inoremap <expr> . smartchr#loop('.', '->', '...')
-inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
-inoremap <expr> : smartchr#one_of(': ', '::', ':')
-inoremap <expr> ; smartchr#one_of(';', ';<CR>')
 inoremap <expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>')
-inoremap <expr> ? smartchr#one_of('? ', '?')
+inoremap <expr> , smartchr#one_of(', ', ',')
+inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
+inoremap <expr> - smartchr#one_of(' - ', '--', '-')
+inoremap <expr> + smartchr#one_of(' + ', '++', '+')
+inoremap <expr> . smartchr#loop('.', '->', '=>')
+inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
+inoremap <expr> : smartchr#loop(':', '::')
+inoremap <expr> ; smartchr#one_of(';', ';<CR>')
 inoremap <expr> } smartchr#one_of('}', '}<CR>')
 
 " Like A IDE :)
@@ -438,6 +433,14 @@ let g:ref_open='split'
 let g:ref_source_webdict_cmd = 'w3m -t 4 -cols 180 -dump %s'
 let g:ref_source_webdict_sites = { 'Wikipedia:ja' : 'http://ja.wikipedia.org/wiki/%s', 'Weblio' : 'http://ejje.weblio.jp/content/%s', 'Weblio-Thesaurus' : 'http://ejje.weblio.jp/english-thesaurus/content/%s'}
 let g:ref_source_webdict_sites.default = 'Wikipedia:ja'
+
+" QuickRun
+let g:quickrun_config = {
+            \ "_" : {
+            \   "runner" : "vimproc",
+            \   "runner/vimproc/updatetime" : 60,
+            \   "outputter/buffer/split" : ":botright",
+            \   "outputter/buffer/close_on_empty" : 1}}
 
 " Conque
 let g:ConqueTerm_ReadUnfocused = 1
