@@ -61,6 +61,7 @@ set timeout                     " マッピングのタイムアウト有効
 set timeoutlen=3000             " マッピングのタイムアウト時間
 set ttimeoutlen=100             " キーコードのタイムアウト時間
 set completeopt=menu            " 挿入モードでの補完設定
+set digraph
 let g:loaded_netrwPlugin = 1    " 標準Pluginを読み込まない
 let g:loaded_tar = 1
 let g:loaded_tarPlugin= 1
@@ -263,6 +264,8 @@ call neobundle#rc(expand('~/.vim/bundle'))
 " NeoBundle 'git://github.com/t9md/vim-textmanip.git'
 " NeoBundle 'project.tar.gz'
 
+NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
+
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'git://github.com/kana/vim-operator-user.git'
@@ -274,10 +277,10 @@ NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/supermomonga/shaberu.vim.git'
 NeoBundle 'git://github.com/taku-o/vim-toggle.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
-NeoBundle 'git://github.com/ujihisa/neco-look.git' " 動かない
+NeoBundle 'git://github.com/ujihisa/neco-look.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
+NeoBundle 'git://github.com/vim-scripts/Arduino-syntax-file.git'
 NeoBundle 'git://github.com/yomi322/vim-operator-suddendeath.git'
-NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'rev' : 'ver.8', 'autoload' : { 'insert' : 1 } }
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git'
@@ -285,6 +288,7 @@ NeoBundleLazy 'git://github.com/Shougo/unite-ssh.git'
 NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : ['Shougo/unite-outline', 'thinca/vim-unite-history', 'Shougo/unite-ssh', 'tsukkee/unite-tag', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' } }
 NeoBundleLazy 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 NeoBundleLazy 'git://github.com/Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
+NeoBundleLazy 'git://github.com/deton/jasegment.vim.git', { 'autoload' : { 'function_prefix' : 'jasegment' } }
 NeoBundleLazy 'git://github.com/majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'git://github.com/mattn/benchvimrc-vim.git', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
@@ -411,9 +415,8 @@ inoremap <expr> , smartchr#one_of(', ', ',')
 inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
 inoremap <expr> - smartchr#one_of(' - ', '--', '-')
 inoremap <expr> + smartchr#one_of(' + ', '++', '+')
-inoremap <expr> . smartchr#loop('.', '->', '=>')
 inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
-inoremap <expr> : smartchr#loop(':', '::')
+inoremap <expr> . smartchr#loop('.', '->', '=>')
 inoremap <expr> ; smartchr#one_of(';', ';<CR>')
 inoremap <expr> } smartchr#one_of('}', '}<CR>')
 
@@ -462,6 +465,9 @@ let g:shaberu_user_define_say_command = 'say -v Kyoko "%%TEXT%%"'
 
 " Gips
 let g:gips_speech_via_shaberu = 1
+
+" JaSegment
+let g:jasegment#model = 'rwcp'
 
 " SuddenDeath
 map <Leader>x <Plug>(operator-suddendeath)
@@ -535,8 +541,11 @@ augroup general
         setlocal autoindent
         setlocal cindent
     endfunction
-    autocmd BufReadPre  *.c,*.cpp,*.h,*.hpp call s:setCCPPConfig()
+    autocmd BufReadPre *.c,*.cpp,*.h,*.hpp call s:setCCPPConfig()
 
     " nask
-    autocmd BufReadPre  *.nas setlocal filetype=NASM
+    autocmd BufReadPre *.nas setlocal filetype=NASM
+
+    " Arduino
+    autocmd BufNewFile,BufRead *.pde,*.ino setlocal filetype=arduino
 augroup END
