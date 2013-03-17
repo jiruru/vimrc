@@ -30,6 +30,7 @@ set shiftwidth=4    " 自動インデントなどでずれる幅
 set smarttab        " 行頭に<Tab>でshiftwidth分インデント
 set softtabstop=4   " <Tab>, <BS>が対応する空白の数
 set tabstop=4       " 画面上で<Tab>文字が占める幅
+set formatoptions=j " 行連結の時自動でコメント解除して連結
 
 " エンコーディング関連
 set encoding=utf-8                          " vim内部で通常使用する文字エンコーディング
@@ -61,7 +62,6 @@ set timeout                     " マッピングのタイムアウト有効
 set timeoutlen=3000             " マッピングのタイムアウト時間
 set ttimeoutlen=100             " キーコードのタイムアウト時間
 set completeopt=menu            " 挿入モードでの補完設定
-set digraph
 let g:loaded_netrwPlugin = 1    " 標準Pluginを読み込まない
 let g:loaded_tar = 1
 let g:loaded_tarPlugin= 1
@@ -281,6 +281,7 @@ NeoBundle 'git://github.com/ujihisa/neco-look.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
 NeoBundle 'git://github.com/vim-scripts/Arduino-syntax-file.git'
 NeoBundle 'git://github.com/yomi322/vim-operator-suddendeath.git'
+NeoBundle 'JSON.vim'
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'rev' : 'ver.8', 'autoload' : { 'insert' : 1 } }
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git'
@@ -294,7 +295,7 @@ NeoBundleLazy 'git://github.com/mattn/benchvimrc-vim.git', { 'autoload' : {'comm
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
 NeoBundleLazy 'git://github.com/scrooloose/syntastic.git', { 'autoload' : { 'insert'  : '1'} }
 NeoBundleLazy 'git://github.com/thinca/vim-painter.git'
-NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git'
+NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git', { 'autoload' : { 'mappings'  : ['<Plug>(quickrun)'] } }
 NeoBundleLazy 'git://github.com/thinca/vim-ref.git', { 'autoload' : { 'insert'  : '1'} }
 NeoBundleLazy 'git://github.com/thinca/vim-unite-history.git'
 NeoBundleLazy 'git://github.com/tomasr/molokai.git'
@@ -308,12 +309,12 @@ NeoBundleLazy 'git://github.com/basyura/TweetVim.git', { 'depends' : ['basyura/t
 NeoBundleLazy 'git://github.com/basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
-NeoBundleLazy 'git://github.com/tyru/open-browser.vim', { 'autoload' : { 'mappings'  : '<Plug>(openbrowser-open)' } }
+NeoBundleLazy 'git://github.com/tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'] } }
 
 if (has('python') || has('python3'))
     " pip install --user git+git://github.com/Lokaltog/powerline
-    " set runtimepath+=~/.vim/bundle/powerline/powerline/bindings/vim
-    NeoBundle 'git://github.com/Lokaltog/powerline.git', { 'directory' : '/powerline/powerline/bindings/vim'}
+    set runtimepath+=~/.vim/bundle/powerline/powerline/bindings/vim
+    NeoBundleLazy 'git://github.com/Lokaltog/powerline.git' ", { 'directory' : '/powerline/powerline/bindings/vim'}
 else
     " Powerline
     NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
@@ -416,7 +417,7 @@ inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
 inoremap <expr> - smartchr#one_of(' - ', '--', '-')
 inoremap <expr> + smartchr#one_of(' + ', '++', '+')
 inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
-inoremap <expr> . smartchr#loop('.', '->', '=>')
+inoremap <expr> . smartchr#loop('.', '->', ' => ')
 inoremap <expr> ; smartchr#one_of(';', ';<CR>')
 inoremap <expr> } smartchr#one_of('}', '}<CR>')
 
@@ -548,4 +549,7 @@ augroup general
 
     " Arduino
     autocmd BufNewFile,BufRead *.pde,*.ino setlocal filetype=arduino
+
+    " json
+    autocmd BufRead,BufNewFile *.json set filetype=json autoindent
 augroup END
