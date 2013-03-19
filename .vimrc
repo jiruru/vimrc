@@ -266,6 +266,7 @@ call neobundle#rc(expand('~/.vim/bundle'))
 
 NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
 
+NeoBundle 'JSON.vim'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'git://github.com/kana/vim-operator-user.git'
@@ -280,8 +281,8 @@ NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/ujihisa/neco-look.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
 NeoBundle 'git://github.com/vim-scripts/Arduino-syntax-file.git'
+NeoBundle 'git://github.com/itchyny/thumbnail.vim.git'
 NeoBundle 'git://github.com/yomi322/vim-operator-suddendeath.git'
-NeoBundle 'JSON.vim'
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'rev' : 'ver.8', 'autoload' : { 'insert' : 1 } }
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git'
@@ -301,6 +302,7 @@ NeoBundleLazy 'git://github.com/thinca/vim-unite-history.git'
 NeoBundleLazy 'git://github.com/tomasr/molokai.git'
 NeoBundleLazy 'git://github.com/tsukkee/unite-tag.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
+NeoBundleLazy 'git://github.com/vim-jp/vital.vim.git'
 NeoBundleLazy 'git://github.com/w0ng/vim-hybrid.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
@@ -474,10 +476,13 @@ let g:jasegment#model = 'rwcp'
 map <Leader>x <Plug>(operator-suddendeath)
 
 " Open-Browser
-map <Leader>b <Plug>(openbrowser-open)
+map <Leader>op <Plug>(openbrowser-open)
 
 " learn-vimscript
 nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
+
+" Thumbnail
+nnoremap <Leader>b :Thumbnail<CR> zR
 
 
 "-------------------------------------------------------------------------------"
