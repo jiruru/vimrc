@@ -276,21 +276,19 @@ NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/supermomonga/shaberu.vim.git'
 NeoBundle 'git://github.com/taku-o/vim-toggle.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
+NeoBundle 'git://github.com/tpope/vim-repeat.git'
 NeoBundle 'git://github.com/ujihisa/neco-look.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
 NeoBundle 'git://github.com/vim-scripts/Arduino-syntax-file.git'
 NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git'
-NeoBundleLazy 'git://github.com/Shougo/unite-outline.git'
-NeoBundleLazy 'git://github.com/Shougo/unite-ssh.git'
-NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : ['Shougo/unite-outline', 'thinca/vim-unite-history', 'kannokanno/unite-todo', 'Shougo/unite-ssh', 'tsukkee/unite-tag', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' } }
+
 NeoBundleLazy 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 NeoBundleLazy 'git://github.com/Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'git://github.com/deton/jasegment.vim.git', { 'autoload' : { 'function_prefix' : 'jasegment' } }
 NeoBundleLazy 'git://github.com/itchyny/thumbnail.vim.git', { 'autoload' : {'commands' : 'Thumbnail'} }
 NeoBundleLazy 'git://github.com/kana/vim-operator-user.git', { 'autoload' : { 'function_prefix' : 'operator' } }
-NeoBundleLazy 'git://github.com/kannokanno/unite-todo.git'
 NeoBundleLazy 'git://github.com/majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'git://github.com/mattn/benchvimrc-vim.git', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
@@ -298,15 +296,19 @@ NeoBundleLazy 'git://github.com/scrooloose/syntastic.git', { 'autoload' : { 'ins
 NeoBundleLazy 'git://github.com/thinca/vim-painter.git'
 NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git', { 'autoload' : { 'mappings'  : ['<Plug>(quickrun)'] } }
 NeoBundleLazy 'git://github.com/thinca/vim-ref.git', { 'autoload' : { 'insert'  : '1'} }
-NeoBundleLazy 'git://github.com/thinca/vim-unite-history.git'
 NeoBundleLazy 'git://github.com/tomasr/molokai.git'
-NeoBundleLazy 'git://github.com/tsukkee/unite-tag.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/vim-jp/vital.vim.git'
 NeoBundleLazy 'git://github.com/w0ng/vim-hybrid.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'git://github.com/yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
+
+NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : ['Shougo/unite-outline', 'thinca/vim-unite-history', 'Shougo/unite-ssh', 'tsukkee/unite-tag', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' } }
+NeoBundleLazy 'git://github.com/Shougo/unite-outline.git'
+NeoBundleLazy 'git://github.com/Shougo/unite-ssh.git'
+NeoBundleLazy 'git://github.com/thinca/vim-unite-history.git'
+NeoBundleLazy 'git://github.com/tsukkee/unite-tag.git'
 
 NeoBundleLazy 'git://github.com/basyura/TweetVim.git', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay']} }
 NeoBundleLazy 'git://github.com/basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
@@ -350,11 +352,6 @@ nnoremap <silent> [unite]hc :<C-u>Unite -buffer-name=lines history/command<CR>
 nnoremap <silent> [unite]hs :<C-u>Unite -buffer-name=lines history/search<CR>
 nnoremap <silent> [unite]hy :<C-u>Unite -buffer-name=lines history/yank<CR>
 nnoremap <silent> [unite]ta :<C-u>Unite -buffer-name=tags tag tag/file<CR>
-nnoremap <silent> [unite]to :<C-u>Unite -buffer-name=Todo todo<CR>
-
-" unite-todo
-let g:unite_todo_data_directory = '$HOME/Dropbox/tmp'
-nnoremap <silent> td :UniteTodoAddSimple<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
