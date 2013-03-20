@@ -214,6 +214,9 @@ nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
 " 空行を追加
 nnoremap <silent> <Leader>o :<C-u>call append('.', '')<CR>
 
+" Tagが複数あればリスト表示
+nnoremap <C-]> g<C-]>zz
+
 
 "-----------------------------------------------------------------------------------"
 " 環境依存設定                                                                      |
@@ -283,7 +286,6 @@ NeoBundle 'git://github.com/vim-scripts/Arduino-syntax-file.git'
 NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git'
-
 NeoBundleLazy 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 NeoBundleLazy 'git://github.com/Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'git://github.com/deton/jasegment.vim.git', { 'autoload' : { 'function_prefix' : 'jasegment' } }
@@ -299,7 +301,6 @@ NeoBundleLazy 'git://github.com/thinca/vim-ref.git', { 'autoload' : { 'insert'  
 NeoBundleLazy 'git://github.com/tomasr/molokai.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/vim-jp/vital.vim.git'
-NeoBundleLazy 'git://github.com/w0ng/vim-hybrid.git'
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'git://github.com/yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
@@ -449,7 +450,7 @@ let g:quickrun_config = { "_" : { "runner" : "vimproc", "runner/vimproc/updateti
 let g:ConqueTerm_ReadUnfocused = 1
 let g:ConqueTerm_CloseOnEnd = 1
 let g:ConqueTerm_StartMessages = 0
-let g:ConqueTerm_CWInsert = 1
+" let g:ConqueTerm_CWInsert = 1
 noremap <silent> <Leader>sh :ConqueTermVSplit zsh<CR>
 
 " TweetVim
