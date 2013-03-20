@@ -500,19 +500,23 @@ augroup general
     autocmd InsertLeave * set nopaste
 
     " VimFiler
-    autocmd FileType vimfiler nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
-    autocmd FileType vimfiler vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
+    function! s:vimFilers()
+        nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
+        vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
+        nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
+        nnoremap <silent><buffer> / :<C-u>Unite file -default-action=vimfiler -start-insert<CR>
+    endfunction
+    autocmd FileType vimfiler call s:vimFilers()
 
     " Conque
     function! s:delete_ConqueTerm(buffer_name)
         let term_obj = conque_term#get_instance(a:buffer_name)
         call term_obj.close()
-        echo 'mopp'
     endfunction
     autocmd BufWinLeave zsh\s-\s? call <SID>delete_ConqueTerm(expand('%'))
 
     " Unite
-    function! s:unite_my_settings()
+    function! s:unites()
         " Overwrite settings.
         imap <buffer> <TAB> <Plug>(unite_select_next_line)
         imap <buffer> jj <Plug>(unite_insert_leave)
@@ -521,7 +525,7 @@ augroup general
         nnoremap <silent><buffer><expr> l unite#smart_map('l', unite#do_action('default'))
         nnoremap <silent><buffer><expr> t unite#do_action('tabopen')
     endfunction
-    autocmd FileType unite call s:unite_my_settings()
+    autocmd FileType unite call s:unites()
 
     " 状態の保存と復元
     autocmd BufWinLeave ?* silent mkview!
