@@ -258,8 +258,9 @@ if has('vim_starting')
 endif
 call neobundle#rc(expand('~/.vim/bundle'))
 
+NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
+
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
-NeoBundleLazy 'git://github.com/Shougo/vimproc.git', { 'autoload' : { 'function_prefix' : 'vimproc' }, 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
 NeoBundle 'git://github.com/kana/vim-textobj-user.git'
 NeoBundle 'git://github.com/mattn/learn-vimscript.git'
@@ -271,11 +272,11 @@ NeoBundle 'git://github.com/tpope/vim-repeat.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/ujihisa/neco-look.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
-NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
 NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'autoload' : { 'insert' : '1'} }
 NeoBundleLazy 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
+NeoBundleLazy 'git://github.com/Shougo/vimproc.git', { 'autoload' : { 'function_prefix' : 'vimproc' }, 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundleLazy 'git://github.com/Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'git://github.com/deton/jasegment.vim.git', { 'autoload' : { 'function_prefix' : 'jasegment' } }
 NeoBundleLazy 'git://github.com/itchyny/thumbnail.vim.git', { 'autoload' : {'commands' : 'Thumbnail'} }
