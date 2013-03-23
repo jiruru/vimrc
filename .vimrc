@@ -239,9 +239,6 @@ if "Darwin\n" == system('uname')
     nnoremap <silent> <Leader>df :<C-u>MacDictFocus<CR>
 
     set path=.,/opt/local/include,/usr/include   " ファイルの検索パス指定
-
-    " Macフラグ
-    let s:isDarwin = 1
 endif
 
 
@@ -261,36 +258,30 @@ if has('vim_starting')
 endif
 call neobundle#rc(expand('~/.vim/bundle'))
 
-" NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
-" NeoBundle 'git://github.com/kana/vim-textobj-user.git'
-" NeoBundle 'git://github.com/rhysd/unite-n3337.git'
-" NeoBundle 'git://github.com/t9md/vim-textmanip.git'
-" NeoBundle 'project.tar.gz'
-
-NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
-
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
-NeoBundle 'git://github.com/Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
-NeoBundle 'git://github.com/kana/vim-smartchr.git'
+NeoBundleLazy 'git://github.com/Shougo/vimproc.git', { 'autoload' : { 'function_prefix' : 'vimproc' }, 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
+NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
+NeoBundle 'git://github.com/kana/vim-textobj-user.git'
 NeoBundle 'git://github.com/mattn/learn-vimscript.git'
 NeoBundle 'git://github.com/modsound/gips-vim.git'
-NeoBundle 'git://github.com/mopp/backscratcher.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/supermomonga/shaberu.vim.git'
 NeoBundle 'git://github.com/taku-o/vim-toggle.git'
-NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/tpope/vim-repeat.git'
+NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/ujihisa/neco-look.git'
 NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
-NeoBundle 'git://github.com/vim-scripts/Arduino-syntax-file.git'
+NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
 NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
-NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git'
+NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'autoload' : { 'insert' : '1'} }
 NeoBundleLazy 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 NeoBundleLazy 'git://github.com/Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'git://github.com/deton/jasegment.vim.git', { 'autoload' : { 'function_prefix' : 'jasegment' } }
 NeoBundleLazy 'git://github.com/itchyny/thumbnail.vim.git', { 'autoload' : {'commands' : 'Thumbnail'} }
 NeoBundleLazy 'git://github.com/kana/vim-operator-user.git', { 'autoload' : { 'function_prefix' : 'operator' } }
+NeoBundleLazy 'git://github.com/kana/vim-smartchr.git', { 'autoload' : { 'insert' : '1' } }
+NeoBundleLazy 'git://github.com/kana/vim-smartinput.git', { 'autoload' : { 'insert'  : '1'} }
 NeoBundleLazy 'git://github.com/majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'git://github.com/mattn/benchvimrc-vim.git', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
@@ -301,11 +292,12 @@ NeoBundleLazy 'git://github.com/thinca/vim-ref.git', { 'autoload' : { 'insert'  
 NeoBundleLazy 'git://github.com/tomasr/molokai.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/vim-jp/vital.vim.git'
+NeoBundleLazy 'git://github.com/vim-scripts/Arduino-syntax-file.git', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'git://github.com/yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 
-NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : ['Shougo/unite-outline', 'thinca/vim-unite-history', 'Shougo/unite-ssh', 'tsukkee/unite-tag', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' } }
+NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : [ 'Shougo/unite-outline', 'thinca/vim-unite-history', 'Shougo/unite-ssh', 'tsukkee/unite-tag', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' }}
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git'
 NeoBundleLazy 'git://github.com/Shougo/unite-ssh.git'
 NeoBundleLazy 'git://github.com/thinca/vim-unite-history.git'
@@ -317,7 +309,7 @@ NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'm
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'git://github.com/tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'] } }
 
-if (has('python') || has('python3'))
+if (has('python'))
     " pip install --user git+git://github.com/Lokaltog/powerline
     NeoBundle 'git://github.com/Lokaltog/powerline.git', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
 else
@@ -369,14 +361,6 @@ let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 
-" Neocomplcache-clang
-if exists('s:isDarwin')
-    let g:neocomplcache_clang_use_library = 0
-    let g:neocomplcache_clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
-    let g:neocomplcache_clang_user_options = '-I /opt/local/include/ -I /opt/local/include/boost/'
-    let g:neocomplcache_clang_executable_path = '/opt/local/bin/'
-endif
-
 " Easymotion
 let g:EasyMotion_leader_key = '<Leader>e'
 
@@ -413,18 +397,22 @@ highlight TagbarHighlight cterm=bold,underline ctermfg=1
 highlight TagbarSignature ctermfg=70
 nnoremap <silent> tb :<C-U>TagbarToggle<CR>
 
-" Smartchr TODO 修正
-inoremap <expr> % smartchr#one_of(' % ', '%')
-inoremap <expr> & smartchr#one_of(' & ', ' && ', '&')
-inoremap <expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>')
-inoremap <expr> , smartchr#one_of(', ', ',')
-inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
-inoremap <expr> - smartchr#one_of(' - ', '--', '-')
-inoremap <expr> + smartchr#one_of(' + ', '++', '+')
-inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
-inoremap <expr> . smartchr#loop('.', '->', ' => ')
-inoremap <expr> ; smartchr#one_of(';', ';<CR>')
-inoremap <expr> } smartchr#one_of('}', '}<CR>')
+" Smartchr
+let s:bundle = neobundle#get('vim-smartchr')
+function! s:bundle.hooks.on_source(bundle)
+    inoremap <expr> % smartchr#one_of(' % ', '%')
+    inoremap <expr> & smartchr#one_of(' & ', ' && ', '&')
+    inoremap <expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>')
+    inoremap <expr> , smartchr#one_of(', ', ',')
+    inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
+    inoremap <expr> - smartchr#one_of(' - ', '--', '-')
+    inoremap <expr> + smartchr#one_of(' + ', '++', '+')
+    inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
+    inoremap <expr> . smartchr#loop('.', '->', ' => ')
+    inoremap <expr> ; smartchr#one_of(';', ';<CR>')
+    inoremap <expr> } smartchr#one_of('}', '}<CR>')
+endfunction
+unlet s:bundle
 
 " Like A IDE :)
 function! s:likeIDEMode()
@@ -450,7 +438,7 @@ let g:quickrun_config = { "_" : { "runner" : "vimproc", "runner/vimproc/updateti
 let g:ConqueTerm_ReadUnfocused = 1
 let g:ConqueTerm_CloseOnEnd = 1
 let g:ConqueTerm_StartMessages = 0
-" let g:ConqueTerm_CWInsert = 1
+let g:ConqueTerm_CWInsert = 1
 noremap <silent> <Leader>sh :ConqueTermVSplit zsh<CR>
 
 " TweetVim
@@ -547,6 +535,13 @@ augroup general
 
     " C/C++
     function! s:setCCPPConfig()
+        " Neocomplcache-clang
+        if "Darwin\n" == system('uname')
+            let g:neocomplcache_clang_use_library = 0
+            let g:neocomplcache_clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
+            let g:neocomplcache_clang_user_options = '-I /opt/local/include/ -I /opt/local/include/boost/'
+            let g:neocomplcache_clang_executable_path = '/opt/local/bin/'
+        endif
         NeoBundleSource cpp-vim
         NeoBundleSource neocomplcache-clang
         setlocal nosmartindent
