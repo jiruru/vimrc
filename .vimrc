@@ -407,23 +407,27 @@ function! s:bundle.hooks.on_source(bundle)
                 \ }
 
     call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
+    let l:share.at = '( \%# )'
+    call smartinput#define_rule(l:share)
     call smartinput#define_rule({
                 \ 'at'    : '(\%#)',
                 \ 'char'  : '<Space>',
                 \ 'input' : '<Space><Space><Left>'
                 \ })
 
-    let l:share.at = '( \%# )'
+    let l:share.at = '<\%#>'
     call smartinput#define_rule(l:share)
-
-    call smartinput#map_to_trigger('i', '>', '>', '>')
     call smartinput#define_rule({
                 \ 'at'    : '<\%#',
                 \ 'char'  : '>',
                 \ 'input' : '><Left>'
                 \ })
-    let l:share.at = '<\%#>'
-    call smartinput#define_rule(l:share)
+
+    call smartinput#define_rule({
+                \ 'at': '\s\+\%#',
+                \ 'char': '<CR>',
+                \ 'input': "<C-o>:call setline('.', substitute(getline('.'), '\\s\\+$', '', ''))<CR><CR>",
+                \ })
 endfunction
 unlet s:bundle
 
