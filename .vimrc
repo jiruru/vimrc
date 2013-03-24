@@ -296,7 +296,7 @@ NeoBundleLazy 'git://github.com/vim-jp/vital.vim.git'
 NeoBundleLazy 'git://github.com/vim-scripts/Arduino-syntax-file.git', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'git://github.com/yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
-NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
+NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'directory' : 'conque', 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 
 NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : [ 'Shougo/unite-outline', 'thinca/vim-unite-history', 'Shougo/unite-ssh', 'tsukkee/unite-tag', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' }}
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git'
@@ -353,7 +353,6 @@ let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_max_list=1000
-" Enable heavy omni completion.
 if !exists('g:neocomplcache_omni_patterns')
     let g:neocomplcache_omni_patterns = {}
 endif
@@ -407,21 +406,22 @@ function! s:bundle.hooks.on_source(bundle)
                 \ }
 
     call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
-    let l:share.at = '( \%# )'
-    call smartinput#define_rule(l:share)
     call smartinput#define_rule({
                 \ 'at'    : '(\%#)',
                 \ 'char'  : '<Space>',
                 \ 'input' : '<Space><Space><Left>'
                 \ })
-
-    let l:share.at = '<\%#>'
+    let l:share.at = '( \%# )'
     call smartinput#define_rule(l:share)
+
+    call smartinput#map_to_trigger('i', '>', '>', '>')
     call smartinput#define_rule({
                 \ 'at'    : '<\%#',
                 \ 'char'  : '>',
                 \ 'input' : '><Left>'
                 \ })
+    let l:share.at = '<\%#>'
+    call smartinput#define_rule(l:share)
 
     call smartinput#define_rule({
                 \ 'at': '\s\+\%#',
@@ -449,7 +449,7 @@ endfunction
 unlet s:bundle
 
 " Like A IDE :)
-function! s:likeIDEMode()
+function! s:likeIDE()
     cd %:p:h
     VimFilerExplorer -simple
     wincmd l
@@ -457,7 +457,7 @@ function! s:likeIDEMode()
     wincmd h
     " SrcExplToggle
 endfunction
-nnoremap <silent> <Leader>id :call <SID>likeIDEMode()<CR>
+nnoremap <silent> <Leader>id :call <SID>likeIDE()<CR>
 
 " Ref-vim
 let g:ref_open = 'split'
