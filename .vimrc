@@ -268,6 +268,7 @@ NeoBundle 'git://github.com/modsound/gips-vim.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/supermomonga/shaberu.vim.git'
 NeoBundle 'git://github.com/taku-o/vim-toggle.git'
+NeoBundle 'git://github.com/thinca/vim-ref.git'
 NeoBundle 'git://github.com/tpope/vim-repeat.git'
 NeoBundle 'git://github.com/tpope/vim-surround.git'
 NeoBundle 'git://github.com/ujihisa/neco-look.git'
@@ -289,7 +290,6 @@ NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { '
 NeoBundleLazy 'git://github.com/scrooloose/syntastic.git', { 'autoload' : { 'insert'  : '1'} }
 NeoBundleLazy 'git://github.com/thinca/vim-painter.git'
 NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git', { 'autoload' : { 'mappings'  : ['<Plug>(quickrun)'] } }
-NeoBundleLazy 'git://github.com/thinca/vim-ref.git', { 'autoload' : { 'insert'  : '1'} }
 NeoBundleLazy 'git://github.com/tomasr/molokai.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/vim-jp/vital.vim.git'
@@ -397,6 +397,35 @@ highlight TagbarType cterm=bold ctermfg=55
 highlight TagbarHighlight cterm=bold,underline ctermfg=1
 highlight TagbarSignature ctermfg=70
 nnoremap <silent> tb :<C-U>TagbarToggle<CR>
+
+" Smartinput
+let s:bundle = neobundle#get('vim-smartinput')
+function! s:bundle.hooks.on_source(bundle)
+    let l:share = {
+                \ 'char'  : '<BS>',
+                \ 'input' : '<Del><BS>'
+                \ }
+
+    call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
+    call smartinput#define_rule({
+                \ 'at'    : '(\%#)',
+                \ 'char'  : '<Space>',
+                \ 'input' : '<Space><Space><Left>'
+                \ })
+
+    let l:share.at = '( \%# )'
+    call smartinput#define_rule(l:share)
+
+    call smartinput#map_to_trigger('i', '>', '>', '>')
+    call smartinput#define_rule({
+                \ 'at'    : '<\%#',
+                \ 'char'  : '>',
+                \ 'input' : '><Left>'
+                \ })
+    let l:share.at = '<\%#>'
+    call smartinput#define_rule(l:share)
+endfunction
+unlet s:bundle
 
 " Smartchr
 let s:bundle = neobundle#get('vim-smartchr')
