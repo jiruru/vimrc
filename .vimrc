@@ -163,8 +163,8 @@ noremap <C-H> ^
 noremap <C-L> $
 
 " バッファ操作
-noremap <silent> <C-c> :bprevious<CR>
-noremap <silent> <C-x> :bnext<CR>
+noremap <silent> <C-x> :bprevious<CR>
+noremap <silent> <C-c> :bnext<CR>
 
 " Tab操作
 noremap to :tabnew<Space>
@@ -174,6 +174,12 @@ noremap <S-Tab> gT
 " 画面分割
 noremap <Leader>sp :split<Space>
 noremap <Leader>vsp :vsplit<Space>
+
+" エラーリスト移動
+nnoremap <silent> [o :cprevious<CR>
+nnoremap <silent> ]o :cnext<CR>
+nnoremap <silent> [o :<C-u>cfirst<CR>
+nnoremap <silent> ]o :<C-u>clast<CR>
 
 " Windowサイズ変更
 noremap <silent> <S-Left> <C-U>:wincmd <<CR>
@@ -521,6 +527,9 @@ augroup general
 
     " 挿入モード解除時に自動でpasteをoff
     autocmd InsertLeave * set nopaste
+
+    " 自動的にQuickfix-windowを開く
+    autocmd QuickFixCmdPost *grep* cwindow
 
     " VimFiler
     function! s:vimFilers()
