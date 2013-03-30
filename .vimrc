@@ -380,21 +380,13 @@ vmap <Leader><Leader> <Plug>NERDCommenterNested
 " VimFiler
 nnoremap <silent> fvs :VimFilerExplorer<CR>
 nnoremap <silent> fvo :VimFilerTab<CR>
-let s:bundle = neobundle#get('vimfiler')
-function! s:bundle.hooks.on_source(bundle)
-    let g:vimfiler_as_default_explorer = 1
-    let g:vimfiler_safe_mode_by_default = 0
-    let g:vimfiler_tree_closed_icon = '▸'
-    let g:vimfiler_tree_opened_icon = '▾'
-    let g:vimfiler_directory_display_top = 1
-    let g:vimfiler_preview_action = 'below'
-    let g:vimfiler_split_action = 'right'
-    nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
-    vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
-    nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
-    nnoremap <silent><buffer> / :<C-u>Unite file -default-action=vimfiler -start-insert<CR>
-endfunction
-unlet s:bundle
+let g:vimfiler_as_default_explorer = 1
+let g:vimfiler_safe_mode_by_default = 0
+let g:vimfiler_tree_closed_icon = '▸'
+let g:vimfiler_tree_opened_icon = '▾'
+let g:vimfiler_directory_display_top = 1
+let g:vimfiler_preview_action = 'below'
+let g:vimfiler_split_action = 'right'
 
 " SrcExpl
 nmap <silent> <Leader>sc :SrcExplToggle<CR>
@@ -571,6 +563,15 @@ augroup general
 
     " 自動的にQuickfix-windowを開く
     autocmd QuickFixCmdPost *grep* cwindow
+
+    " VimFiler
+    function! s:settings_vimfiler()
+        nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
+        vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
+        nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
+        nnoremap <silent><buffer> / :<C-u>Unite file -default-action=vimfiler -start-insert<CR>
+    endfunction
+    autocmd FileType vimfiler call <SID>settings_vimfiler()
 
     " Conque
     function! s:delete_ConqueTerm(buffer_name)
