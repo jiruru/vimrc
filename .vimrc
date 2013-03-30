@@ -298,8 +298,8 @@ NeoBundleLazy 'git://github.com/thinca/vim-painter.git'
 NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git', { 'autoload' : { 'mappings'  : ['<Plug>(quickrun)'] } }
 NeoBundleLazy 'git://github.com/tomasr/molokai.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
-NeoBundleLazy 'git://github.com/vim-jp/vital.vim.git'
-NeoBundleLazy 'git://github.com/ynkdir/vim-vimlparser.git'
+" NeoBundleLazy 'git://github.com/vim-jp/vital.vim.git'
+" NeoBundleLazy 'git://github.com/ynkdir/vim-vimlparser.git'
 NeoBundleLazy 'git://github.com/vim-scripts/Arduino-syntax-file.git', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'git://github.com/yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
