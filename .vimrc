@@ -10,9 +10,6 @@
 "                                                    |___/                |_|   |_|
 "---------------------------------------------------------------------------------------"
 
-" viとの互換をオフ
-set nocompatible
-
 " バックアップファイルと一時ファイル設定
 if isdirectory(expand('~/.vim_backup'))
     set backupdir=~/.vim_backup
@@ -30,7 +27,7 @@ set shiftwidth=4    " 自動インデントなどでずれる幅
 set smarttab        " 行頭に<Tab>でshiftwidth分インデント
 set softtabstop=4   " <Tab>, <BS>が対応する空白の数
 set tabstop=4       " 画面上で<Tab>文字が占める幅
-set formatoptions=j " 行連結の時自動でコメント解除して連結
+set formatoptions+=j " 行連結の時自動でコメント解除して連結
 
 " エンコーディング関連
 set encoding=utf-8                          " vim内部で通常使用する文字エンコーディング
@@ -47,7 +44,7 @@ set smartcase   " 大文字があれば通常の検索
 set foldenable
 set foldcolumn=3            " 左側に折りたたみガイド表示$
 set foldmethod=indent       " 折畳の判別
-set foldtext=g:toFoldFunc() " 折りたたみ時の表示設定
+set foldtext=g:ToFoldFunc() " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
 
 " その他
@@ -83,7 +80,7 @@ set showcmd             " 入力中のコマンド表示
 set showmatch           " 括弧強調
 set showtabline=2       " タブバーを常に表示
 set t_Co=256
-syntax on               " 強調表示有効
+syntax enable               " 強調表示有効
 colorscheme desert
 highlight Cursor ctermbg=55
 highlight FoldColumn ctermfg=130
@@ -99,28 +96,28 @@ highlight TabLineSel ctermbg=5
 " Functions
 "-------------------------------------------------------------------------------"
 " 折り畳み時表示テキスト設定用関数
-function! g:toFoldFunc()
+function! g:ToFoldFunc()
     " 折りたたみ開始行取得
-    let l:line = getline(v:foldstart)
+    let line = getline(v:foldstart)
 
     " 行頭の空白数計算 - 空白で分割→先頭の一致部分を検索しインデックスをheadSpNumに設定
-    let l:headSpNum = stridx(l:line, split(l:line, ' ')[0])
+    let headSpNum = stridx(line, split(line, ' ')[0])
 
     " 行頭の空白を置換
-    if (l:headSpNum == 1)
-        let l:line = substitute(l:line, '\ ', '-', '')
-    elseif (1 < l:headSpNum)
-        let l:line = substitute(l:line, '\ ', '+', '')
+    if (headSpNum == 1)
+        let line = substitute(line, '\ ', '-', '')
+    elseif (1 < headSpNum)
+        let line = substitute(line, '\ ', '+', '')
 
         " 区切りとして空白を2つ残す
-        let l:i = 2
-        while (l:i < l:headSpNum)
-            let l:line = substitute(l:line, '\ ', '-', '')
-            let l:i += 1
+        let i = 2
+        while (i < headSpNum)
+            let line = substitute(line, '\ ', '-', '')
+            let i += 1
         endwhile
     endif
 
-    return printf('%s %s [ %2d Lines Lv%02d ] %s', l:line, v:folddashes, (v:foldend-v:foldstart+1), v:foldlevel, v:folddashes)
+    return printf('%s %s [ %2d Lines Lv%02d ] %s', line, v:folddashes, (v:foldend-v:foldstart+1), v:foldlevel, v:folddashes)
 endfunction
 
 
@@ -178,14 +175,14 @@ noremap <Leader>vsp :vsplit<Space>
 " エラーリスト移動
 nnoremap <silent> [o :cprevious<CR>
 nnoremap <silent> ]o :cnext<CR>
-nnoremap <silent> [o :<C-u>cfirst<CR>
-nnoremap <silent> ]o :<C-u>clast<CR>
+nnoremap <silent> [O :<C-u>cfirst<CR>
+nnoremap <silent> ]O :<C-u>clast<CR>
 
 " Windowサイズ変更
-noremap <silent> <S-Left> <C-U>:wincmd <<CR>
-noremap <silent> <S-Right> <C-U>:wincmd ><CR>
-noremap <silent> <S-Up> <C-U>:wincmd -<CR>
-noremap <silent> <S-Down> <C-U>:wincmd +<CR>
+noremap <silent> <S-Left> :<C-U>wincmd <<CR>
+noremap <silent> <S-Right> :<C-U>wincmd ><CR>
+noremap <silent> <S-Up> :<C-U>wincmd -<CR>
+noremap <silent> <S-Down> :<C-U>wincmd +<CR>
 
 " 検索とジャンプで中央へ
 nnoremap n nzz
@@ -197,9 +194,6 @@ nnoremap '' ''zz
 " Yand & Paste
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
-nnoremap <silent> cy ce<C-R>0<ESC>:let @/ = @1<CR>:noh<CR>
-vnoremap <silent> cy c<C-R>0<ESC>:let @/ = @1<CR>:noh<CR>
-nnoremap <silent> ciy ciw<C-R>0<ESC>:let @/ = @1<CR>:noh<CR>
 
 " 入れ替え
 noremap ; :
@@ -215,7 +209,7 @@ nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
 nnoremap <Leader>cd :lcd %:p:h<CR>
 
 " 検索ハイライト消去
-nnoremap <silent> <Esc><Esc> :nohlsearch<CR><Esc>
+nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
 
 " 空行を追加
 nnoremap <silent> <Leader>o :<C-u>call append('.', '')<CR>
@@ -228,7 +222,7 @@ nnoremap <C-]> g<C-]>zz
 " 環境依存設定                                                                      |
 "-----------------------------------------------------------------------------------"
 " Macのみの設定
-if "Darwin\n" == system('uname')
+if executable('sw_vers')
     " Mac の辞書.appで開く from http://qiita.com/items/6928282c5c843aad81d4
     " 引数に渡したワードを検索
     command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
@@ -266,12 +260,15 @@ call neobundle#rc(expand('~/.vim/bundle'))
 
 NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
 
+" NeoBundleLazy 'git://github.com/vim-jp/vital.vim.git'
+" NeoBundleLazy 'git://github.com/ynkdir/vim-vimlparser.git'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
+NeoBundle 'git://github.com/kana/vim-operator-replace.git'
 NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
 NeoBundle 'git://github.com/kana/vim-textobj-user.git'
-NeoBundle 'git://github.com/osyo-manga/vim-textobj-multiblock.git'
 NeoBundle 'git://github.com/mattn/learn-vimscript.git'
 NeoBundle 'git://github.com/modsound/gips-vim.git'
+NeoBundle 'git://github.com/osyo-manga/vim-textobj-multiblock.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/supermomonga/shaberu.vim.git'
 NeoBundle 'git://github.com/taku-o/vim-toggle.git'
@@ -299,8 +296,6 @@ NeoBundleLazy 'git://github.com/thinca/vim-painter.git'
 NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git', { 'autoload' : { 'mappings'  : ['<Plug>(quickrun)'] } }
 NeoBundleLazy 'git://github.com/tomasr/molokai.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
-" NeoBundleLazy 'git://github.com/vim-jp/vital.vim.git'
-" NeoBundleLazy 'git://github.com/ynkdir/vim-vimlparser.git'
 NeoBundleLazy 'git://github.com/vim-scripts/Arduino-syntax-file.git', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'git://github.com/yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
@@ -542,12 +537,14 @@ nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
 " Thumbnail
 nnoremap <Leader>b :Thumbnail<CR>
 
-" Textobj-multiblock
+" Textobj-Multiblock
 omap ab <Plug>(textobj-multiblock-a)
 omap ib <Plug>(textobj-multiblock-i)
 vmap ab <Plug>(textobj-multiblock-a)
 vmap ib <Plug>(textobj-multiblock-i)
 
+" Textobj-Operator-Replace
+map _ <Plug>(operator-replace)
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -607,12 +604,12 @@ augroup general
         let g:lisp_rainbow = 1
         let g:lisp_instring = 1
     endfunction
-    autocmd BufReadPre *.lisp call s:setLispConfig()
+    autocmd FileType lisp call s:setLispConfig()
 
     " C/C++
     function! s:setCCPPConfig()
         " Neocomplcache-clang
-        if "Darwin\n" == system('uname')
+        if executable('sw_vers')
             let g:neocomplcache_clang_use_library = 0
             let g:neocomplcache_clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
             let g:neocomplcache_clang_user_options = '-I /opt/local/include/ -I /opt/local/include/boost/'
@@ -625,7 +622,7 @@ augroup general
         setlocal autoindent
         setlocal cindent
     endfunction
-    autocmd BufReadPre *.c,*.cpp,*.h,*.hpp call s:setCCPPConfig()
+    autocmd FileType c,cpp call s:setCCPPConfig()
 
     " nask
     autocmd BufReadPre *.nas setlocal filetype=NASM
@@ -634,5 +631,5 @@ augroup general
     autocmd BufNewFile,BufRead *.pde,*.ino setlocal filetype=arduino
 
     " json
-    autocmd BufRead,BufNewFile *.json set filetype=json autoindent
+    autocmd BufRead,BufNewFile *.json setlocal filetype=json autoindent
 augroup END
