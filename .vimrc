@@ -269,6 +269,7 @@ NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
 NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
 NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
 NeoBundle 'git://github.com/kana/vim-textobj-user.git'
+NeoBundle 'git://github.com/osyo-manga/vim-textobj-multiblock.git'
 NeoBundle 'git://github.com/mattn/learn-vimscript.git'
 NeoBundle 'git://github.com/modsound/gips-vim.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
@@ -319,7 +320,7 @@ NeoBundleLazy 'git://github.com/tyru/open-browser.vim', { 'autoload' : { 'mappin
 
 if (has('python'))
     " pip install --user git+git://github.com/Lokaltog/powerline
-    " NeoBundle 'git://github.com/Lokaltog/powerline.git', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
+    NeoBundle 'git://github.com/Lokaltog/powerline.git', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
 else
     " Powerline
     NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
@@ -377,15 +378,23 @@ nmap <Leader><Leader> <Plug>NERDCommenterToggle
 vmap <Leader><Leader> <Plug>NERDCommenterNested
 
 " VimFiler
-let g:vimfiler_as_default_explorer = 1
-let g:vimfiler_safe_mode_by_default = 0
-let g:vimfiler_tree_closed_icon = '▸'
-let g:vimfiler_tree_opened_icon = '▾'
-let g:vimfiler_directory_display_top = 1
-let g:vimfiler_preview_action = 'below'
-let g:vimfiler_split_action = 'right'
 nnoremap <silent> fvs :VimFilerExplorer<CR>
 nnoremap <silent> fvo :VimFilerTab<CR>
+let s:bundle = neobundle#get('vimfiler')
+function! s:bundle.hooks.on_source(bundle)
+    let g:vimfiler_as_default_explorer = 1
+    let g:vimfiler_safe_mode_by_default = 0
+    let g:vimfiler_tree_closed_icon = '▸'
+    let g:vimfiler_tree_opened_icon = '▾'
+    let g:vimfiler_directory_display_top = 1
+    let g:vimfiler_preview_action = 'below'
+    let g:vimfiler_split_action = 'right'
+    nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
+    vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
+    nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
+    nnoremap <silent><buffer> / :<C-u>Unite file -default-action=vimfiler -start-insert<CR>
+endfunction
+unlet s:bundle
 
 " SrcExpl
 nmap <silent> <Leader>sc :SrcExplToggle<CR>
@@ -541,6 +550,12 @@ nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
 " Thumbnail
 nnoremap <Leader>b :Thumbnail<CR>
 
+" Textobj-multiblock
+omap ab <Plug>(textobj-multiblock-a)
+omap ib <Plug>(textobj-multiblock-i)
+vmap ab <Plug>(textobj-multiblock-a)
+vmap ib <Plug>(textobj-multiblock-i)
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -556,15 +571,6 @@ augroup general
 
     " 自動的にQuickfix-windowを開く
     autocmd QuickFixCmdPost *grep* cwindow
-
-    " VimFiler
-    function! s:vimFilers()
-        nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
-        vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
-        nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
-        nnoremap <silent><buffer> / :<C-u>Unite file -default-action=vimfiler -start-insert<CR>
-    endfunction
-    autocmd FileType vimfiler call s:vimFilers()
 
     " Conque
     function! s:delete_ConqueTerm(buffer_name)
