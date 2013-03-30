@@ -299,6 +299,7 @@ NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git', { 'autoload' : { 'mapp
 NeoBundleLazy 'git://github.com/tomasr/molokai.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/vim-jp/vital.vim.git'
+NeoBundleLazy 'git://github.com/ynkdir/vim-vimlparser.git'
 NeoBundleLazy 'git://github.com/vim-scripts/Arduino-syntax-file.git', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'git://github.com/yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
@@ -318,7 +319,7 @@ NeoBundleLazy 'git://github.com/tyru/open-browser.vim', { 'autoload' : { 'mappin
 
 if (has('python'))
     " pip install --user git+git://github.com/Lokaltog/powerline
-    NeoBundle 'git://github.com/Lokaltog/powerline.git', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
+    " NeoBundle 'git://github.com/Lokaltog/powerline.git', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
 else
     " Powerline
     NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
@@ -406,33 +407,60 @@ nnoremap <silent> tb :<C-U>TagbarToggle<CR>
 " Smartinput
 let s:bundle = neobundle#get('vim-smartinput')
 function! s:bundle.hooks.on_source(bundle)
-    let l:share = {
-                \ 'char'  : '<BS>',
-                \ 'input' : '<Del><BS>'
-                \ }
-
     call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
     call smartinput#define_rule({
                 \ 'at'    : '(\%#)',
                 \ 'char'  : '<Space>',
-                \ 'input' : '<Space><Space><Left>'
+                \ 'input' : '<Space><Space><Left>',
                 \ })
-    let l:share.at = '( \%# )'
-    call smartinput#define_rule(l:share)
+
+    call smartinput#define_rule( {
+                \ 'at' : '( \%# )',
+                \ 'char'  : '<BS>',
+                \ 'input' : '<Del><BS>',
+                \ })
 
     call smartinput#map_to_trigger('i', '>', '>', '>')
     call smartinput#define_rule({
                 \ 'at'    : '<\%#',
                 \ 'char'  : '>',
-                \ 'input' : '><Left>'
+                \ 'input' : '><Left>',
                 \ })
-    let l:share.at = '<\%#>'
-    call smartinput#define_rule(l:share)
+
+    call smartinput#define_rule( {
+                \ 'at' : '<\%#>',
+                \ 'char'  : '<BS>',
+                \ 'input' : '<Del><BS>'
+                \ })
 
     call smartinput#define_rule({
                 \ 'at': '\s\+\%#',
                 \ 'char': '<CR>',
                 \ 'input': "<C-o>:call setline('.', substitute(getline('.'), '\\s\\+$', '', ''))<CR><CR>",
+                \ })
+
+    call smartinput#define_rule({
+                \ 'at': 'if\%#',
+                \ 'char': '(',
+                \ 'input': '<Space>(',
+                \ })
+
+    call smartinput#define_rule({
+                \ 'at': '.\+if\s(.\+\%#',
+                \ 'char': ')',
+                \ 'input': ')<Space>',
+                \ })
+
+    call smartinput#define_rule({
+                \ 'at': 'for\%#',
+                \ 'char': '(',
+                \ 'input': '<Space>(',
+                \ })
+
+    call smartinput#define_rule({
+                \ 'at': '.\+for\s(.\+\%#',
+                \ 'char': ')',
+                \ 'input': ')<Space>',
                 \ })
 endfunction
 unlet s:bundle
@@ -449,8 +477,6 @@ function! s:bundle.hooks.on_source(bundle)
     inoremap <expr> + smartchr#one_of(' + ', '++', '+')
     inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
     inoremap <expr> . smartchr#loop('.', '->', ' => ')
-    inoremap <expr> ; smartchr#one_of(';', ';<CR>')
-    inoremap <expr> } smartchr#one_of('}', '}<CR>')
 endfunction
 unlet s:bundle
 
