@@ -301,7 +301,7 @@ NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'comman
 NeoBundleLazy 'git://github.com/yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'directory' : 'conque', 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 
-NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'depends' : [ 'Shougo/unite-outline', 'thinca/vim-unite-history', 'Shougo/unite-ssh', 'tsukkee/unite-tag', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' }}
+NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'rev' : 'if_lua', 'depends' : [ 'Shougo/unite-outline', 'thinca/vim-unite-history', 'Shougo/unite-ssh', 'tsukkee/unite-tag', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' }}
 NeoBundleLazy 'git://github.com/Shougo/unite-outline.git'
 NeoBundleLazy 'git://github.com/Shougo/unite-ssh.git'
 NeoBundleLazy 'git://github.com/thinca/vim-unite-history.git'
@@ -313,12 +313,13 @@ NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'm
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'git://github.com/tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'] } }
 
-if (has('python'))
+if (!has('python'))
     " pip install --user git+git://github.com/Lokaltog/powerline
     NeoBundle 'git://github.com/Lokaltog/powerline.git', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
 else
+    set runtimepath+=~/Dropbox/Program/Vim/NyaruLine
     " Powerline
-    NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
+    " NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
     let g:Powerline_stl_path_style = 'short'
 
     " PowerLineの再読み込み
@@ -374,6 +375,7 @@ vmap <Leader><Leader> <Plug>NERDCommenterNested
 
 " VimFiler
 nnoremap <silent> fvs :VimFilerExplorer<CR>
+nnoremap <silent> fvr :VimFilerExplorer ssh://ains<CR>
 nnoremap <silent> fvo :VimFilerTab<CR>
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default = 0
