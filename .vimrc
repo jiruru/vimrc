@@ -298,6 +298,7 @@ NeoBundleLazy 'git://github.com/tomasr/molokai.git'
 NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
 NeoBundleLazy 'git://github.com/vim-scripts/Arduino-syntax-file.git', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
+NeoBundleLazy 'git://github.com/uguu-org/vim-matrix-screensaver.git', { 'autoload' : {'commands' : 'Matrix'} }
 NeoBundleLazy 'git://github.com/yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'directory' : 'conque', 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 
@@ -313,12 +314,11 @@ NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'm
 NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'git://github.com/tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'] } }
 
-if (!has('python'))
+if (has('python'))
     " pip install --user git+git://github.com/Lokaltog/powerline
     NeoBundle 'git://github.com/Lokaltog/powerline.git', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
 else
-    set runtimepath+=~/Dropbox/Program/Vim/NyaruLine
-    " Powerline
+    " set runtimepath+=~/Dropbox/Program/Vim/NyaruLine
     " NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
     let g:Powerline_stl_path_style = 'short'
 
@@ -496,7 +496,7 @@ let g:ref_source_webdict_sites = { 'Wikipedia:ja' : 'http://ja.wikipedia.org/wik
 let g:ref_source_webdict_sites.default = 'Wikipedia:ja'
 
 " QuickRun
-let g:quickrun_config = { "_" : { "runner" : "vimproc", "runner/vimproc/updatetime" : 60, "outputter/buffer/split" : ":botright", "outputter/buffer/close_on_empty" : 1 }}
+let g:quickrun_config = { '*': {'runmode': 'async:remote:vimproc'}, "_" : { "runner" : "vimproc", "runner/vimproc/updatetime" : 60, "outputter/buffer/split" : ":botright", "outputter/buffer/close_on_empty" : 1 }}
 
 " Conque
 let g:ConqueTerm_ReadUnfocused = 1
