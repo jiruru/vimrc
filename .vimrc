@@ -212,7 +212,8 @@ nnoremap <Leader>cd :lcd %:p:h<CR>
 nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
 
 " 空行を追加
-nnoremap <silent> <Leader>o :<C-u>call append('.', '')<CR>
+nnoremap <silent> <Leader>o   :<C-u>for i in range(1, v:count1) \| call append(line('.'),   '') \| endfor \| silent! call repeat#set("<Space>o", v:count1)<CR>
+nnoremap <silent> <Leader>O   :<C-u>for i in range(1, v:count1) \| call append(line('.')-1, '') \| endfor \| silent! call repeat#set("<Space>O", v:count1)<CR>
 
 " Tagが複数あればリスト表示
 nnoremap <C-]> g<C-]>zz
