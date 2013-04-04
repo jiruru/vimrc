@@ -20,13 +20,13 @@ set writebackup     " 上書き前にバックアップ作成
 set swapfile
 
 " インデント設定
-set backspace=2     " Backspaceの動作
+set backspace=2      " Backspaceの動作
 set cindent
-set expandtab       " <Tab>の代わりに空白
-set shiftwidth=4    " 自動インデントなどでずれる幅
-set smarttab        " 行頭に<Tab>でshiftwidth分インデント
-set softtabstop=4   " <Tab>, <BS>が対応する空白の数
-set tabstop=4       " 画面上で<Tab>文字が占める幅
+set expandtab        " <Tab>の代わりに空白
+set shiftwidth=4     " 自動インデントなどでずれる幅
+set smarttab         " 行頭に<Tab>でshiftwidth分インデント
+set softtabstop=4    " <Tab>, <BS>が対応する空白の数
+set tabstop=4        " 画面上で<Tab>文字が占める幅
 set formatoptions+=j " 行連結の時自動でコメント解除して連結
 
 " エンコーディング関連
@@ -47,6 +47,7 @@ set foldmethod=indent       " 折畳の判別
 set foldtext=g:ToFoldFunc() " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
 
+
 " その他
 set helplang=ja                 " ヘルプ検索で日本語を優先
 set history=500                 " 検索やコマンドラインの保存履歴数
@@ -65,6 +66,7 @@ let g:loaded_tarPlugin= 1
 let g:loaded_vimballPlugin = 1
 let g:loaded_zip = 1
 let g:loaded_zipPlugin = 1
+
 
 " 外観設定
 " set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
@@ -85,11 +87,9 @@ colorscheme desert
 highlight Cursor ctermbg=55
 highlight FoldColumn ctermfg=130
 highlight Folded cterm=bold,underline ctermfg=14 ctermbg=55
-highlight MatchParen cterm=bold,underline "ctermfg=11 ctermbg=3
+highlight MatchParen cterm=bold,underline ctermbg=3
 highlight Search ctermbg=3 ctermfg=0
 highlight TabLineSel ctermbg=5
-" set runtimepath+=~/Dropbox/Program/Vim/Pastel
-" colorscheme Pastel
 
 
 "-------------------------------------------------------------------------------"
@@ -164,9 +164,11 @@ noremap <silent> <C-x> :bprevious<CR>
 noremap <silent> <C-c> :bnext<CR>
 
 " Tab操作
-noremap to :tabnew<Space>
-noremap <Tab> gt
-noremap <S-Tab> gT
+noremap go :tabnew<Space>
+noremap <C-M> gt
+noremap <C-N> gT
+" noremap <Tab> gt
+" noremap <S-Tab> gT
 
 " 画面分割
 noremap <Leader>sp :split<Space>
@@ -222,7 +224,7 @@ nnoremap <C-]> g<C-]>zz
 " 環境依存設定                                                                      |
 "-----------------------------------------------------------------------------------"
 " Macのみの設定
-if executable('sw_vers')
+if has('mac')
     " Mac の辞書.appで開く from http://qiita.com/items/6928282c5c843aad81d4
     " 引数に渡したワードを検索
     command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
@@ -255,6 +257,7 @@ endif
 " NeoBundle
 if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim
+    let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '1' } } }
 endif
 call neobundle#rc(expand('~/.vim/bundle'))
 
@@ -262,64 +265,65 @@ NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
 
 " NeoBundleLazy 'git://github.com/vim-jp/vital.vim.git'
 " NeoBundleLazy 'git://github.com/ynkdir/vim-vimlparser.git'
-NeoBundle 'git://github.com/Lokaltog/vim-easymotion.git'
-NeoBundle 'git://github.com/kana/vim-operator-replace.git'
-NeoBundle 'git://github.com/kana/vim-textobj-indent.git'
-NeoBundle 'git://github.com/kana/vim-textobj-user.git'
-NeoBundle 'git://github.com/mattn/learn-vimscript.git'
-NeoBundle 'git://github.com/modsound/gips-vim.git'
-NeoBundle 'git://github.com/osyo-manga/vim-textobj-multiblock.git'
-NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
-NeoBundle 'git://github.com/supermomonga/shaberu.vim.git'
-NeoBundle 'git://github.com/taku-o/vim-toggle.git'
-NeoBundle 'git://github.com/thinca/vim-ref.git'
-NeoBundle 'git://github.com/tpope/vim-repeat.git'
-NeoBundle 'git://github.com/tpope/vim-surround.git'
-NeoBundle 'git://github.com/ujihisa/neco-look.git'
-NeoBundle 'git://github.com/vim-jp/vimdoc-ja.git'
+
+NeoBundle 'Lokaltog/vim-easymotion.git'
+NeoBundle 'kana/vim-textobj-indent.git'
+NeoBundle 'kana/vim-textobj-user.git'
+NeoBundle 'mattn/learn-vimscript.git'
+NeoBundle 'modsound/gips-vim.git'
+NeoBundle 'tomtom/tcomment_vim.git'
+NeoBundle 'supermomonga/shaberu.vim.git'
+NeoBundle 'taku-o/vim-toggle.git'
+NeoBundle 'thinca/vim-ref.git'
+NeoBundle 'thinca/vim-visualstar.git'
+NeoBundle 'tpope/vim-repeat.git'
+NeoBundle 'tpope/vim-surround.git'
+NeoBundle 'ujihisa/neco-look.git'
+NeoBundle 'vim-jp/vimdoc-ja.git'
 NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
-NeoBundleLazy 'git://github.com/Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
-NeoBundleLazy 'git://github.com/Shougo/neocomplcache.git', { 'autoload' : { 'insert' : '1'} }
-NeoBundleLazy 'git://github.com/Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
-NeoBundleLazy 'git://github.com/Shougo/vimproc.git', { 'autoload' : { 'function_prefix' : 'vimproc' }, 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
-NeoBundleLazy 'git://github.com/Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
-NeoBundleLazy 'git://github.com/deton/jasegment.vim.git', { 'autoload' : { 'function_prefix' : 'jasegment' } }
-NeoBundleLazy 'git://github.com/itchyny/thumbnail.vim.git', { 'autoload' : {'commands' : 'Thumbnail'} }
-NeoBundleLazy 'git://github.com/kana/vim-operator-user.git', { 'autoload' : { 'function_prefix' : 'operator' } }
-NeoBundleLazy 'git://github.com/kana/vim-smartchr.git', { 'autoload' : { 'insert' : '1' } }
-NeoBundleLazy 'git://github.com/kana/vim-smartinput.git', { 'autoload' : { 'insert'  : '1'} }
-NeoBundleLazy 'git://github.com/majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
-NeoBundleLazy 'git://github.com/mattn/benchvimrc-vim.git', { 'autoload' : {'commands' : 'BenchVimrc'} }
-NeoBundleLazy 'git://github.com/plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
-NeoBundleLazy 'git://github.com/scrooloose/syntastic.git', { 'autoload' : { 'insert'  : '1'} }
-NeoBundleLazy 'git://github.com/thinca/vim-painter.git'
-NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git', { 'autoload' : { 'mappings'  : ['<Plug>(quickrun)'] } }
-NeoBundleLazy 'git://github.com/tomasr/molokai.git'
-NeoBundleLazy 'git://github.com/vim-jp/cpp-vim.git'
-NeoBundleLazy 'git://github.com/vim-scripts/Arduino-syntax-file.git', { 'autoload' : { 'filetypes' : 'arduino' } }
-NeoBundleLazy 'git://github.com/wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
-NeoBundleLazy 'git://github.com/uguu-org/vim-matrix-screensaver.git', { 'autoload' : {'commands' : 'Matrix'} }
-NeoBundleLazy 'git://github.com/yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
+NeoBundleLazy 'Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
+NeoBundleLazy 'Shougo/neocomplcache.git', '', 'loadInsert'
+NeoBundleLazy 'Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
+NeoBundleLazy 'Shougo/vimproc.git', { 'autoload' : { 'function_prefix' : 'vimproc' }, 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
+NeoBundleLazy 'Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
+NeoBundleLazy 'deton/jasegment.vim.git', { 'autoload' : { 'function_prefix' : 'jasegment' } }
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'directory' : 'conque', 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
+NeoBundleLazy 'itchyny/thumbnail.vim.git', { 'autoload' : {'commands' : 'Thumbnail'} }
+NeoBundleLazy 'kana/vim-operator-replace.git', { 'autoload' : { 'mappings'  : ['<Plug>(operator-replace)'] } }
+NeoBundleLazy 'kana/vim-operator-user.git', { 'autoload' : { 'function_prefix' : 'operator' } }
+NeoBundleLazy 'kana/vim-smartchr.git', '', 'loadInsert'
+NeoBundleLazy 'kana/vim-smartinput.git', '', 'loadInsert'
+NeoBundleLazy 'majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
+NeoBundleLazy 'mattn/benchvimrc-vim.git', { 'autoload' : {'commands' : 'BenchVimrc'} }
+NeoBundleLazy 'osyo-manga/vim-textobj-multiblock.git', { 'autoload' : { 'mappings'  : ['<Plug>(textobj-multiblock-a)', '<Plug>(textobj-multiblock-i)'] } }
+NeoBundleLazy 'plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
+NeoBundleLazy 'scrooloose/syntastic.git', '', 'loadInsert'
+NeoBundleLazy 'thinca/vim-painter.git', { 'gui'  : '1' }
+NeoBundleLazy 'thinca/vim-quickrun.git', { 'autoload' : { 'mappings'  : ['<Plug>(quickrun)'] } }
+NeoBundleLazy 'tomasr/molokai.git'
+NeoBundleLazy 'uguu-org/vim-matrix-screensaver.git', { 'autoload' : {'commands' : 'Matrix'} }
+NeoBundleLazy 'vim-jp/cpp-vim.git'
+NeoBundleLazy 'vim-scripts/Arduino-syntax-file.git', { 'autoload' : { 'filetypes' : 'arduino' } }
+NeoBundleLazy 'wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
+NeoBundleLazy 'yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
 
-NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', { 'rev' : 'if_lua', 'depends' : [ 'Shougo/unite-outline', 'thinca/vim-unite-history', 'Shougo/unite-ssh', 'tsukkee/unite-tag', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' }}
-NeoBundleLazy 'git://github.com/Shougo/unite-outline.git'
-NeoBundleLazy 'git://github.com/Shougo/unite-ssh.git'
-NeoBundleLazy 'git://github.com/thinca/vim-unite-history.git'
-NeoBundleLazy 'git://github.com/tsukkee/unite-tag.git'
+NeoBundleLazy 'Shougo/unite.vim.git', { 'depends' : [ 'Shougo/unite-outline', 'thinca/vim-unite-history', 'Shougo/unite-ssh', 'tsukkee/unite-tag', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' }}
+NeoBundleLazy 'Shougo/unite-outline.git'
+NeoBundleLazy 'Shougo/unite-ssh.git'
+NeoBundleLazy 'thinca/vim-unite-history.git'
+NeoBundleLazy 'tsukkee/unite-tag.git'
 
-NeoBundleLazy 'git://github.com/basyura/TweetVim.git', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay']} }
-NeoBundleLazy 'git://github.com/basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
-NeoBundleLazy 'git://github.com/mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
-NeoBundleLazy 'git://github.com/mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
-NeoBundleLazy 'git://github.com/tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'] } }
+NeoBundleLazy 'basyura/TweetVim.git', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay']} }
+NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
+NeoBundleLazy 'mattn/excitetranslate-vim.git', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
+NeoBundleLazy 'mattn/webapi-vim.git', { 'autoload' : { 'function_prefix' : 'webapi' } }
+NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'] } }
 
 if (has('python'))
     " pip install --user git+git://github.com/Lokaltog/powerline
     NeoBundle 'git://github.com/Lokaltog/powerline.git', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
 else
-    " set runtimepath+=~/Dropbox/Program/Vim/NyaruLine
-    " NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
+    NeoBundle 'git://github.com/Lokaltog/vim-powerline.git'
     let g:Powerline_stl_path_style = 'short'
 
     " PowerLineの再読み込み
@@ -346,9 +350,9 @@ nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=registers register<CR>
 nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files jump_point file_point buffer_tab file_rec:! file file/new file_mru<CR>
 nnoremap <silent> [unite]t :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
 nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=lines line<CR>
-nnoremap <silent> [unite]hc :<C-u>Unite -buffer-name=lines history/command<CR>
-nnoremap <silent> [unite]hs :<C-u>Unite -buffer-name=lines history/search<CR>
-nnoremap <silent> [unite]hy :<C-u>Unite -buffer-name=lines history/yank<CR>
+nnoremap <silent> [unite]hc :<C-u>Unite -buffer-name=history history/command<CR>
+nnoremap <silent> [unite]hs :<C-u>Unite -buffer-name=history history/search<CR>
+nnoremap <silent> [unite]hy :<C-u>Unite -buffer-name=history history/yank<CR>
 nnoremap <silent> [unite]ta :<C-u>Unite -buffer-name=tags tag tag/file<CR>
 
 " Neocomplcache
@@ -364,14 +368,10 @@ let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
 let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
 let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+let g:neocomplcache_vim_completefuncs = { 'Ref' : 'ref#complete', 'Unite' : 'unite#complete_source', 'VimFiler' : 'vimfiler#complete', 'Vinarise' : 'vinarise#complete' }
 
 " Easymotion
 let g:EasyMotion_leader_key = '<Leader>e'
-
-" NERDCommenter
-let g:NERDSpaceDelims = 1
-nmap <Leader><Leader> <Plug>NERDCommenterToggle
-vmap <Leader><Leader> <Plug>NERDCommenterNested
 
 " VimFiler
 nnoremap <silent> fvs :VimFilerExplorer<CR>
@@ -548,6 +548,10 @@ vmap ib <Plug>(textobj-multiblock-i)
 " Textobj-Operator-Replace
 map _ <Plug>(operator-replace)
 
+" tComment
+let g:tcommentModeExtra = '>>'
+
+
 "-------------------------------------------------------------------------------"
 " autocmd
 "-------------------------------------------------------------------------------"
@@ -635,3 +639,7 @@ augroup general
     " json
     autocmd BufRead,BufNewFile *.json setlocal filetype=json autoindent
 augroup END
+
+" set runtimepath+=~/Dropbox/Program/Vim/NyaruLine
+" set runtimepath+=~/Dropbox/Program/Vim/Pastel
+" colorscheme Pastel
