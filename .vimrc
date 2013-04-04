@@ -47,7 +47,6 @@ set foldmethod=indent       " 折畳の判別
 set foldtext=g:ToFoldFunc() " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
 
-
 " その他
 set helplang=ja                 " ヘルプ検索で日本語を優先
 set history=500                 " 検索やコマンドラインの保存履歴数
@@ -66,7 +65,6 @@ let g:loaded_tarPlugin= 1
 let g:loaded_vimballPlugin = 1
 let g:loaded_zip = 1
 let g:loaded_zipPlugin = 1
-
 
 " 外観設定
 " set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
@@ -267,15 +265,17 @@ NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
 " NeoBundleLazy 'git://github.com/ynkdir/vim-vimlparser.git'
 
 NeoBundle 'Lokaltog/vim-easymotion.git'
+NeoBundle 'Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'kana/vim-textobj-indent.git'
 NeoBundle 'kana/vim-textobj-user.git'
 NeoBundle 'mattn/learn-vimscript.git'
 NeoBundle 'modsound/gips-vim.git'
-NeoBundle 'tomtom/tcomment_vim.git'
 NeoBundle 'supermomonga/shaberu.vim.git'
 NeoBundle 'taku-o/vim-toggle.git'
+NeoBundle 'thinca/vim-quickrun.git'
 NeoBundle 'thinca/vim-ref.git'
 NeoBundle 'thinca/vim-visualstar.git'
+NeoBundle 'tomtom/tcomment_vim.git'
 NeoBundle 'tpope/vim-repeat.git'
 NeoBundle 'tpope/vim-surround.git'
 NeoBundle 'ujihisa/neco-look.git'
@@ -284,7 +284,6 @@ NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'Shougo/neocomplcache.git', '', 'loadInsert'
 NeoBundleLazy 'Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
-NeoBundleLazy 'Shougo/vimproc.git', { 'autoload' : { 'function_prefix' : 'vimproc' }, 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundleLazy 'Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'deton/jasegment.vim.git', { 'autoload' : { 'function_prefix' : 'jasegment' } }
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'directory' : 'conque', 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
@@ -299,7 +298,6 @@ NeoBundleLazy 'osyo-manga/vim-textobj-multiblock.git', { 'autoload' : { 'mapping
 NeoBundleLazy 'plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
 NeoBundleLazy 'scrooloose/syntastic.git', '', 'loadInsert'
 NeoBundleLazy 'thinca/vim-painter.git', { 'gui'  : '1' }
-NeoBundleLazy 'thinca/vim-quickrun.git', { 'autoload' : { 'mappings'  : ['<Plug>(quickrun)'] } }
 NeoBundleLazy 'tomasr/molokai.git'
 NeoBundleLazy 'uguu-org/vim-matrix-screensaver.git', { 'autoload' : {'commands' : 'Matrix'} }
 NeoBundleLazy 'vim-jp/cpp-vim.git'
@@ -496,7 +494,7 @@ let g:ref_source_webdict_sites = { 'Wikipedia:ja' : 'http://ja.wikipedia.org/wik
 let g:ref_source_webdict_sites.default = 'Wikipedia:ja'
 
 " QuickRun
-let g:quickrun_config = { '*': {'runmode': 'async:remote:vimproc'}, "_" : { "runner" : "vimproc", "runner/vimproc/updatetime" : 60, "outputter/buffer/split" : ":botright", "outputter/buffer/close_on_empty" : 1 }}
+let g:quickrun_config = { '_' : { 'runner' : 'vimproc', 'runner/vimproc/updatetime' : 40, 'outputter/buffer/split' : ":botright 10sp",}}
 
 " Conque
 let g:ConqueTerm_ReadUnfocused = 1
@@ -555,6 +553,61 @@ let g:tcommentModeExtra = '>>'
 "-------------------------------------------------------------------------------"
 " autocmd
 "-------------------------------------------------------------------------------"
+
+" VimFiler
+function! s:configVimFiler()
+    nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
+    vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
+    nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
+    nnoremap <silent><buffer> / :<C-u>UniteWithCurrentDir file -buffer-name=search -default-action=vimfiler -start-insert <CR>
+endfunction
+
+" Conque
+function! s:deleteConqueTerm(buffer_name)
+    let term_obj = conque_term#get_instance(a:buffer_name)
+    call term_obj.close()
+endfunction
+
+" Unite
+function! s:configUnite()
+    " Overwrite settings.
+    imap <buffer> <TAB> <Plug>(unite_select_next_line)
+    imap <buffer> jj <Plug>(unite_insert_leave)
+    nmap <buffer> ' <Plug>(unite_quick_match_default_action)
+    nmap <buffer> x <Plug>(unite_quick_match_choose_action)
+    nnoremap <silent><buffer><expr> l unite#smart_map('l', unite#do_action('default'))
+    nnoremap <silent><buffer><expr> t unite#do_action('tabopen')
+endfunction
+
+" Lisp
+function! s:configLisp()
+    nnoremap <silent> <Leader>li <Esc>:!sbcl --script %<CR>
+    setlocal nocindent
+    setlocal autoindent
+    setlocal nosmartindent
+    setlocal lisp
+    setlocal lispwords=define
+    let g:lisp_rainbow = 1
+    let g:lisp_instring = 1
+endfunction
+
+" C/C++
+function! s:configCCpp()
+    " Neocomplcache-clang
+    if has('mac')
+        let g:neocomplcache_clang_use_library = 0
+        let g:neocomplcache_clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
+        let g:neocomplcache_clang_user_options = '-I /opt/local/include/ -I /opt/local/include/boost/'
+        let g:neocomplcache_clang_executable_path = '/opt/local/bin/'
+    endif
+    NeoBundleSource cpp-vim
+    NeoBundleSource neocomplcache-clang
+    setlocal nosmartindent
+    setlocal nocindent
+    setlocal autoindent
+    setlocal cindent
+endfunction
+
 augroup general
     autocmd!
 
@@ -566,69 +619,23 @@ augroup general
 
     " 自動的にQuickfix-windowを開く
     autocmd QuickFixCmdPost *grep* cwindow
-
-    " VimFiler
-    function! s:settings_vimfiler()
-        nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
-        vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
-        nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
-        nnoremap <silent><buffer> / :<C-u>Unite file -default-action=vimfiler -start-insert<CR>
-    endfunction
-    autocmd FileType vimfiler call <SID>settings_vimfiler()
+    autocmd FileType vimfiler call <SID>configVimFiler()
 
     " Conque
-    function! s:delete_ConqueTerm(buffer_name)
-        let term_obj = conque_term#get_instance(a:buffer_name)
-        call term_obj.close()
-    endfunction
     autocmd BufWinLeave zsh\s-\s? call <SID>delete_ConqueTerm(expand('%'))
 
     " Unite
-    function! s:unites()
-        " Overwrite settings.
-        imap <buffer> <TAB> <Plug>(unite_select_next_line)
-        imap <buffer> jj <Plug>(unite_insert_leave)
-        nmap <buffer> ' <Plug>(unite_quick_match_default_action)
-        nmap <buffer> x <Plug>(unite_quick_match_choose_action)
-        nnoremap <silent><buffer><expr> l unite#smart_map('l', unite#do_action('default'))
-        nnoremap <silent><buffer><expr> t unite#do_action('tabopen')
-    endfunction
-    autocmd FileType unite call s:unites()
+    autocmd FileType unite call s:configUnite()
 
     " 状態の保存と復元
-    autocmd BufWinLeave ?* silent mkview!
-    autocmd BufWinEnter ?* silent loadview
+    autocmd BufWinLeave {?*} silent mkview!
+    autocmd BufWinEnter {?*} silent loadview
 
     " Lisp
-    function! s:setLispConfig()
-        nnoremap <silent> <Leader>li <Esc>:!sbcl --script %<CR>
-        setlocal nocindent
-        setlocal autoindent
-        setlocal nosmartindent
-        setlocal lisp
-        setlocal lispwords=define
-        let g:lisp_rainbow = 1
-        let g:lisp_instring = 1
-    endfunction
     autocmd FileType lisp call s:setLispConfig()
 
     " C/C++
-    function! s:setCCPPConfig()
-        " Neocomplcache-clang
-        if executable('sw_vers')
-            let g:neocomplcache_clang_use_library = 0
-            let g:neocomplcache_clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
-            let g:neocomplcache_clang_user_options = '-I /opt/local/include/ -I /opt/local/include/boost/'
-            let g:neocomplcache_clang_executable_path = '/opt/local/bin/'
-        endif
-        NeoBundleSource cpp-vim
-        NeoBundleSource neocomplcache-clang
-        setlocal nosmartindent
-        setlocal nocindent
-        setlocal autoindent
-        setlocal cindent
-    endfunction
-    autocmd FileType c,cpp call s:setCCPPConfig()
+    autocmd FileType c,cpp call s:configCCpp()
 
     " nask
     autocmd BufReadPre *.nas setlocal filetype=NASM
