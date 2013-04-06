@@ -34,11 +34,14 @@ set encoding=utf-8                          " vim内部で通常使用する文�
 set fileencodings=utf-8,sjis,cp932,euc-jp   " 既存ファイルを開く際の文字コード自動判別
 set fileformats=unix,mac,dos                " 改行文字設定
 
-" 検索設定
-set hlsearch    " 検索結果強調-:nohで解除
-set incsearch   " インクリメンタルサーチを有効
-set ignorecase  " 大文字小文字無視
-set smartcase   " 大文字があれば通常の検索
+" 検索と補完
+set hlsearch            " 検索結果強調-:nohで解除
+set incsearch           " インクリメンタルサーチを有効
+set ignorecase          " 大文字小文字無視
+set smartcase           " 大文字があれば通常の検索
+set history=500         " 検索やコマンドラインの保存履歴数
+set completeopt=menu    " 挿入モードでの補完設定
+set wildmenu            " コマンドの補完候補を表示
 
 " 折りたたみ
 set foldenable
@@ -49,16 +52,13 @@ set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold�
 
 " その他
 set helplang=ja                 " ヘルプ検索で日本語を優先
-set history=500                 " 検索やコマンドラインの保存履歴数
 set tags=./tags,tags            " タグが検索されるファイル
 set viewoptions=cursor,folds    " :mkviewで保存する設定
 set viminfo='1000,<500,f1       " viminfoへの保存設定
 set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
-set wildmenu                    " コマンドの補完候補を表示
 set timeout                     " マッピングのタイムアウト有効
 set timeoutlen=3000             " マッピングのタイムアウト時間
 set ttimeoutlen=100             " キーコードのタイムアウト時間
-set completeopt=menu            " 挿入モードでの補完設定
 let g:loaded_netrwPlugin = 1    " 標準Pluginを読み込まない
 let g:loaded_tar = 1
 let g:loaded_tarPlugin= 1
@@ -306,11 +306,11 @@ NeoBundleLazy 'vim-scripts/Arduino-syntax-file.git', { 'autoload' : { 'filetypes
 NeoBundleLazy 'wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
 
-NeoBundleLazy 'Shougo/unite.vim.git', { 'depends' : [ 'Shougo/unite-outline', 'thinca/vim-unite-history', 'Shougo/unite-ssh', 'tsukkee/unite-tag', 'basyura/TweetVim'], 'autoload' : { 'commands' : 'Unite' }}
-NeoBundleLazy 'Shougo/unite-outline.git'
-NeoBundleLazy 'Shougo/unite-ssh.git'
-NeoBundleLazy 'thinca/vim-unite-history.git'
-NeoBundleLazy 'tsukkee/unite-tag.git'
+NeoBundleLazy 'Shougo/unite.vim.git', { 'autoload' : { 'commands' : 'Unite' }}
+NeoBundle 'Shougo/unite-outline.git'
+NeoBundle 'Shougo/unite-ssh.git'
+NeoBundle 'thinca/vim-unite-history.git'
+NeoBundle 'tsukkee/unite-tag.git'
 
 NeoBundleLazy 'basyura/TweetVim.git', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay']} }
 NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
@@ -342,16 +342,17 @@ nmap f [unite]
 nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=buffers buffer<CR>
 nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=files -default-action=lcd directory_mru<CR>
 nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=sources source<CR>
+nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=vimgrep vimgrep -start-insert -keep-focus -no-quit<CR>
+nnoremap <silent> [unite]hc :<C-u>Unite -buffer-name=history history/command<CR>
+nnoremap <silent> [unite]hs :<C-u>Unite -buffer-name=history history/search<CR>
+nnoremap <silent> [unite]hy :<C-u>Unite -buffer-name=history history/yank<CR>
+nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=lines line<CR>
 nnoremap <silent> [unite]ma :<C-u>Unite -buffer-name=mappings mapping<CR>
 nnoremap <silent> [unite]me :<C-u>Unite -buffer-name=messages output:message<CR>
 nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outlines outline<CR>
 nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=registers register<CR>
 nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files jump_point file_point buffer_tab file_rec:! file file/new file_mru<CR>
 nnoremap <silent> [unite]t :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
-nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=lines line<CR>
-nnoremap <silent> [unite]hc :<C-u>Unite -buffer-name=history history/command<CR>
-nnoremap <silent> [unite]hs :<C-u>Unite -buffer-name=history history/search<CR>
-nnoremap <silent> [unite]hy :<C-u>Unite -buffer-name=history history/yank<CR>
 nnoremap <silent> [unite]ta :<C-u>Unite -buffer-name=tags tag tag/file<CR>
 
 " Neocomplcache
@@ -359,7 +360,7 @@ let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_smart_case = 1
 let g:neocomplcache_enable_underbar_completion = 1
-let g:neocomplcache_max_list=1000
+let g:neocomplcache_max_list = 1000
 if !exists('g:neocomplcache_omni_patterns')
     let g:neocomplcache_omni_patterns = {}
 endif
@@ -547,9 +548,6 @@ vmap ib <Plug>(textobj-multiblock-i)
 " Textobj-Operator-Replace
 map _ <Plug>(operator-replace)
 
-" tComment
-let g:tcommentModeExtra = '>>'
-
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -618,8 +616,7 @@ augroup general
     " 挿入モード解除時に自動でpasteをoff
     autocmd InsertLeave * set nopaste
 
-    " 自動的にQuickfix-windowを開く
-    autocmd QuickFixCmdPost *grep* cwindow
+    " VimFiler
     autocmd FileType vimfiler call <SID>configVimFiler()
 
     " Conque
