@@ -298,13 +298,16 @@ NeoBundleLazy 'mattn/benchvimrc-vim.git', { 'autoload' : {'commands' : 'BenchVim
 NeoBundleLazy 'osyo-manga/vim-textobj-multiblock.git', { 'autoload' : { 'mappings'  : ['<Plug>(textobj-multiblock-a)', '<Plug>(textobj-multiblock-i)'] } }
 NeoBundleLazy 'plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
 NeoBundleLazy 'scrooloose/syntastic.git', '', 'loadInsert'
-NeoBundleLazy 'thinca/vim-painter.git', { 'gui'  : '1' }
+NeoBundleLazy 'thinca/vim-painter.git'
 NeoBundleLazy 'tomasr/molokai.git'
 NeoBundleLazy 'uguu-org/vim-matrix-screensaver.git', { 'autoload' : {'commands' : 'Matrix'} }
 NeoBundleLazy 'vim-jp/cpp-vim.git'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file.git', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
+NeoBundleLazy 'yuratomo/gmail.vim.git', { 'autoload' : {'commands' : 'Gmail'} }
+NeoBundleLazy 'yuratomo/java-api-complete.git'
+NeoBundleLazy 'yuratomo/w3m.vim.git', { 'autoload' : {'commands' : 'W3m'} }
 
 NeoBundleLazy 'Shougo/unite.vim.git', { 'autoload' : { 'commands' : 'Unite' }}
 NeoBundle 'Shougo/unite-outline.git'
@@ -607,6 +610,14 @@ function! s:configCCpp()
     setlocal cindent
 endfunction
 
+" Java
+function! s:configJava()
+    NeoBundleSource java-api-complete
+    setl omnifunc=javaapi#complete
+    " inoremap <expr> <c-n> javaapi#nextRef()
+    " inoremap <expr> <c-p> javaapi#prevRef()
+endfunction
+
 augroup general
     autocmd!
 
@@ -643,6 +654,10 @@ augroup general
 
     " json
     autocmd BufRead,BufNewFile *.json setlocal filetype=json autoindent
+
+    " Java
+    autocmd BufRead,BufNewFile *.java call s:configJava()
+    autocmd CompleteDone *.java call javaapi#showRef()
 augroup END
 
 " set runtimepath+=~/Dropbox/Program/Vim/NyaruLine
