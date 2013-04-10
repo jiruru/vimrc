@@ -80,7 +80,8 @@ set showcmd             " 入力中のコマンド表示
 set showmatch           " 括弧強調
 set showtabline=2       " タブバーを常に表示
 set t_Co=256
-syntax enable               " 強調表示有効
+set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
+syntax enable           " 強調表示有効
 colorscheme desert
 highlight Cursor ctermbg=55
 highlight FoldColumn ctermfg=130
@@ -249,7 +250,6 @@ endif
 
 " neobundleが存在しない場合これ以降を読み込まない
 if !isdirectory(expand('~/.vim/bundle/neobundle.vim'))
-    set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
     finish
 endif
 
@@ -271,12 +271,11 @@ NeoBundle 'kana/vim-textobj-indent.git'
 NeoBundle 'kana/vim-textobj-user.git'
 NeoBundle 'mattn/learn-vimscript.git'
 NeoBundle 'modsound/gips-vim.git'
+NeoBundle 'scrooloose/nerdcommenter.git'
 NeoBundle 'supermomonga/shaberu.vim.git'
-NeoBundle 'taku-o/vim-toggle.git'
 NeoBundle 'thinca/vim-quickrun.git'
 NeoBundle 'thinca/vim-ref.git'
 NeoBundle 'thinca/vim-visualstar.git'
-NeoBundle 'tomtom/tcomment_vim.git'
 NeoBundle 'tpope/vim-repeat.git'
 NeoBundle 'tpope/vim-surround.git'
 NeoBundle 'ujihisa/neco-look.git'
@@ -284,6 +283,7 @@ NeoBundle 'vim-jp/vimdoc-ja.git'
 NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'Shougo/neocomplcache.git', '', 'loadInsert'
+NeoBundleLazy 'Shougo/neosnippet.git', '', 'loadInsert'
 NeoBundleLazy 'Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'deton/jasegment.vim.git', { 'autoload' : { 'function_prefix' : 'jasegment' } }
@@ -373,8 +373,19 @@ let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
 let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
 let g:neocomplcache_vim_completefuncs = { 'Ref' : 'ref#complete', 'Unite' : 'unite#complete_source', 'VimFiler' : 'vimfiler#complete', 'Vinarise' : 'vinarise#complete' }
 
+" Neosnippet
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+set conceallevel=2 concealcursor=i
+
 " Easymotion
 let g:EasyMotion_leader_key = '<Leader>e'
+
+" NERDCommenter
+let g:NERDSpaceDelims = 1
+nmap <Leader><Leader> <Plug>NERDCommenterToggle
+vmap <Leader><Leader> <Plug>NERDCommenterNested
 
 " VimFiler
 nnoremap <silent> fvs :VimFilerExplorer<CR>
@@ -438,30 +449,6 @@ function! s:bundle.hooks.on_source(bundle)
                 \ 'at': '\s\+\%#',
                 \ 'char': '<CR>',
                 \ 'input': "<C-o>:call setline('.', substitute(getline('.'), '\\s\\+$', '', ''))<CR><CR>",
-                \ })
-
-    call smartinput#define_rule({
-                \ 'at': 'if\%#',
-                \ 'char': '(',
-                \ 'input': '<Space>(',
-                \ })
-
-    call smartinput#define_rule({
-                \ 'at': '.\+if\s(.\+\%#',
-                \ 'char': ')',
-                \ 'input': ')<Space>',
-                \ })
-
-    call smartinput#define_rule({
-                \ 'at': 'for\%#',
-                \ 'char': '(',
-                \ 'input': '<Space>(',
-                \ })
-
-    call smartinput#define_rule({
-                \ 'at': '.\+for\s(.\+\%#',
-                \ 'char': ')',
-                \ 'input': ')<Space>',
                 \ })
 endfunction
 unlet s:bundle
