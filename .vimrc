@@ -164,8 +164,8 @@ noremap <silent> <C-c> :bnext<CR>
 
 " Tab操作
 noremap go :tabnew<Space>
-noremap <C-M> gt
-noremap <C-N> gT
+noremap <C-m> gt
+noremap <C-n> gT
 " noremap <Tab> gt
 " noremap <S-Tab> gT
 
@@ -282,7 +282,7 @@ NeoBundle 'ujihisa/neco-look.git'
 NeoBundle 'vim-jp/vimdoc-ja.git'
 NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
-NeoBundleLazy 'Shougo/neocomplcache.git', '', 'loadInsert'
+NeoBundleLazy 'Shougo/neocomplcache.git', { 'rev' : 'ver.8', 'autoload' : { 'insert' : 1 } }
 NeoBundleLazy 'Shougo/neosnippet.git', '', 'loadInsert'
 NeoBundleLazy 'Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
@@ -377,6 +377,7 @@ let g:neocomplcache_vim_completefuncs = { 'Ref' : 'ref#complete', 'Unite' : 'uni
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 xmap <C-k> <Plug>(neosnippet_expand_target)
+imap <C-l> <Plug>(neosnippet_jump_or_expand)
 set conceallevel=2 concealcursor=i
 
 " Easymotion
