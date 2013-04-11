@@ -121,6 +121,41 @@ endfunction
 
 
 "-----------------------------------------------------------------------------------"
+" 環境依存設定                                                                      |
+"-----------------------------------------------------------------------------------"
+" Macのみの設定
+if has('mac')
+    " Mac の辞書.appで開く from http://qiita.com/items/6928282c5c843aad81d4
+    " 引数に渡したワードを検索
+    command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
+    " カーソル下のワードを検索
+    command! -nargs=0 MacDictCWord call system('open '.shellescape('dict://'.shellescape(expand('<cword>'))))
+    " 辞書.app を閉じる
+    command! -nargs=0 MacDictClose call system("osascript -e 'tell application \"Dictionary\" to quit'")
+    " 辞書にフォーカスを当てる
+    command! -nargs=0 MacDictFocus call system("osascript -e 'tell application \"Dictionary\" to activate'")
+    " キーマッピング
+    nnoremap <silent> <Leader>do :<C-u>MacDictCWord<CR>
+    vnoremap <silent> <Leader>doy :<C-u>MacDict<Space><C-r>*<CR>
+    nnoremap <silent> <Leader>dc :<C-u>MacDictClose<CR>
+    nnoremap <silent> <Leader>df :<C-u>MacDictFocus<CR>
+
+    set path=.,/opt/local/include,/usr/include   " ファイルの検索パス指定
+
+    " Metaキーを有効化 Reference from http://d.hatena.ne.jp/thinca/20101215/1292340358
+    if !has('gui_running')
+        for i in map( range(char2nr('a'), char2nr('z')) + range(char2nr('A'), char2nr('Z')) + range(char2nr('0'), char2nr('9')) , 'nr2char(v:val)')
+            execute 'set <M-'.i.'>='.i
+        endfor
+
+        map <NUL> <C-Space>
+        map! <NUL> <C-Space>
+        map <C-Space> "*yy
+    endif
+endif
+
+
+"-----------------------------------------------------------------------------------"
 " Mapping                                                                           |
 "-----------------------------------------------------------------------------------"
 " コマンド        | ノーマル | 挿入 | コマンドライン | ビジュアル | 選択 | 演算待ち |
@@ -134,6 +169,10 @@ endfunction
 " imap / inoremap |    -     |  @   |       -        |     -      |  -   |    -     |
 " cmap / cnoremap |    -     |  -   |       @        |     -      |  -   |    -     |
 "-----------------------------------------------------------------------------------"
+
+" set <M-m>=m
+nnoremap <M-m> :echo 'mop'<CR>
+nnoremap <M-M> :echo 'Mop'<CR>
 
 " <Leader>を変更
 let g:mapleader = ' '
@@ -164,10 +203,8 @@ noremap <silent> <C-c> :bnext<CR>
 
 " Tab操作
 noremap go :tabnew<Space>
-noremap <C-m> gt
-noremap <C-n> gT
-" noremap <Tab> gt
-" noremap <S-Tab> gT
+noremap <M-h> gt
+noremap <M-l> gT
 
 " 画面分割
 noremap <Leader>sp :split<Space>
@@ -218,30 +255,6 @@ nnoremap <silent> <Leader>O   :<C-u>for i in range(1, v:count1) \| call append(l
 
 " Tagが複数あればリスト表示
 nnoremap <C-]> g<C-]>zz
-
-
-"-----------------------------------------------------------------------------------"
-" 環境依存設定                                                                      |
-"-----------------------------------------------------------------------------------"
-" Macのみの設定
-if has('mac')
-    " Mac の辞書.appで開く from http://qiita.com/items/6928282c5c843aad81d4
-    " 引数に渡したワードを検索
-    command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
-    " カーソル下のワードを検索
-    command! -nargs=0 MacDictCWord call system('open '.shellescape('dict://'.shellescape(expand('<cword>'))))
-    " 辞書.app を閉じる
-    command! -nargs=0 MacDictClose call system("osascript -e 'tell application \"Dictionary\" to quit'")
-    " 辞書にフォーカスを当てる
-    command! -nargs=0 MacDictFocus call system("osascript -e 'tell application \"Dictionary\" to activate'")
-    " キーマッピング
-    nnoremap <silent> <Leader>do :<C-u>MacDictCWord<CR>
-    vnoremap <silent> <Leader>doy :<C-u>MacDict<Space><C-r>*<CR>
-    nnoremap <silent> <Leader>dc :<C-u>MacDictClose<CR>
-    nnoremap <silent> <Leader>df :<C-u>MacDictFocus<CR>
-
-    set path=.,/opt/local/include,/usr/include   " ファイルの検索パス指定
-endif
 
 
 "-------------------------------------------------------------------------------"
@@ -615,18 +628,18 @@ augroup general
     " 挿入モード解除時に自動でpasteをoff
     autocmd InsertLeave * set nopaste
 
+    " 状態の保存と復元
+    autocmd BufWinLeave ?* silent mkview!
+    autocmd BufWinEnter ?* silent loadview
+
     " VimFiler
-    autocmd FileType vimfiler call <SID>configVimFiler()
+    autocmd FileType vimfiler call s:configVimFiler()
 
     " Conque
-    autocmd BufWinLeave zsh\s-\s? call <SID>delete_ConqueTerm(expand('%'))
+    autocmd BufWinLeave zsh* call s:deleteConqueTerm(expand('%'))
 
     " Unite
     autocmd FileType unite call s:configUnite()
-
-    " 状態の保存と復元
-    autocmd BufWinLeave {?*} silent mkview!
-    autocmd BufWinEnter {?*} silent loadview
 
     " Lisp
     autocmd FileType lisp call s:setLispConfig()
