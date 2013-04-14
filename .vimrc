@@ -39,7 +39,6 @@ set hlsearch            " 検索結果強調-:nohで解除
 set incsearch           " インクリメンタルサーチを有効
 set ignorecase          " 大文字小文字無視
 set smartcase           " 大文字があれば通常の検索
-set history=500         " 検索やコマンドラインの保存履歴数
 set completeopt=menu    " 挿入モードでの補完設定
 set wildmenu            " コマンドの補完候補を表示
 
@@ -52,6 +51,7 @@ set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold�
 
 " その他
 set helplang=ja                 " ヘルプ検索で日本語を優先
+set history=500                 " コマンドの保存履歴数
 set tags=./tags,tags            " タグが検索されるファイル
 set viewoptions=cursor,folds    " :mkviewで保存する設定
 set viminfo='1000,<500,f1       " viminfoへの保存設定
@@ -121,41 +121,6 @@ endfunction
 
 
 "-----------------------------------------------------------------------------------"
-" 環境依存設定                                                                      |
-"-----------------------------------------------------------------------------------"
-" Macのみの設定
-if has('mac')
-    " Mac の辞書.appで開く from http://qiita.com/items/6928282c5c843aad81d4
-    " 引数に渡したワードを検索
-    command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
-    " カーソル下のワードを検索
-    command! -nargs=0 MacDictCWord call system('open '.shellescape('dict://'.shellescape(expand('<cword>'))))
-    " 辞書.app を閉じる
-    command! -nargs=0 MacDictClose call system("osascript -e 'tell application \"Dictionary\" to quit'")
-    " 辞書にフォーカスを当てる
-    command! -nargs=0 MacDictFocus call system("osascript -e 'tell application \"Dictionary\" to activate'")
-    " キーマッピング
-    nnoremap <silent> <Leader>do :<C-u>MacDictCWord<CR>
-    vnoremap <silent> <Leader>doy :<C-u>MacDict<Space><C-r>*<CR>
-    nnoremap <silent> <Leader>dc :<C-u>MacDictClose<CR>
-    nnoremap <silent> <Leader>df :<C-u>MacDictFocus<CR>
-
-    set path=.,/opt/local/include,/usr/include   " ファイルの検索パス指定
-
-    " Metaキーを有効化 Reference from http://d.hatena.ne.jp/thinca/20101215/1292340358
-    if !has('gui_running')
-        for i in map( range(char2nr('a'), char2nr('z')) + range(char2nr('A'), char2nr('Z')) + range(char2nr('0'), char2nr('9')) , 'nr2char(v:val)')
-            execute 'set <M-'.i.'>='.i
-        endfor
-
-        map <NUL> <C-Space>
-        map! <NUL> <C-Space>
-        map <C-Space> "*yy
-    endif
-endif
-
-
-"-----------------------------------------------------------------------------------"
 " Mapping                                                                           |
 "-----------------------------------------------------------------------------------"
 " コマンド        | ノーマル | 挿入 | コマンドライン | ビジュアル | 選択 | 演算待ち |
@@ -170,9 +135,16 @@ endif
 " cmap / cnoremap |    -     |  -   |       @        |     -      |  -   |    -     |
 "-----------------------------------------------------------------------------------"
 
-" set <M-m>=m
-nnoremap <M-m> :echo 'mop'<CR>
-nnoremap <M-M> :echo 'Mop'<CR>
+" Metaキーを有効化 Reference from http://d.hatena.ne.jp/thinca/20101215/1292340358
+if has('mac')
+    for i in map( range(char2nr('a'), char2nr('z')) + range(char2nr('A'), char2nr('Z')) + range(char2nr('0'), char2nr('9')) , 'nr2char(v:val)')
+        execute 'set <M-'.i.'>='.i
+    endfor
+
+    map <NUL> <C-Space>
+    map! <NUL> <C-Space>
+    map <C-Space> "*yy
+endif
 
 " <Leader>を変更
 let g:mapleader = ' '
@@ -256,6 +228,32 @@ nnoremap <silent> <Leader>O   :<C-u>for i in range(1, v:count1) \| call append(l
 " Tagが複数あればリスト表示
 nnoremap <C-]> g<C-]>zz
 
+command! -nargs=0 Nyaruko call append(line('.'), '（」・ω・）」うー！（／・ω・）／にゃー！')
+
+
+"-----------------------------------------------------------------------------------"
+" 環境依存設定                                                                      |
+"-----------------------------------------------------------------------------------"
+" Macのみの設定
+if has('mac')
+    " Mac の辞書.appで開く from http://qiita.com/items/6928282c5c843aad81d4
+    " 引数に渡したワードを検索
+    command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
+    " カーソル下のワードを検索
+    command! -nargs=0 MacDictCWord call system('open '.shellescape('dict://'.shellescape(expand('<cword>'))))
+    " 辞書.app を閉じる
+    command! -nargs=0 MacDictClose call system("osascript -e 'tell application \"Dictionary\" to quit'")
+    " 辞書にフォーカスを当てる
+    command! -nargs=0 MacDictFocus call system("osascript -e 'tell application \"Dictionary\" to activate'")
+    " キーマッピング
+    nnoremap <silent> <Leader>do :<C-u>MacDictCWord<CR>
+    vnoremap <silent> <Leader>doy :<C-u>MacDict<Space><C-r>*<CR>
+    nnoremap <silent> <Leader>dc :<C-u>MacDictClose<CR>
+    nnoremap <silent> <Leader>df :<C-u>MacDictFocus<CR>
+
+    set path=.,/opt/local/include,/usr/include   " ファイルの検索パス指定
+endif
+
 
 "-------------------------------------------------------------------------------"
 " Plugin
@@ -295,7 +293,7 @@ NeoBundle 'ujihisa/neco-look.git'
 NeoBundle 'vim-jp/vimdoc-ja.git'
 NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
-NeoBundleLazy 'Shougo/neocomplcache.git', { 'rev' : 'ver.8', 'autoload' : { 'insert' : 1 } }
+NeoBundleLazy 'Shougo/neocomplcache.git', 'ver.8', { 'autoload' : { 'insert' : 1 } }
 NeoBundleLazy 'Shougo/neosnippet.git', '', 'loadInsert'
 NeoBundleLazy 'Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
