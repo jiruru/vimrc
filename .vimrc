@@ -175,8 +175,8 @@ noremap <silent> <C-c> :bnext<CR>
 
 " Tab操作
 noremap go :tabnew<Space>
-noremap <M-h> gt
-noremap <M-l> gT
+noremap <M-h> gT
+noremap <M-l> gt
 
 " 画面分割
 noremap <Leader>sp :split<Space>
@@ -267,14 +267,12 @@ endif
 " NeoBundle
 if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim
-    let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '1' } } }
 endif
 call neobundle#rc(expand('~/.vim/bundle'))
 
 NeoBundleFetch 'git://github.com/Shougo/neobundle.vim'
 
-" NeoBundleLazy 'git://github.com/vim-jp/vital.vim.git'
-" NeoBundleLazy 'git://github.com/ynkdir/vim-vimlparser.git'
+let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '1' } } }
 
 NeoBundle 'Lokaltog/vim-easymotion.git'
 NeoBundle 'Shougo/vimproc.git', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
@@ -294,6 +292,7 @@ NeoBundle 'vim-jp/vimdoc-ja.git'
 NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
 NeoBundleLazy 'Shougo/neocomplcache.git', 'ver.8', { 'autoload' : { 'insert' : 1 } }
+" NeoBundleLazy 'Shougo/neocomplcache.git'
 NeoBundleLazy 'Shougo/neosnippet.git', '', 'loadInsert'
 NeoBundleLazy 'Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
@@ -302,11 +301,12 @@ NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'directory' : 'conque
 NeoBundleLazy 'itchyny/thumbnail.vim.git', { 'autoload' : {'commands' : 'Thumbnail'} }
 NeoBundleLazy 'kana/vim-operator-replace.git', { 'autoload' : { 'mappings'  : ['<Plug>(operator-replace)'] } }
 NeoBundleLazy 'kana/vim-operator-user.git', { 'autoload' : { 'function_prefix' : 'operator' } }
+NeoBundleLazy 'thinca/vim-showtime.git'
 NeoBundleLazy 'kana/vim-smartchr.git', '', 'loadInsert'
 NeoBundleLazy 'kana/vim-smartinput.git', '', 'loadInsert'
 NeoBundleLazy 'majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'mattn/benchvimrc-vim.git', { 'autoload' : {'commands' : 'BenchVimrc'} }
-NeoBundleLazy 'osyo-manga/vim-textobj-multiblock.git', { 'autoload' : { 'mappings'  : ['<Plug>(textobj-multiblock-a)', '<Plug>(textobj-multiblock-i)'] } }
+NeoBundle 'osyo-manga/vim-textobj-multiblock.git', { 'autoload' : { 'mappings'  : ['<Plug>(textobj-multiblock-a)', '<Plug>(textobj-multiblock-i)'] } }
 NeoBundleLazy 'plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
 NeoBundleLazy 'scrooloose/syntastic.git', '', 'loadInsert'
 NeoBundleLazy 'thinca/vim-painter.git'
@@ -468,13 +468,13 @@ unlet s:bundle
 " Smartchr
 let s:bundle = neobundle#get('vim-smartchr')
 function! s:bundle.hooks.on_source(bundle)
-    inoremap <expr> % smartchr#one_of(' % ', '%')
-    inoremap <expr> & smartchr#one_of(' & ', ' && ', '&')
-    inoremap <expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>')
+    " inoremap <expr> % smartchr#one_of(' % ', '%')
+    " inoremap <expr> & smartchr#one_of(' & ', ' && ', '&')
+    " inoremap <expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>')
     inoremap <expr> , smartchr#one_of(', ', ',')
     inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
-    inoremap <expr> - smartchr#one_of(' - ', '--', '-')
-    inoremap <expr> + smartchr#one_of(' + ', '++', '+')
+    " inoremap <expr> - smartchr#one_of(' - ', '--', '-')
+    " inoremap <expr> + smartchr#one_of(' + ', '++', '+')
     inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
     inoremap <expr> . smartchr#loop('.', '->', ' => ')
 endfunction
