@@ -62,7 +62,7 @@ set ttimeoutlen=100             " キーコードのタイムアウト時間
 let g:loaded_netrwPlugin = 1    " 標準Pluginを読み込まない
 let g:loaded_tar = 1
 let g:loaded_tarPlugin= 1
-let g:loaded_vimballPlugin = 1
+" let g:loaded_vimballPlugin = 1
 let g:loaded_zip = 1
 let g:loaded_zipPlugin = 1
 
@@ -280,6 +280,7 @@ NeoBundle 'kana/vim-textobj-indent.git'
 NeoBundle 'kana/vim-textobj-user.git'
 NeoBundle 'mattn/learn-vimscript.git'
 NeoBundle 'modsound/gips-vim.git'
+NeoBundle 'osyo-manga/vim-textobj-multiblock.git', { 'autoload' : { 'mappings'  : ['<Plug>(textobj-multiblock-a)', '<Plug>(textobj-multiblock-i)'] } }
 NeoBundle 'scrooloose/nerdcommenter.git'
 NeoBundle 'supermomonga/shaberu.vim.git'
 NeoBundle 'thinca/vim-quickrun.git'
@@ -290,9 +291,8 @@ NeoBundle 'tpope/vim-surround.git'
 NeoBundle 'ujihisa/neco-look.git'
 NeoBundle 'vim-jp/vimdoc-ja.git'
 NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
-NeoBundleLazy 'Shougo/neocomplcache-clang.git', { 'depends' : 'Shougo/neocomplcache' }
-NeoBundleLazy 'Shougo/neocomplcache.git', 'ver.8', { 'autoload' : { 'insert' : 1 } }
-" NeoBundleLazy 'Shougo/neocomplcache.git'
+NeoBundleLazy 'Rip-Rip/clang_complete.git', { 'build' : { 'mac' : 'make install' } }
+NeoBundleLazy 'Shougo/neocomplcache.git', 'ver.8', 'loadInsert'
 NeoBundleLazy 'Shougo/neosnippet.git', '', 'loadInsert'
 NeoBundleLazy 'Shougo/vimfiler.git', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise.git', { 'autoload' : { 'commands' : 'Vinarise'} }
@@ -301,15 +301,15 @@ NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'directory' : 'conque
 NeoBundleLazy 'itchyny/thumbnail.vim.git', { 'autoload' : {'commands' : 'Thumbnail'} }
 NeoBundleLazy 'kana/vim-operator-replace.git', { 'autoload' : { 'mappings'  : ['<Plug>(operator-replace)'] } }
 NeoBundleLazy 'kana/vim-operator-user.git', { 'autoload' : { 'function_prefix' : 'operator' } }
-NeoBundleLazy 'thinca/vim-showtime.git'
 NeoBundleLazy 'kana/vim-smartchr.git', '', 'loadInsert'
 NeoBundleLazy 'kana/vim-smartinput.git', '', 'loadInsert'
 NeoBundleLazy 'majutsushi/tagbar.git', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'mattn/benchvimrc-vim.git', { 'autoload' : {'commands' : 'BenchVimrc'} }
-NeoBundle 'osyo-manga/vim-textobj-multiblock.git', { 'autoload' : { 'mappings'  : ['<Plug>(textobj-multiblock-a)', '<Plug>(textobj-multiblock-i)'] } }
 NeoBundleLazy 'plasticboy/vim-markdown.git', { 'autoload' : { 'filetypes' : 'md' } }
 NeoBundleLazy 'scrooloose/syntastic.git', '', 'loadInsert'
+NeoBundleLazy 'thinca/vim-ft-help_fold.git', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter.git'
+NeoBundleLazy 'thinca/vim-showtime.git'
 NeoBundleLazy 'tomasr/molokai.git'
 NeoBundleLazy 'uguu-org/vim-matrix-screensaver.git', { 'autoload' : {'commands' : 'Matrix'} }
 NeoBundleLazy 'vim-jp/cpp-vim.git'
@@ -317,8 +317,8 @@ NeoBundleLazy 'vim-scripts/Arduino-syntax-file.git', { 'autoload' : { 'filetypes
 NeoBundleLazy 'wesleyche/SrcExpl.git', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'yomi322/vim-operator-suddendeath.git', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
 NeoBundleLazy 'yuratomo/gmail.vim.git', { 'autoload' : {'commands' : 'Gmail'} }
-NeoBundleLazy 'yuratomo/java-api-complete.git'
 NeoBundleLazy 'yuratomo/w3m.vim.git', { 'autoload' : {'commands' : 'W3m'} }
+NeoBundleLazy 'yuratomo/java-api-complete.git', { 'autoload' : { 'filetypes' : 'java' } }
 
 NeoBundleLazy 'Shougo/unite.vim.git', { 'autoload' : { 'commands' : 'Unite' }}
 NeoBundle 'Shougo/unite-outline.git'
@@ -371,18 +371,54 @@ nnoremap <silent> [unite]ta :<C-u>Unite -buffer-name=tags tag tag/file<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
-let g:neocomplcache_enable_camel_case_completion = 1
-let g:neocomplcache_enable_smart_case = 1
-let g:neocomplcache_enable_underbar_completion = 1
-let g:neocomplcache_max_list = 1000
-if !exists('g:neocomplcache_omni_patterns')
-    let g:neocomplcache_omni_patterns = {}
-endif
-let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
-let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-let g:neocomplcache_vim_completefuncs = { 'Ref' : 'ref#complete', 'Unite' : 'unite#complete_source', 'VimFiler' : 'vimfiler#complete', 'Vinarise' : 'vinarise#complete' }
+let g:clang_complete_auto = 0
+let g:clang_auto_select = 0
+let s:bundle = neobundle#get('neocomplcache')
+function! s:bundle.hooks.on_source(bundle)
+    let g:neocomplcache_enable_camel_case_completion = 1
+    let g:neocomplcache_enable_smart_case = 1
+    let g:neocomplcache_enable_underbar_completion = 1
+    let g:neocomplcache_max_list = 1000
+
+    if !exists('g:neocomplcache_omni_patterns')
+        let g:neocomplcache_omni_patterns = {}
+    endif
+    let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
+    let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+    let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    let g:neocomplcache_omni_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
+
+    if !exists('g:neocomplcache_force_omni_patterns')
+        let g:neocomplcache_force_omni_patterns = {}
+    endif
+    let g:neocomplcache_force_overwrite_completefunc = 1
+    let g:neocomplcache_force_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    let g:neocomplcache_force_omni_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplcache_force_omni_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    let g:neocomplcache_force_omni_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
+
+    if !exists('g:neocomplcache_omni_functions')
+        let g:neocomplcache_omni_functions = {}
+    endif
+    let g:neocomplcache_omni_functions.java = 'javaapi#complete'
+
+    if !exists('g:neocomplcache_delimiter_patterns')
+        let g:neocomplcache_delimiter_patterns= {}
+    endif
+    let g:neocomplcache_delimiter_patterns.vim = ['#']
+    let g:neocomplcache_delimiter_patterns.cpp = ['::']
+
+    if !exists('g:neocomplcache_vim_completefuncs')
+        let g:neocomplcache_vim_completefuncs = {}
+    endif
+    let g:neocomplcache_vim_completefuncs.Ref = 'ref#complete'
+    let g:neocomplcache_vim_completefuncs.Unite = 'unite#complete_source'
+    let g:neocomplcache_vim_completefuncs.VimFiler = 'vimfiler#complete'
+    let g:neocomplcache_vim_completefuncs.Vinarise = 'vinarise#complete'
+endfunction
+unlet s:bundle
 
 " Neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
@@ -594,27 +630,17 @@ endfunction
 
 " C/C++
 function! s:configCCpp()
-    " Neocomplcache-clang
-    if has('mac')
-        let g:neocomplcache_clang_use_library = 0
-        let g:neocomplcache_clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
-        let g:neocomplcache_clang_user_options = '-I /opt/local/include/ -I /opt/local/include/boost/'
-        let g:neocomplcache_clang_executable_path = '/opt/local/bin/'
-    endif
     NeoBundleSource cpp-vim
-    NeoBundleSource neocomplcache-clang
+    if has('mac')
+        NeoBundleSource clang_complete
+        let g:clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
+        let g:clang_user_options = '-I /opt/local/include/ -I /opt/local/include/boost/'
+        let g:clang_executable_path = '/opt/local/bin/'
+    endif
     setlocal nosmartindent
     setlocal nocindent
     setlocal autoindent
     setlocal cindent
-endfunction
-
-" Java
-function! s:configJava()
-    NeoBundleSource java-api-complete
-    setl omnifunc=javaapi#complete
-    " inoremap <expr> <c-n> javaapi#nextRef()
-    " inoremap <expr> <c-p> javaapi#prevRef()
 endfunction
 
 augroup general
@@ -655,8 +681,8 @@ augroup general
     autocmd BufRead,BufNewFile *.json setlocal filetype=json autoindent
 
     " Java
-    autocmd BufRead,BufNewFile *.java call s:configJava()
     autocmd CompleteDone *.java call javaapi#showRef()
+    autocmd BufRead *.java setlocal omnifunc=javaapi#complete
 augroup END
 
 " set runtimepath+=~/Dropbox/Program/Vim/NyaruLine
