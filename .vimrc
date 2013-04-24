@@ -371,12 +371,10 @@ nnoremap <silent> [unite]ta :<C-u>Unite -buffer-name=tags tag tag/file<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
-let g:clang_complete_auto = 0
-let g:clang_auto_select = 0
 let s:bundle = neobundle#get('neocomplcache')
 function! s:bundle.hooks.on_source(bundle)
     let g:neocomplcache_enable_camel_case_completion = 1
-    let g:neocomplcache_enable_smart_case = 1
+    " let g:neocomplcache_enable_smart_case = 1
     let g:neocomplcache_enable_underbar_completion = 1
     let g:neocomplcache_max_list = 1000
 
@@ -419,11 +417,13 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplcache_vim_completefuncs.Vinarise = 'vinarise#complete'
 endfunction
 unlet s:bundle
+let g:clang_complete_auto = 0
+let g:clang_auto_select = 0
 
 " Neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
+" xmap <C-k> <Plug>(neosnippet_expand_target)
 imap <C-l> <Plug>(neosnippet_jump_or_expand)
 set conceallevel=2 concealcursor=i
 
@@ -446,6 +446,7 @@ let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_directory_display_top = 1
 let g:vimfiler_preview_action = 'below'
 let g:vimfiler_split_action = 'right'
+let g:vimfiler_enable_auto_cd = 1
 
 " SrcExpl
 nmap <silent> <Leader>sc :SrcExplToggle<CR>
@@ -595,6 +596,7 @@ map _ <Plug>(operator-replace)
 function! s:configVimFiler()
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
     vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
+    nnoremap <buffer> q <Plug>(vimfiler_close)
     nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
     nnoremap <silent><buffer> / :<C-u>UniteWithCurrentDir file -buffer-name=search -default-action=vimfiler -start-insert <CR>
 endfunction
@@ -661,6 +663,7 @@ augroup general
 
     " VimFiler
     autocmd FileType vimfiler call s:configVimFiler()
+    autocmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
 
     " Conque
     autocmd BufWinLeave zsh* call s:deleteConqueTerm(expand('%'))
