@@ -174,7 +174,7 @@ noremap <silent> <C-x> :bprevious<CR>
 noremap <silent> <C-c> :bnext<CR>
 
 " Tab操作
-noremap go :tabnew<Space>
+noremap <Leader>to :tabnew<Space>
 noremap <M-h> gT
 noremap <M-l> gt
 
@@ -222,8 +222,8 @@ nnoremap <Leader>cd :lcd %:p:h<CR>
 nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
 
 " 空行を追加
-nnoremap <silent> <Leader>o   :<C-u>for i in range(1, v:count1) \| call append(line('.'),   '') \| endfor \| silent! call repeat#set("<Space>o", v:count1)<CR>
-nnoremap <silent> <Leader>O   :<C-u>for i in range(1, v:count1) \| call append(line('.')-1, '') \| endfor \| silent! call repeat#set("<Space>O", v:count1)<CR>
+nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'),   '') \| endfor \| silent! call repeat#set("<Space>o", v:count1)<CR>
+" nnoremap <silent> <Leader>O   :<C-u>for i in range(1, v:count1) \| call append(line('.')-1, '') \| endfor \| silent! call repeat#set("<Space>O", v:count1)<CR>
 
 " Tagが複数あればリスト表示
 nnoremap <C-]> g<C-]>zz
@@ -417,6 +417,8 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplcache_vim_completefuncs.Vinarise = 'vinarise#complete'
 endfunction
 unlet s:bundle
+
+" Clang_complete
 let g:clang_complete_auto = 0
 let g:clang_auto_select = 0
 
@@ -636,8 +638,8 @@ function! s:configCCpp()
     if has('mac')
         NeoBundleSource clang_complete
         let g:clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
-        let g:clang_user_options = '-I /opt/local/include/ -I /opt/local/include/boost/'
-        let g:clang_executable_path = '/opt/local/bin/'
+        " let g:clang_user_options = '-I /opt/local/include/ -I /opt/local/include/boost/'
+        " let g:clang_executable_path = '/opt/local/bin/'
     endif
     setlocal nosmartindent
     setlocal nocindent
@@ -663,7 +665,6 @@ augroup general
 
     " VimFiler
     autocmd FileType vimfiler call s:configVimFiler()
-    autocmd BufEnter * if (winnr('$') == 1 && &filetype ==# 'vimfiler') | q | endif
 
     " Conque
     autocmd BufWinLeave zsh* call s:deleteConqueTerm(expand('%'))
