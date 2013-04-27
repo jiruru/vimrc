@@ -81,6 +81,8 @@ set showmatch           " 括弧強調
 set showtabline=2       " タブバーを常に表示
 set t_Co=256
 set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
+let g:lisp_rainbow = 1
+let g:lisp_instring = 1
 syntax enable           " 強調表示有効
 colorscheme desert
 highlight Cursor ctermbg=55
@@ -210,7 +212,7 @@ noremap ; :
 noremap : ;
 
 " カーソル下のwordをhelpする
-nnoremap <silent> <Leader>h :<C-U>help <C-R><C-W><CR>
+nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
 
 " .vimrcを開く
 nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
@@ -276,11 +278,12 @@ let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '
 
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
+NeoBundle 'kana/vim-niceblock.git'
 NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'mattn/learn-vimscript'
 NeoBundle 'modsound/gips-vim'
-NeoBundle 'osyo-manga/vim-textobj-multiblock', { 'autoload' : { 'mappings'  : ['<Plug>(textobj-multiblock-a)', '<Plug>(textobj-multiblock-i)'] } }
+NeoBundle 'osyo-manga/vim-textobj-multiblock'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'supermomonga/shaberu.vim'
 NeoBundle 'thinca/vim-quickrun'
@@ -310,15 +313,14 @@ NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
 NeoBundleLazy 'thinca/vim-showtime'
-NeoBundleLazy 'tomasr/molokai'
 NeoBundleLazy 'uguu-org/vim-matrix-screensaver', { 'autoload' : {'commands' : 'Matrix'} }
 NeoBundleLazy 'vim-jp/cpp-vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
 NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
 NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
-NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
+NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
 
 NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : 'Unite' }}
 NeoBundle 'Shougo/unite-outline'
@@ -577,14 +579,14 @@ map <Leader>op <Plug>(openbrowser-open)
 " learn-vimscript
 nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
 
-" Thumbnail
-nnoremap <Leader>b :Thumbnail<CR>
-
-" Textobj-Multiblock
+" Textobj-MultiBlock
 omap ab <Plug>(textobj-multiblock-a)
 omap ib <Plug>(textobj-multiblock-i)
 vmap ab <Plug>(textobj-multiblock-a)
 vmap ib <Plug>(textobj-multiblock-i)
+
+" Thumbnail
+nnoremap <Leader>b :Thumbnail<CR>
 
 " Textobj-Operator-Replace
 map _ <Plug>(operator-replace)
@@ -600,7 +602,7 @@ function! s:configVimFiler()
     vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
     nnoremap <buffer> q <Plug>(vimfiler_close)
     nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
-    nnoremap <silent><buffer> / :<C-u>UniteWithCurrentDir file -buffer-name=search -default-action=vimfiler -start-insert <CR>
+    " nnoremap <silent><buffer> / :<C-u>UniteWithCurrentDir file -buffer-name=search -default-action=vimfiler -start-insert <CR>
 endfunction
 
 " Conque
@@ -628,8 +630,6 @@ function! s:configLisp()
     setlocal nosmartindent
     setlocal lisp
     setlocal lispwords=define
-    let g:lisp_rainbow = 1
-    let g:lisp_instring = 1
 endfunction
 
 " C/C++
@@ -638,8 +638,8 @@ function! s:configCCpp()
     if has('mac')
         NeoBundleSource clang_complete
         let g:clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
-        " let g:clang_user_options = '-I /opt/local/include/ -I /opt/local/include/boost/'
-        " let g:clang_executable_path = '/opt/local/bin/'
+        let g:clang_user_options = '-I /opt/local/include/ -I /opt/local/include/boost/'
+        let g:clang_executable_path = '/opt/local/bin/'
     endif
     setlocal nosmartindent
     setlocal nocindent
@@ -657,7 +657,7 @@ augroup general
     " autocmd BufWritePost * silent %s/\s$//g | call line("''")
 
     " 挿入モード解除時に自動でpasteをoff
-    autocmd InsertLeave * set nopaste
+    autocmd InsertLeave * setlocal nopaste
 
     " 状態の保存と復元
     autocmd BufWinLeave ?* silent mkview!
@@ -673,7 +673,7 @@ augroup general
     autocmd FileType unite call s:configUnite()
 
     " Lisp
-    autocmd FileType lisp call s:setLispConfig()
+    autocmd FileType lisp call s:configLisp()
 
     " C/C++
     autocmd FileType c,cpp call s:configCCpp()
@@ -689,7 +689,6 @@ augroup general
 
     " Java
     autocmd CompleteDone *.java call javaapi#showRef()
-    autocmd BufRead *.java setlocal omnifunc=javaapi#complete
 augroup END
 
 " set runtimepath+=~/Dropbox/Program/Vim/NyaruLine
