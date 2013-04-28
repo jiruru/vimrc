@@ -321,6 +321,7 @@ NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operat
 NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
+NeoBundle 'taichouchou2/alpaca_english'
 
 NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : 'Unite' }}
 NeoBundle 'Shougo/unite-outline'
@@ -376,7 +377,7 @@ let g:neocomplcache_enable_at_startup = 1
 let s:bundle = neobundle#get('neocomplcache')
 function! s:bundle.hooks.on_source(bundle)
     let g:neocomplcache_enable_camel_case_completion = 1
-    " let g:neocomplcache_enable_smart_case = 1
+    let g:neocomplcache_enable_smart_case = 1
     let g:neocomplcache_enable_underbar_completion = 1
     let g:neocomplcache_max_list = 1000
 
@@ -427,7 +428,6 @@ let g:clang_auto_select = 0
 " Neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
-" xmap <C-k> <Plug>(neosnippet_expand_target)
 imap <C-l> <Plug>(neosnippet_jump_or_expand)
 set conceallevel=2 concealcursor=i
 
@@ -591,6 +591,9 @@ nnoremap <Leader>b :Thumbnail<CR>
 " Textobj-Operator-Replace
 map _ <Plug>(operator-replace)
 
+" Alpaca_english
+let g:alpaca_english_enable=1
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -613,7 +616,6 @@ endfunction
 
 " Unite
 function! s:configUnite()
-    " Overwrite settings.
     imap <buffer> <TAB> <Plug>(unite_select_next_line)
     imap <buffer> jj <Plug>(unite_insert_leave)
     nmap <buffer> ' <Plug>(unite_quick_match_default_action)
