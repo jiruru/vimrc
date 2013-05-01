@@ -286,6 +286,7 @@ NeoBundle 'modsound/gips-vim'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'supermomonga/shaberu.vim'
+NeoBundle 'taichouchou2/alpaca_english'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
@@ -321,7 +322,6 @@ NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operat
 NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
-NeoBundle 'taichouchou2/alpaca_english'
 
 NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : 'Unite' }}
 NeoBundle 'Shougo/unite-outline'
@@ -539,7 +539,10 @@ let g:ref_source_webdict_sites = { 'Wikipedia:ja' : 'http://ja.wikipedia.org/wik
 let g:ref_source_webdict_sites.default = 'Wikipedia:ja'
 
 " QuickRun
-let g:quickrun_config = { '_' : { 'runner' : 'vimproc', 'runner/vimproc/updatetime' : 40, 'outputter/buffer/split' : ":botright 10sp",}}
+let g:quickrun_config = {}
+" let g:quickrun_config._ = { 'runner' : 'vimproc', 'outputter/buffer/split' : ':botright 10sp' }
+let g:quickrun_config._ = { 'outputter/buffer/split' : ':vertical rightbelow' }
+let g:quickrun_config.lisp =  { 'command' : 'clisp', 'exec' : '%c < %s:p' }
 
 " Conque
 let g:ConqueTerm_ReadUnfocused = 1
@@ -664,6 +667,10 @@ augroup general
     " 状態の保存と復元
     autocmd BufWinLeave ?* silent mkview!
     autocmd BufWinEnter ?* silent loadview
+
+    " Text
+    autocmd BufReadPre *.txt setlocal filetype=text
+    autocmd BufReadPre *.txt setlocal wrap
 
     " VimFiler
     autocmd FileType vimfiler call s:configVimFiler()
