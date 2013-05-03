@@ -261,6 +261,10 @@ endif
 " Plugin
 "-------------------------------------------------------------------------------"
 
+" set runtimepath+=~/Dropbox/Program/Vim/NyaruLine
+" set runtimepath+=~/Dropbox/Program/Vim/Pastel
+" colorscheme Pastel
+
 " neobundleが存在しない場合これ以降を読み込まない
 if !isdirectory(expand('~/.vim/bundle/neobundle.vim'))
     finish
@@ -356,7 +360,7 @@ let g:unite_source_file_mru_limit = 50
 let g:unite_cursor_line_highlight = 'TabLineSel'
 let g:unite_enable_short_source_names = 1
 nnoremap [unite] <Nop>
-nmap f [unite]
+nmap <Leader>f [unite]
 nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=buffers buffer<CR>
 nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=files -default-action=lcd directory_mru<CR>
 nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=sources source<CR>
@@ -607,7 +611,6 @@ let g:alpaca_english_enable=1
 function! s:configVimFiler()
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
     vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
-    nnoremap <buffer> q <Plug>(vimfiler_close)
     nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
     " nnoremap <silent><buffer> / :<C-u>UniteWithCurrentDir file -buffer-name=search -default-action=vimfiler -start-insert <CR>
 endfunction
@@ -700,7 +703,3 @@ augroup general
     " Java
     autocmd CompleteDone *.java call javaapi#showRef()
 augroup END
-
-" set runtimepath+=~/Dropbox/Program/Vim/NyaruLine
-" set runtimepath+=~/Dropbox/Program/Vim/Pastel
-" colorscheme Pastel
