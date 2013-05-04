@@ -83,6 +83,7 @@ set t_Co=256
 set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
 let g:lisp_rainbow = 1
 let g:lisp_instring = 1
+let g:lispsyntax_clisp = 1
 syntax enable           " 強調表示有効
 colorscheme desert
 highlight Cursor ctermbg=55
@@ -313,12 +314,14 @@ NeoBundleLazy 'kana/vim-smartchr', '', 'loadInsert'
 NeoBundleLazy 'kana/vim-smartinput', '', 'loadInsert'
 NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
+NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/sonictemplate-vim.git', '', 'loadInsert'
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'md' } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
 NeoBundleLazy 'thinca/vim-showtime'
+NeoBundleLazy 'tsukkee/lingr-vim', { 'autoload' : {'commands' : 'LingrLaunch'} }
 NeoBundleLazy 'uguu-org/vim-matrix-screensaver', { 'autoload' : {'commands' : 'Matrix'} }
 NeoBundleLazy 'vim-jp/cpp-vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
@@ -360,7 +363,7 @@ let g:unite_source_file_mru_limit = 50
 let g:unite_cursor_line_highlight = 'TabLineSel'
 let g:unite_enable_short_source_names = 1
 nnoremap [unite] <Nop>
-nmap <Leader>f [unite]
+nmap f [unite]
 nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=buffers buffer<CR>
 nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=files -default-action=lcd directory_mru<CR>
 nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=sources source<CR>
@@ -601,6 +604,13 @@ map _ <Plug>(operator-replace)
 
 " Alpaca_english
 let g:alpaca_english_enable=1
+
+" Gist
+let g:gist_detect_filetype = 1
+let g:gist_open_browser_after_post = 1
+
+" Lingr
+let g:lingr_vim_user = 'mopp'
 
 
 "-------------------------------------------------------------------------------"
