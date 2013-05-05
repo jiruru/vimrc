@@ -173,8 +173,8 @@ noremap <C-H> ^
 noremap <C-L> $
 
 " バッファ操作
-noremap <silent> <C-x> :bprevious<CR>
-noremap <silent> <C-c> :bnext<CR>
+noremap <silent> <F2> :<C-U>bprevious<CR>
+noremap <silent> <F3> :<C-U>bnext<CR>
 
 " Tab操作
 noremap <Leader>to :tabnew<Space>
@@ -213,7 +213,7 @@ noremap ; :
 noremap : ;
 
 " カーソル下のwordをhelpする
-nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
+nnoremap <silent> <Leader>h :vertical aboveleft help <C-R><C-W><CR>
 
 " .vimrcを開く
 nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
@@ -303,7 +303,7 @@ NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
 NeoBundleLazy 'Shougo/neocomplcache', '', 'loadInsert'
 NeoBundleLazy 'Shougo/neosnippet', '', 'loadInsert'
-NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : ['VimFiler', 'VimFilerTab', 'VimFilerExplorer'], 'explorer' : 1,} }
+NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ 'VimFiler', 'VimFilerTab', 'VimFilerExplorer',], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'deton/jasegment.vim', { 'autoload' : { 'function_prefix' : 'jasegment' } }
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'directory' : 'conque', 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
@@ -321,7 +321,6 @@ NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
 NeoBundleLazy 'thinca/vim-showtime'
-NeoBundleLazy 'tsukkee/lingr-vim', { 'autoload' : {'commands' : 'LingrLaunch'} }
 NeoBundleLazy 'uguu-org/vim-matrix-screensaver', { 'autoload' : {'commands' : 'Matrix'} }
 NeoBundleLazy 'vim-jp/cpp-vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
@@ -331,17 +330,21 @@ NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
 
-NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : 'Unite' }}
-NeoBundle 'Shougo/unite-outline'
-NeoBundle 'Shougo/unite-ssh'
+NeoBundle 'mattn/unite-advent_calendar'
 NeoBundle 'thinca/vim-unite-history'
-NeoBundle 'tsukkee/unite-tag'
+NeoBundleLazy 'Shougo/unite-help.git', { 'autoload' : { 'unite_sources' : 'help' }}
+NeoBundleLazy 'Shougo/unite-outline', { 'autoload' : { 'unite_sources' : 'outline' }}
+NeoBundleLazy 'Shougo/unite-ssh', { 'autoload' : { 'unite_sources' : 'ssh' }}
+NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : 'Unite' }}
+NeoBundleLazy 'sgur/unite-qf', { 'autoload' : { 'unite_sources' : 'qf' }}
+NeoBundleLazy 'tsukkee/unite-tag', { 'autoload' : { 'unite_sources' : 'tag' }}
 
 NeoBundleLazy 'basyura/TweetVim', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay']} }
 NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'mattn/excitetranslate-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
-NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'] } }
+NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
+
 
 if (has('python'))
     " pip install --user git+git://github.com/Lokaltog/powerline
@@ -362,23 +365,25 @@ filetype plugin indent on
 let g:unite_source_file_mru_limit = 50
 let g:unite_cursor_line_highlight = 'TabLineSel'
 let g:unite_enable_short_source_names = 1
-nnoremap [unite] <Nop>
-nmap f [unite]
-nnoremap <silent> [unite]b :<C-u>Unite -buffer-name=buffers buffer<CR>
-nnoremap <silent> [unite]d :<C-u>Unite -buffer-name=files -default-action=lcd directory_mru<CR>
-nnoremap <silent> [unite]f :<C-u>Unite -buffer-name=sources source<CR>
-nnoremap <silent> [unite]g :<C-u>Unite -buffer-name=vimgrep vimgrep -start-insert -keep-focus -no-quit<CR>
-nnoremap <silent> [unite]hc :<C-u>Unite -buffer-name=history history/command<CR>
-nnoremap <silent> [unite]hs :<C-u>Unite -buffer-name=history history/search<CR>
-nnoremap <silent> [unite]hy :<C-u>Unite -buffer-name=history history/yank<CR>
-nnoremap <silent> [unite]l :<C-u>Unite -buffer-name=lines line<CR>
-nnoremap <silent> [unite]ma :<C-u>Unite -buffer-name=mappings mapping<CR>
-nnoremap <silent> [unite]me :<C-u>Unite -buffer-name=messages output:message<CR>
-nnoremap <silent> [unite]o :<C-u>Unite -buffer-name=outlines outline<CR>
-nnoremap <silent> [unite]r :<C-u>Unite -buffer-name=registers register<CR>
-nnoremap <silent> [unite]s :<C-u>Unite -buffer-name=files jump_point file_point buffer_tab file_rec:! file file/new file_mru<CR>
-nnoremap <silent> [unite]t :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
-nnoremap <silent> [unite]ta :<C-u>Unite -buffer-name=tags tag tag/file<CR>
+let g:unite_source_history_yank_enable = 1
+nnoremap <silent> fre :<C-u>UniteResume<CR>
+nnoremap <silent> fb  :<C-u>Unite -buffer-name=Buffers buffer:!<CR>
+nnoremap <silent> fd  :<C-u>Unite -buffer-name=Directory -default-action=lcd directory_mru<CR>
+nnoremap <silent> ff  :<C-u>Unite -buffer-name=Sources source<CR>
+nnoremap <silent> fg  :<C-u>Unite -buffer-name=Vimgrep vimgrep -start-insert -keep-focus -no-quit<CR>
+nnoremap <silent> fhc :<C-u>Unite -buffer-name=History history/command<CR>
+nnoremap <silent> fhy :<C-u>Unite -buffer-name=History history/yank<CR>
+nnoremap <silent> fhl :<C-u>Unite -buffer-name=Help help<CR>
+nnoremap <silent> fhs :<C-u>Unite -buffer-name=History history/search<CR>
+nnoremap <silent> fl  :<C-u>Unite -buffer-name=Lines line<CR>
+nnoremap <silent> fma :<C-u>Unite -buffer-name=Mappings mapping<CR>
+nnoremap <silent> fme :<C-u>Unite -buffer-name=Messages output:message<CR>
+nnoremap <silent> fo  :<C-u>Unite -buffer-name=Outlines outline<CR>
+nnoremap <silent> fr  :<C-u>Unite -buffer-name=Registers register<CR>
+nnoremap <silent> fs  :<C-u>Unite -buffer-name=Files file file_mru<CR>
+nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
+nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
+nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix qf -no-quit -auto-resize -direction=botright<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
@@ -388,6 +393,7 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplcache_enable_smart_case = 1
     let g:neocomplcache_enable_underbar_completion = 1
     let g:neocomplcache_max_list = 1000
+    imap <expr> -  pumvisible() ? "\<Plug>(neocomplcache_start_unite_quick_match)" : '-'
 
     if !exists('g:neocomplcache_omni_patterns')
         let g:neocomplcache_omni_patterns = {}
@@ -609,9 +615,6 @@ let g:alpaca_english_enable=1
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
 
-" Lingr
-let g:lingr_vim_user = 'mopp'
-
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -654,11 +657,11 @@ endfunction
 " C/C++
 function! s:configCCpp()
     NeoBundleSource cpp-vim
-    if has('mac')
-        NeoBundleSource clang_complete
+    if has('mac') && isdirectory('/opt/local/libexec/llvm-3.3/lib/')
         let g:clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
         let g:clang_user_options = '-I /opt/local/include/ -I /opt/local/include/boost/'
         let g:clang_executable_path = '/opt/local/bin/'
+        NeoBundleSource clang_complete
     endif
     setlocal nosmartindent
     setlocal nocindent
