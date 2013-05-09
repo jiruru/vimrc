@@ -164,9 +164,11 @@ noremap! <C-A> <Home>
 noremap! <C-E> <End>
 noremap! <C-F> <Right>
 noremap! <C-B> <Left>
+noremap! <C-D> <Del>
+inoremap <M-f> <C-o>w
+inoremap <M-b> <C-o>b
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
-inoremap <C-D> <Del>
 noremap <C-J> G
 noremap <C-K> gg
 noremap <C-H> ^
@@ -225,7 +227,7 @@ nnoremap <Leader>cd :lcd %:p:h<CR>
 nnoremap <silent> <Esc><Esc> :nohlsearch<CR>
 
 " 空行を追加
-nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'),   '') \| endfor \| silent! call repeat#set("<Space>o", v:count1)<CR>
+nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'),   '') \| endfor \| silent! call repeat#set("<CR>", v:count1)<CR>
 " nnoremap <silent> <Leader>O   :<C-u>for i in range(1, v:count1) \| call append(line('.')-1, '') \| endfor \| silent! call repeat#set("<Space>O", v:count1)<CR>
 
 " Tagが複数あればリスト表示
@@ -265,6 +267,8 @@ endif
 " set runtimepath+=~/Dropbox/Program/Vim/NyaruLine
 " set runtimepath+=~/Dropbox/Program/Vim/Pastel
 " colorscheme Pastel
+" set runtimepath+=~/Dropbox/Program/Vim/unite-battle_editors
+set runtimepath+=~/Dropbox/Program/Vim/unite-rss
 
 " neobundleが存在しない場合これ以降を読み込まない
 if !isdirectory(expand('~/.vim/bundle/neobundle.vim'))
@@ -316,7 +320,7 @@ NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle'
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/sonictemplate-vim.git', '', 'loadInsert'
-NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'md' } }
+NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'mkd' } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
@@ -330,14 +334,15 @@ NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
 
-NeoBundle 'mattn/unite-advent_calendar'
-NeoBundle 'thinca/vim-unite-history'
-NeoBundleLazy 'Shougo/unite-help.git', { 'autoload' : { 'unite_sources' : 'help' }}
-NeoBundleLazy 'Shougo/unite-outline', { 'autoload' : { 'unite_sources' : 'outline' }}
-NeoBundleLazy 'Shougo/unite-ssh', { 'autoload' : { 'unite_sources' : 'ssh' }}
 NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : 'Unite' }}
-NeoBundleLazy 'sgur/unite-qf', { 'autoload' : { 'unite_sources' : 'qf' }}
-NeoBundleLazy 'tsukkee/unite-tag', { 'autoload' : { 'unite_sources' : 'tag' }}
+NeoBundle 'Shougo/unite-help.git'
+NeoBundle 'Shougo/unite-outline'
+NeoBundle 'Shougo/unite-ssh'
+NeoBundle 'mattn/unite-advent_calendar'
+NeoBundle 'mopp/unite-battle_editors'
+NeoBundle 'sgur/unite-qf'
+NeoBundle 'thinca/vim-unite-history'
+NeoBundle 'tsukkee/unite-tag'
 
 NeoBundleLazy 'basyura/TweetVim', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay']} }
 NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
@@ -393,26 +398,12 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplcache_enable_smart_case = 1
     let g:neocomplcache_enable_underbar_completion = 1
     let g:neocomplcache_max_list = 1000
-    imap <expr> -  pumvisible() ? "\<Plug>(neocomplcache_start_unite_quick_match)" : '-'
-
-    if !exists('g:neocomplcache_omni_patterns')
-        let g:neocomplcache_omni_patterns = {}
-    endif
-    let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
-    let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-    let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-    let g:neocomplcache_omni_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
-
-    if !exists('g:neocomplcache_force_omni_patterns')
-        let g:neocomplcache_force_omni_patterns = {}
-    endif
-    let g:neocomplcache_force_overwrite_completefunc = 1
-    let g:neocomplcache_force_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplcache_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-    let g:neocomplcache_force_omni_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplcache_force_omni_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-    let g:neocomplcache_force_omni_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplcache_text_mode_filetypes = {
+      \ 'mkd' : 1,
+      \ 'markdown' : 1,
+      \ 'gitcommit' : 1,
+      \ 'text' : 1,
+      \ }
 
     if !exists('g:neocomplcache_omni_functions')
         let g:neocomplcache_omni_functions = {}
@@ -517,21 +508,28 @@ function! s:bundle.hooks.on_source(bundle)
                 \ 'char': '<CR>',
                 \ 'input': "<C-o>:call setline('.', substitute(getline('.'), '\\s\\+$', '', ''))<CR><CR>",
                 \ })
+
+    if &filetype ==? 'lisp'
+        call smartinput#map_to_trigger('i', '*', '*', '*')
+        call smartinput#define_rule({
+                    \ 'at'    : 'defparameter \*\%#',
+                    \ 'char'  : '*',
+                    \ 'input' : '*<Left>',
+                    \ })
+    endif
 endfunction
 unlet s:bundle
 
 " Smartchr
 let s:bundle = neobundle#get('vim-smartchr')
 function! s:bundle.hooks.on_source(bundle)
-    " inoremap <expr> % smartchr#one_of(' % ', '%')
-    " inoremap <expr> & smartchr#one_of(' & ', ' && ', '&')
-    " inoremap <expr> <Bar> smartchr#one_of(' <Bar> ', ' <Bar><Bar> ', '<Bar>')
     inoremap <expr> , smartchr#one_of(', ', ',')
     inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
-    " inoremap <expr> - smartchr#one_of(' - ', '--', '-')
-    " inoremap <expr> + smartchr#one_of(' + ', '++', '+')
     inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
     inoremap <expr> . smartchr#loop('.', '->', ' => ')
+    if &filetype ==? 'lisp'
+        inoremap <expr> ; smartchr#loop('; ', ';')
+    endif
 endfunction
 unlet s:bundle
 
