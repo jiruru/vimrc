@@ -11,9 +11,9 @@
 "---------------------------------------------------------------------------------------"
 
 " バックアップファイルと一時ファイル設定
-if isdirectory(expand('~/.vim_backup'))
-    set backupdir=~/.vim_backup
-    set directory=~/.vim_backup
+if isdirectory(expand('~/.vim/backup'))
+    set backupdir=~/.vim/backup
+    set directory=~/.vim/backup
 endif
 set backup
 set writebackup     " 上書き前にバックアップ作成
@@ -49,16 +49,22 @@ set foldmethod=indent       " 折畳の判別
 set foldtext=g:ToFoldFunc() " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
 
-" その他
-set helplang=ja                 " ヘルプ検索で日本語を優先
+" 履歴など
 set history=500                 " コマンドの保存履歴数
+set viminfo='1000,<500,f1       " viminfoへの保存設定
 set tags=./tags,tags            " タグが検索されるファイル
 set viewoptions=cursor,folds    " :mkviewで保存する設定
-set viminfo='1000,<500,f1       " viminfoへの保存設定
+if isdirectory(expand('~/.vim/undo'))
+    set undodir=~/.vim/undo
+    set undofile
+endif
+
+" その他
+set helplang=ja                 " ヘルプ検索で日本語を優先
 set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
 set timeout                     " マッピングのタイムアウト有効
 set timeoutlen=3000             " マッピングのタイムアウト時間
-set ttimeoutlen=100             " キーコードのタイムアウト時間
+set ttimeoutlen=0               " キーコードのタイムアウト時間
 let g:loaded_netrwPlugin = 1    " 標準Pluginを読み込まない
 let g:loaded_tar = 1
 let g:loaded_tarPlugin= 1
@@ -234,6 +240,7 @@ nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'
 nnoremap <C-]> g<C-]>zz
 
 command! -nargs=0 Nyaruko call append(line('.'), '（」・ω・）」うー！（／・ω・）／にゃー！')
+command! -nargs=0 Mload source %
 
 
 "-----------------------------------------------------------------------------------"
@@ -279,7 +286,7 @@ endif
 if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
-call neobundle#rc(expand('~/.vim/bundle'))
+call neobundle#rc()
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
@@ -319,7 +326,6 @@ NeoBundleLazy 'kana/vim-smartinput', '', 'loadInsert'
 NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
-NeoBundleLazy 'mattn/sonictemplate-vim.git', '', 'loadInsert'
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'mkd' } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
@@ -399,11 +405,11 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplcache_enable_underbar_completion = 1
     let g:neocomplcache_max_list = 1000
     let g:neocomplcache_text_mode_filetypes = {
-      \ 'mkd' : 1,
-      \ 'markdown' : 1,
-      \ 'gitcommit' : 1,
-      \ 'text' : 1,
-      \ }
+                \ 'mkd' : 1,
+                \ 'markdown' : 1,
+                \ 'gitcommit' : 1,
+                \ 'text' : 1,
+                \ }
 
     if !exists('g:neocomplcache_omni_functions')
         let g:neocomplcache_omni_functions = {}
