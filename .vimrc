@@ -91,13 +91,6 @@ let g:lisp_rainbow = 1
 let g:lisp_instring = 1
 let g:lispsyntax_clisp = 1
 syntax enable           " 強調表示有効
-colorscheme desert
-highlight Cursor ctermbg=55
-highlight FoldColumn ctermfg=130
-highlight Folded cterm=bold,underline ctermfg=14 ctermbg=55
-highlight MatchParen cterm=bold,underline ctermbg=3
-highlight Search ctermbg=3 ctermfg=0
-highlight TabLineSel ctermbg=5
 
 
 "-------------------------------------------------------------------------------"
@@ -275,7 +268,7 @@ endif
 " set runtimepath+=~/Dropbox/Program/Vim/Pastel
 " colorscheme Pastel
 " set runtimepath+=~/Dropbox/Program/Vim/unite-battle_editors
-set runtimepath+=~/Dropbox/Program/Vim/unite-rss
+" set runtimepath+=~/Dropbox/Program/Vim/unite-rss
 
 " neobundleが存在しない場合これ以降を読み込まない
 if !isdirectory(expand('~/.vim/bundle/neobundle.vim'))
@@ -346,6 +339,7 @@ NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Shougo/unite-ssh'
 NeoBundle 'mattn/unite-advent_calendar'
 NeoBundle 'mopp/unite-battle_editors'
+NeoBundle 'mopp/unite-rss'
 NeoBundle 'sgur/unite-qf'
 NeoBundle 'thinca/vim-unite-history'
 NeoBundle 'tsukkee/unite-tag'
@@ -452,8 +446,8 @@ vmap <Leader><Leader> <Plug>NERDCommenterNested
 
 " VimFiler
 nnoremap <silent> fvs :VimFilerExplorer<CR>
-nnoremap <silent> fvr :VimFilerExplorer ssh://ains<CR>
-nnoremap <silent> fvo :VimFilerTab<CR>
+nnoremap <silent> fvr :VimFilerExplorer -status ssh://ains<CR>
+nnoremap <silent> fvo :VimFilerTab -status<CR>
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default = 0
 let g:vimfiler_tree_closed_icon = '▸'
@@ -624,6 +618,16 @@ let g:gist_open_browser_after_post = 1
 " autocmd
 "-------------------------------------------------------------------------------"
 
+" Highlight
+function! s:configHighlight()
+    highlight Cursor ctermbg=55
+    highlight FoldColumn ctermfg=130
+    highlight Folded cterm=bold,underline ctermfg=14 ctermbg=55
+    highlight MatchParen cterm=bold,underline ctermbg=3
+    highlight Search ctermbg=3 ctermfg=0
+    highlight TabLineSel ctermbg=5
+endfunction
+
 " VimFiler
 function! s:configVimFiler()
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
@@ -689,6 +693,9 @@ augroup general
     autocmd BufWinLeave ?* silent mkview!
     autocmd BufWinEnter ?* silent loadview
 
+    " 独自ハイライト
+    autocmd Colorscheme * call s:configHighlight()
+
     " Text
     autocmd BufReadPre *.txt setlocal filetype=text
     autocmd BufReadPre *.txt setlocal wrap
@@ -720,3 +727,5 @@ augroup general
     " Java
     autocmd CompleteDone *.java call javaapi#showRef()
 augroup END
+
+colorscheme desert
