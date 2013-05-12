@@ -279,6 +279,7 @@ endif
 if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
+
 call neobundle#rc()
 
 NeoBundleFetch 'Shougo/neobundle.vim'
@@ -305,7 +306,7 @@ NeoBundle 'ujihisa/neco-look'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
-NeoBundleLazy 'Shougo/neocomplcache', '', 'loadInsert'
+NeoBundleLazy 'Shougo/neocomplcache', 'ver.8.1', 'loadInsert'
 NeoBundleLazy 'Shougo/neosnippet', '', 'loadInsert'
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ 'VimFiler', 'VimFilerTab', 'VimFilerExplorer',], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
@@ -333,7 +334,7 @@ NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
 
-NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : 'Unite' }}
+NeoBundleLazy 'Shougo/unite.vim', 'ver.5.1', { 'autoload' : { 'commands' : 'Unite', 'function_prefix' : 'unite' }}
 NeoBundle 'Shougo/unite-help.git'
 NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Shougo/unite-ssh'
@@ -343,6 +344,7 @@ NeoBundle 'mopp/unite-rss'
 NeoBundle 'sgur/unite-qf'
 NeoBundle 'thinca/vim-unite-history'
 NeoBundle 'tsukkee/unite-tag'
+NeoBundle 'osyo-manga/vim-reanimate'
 
 NeoBundleLazy 'basyura/TweetVim', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay']} }
 NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
@@ -389,6 +391,7 @@ nnoremap <silent> fs  :<C-u>Unite -buffer-name=Files file file_mru<CR>
 nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
 nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
 nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix qf -no-quit -auto-resize -direction=botright<CR>
+nnoremap <silent> fup :<C-u>Unite -buffer-name=NeobundleUpdateLog -log neobundle/update -direction=botright<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
@@ -613,6 +616,8 @@ let g:alpaca_english_enable=1
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
 
+" Reanimate.vim
+let g:reanimate_save_dir = "~/.vim/reanimate"
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -681,7 +686,7 @@ augroup general
     autocmd!
 
     " .vimrc
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+    autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
 
     " 保存時に行末の空白を削除 移動してしまう
     " autocmd BufWritePost * silent %s/\s$//g | call line("''")
@@ -690,11 +695,11 @@ augroup general
     autocmd InsertLeave * setlocal nopaste
 
     " 状態の保存と復元
-    autocmd BufWinLeave ?* silent mkview!
-    autocmd BufWinEnter ?* silent loadview
+    autocmd BufWinLeave ?* nested silent mkview!
+    autocmd BufWinEnter ?* nested silent loadview
 
     " 独自ハイライト
-    autocmd Colorscheme * call s:configHighlight()
+    autocmd Colorscheme * nested call s:configHighlight()
 
     " Text
     autocmd BufReadPre *.txt setlocal filetype=text
