@@ -269,6 +269,7 @@ endif
 " colorscheme Pastel
 " set runtimepath+=~/Dropbox/Program/Vim/unite-battle_editors
 " set runtimepath+=~/Dropbox/Program/Vim/unite-rss
+set runtimepath+=~/Dropbox/Program/Vim/vim-rogue
 
 " neobundleが存在しない場合これ以降を読み込まない
 if !isdirectory(expand('~/.vim/bundle/neobundle.vim'))
@@ -506,11 +507,11 @@ function! s:bundle.hooks.on_source(bundle)
                 \ 'input' : '<Del><BS>'
                 \ })
 
-    call smartinput#define_rule({
-                \ 'at': '\s\+\%#',
-                \ 'char': '<CR>',
-                \ 'input': "<C-o>:call setline('.', substitute(getline('.'), '\\s\\+$', '', ''))<CR><CR>",
-                \ })
+    " call smartinput#define_rule({
+    " \ 'at': '\s\+\%#',
+    " \ 'char': '<CR>',
+    " \ 'input': "<C-o>:call setline('.', substitute(getline('.'), '\\s\\+$', '', ''))<CR><CR>",
+    " \ })
 
     if &filetype ==? 'lisp'
         call smartinput#map_to_trigger('i', '*', '*', '*')
@@ -528,6 +529,8 @@ let s:bundle = neobundle#get('vim-smartchr')
 function! s:bundle.hooks.on_source(bundle)
     inoremap <expr> , smartchr#one_of(', ', ',')
     inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
+    inoremap <expr> + smartchr#one_of(' + ', '++', '+')
+    inoremap <expr> - smartchr#one_of(' - ', '--', '-')
     inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
     inoremap <expr> . smartchr#loop('.', '->', ' => ')
     if &filetype ==? 'lisp'
@@ -682,14 +685,23 @@ function! s:configCCpp()
     setlocal cindent
 endfunction
 
+" 行末の空白を削除
+function! s:remove_tail_space()
+    let c = getpos('.')
+    g/.*\s$/normal $gelD
+    call setpos('.', c)
+endfunction
+" TODO コマンド化
+
+
 augroup general
     autocmd!
 
     " .vimrc
     autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
 
-    " 保存時に行末の空白を削除 移動してしまう
-    " autocmd BufWritePost * silent %s/\s$//g | call line("''")
+    " 書き込み時に行末の空白を削除
+    autocmd BufWritePre * call s:remove_tail_space()
 
     " 挿入モード解除時に自動でpasteをoff
     autocmd InsertLeave * setlocal nopaste
