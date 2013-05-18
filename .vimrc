@@ -699,7 +699,6 @@ function! s:remove_tail_space()
 endfunction
 " TODO コマンド化
 
-
 augroup general
     autocmd!
 
@@ -707,7 +706,7 @@ augroup general
     autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
 
     " 書き込み時に行末の空白を削除
-    autocmd BufWritePre * call s:remove_tail_space()
+    autocmd BufWritePre * silent call s:remove_tail_space()
 
     " 挿入モード解除時に自動でpasteをoff
     autocmd InsertLeave * setlocal nopaste
