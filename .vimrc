@@ -214,7 +214,8 @@ noremap ; :
 noremap : ;
 
 " カーソル下のwordをhelpする
-nnoremap <silent> <Leader>h :vertical aboveleft help <C-R><C-W><CR>
+" nnoremap <silent> <Leader>h :vertical aboveleft help <C-R><C-W><CR>
+nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
 
 " .vimrcを開く
 nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
@@ -334,6 +335,11 @@ NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operat
 NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
+NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
+
+NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
+" NeoBundleLazy 'tpope/vim-fugitive', { 'autoload' : {'commands' : 'Git'} }
+NeoBundle 'tpope/vim-fugitive'
 
 NeoBundleLazy 'Shougo/unite.vim', 'ver.5.1', { 'autoload' : { 'commands' : 'Unite', 'function_prefix' : 'unite' }}
 NeoBundle 'Shougo/unite-help.git'
@@ -383,7 +389,7 @@ nnoremap <silent> fhc :<C-u>Unite -buffer-name=History history/command<CR>
 nnoremap <silent> fhy :<C-u>Unite -buffer-name=History history/yank<CR>
 nnoremap <silent> fhl :<C-u>Unite -buffer-name=Help help<CR>
 nnoremap <silent> fhs :<C-u>Unite -buffer-name=History history/search<CR>
-nnoremap <silent> fl  :<C-u>Unite -buffer-name=Lines line<CR>
+nnoremap <silent> fl  :<C-u>Unite -buffer-name=Lines line -no-quit<CR>
 nnoremap <silent> fma :<C-u>Unite -buffer-name=Mappings mapping<CR>
 nnoremap <silent> fme :<C-u>Unite -buffer-name=Messages output:message<CR>
 nnoremap <silent> fo  :<C-u>Unite -buffer-name=Outlines outline<CR>
@@ -716,6 +722,9 @@ augroup general
     " Text
     autocmd BufReadPre *.txt setlocal filetype=text
     autocmd BufReadPre *.txt setlocal wrap
+
+    " git
+    autocmd FileType git setlocal foldlevel=99
 
     " VimFiler
     autocmd FileType vimfiler call s:configVimFiler()
