@@ -118,7 +118,7 @@ function! g:ToFoldFunc()
         endwhile
     endif
 
-    return printf('%s %s [ %2d Lines Lv%02d ] %s', line, v:folddashes, (v:foldend-v:foldstart+1), v:foldlevel, v:folddashes)
+    return printf('[ %2d Lines Lv%02d ] %s %s %s', (v:foldend-v:foldstart+1), v:foldlevel, line, v:folddashes, v:folddashes)
 endfunction
 
 
@@ -298,7 +298,6 @@ NeoBundle 'modsound/gips-vim'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'supermomonga/shaberu.vim'
-NeoBundle 'taichouchou2/alpaca_english'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
@@ -324,6 +323,7 @@ NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'}
 NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'mkd' } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
+NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
 NeoBundleLazy 'thinca/vim-showtime'
@@ -334,7 +334,6 @@ NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : ['SrcExplToggle
 NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
 NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
-NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
 
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
@@ -399,6 +398,9 @@ nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
 nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
 nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix qf -no-quit -auto-resize -direction=botright<CR>
 nnoremap <silent> fup :<C-u>Unite -buffer-name=NeobundleUpdateLog -log neobundle/update -direction=botright<CR>
+nnoremap <silent> fed  :<C-u>Unite -buffer-name=english english_dictionary<CR>
+nnoremap <silent> fex  :<C-u>Unite -buffer-name=example english_example<CR>
+nnoremap <silent> fet  :<C-u>Unite -buffer-name=thesaurus english_thesaurus<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
@@ -619,7 +621,11 @@ nnoremap <Leader>b :Thumbnail<CR>
 map _ <Plug>(operator-replace)
 
 " Alpaca_english
-let g:alpaca_english_enable=1
+if has('ruby')
+    let g:alpaca_english_enable=1
+else
+    let g:alpaca_english_enable=0
+endif
 
 " Gist
 let g:gist_detect_filetype = 1
@@ -627,6 +633,7 @@ let g:gist_open_browser_after_post = 1
 
 " Reanimate.vim
 let g:reanimate_save_dir = "~/.vim/reanimate"
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
