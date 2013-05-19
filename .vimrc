@@ -164,8 +164,8 @@ noremap! <C-E> <End>
 noremap! <C-F> <Right>
 noremap! <C-B> <Left>
 noremap! <C-D> <Del>
-inoremap <M-f> <C-o>w
-inoremap <M-b> <C-o>b
+noremap! <M-f> <S-Right>
+noremap! <M-b> <S-Left>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
 noremap <C-J> G
@@ -398,9 +398,10 @@ nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
 nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
 nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix qf -no-quit -auto-resize -direction=botright<CR>
 nnoremap <silent> fup :<C-u>Unite -buffer-name=NeobundleUpdateLog -log neobundle/update -direction=botright<CR>
-nnoremap <silent> fed  :<C-u>Unite -buffer-name=english english_dictionary<CR>
-nnoremap <silent> fex  :<C-u>Unite -buffer-name=example english_example<CR>
-nnoremap <silent> fet  :<C-u>Unite -buffer-name=thesaurus english_thesaurus<CR>
+nnoremap <silent> fed :<C-u>Unite -buffer-name=english english_dictionary<CR>
+nnoremap <silent> fex :<C-u>Unite -buffer-name=example english_example<CR>
+nnoremap <silent> fet :<C-u>Unite -buffer-name=thesaurus english_thesaurus<CR>
+nnoremap <silent> fa  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
 
 " Neocomplcache
 let g:neocomplcache_enable_at_startup = 1
@@ -631,8 +632,12 @@ endif
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
 
-" Reanimate.vim
-let g:reanimate_save_dir = "~/.vim/reanimate"
+" Reanimate
+let g:reanimate_save_dir = expand('~/.vim/reanimate')
+noremap [rr :ReanimateSave <CR>
+noremap ]rr :ReanimateLoad <CR>
+noremap [rn :ReanimateSave <C-R>%<CR>
+noremap ]rn :ReanimateLoad <C-R>%<CR>
 
 
 "-------------------------------------------------------------------------------"
