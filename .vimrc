@@ -63,7 +63,7 @@ endif
 set helplang=ja                 " ヘルプ検索で日本語を優先
 set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらないようにする
 set timeout                     " マッピングのタイムアウト有効
-set timeoutlen=3000             " マッピングのタイムアウト時間
+set timeoutlen=1000             " マッピングのタイムアウト時間
 set ttimeoutlen=0               " キーコードのタイムアウト時間
 let g:loaded_netrwPlugin = 1    " 標準Pluginを読み込まない
 let g:loaded_tar = 1
@@ -270,7 +270,7 @@ endif
 " colorscheme Pastel
 " set runtimepath+=~/Dropbox/Program/Vim/unite-battle_editors
 " set runtimepath+=~/Dropbox/Program/Vim/unite-rss
-set runtimepath+=~/Dropbox/Program/Vim/vim-rogue
+set runtimepath+=~/Dropbox/Program/Vim/rogue.vim
 
 " neobundleが存在しない場合これ以降を読み込まない
 if !isdirectory(expand('~/.vim/bundle/neobundle.vim'))
@@ -305,13 +305,14 @@ NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'ujihisa/neco-look'
 NeoBundle 'vim-jp/vimdoc-ja'
-NeoBundleLazy 'JSON.vim', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
 NeoBundleLazy 'Shougo/neocomplcache', 'ver.8.1', 'loadInsert'
 NeoBundleLazy 'Shougo/neosnippet', '', 'loadInsert'
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ 'VimFiler', 'VimFilerTab', 'VimFilerExplorer',], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'deton/jasegment.vim', { 'autoload' : { 'function_prefix' : 'jasegment' } }
+NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
+NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
 NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'directory' : 'conque', 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'itchyny/thumbnail.vim', { 'autoload' : {'commands' : 'Thumbnail'} }
 NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : ['<Plug>(operator-replace)'] } }
@@ -336,7 +337,6 @@ NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
 
-NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
 " NeoBundleLazy 'tpope/vim-fugitive', { 'autoload' : {'commands' : 'Git'} }
 NeoBundle 'tpope/vim-fugitive'
 
@@ -361,6 +361,7 @@ NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(o
 
 if (has('python'))
     " pip install --user git+git://github.com/Lokaltog/powerline
+    " python import vim
     NeoBundle 'Lokaltog/powerline', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
 else
     NeoBundle 'Lokaltog/vim-powerline'
@@ -407,6 +408,7 @@ nnoremap <silent> fa  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
 let g:neocomplcache_enable_at_startup = 1
 let s:bundle = neobundle#get('neocomplcache')
 function! s:bundle.hooks.on_source(bundle)
+    let g:neocomplcache_temporary_dir = expand('~/.vim/neocomplcache')
     let g:neocomplcache_enable_camel_case_completion = 1
     let g:neocomplcache_enable_smart_case = 1
     let g:neocomplcache_enable_underbar_completion = 1
@@ -703,13 +705,12 @@ function! s:configCCpp()
     setlocal cindent
 endfunction
 
-" 行末の空白を削除
+" 行末の空白を削除 TODO コマンド化
 function! s:remove_tail_space()
     let c = getpos('.')
     g/.*\s$/normal $gelD
     call setpos('.', c)
 endfunction
-" TODO コマンド化
 
 augroup general
     autocmd!
