@@ -68,7 +68,7 @@ set ttimeoutlen=0               " キーコードのタイムアウト時間
 let g:loaded_netrwPlugin = 1    " 標準Pluginを読み込まない
 let g:loaded_tar = 1
 let g:loaded_tarPlugin= 1
-" let g:loaded_vimballPlugin = 1
+let g:loaded_vimballPlugin = 1
 let g:loaded_zip = 1
 let g:loaded_zipPlugin = 1
 
@@ -337,7 +337,6 @@ NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
 
-" NeoBundleLazy 'tpope/vim-fugitive', { 'autoload' : {'commands' : 'Git'} }
 NeoBundle 'tpope/vim-fugitive'
 
 NeoBundleLazy 'Shougo/unite.vim', 'ver.5.1', { 'autoload' : { 'commands' : 'Unite', 'function_prefix' : 'unite' }}
@@ -376,6 +375,7 @@ endif
 filetype plugin indent on
 
 " Unite
+let g:unite_data_directory = expand('~/.vim/unite')
 let g:unite_source_file_mru_limit = 50
 let g:unite_cursor_line_highlight = 'TabLineSel'
 let g:unite_enable_short_source_names = 1
@@ -452,7 +452,7 @@ imap <C-l> <Plug>(neosnippet_jump_or_expand)
 set conceallevel=2 concealcursor=i
 
 " Easymotion
-let g:EasyMotion_leader_key = '<Leader>e'
+let g:EasyMotion_leader_key = ','
 
 " NERDCommenter
 let g:NERDSpaceDelims = 1
@@ -463,6 +463,7 @@ vmap <Leader><Leader> <Plug>NERDCommenterNested
 nnoremap <silent> fvs :VimFilerExplorer<CR>
 nnoremap <silent> fvr :VimFilerExplorer -status ssh://ains<CR>
 nnoremap <silent> fvo :VimFilerTab -status<CR>
+let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default = 0
 let g:vimfiler_tree_closed_icon = '▸'
