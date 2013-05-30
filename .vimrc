@@ -90,7 +90,6 @@ set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'
 let g:lisp_rainbow = 1
 let g:lisp_instring = 1
 let g:lispsyntax_clisp = 1
-syntax enable           " 強調表示有効
 
 
 "-------------------------------------------------------------------------------"
@@ -233,6 +232,9 @@ nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'
 " Tagが複数あればリスト表示
 nnoremap <C-]> g<C-]>zz
 
+" バッファの一覧と選択
+nnoremap <Leader>b :ls<CR>:b
+
 command! -nargs=0 Nyaruko call append(line('.'), '（」・ω・）」うー！（／・ω・）／にゃー！')
 command! -nargs=0 Mload source %
 
@@ -267,7 +269,6 @@ endif
 
 " set runtimepath+=~/Dropbox/Program/Vim/NyaruLine
 " set runtimepath+=~/Dropbox/Program/Vim/Pastel
-" colorscheme Pastel
 " set runtimepath+=~/Dropbox/Program/Vim/unite-battle_editors
 " set runtimepath+=~/Dropbox/Program/Vim/unite-rss
 set runtimepath+=~/Dropbox/Program/Vim/rogue.vim
@@ -280,6 +281,8 @@ endif
 " NeoBundle
 if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim
+else
+    call neobundle#call_hook('on_source')
 endif
 
 call neobundle#rc()
@@ -305,6 +308,7 @@ NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'ujihisa/neco-look'
 NeoBundle 'vim-jp/vimdoc-ja'
+NeoBundle 'tomasr/molokai'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
 NeoBundleLazy 'Shougo/neocomplcache', 'ver.8.1', 'loadInsert'
 NeoBundleLazy 'Shougo/neosnippet', '', 'loadInsert'
@@ -324,7 +328,7 @@ NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'}
 NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'mkd' } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
-NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
+NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'insert' : '1', 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
 NeoBundleLazy 'thinca/vim-showtime'
@@ -358,9 +362,8 @@ NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' 
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
 
 
-if (has('python'))
+if has('python')
     " pip install --user git+git://github.com/Lokaltog/powerline
-    " python import vim
     NeoBundle 'Lokaltog/powerline', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
 else
     NeoBundle 'Lokaltog/vim-powerline'
@@ -452,7 +455,7 @@ imap <C-l> <Plug>(neosnippet_jump_or_expand)
 set conceallevel=2 concealcursor=i
 
 " Easymotion
-let g:EasyMotion_leader_key = ','
+let g:EasyMotion_leader_key = '<Leader>e'
 
 " NERDCommenter
 let g:NERDSpaceDelims = 1
@@ -619,7 +622,7 @@ vmap ab <Plug>(textobj-multiblock-a)
 vmap ib <Plug>(textobj-multiblock-i)
 
 " Thumbnail
-nnoremap <Leader>b :Thumbnail<CR>
+nnoremap <Leader>th :Thumbnail<CR>
 
 " Textobj-Operator-Replace
 map _ <Plug>(operator-replace)
@@ -768,3 +771,4 @@ augroup general
 augroup END
 
 colorscheme desert
+syntax enable           " 強調表示有効
