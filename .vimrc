@@ -291,6 +291,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '1' } } }
 
 NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'Shougo/context_filetype.vim'
 NeoBundle 'Shougo/vimproc', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'kana/vim-textobj-indent'
@@ -303,15 +304,13 @@ NeoBundle 'supermomonga/shaberu.vim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
+NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'ujihisa/neco-look'
 NeoBundle 'vim-jp/vimdoc-ja'
-NeoBundle 'tomasr/molokai'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
-" NeoBundleLazy 'Shougo/neocomplcache', 'ver.8.1', 'loadInsert'
 NeoBundleLazy 'Shougo/neocomplete.vim', '', 'loadInsert'
-NeoBundle 'Shougo/context_filetype.vim'
 NeoBundleLazy 'Shougo/neosnippet', '', 'loadInsert'
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ 'VimFiler', 'VimFilerTab', 'VimFilerExplorer',], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
@@ -342,9 +341,7 @@ NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
 
-NeoBundle 'tpope/vim-fugitive'
-
-NeoBundleLazy 'Shougo/unite.vim', 'ver.5.1', { 'autoload' : { 'commands' : 'Unite', 'function_prefix' : 'unite' }}
+NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : 'Unite', 'function_prefix' : 'unite' }}
 NeoBundle 'Shougo/unite-help.git'
 NeoBundle 'Shougo/unite-outline'
 NeoBundle 'Shougo/unite-ssh'
@@ -462,6 +459,8 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete_vimfuncs.Unite = 'unite#complete_source'
     let g:neocomplete_vimfuncs.VimFiler = 'vimfiler#complete'
     let g:neocomplete_vimfuncs.Vinarise = 'vinarise#complete'
+
+    inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
 endfunction
 unlet s:bundle
 
