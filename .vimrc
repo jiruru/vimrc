@@ -39,8 +39,9 @@ set hlsearch            " 検索結果強調-:nohで解除
 set incsearch           " インクリメンタルサーチを有効
 set ignorecase          " 大文字小文字無視
 set smartcase           " 大文字があれば通常の検索
-set completeopt=menu    " 挿入モードでの補完設定
+" set completeopt=menu    " 挿入モードでの補完設定
 set wildmenu            " コマンドの補完候補を表示
+let &path = '.,' . substitute($PATH, ';', ',', 'g')
 
 " 折りたたみ
 set foldenable
@@ -258,8 +259,6 @@ if has('mac')
     vnoremap <silent> <Leader>doy :<C-u>MacDict<Space><C-r>*<CR>
     nnoremap <silent> <Leader>dc :<C-u>MacDictClose<CR>
     nnoremap <silent> <Leader>df :<C-u>MacDictFocus<CR>
-
-    set path=.,/opt/local/include,/usr/include   " ファイルの検索パス指定
 endif
 
 
@@ -310,7 +309,9 @@ NeoBundle 'ujihisa/neco-look'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'tomasr/molokai'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
-NeoBundleLazy 'Shougo/neocomplcache', 'ver.8.1', 'loadInsert'
+" NeoBundleLazy 'Shougo/neocomplcache', 'ver.8.1', 'loadInsert'
+NeoBundleLazy 'Shougo/neocomplete.vim', '', 'loadInsert'
+NeoBundle 'Shougo/context_filetype.vim'
 NeoBundleLazy 'Shougo/neosnippet', '', 'loadInsert'
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ 'VimFiler', 'VimFilerTab', 'VimFilerExplorer',], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
@@ -407,40 +408,60 @@ nnoremap <silent> fex :<C-u>Unite -buffer-name=example english_example<CR>
 nnoremap <silent> fet :<C-u>Unite -buffer-name=thesaurus english_thesaurus<CR>
 nnoremap <silent> fa  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
 
-" Neocomplcache
-let g:neocomplcache_enable_at_startup = 1
-let s:bundle = neobundle#get('neocomplcache')
+" neocomplete
+let s:bundle = neobundle#get('neocomplete.vim')
 function! s:bundle.hooks.on_source(bundle)
-    let g:neocomplcache_temporary_dir = expand('~/.vim/neocomplcache')
-    let g:neocomplcache_enable_camel_case_completion = 1
-    let g:neocomplcache_enable_smart_case = 1
-    let g:neocomplcache_enable_underbar_completion = 1
-    let g:neocomplcache_max_list = 1000
-    let g:neocomplcache_text_mode_filetypes = {
+    let g:neocomplete_enable_at_startup = 1
+    let g:neocomplete_enable_smart_case = 1
+    let g:neocomplete_enable_auto_delimiter = 1
+    let g:neocomplete_data_directory = expand('~/.vim/neocomplete')
+    let g:neocomplete_skip_auto_completion_time = '0.5'
+    let g:neocomplete_force_overwrite_completefunc = 1
+    let g:neocomplete_text_mode_filetypes = {
                 \ 'mkd' : 1,
                 \ 'markdown' : 1,
                 \ 'gitcommit' : 1,
                 \ 'text' : 1,
                 \ }
 
-    if !exists('g:neocomplcache_omni_functions')
-        let g:neocomplcache_omni_functions = {}
+    if !exists('g:neocomplete_same_filetype_lists')
+        let g:neocomplete_same_filetype_lists = {}
     endif
-    let g:neocomplcache_omni_functions.java = 'javaapi#complete'
+    let g:neocomplete_same_filetype_lists._ = '_'   " 全てのバッファから補完をする
 
-    if !exists('g:neocomplcache_delimiter_patterns')
-        let g:neocomplcache_delimiter_patterns= {}
+    if !exists('g:neocomplete_delimiter_patterns')
+        let g:neocomplete_delimiter_patterns= {}
     endif
-    let g:neocomplcache_delimiter_patterns.vim = ['#']
-    let g:neocomplcache_delimiter_patterns.cpp = ['::']
+    let g:neocomplete_delimiter_patterns.vim = ['#']
+    let g:neocomplete_delimiter_patterns.cpp = ['::', '.']
 
-    if !exists('g:neocomplcache_vim_completefuncs')
-        let g:neocomplcache_vim_completefuncs = {}
+    if !exists('g:neocomplete_omni_functions')
+        let g:neocomplete_omni_functions = {}
     endif
-    let g:neocomplcache_vim_completefuncs.Ref = 'ref#complete'
-    let g:neocomplcache_vim_completefuncs.Unite = 'unite#complete_source'
-    let g:neocomplcache_vim_completefuncs.VimFiler = 'vimfiler#complete'
-    let g:neocomplcache_vim_completefuncs.Vinarise = 'vinarise#complete'
+    let g:neocomplete_omni_functions.java = 'javaapi#complete'
+
+    if !exists('g:neocomplete_omni_patterns')
+        let g:neocomplete_omni_patterns = {}
+    endif
+    let g:neocomplete_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+
+    if !exists('g:neocomplete_force_omni_patterns')
+        let g:neocomplete_force_omni_patterns = {}
+    endif
+    let g:neocomplete_force_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
+    let g:neocomplete_force_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete_force_omni_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    let g:neocomplete_force_omni_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete_force_omni_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+
+    if !exists('g:neocomplete_vimfuncs')
+        let g:neocomplete_vimfuncs = {}
+    endif
+    let g:neocomplete_vimfuncs.Ref = 'ref#complete'
+    let g:neocomplete_vimfuncs.Unite = 'unite#complete_source'
+    let g:neocomplete_vimfuncs.VimFiler = 'vimfiler#complete'
+    let g:neocomplete_vimfuncs.Vinarise = 'vinarise#complete'
 endfunction
 unlet s:bundle
 
@@ -629,9 +650,9 @@ map _ <Plug>(operator-replace)
 
 " Alpaca_english
 if has('ruby')
-    let g:alpaca_english_enable=1
+    let g:alpaca_english_enable = 1
 else
-    let g:alpaca_english_enable=0
+    let g:alpaca_english_enable = 0
 endif
 
 " Gist
