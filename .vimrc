@@ -383,6 +383,7 @@ let g:unite_enable_short_source_names = 1
 let g:unite_source_history_yank_enable = 1
 nnoremap <silent> fre :<C-u>UniteResume<CR>
 nnoremap <silent> fb  :<C-u>Unite -buffer-name=Buffers buffer:!<CR>
+nnoremap <silent> fk  :<C-u>Unite -buffer-name=Bookmark bookmark<CR>
 nnoremap <silent> fd  :<C-u>Unite -buffer-name=Directory -default-action=lcd directory_mru<CR>
 nnoremap <silent> ff  :<C-u>Unite -buffer-name=Sources source<CR>
 nnoremap <silent> fg  :<C-u>Unite -buffer-name=Vimgrep vimgrep -start-insert -keep-focus -no-quit<CR>
@@ -404,6 +405,14 @@ nnoremap <silent> fed :<C-u>Unite -buffer-name=english english_dictionary<CR>
 nnoremap <silent> fex :<C-u>Unite -buffer-name=example english_example<CR>
 nnoremap <silent> fet :<C-u>Unite -buffer-name=thesaurus english_thesaurus<CR>
 nnoremap <silent> fa  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
+function! s:configUnite()
+    imap <buffer> <TAB> <Plug>(unite_select_next_line)
+    imap <buffer> jj <Plug>(unite_insert_leave)
+    nmap <buffer> ' <Plug>(unite_quick_match_default_action)
+    nmap <buffer> x <Plug>(unite_quick_match_choose_action)
+    nnoremap <buffer><expr> l unite#smart_map('l', unite#do_action('default'))
+    nnoremap <buffer><expr> t unite#do_action('tabopen')
+endfunction
 
 " neocomplete
 let s:bundle = neobundle#get('neocomplete.vim')
@@ -429,7 +438,7 @@ function! s:bundle.hooks.on_source(bundle)
     if !exists('g:neocomplete_delimiter_patterns')
         let g:neocomplete_delimiter_patterns= {}
     endif
-    let g:neocomplete_delimiter_patterns.vim = ['#']
+    let g:neocomplete_delimiter_patterns.vim = ['#', '.']
     let g:neocomplete_delimiter_patterns.cpp = ['::', '.']
     let g:neocomplete_delimiter_patterns.c = ['.']
 
@@ -442,13 +451,13 @@ function! s:bundle.hooks.on_source(bundle)
         let g:neocomplete_omni_patterns = {}
     endif
     let g:neocomplete_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-    let g:neocomplete_omni_patterns.vim = '#'
 
     if !exists('g:neocomplete_force_omni_patterns')
         let g:neocomplete_force_omni_patterns = {}
     endif
     let g:neocomplete_force_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
     let g:neocomplete_force_omni_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
+    " 数字記号類の後に.か->が来た場合に補完実行する
     let g:neocomplete_force_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:neocomplete_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
     let g:neocomplete_force_omni_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
@@ -697,16 +706,6 @@ function! s:deleteConqueTerm(buffer_name)
     call term_obj.close()
 endfunction
 
-" Unite
-function! s:configUnite()
-    imap <buffer> <TAB> <Plug>(unite_select_next_line)
-    imap <buffer> jj <Plug>(unite_insert_leave)
-    nmap <buffer> ' <Plug>(unite_quick_match_default_action)
-    nmap <buffer> x <Plug>(unite_quick_match_choose_action)
-    nnoremap <silent><buffer><expr> l unite#smart_map('l', unite#do_action('default'))
-    nnoremap <silent><buffer><expr> t unite#do_action('tabopen')
-endfunction
-
 " Lisp
 function! s:configLisp()
     nnoremap <silent> <Leader>li <Esc>:!sbcl --script %<CR>
@@ -743,7 +742,7 @@ augroup general
     autocmd!
 
     " .vimrc
-    autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
     " 書き込み時に行末の空白を削除
     autocmd BufWritePre * silent call s:remove_tail_space()
@@ -752,11 +751,11 @@ augroup general
     autocmd InsertLeave * setlocal nopaste
 
     " 状態の保存と復元
-    autocmd BufWinLeave ?* nested silent mkview!
-    autocmd BufWinEnter ?* nested silent loadview
+    autocmd BufWinLeave ?* silent mkview!
+    autocmd BufWinEnter ?* silent loadview
 
     " 独自ハイライト
-    autocmd Colorscheme * nested call s:configHighlight()
+    autocmd Colorscheme * call s:configHighlight()
 
     " Text
     autocmd BufReadPre *.txt setlocal filetype=text
