@@ -39,7 +39,7 @@ set hlsearch            " 検索結果強調-:nohで解除
 set incsearch           " インクリメンタルサーチを有効
 set ignorecase          " 大文字小文字無視
 set smartcase           " 大文字があれば通常の検索
-" set completeopt=menu    " 挿入モードでの補完設定
+set completeopt=menu    " 挿入モードでの補完設定
 set wildmenu            " コマンドの補完候補を表示
 let &path = '.,' . substitute($PATH, ';', ',', 'g')
 
@@ -138,7 +138,7 @@ endfunction
 "-----------------------------------------------------------------------------------"
 
 " Metaキーを有効化 Reference from http://d.hatena.ne.jp/thinca/20101215/1292340358
-if has('mac')
+if has('mac') && !has('gui_running')
     for i in map( range(char2nr('a'), char2nr('z')) + range(char2nr('A'), char2nr('Z')) + range(char2nr('0'), char2nr('9')) , 'nr2char(v:val)')
         execute 'set <M-'.i.'>='.i
     endfor
@@ -409,7 +409,7 @@ nnoremap <silent> fa  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
 let s:bundle = neobundle#get('neocomplete.vim')
 function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete_enable_at_startup = 1
-    let g:neocomplete_enable_smart_case = 1
+    let g:neocomplete_enable_smart_case = 0
     let g:neocomplete_enable_auto_delimiter = 1
     let g:neocomplete_data_directory = expand('~/.vim/neocomplete')
     let g:neocomplete_skip_auto_completion_time = '0.5'
@@ -431,6 +431,7 @@ function! s:bundle.hooks.on_source(bundle)
     endif
     let g:neocomplete_delimiter_patterns.vim = ['#']
     let g:neocomplete_delimiter_patterns.cpp = ['::', '.']
+    let g:neocomplete_delimiter_patterns.c = ['.']
 
     if !exists('g:neocomplete_omni_functions')
         let g:neocomplete_omni_functions = {}
@@ -441,13 +442,14 @@ function! s:bundle.hooks.on_source(bundle)
         let g:neocomplete_omni_patterns = {}
     endif
     let g:neocomplete_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+    let g:neocomplete_omni_patterns.vim = '#'
 
     if !exists('g:neocomplete_force_omni_patterns')
         let g:neocomplete_force_omni_patterns = {}
     endif
     let g:neocomplete_force_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-    let g:neocomplete_force_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:neocomplete_force_omni_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete_force_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:neocomplete_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
     let g:neocomplete_force_omni_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:neocomplete_force_omni_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
@@ -460,7 +462,8 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete_vimfuncs.VimFiler = 'vimfiler#complete'
     let g:neocomplete_vimfuncs.Vinarise = 'vinarise#complete'
 
-    inoremap <expr><Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+    inoremap <expr> <Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
+    imap <C-u> <Plug>(neocomplete_start_unite_complete)
 endfunction
 unlet s:bundle
 
