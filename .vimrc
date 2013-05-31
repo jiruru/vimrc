@@ -353,12 +353,11 @@ NeoBundle 'thinca/vim-unite-history'
 NeoBundle 'tsukkee/unite-tag'
 NeoBundle 'osyo-manga/vim-reanimate'
 
-NeoBundleLazy 'basyura/TweetVim', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay']} }
+NeoBundleLazy 'basyura/TweetVim', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay'], 'unite_sources' : ['tweetvim'],} }
 NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'mattn/excitetranslate-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
-
 
 if has('python')
     " pip install --user git+git://github.com/Lokaltog/powerline
@@ -383,22 +382,22 @@ let g:unite_enable_short_source_names = 1
 let g:unite_source_history_yank_enable = 1
 nnoremap <silent> fre :<C-u>UniteResume<CR>
 nnoremap <silent> fb  :<C-u>Unite -buffer-name=Buffers buffer:!<CR>
-nnoremap <silent> fk  :<C-u>Unite -buffer-name=Bookmark bookmark<CR>
-nnoremap <silent> fd  :<C-u>Unite -buffer-name=Directory -default-action=lcd directory_mru<CR>
+nnoremap <silent> fk  :<C-u>Unite -buffer-name=Bookmark bookmark -default-action=vimfiler<CR>
+nnoremap <silent> fs  :<C-u>Unite -buffer-name=Files file file_mru<CR>
+nnoremap <silent> fd  :<C-u>Unite -buffer-name=Directory -default-action=tabopen directory directory_mru<CR>
 nnoremap <silent> ff  :<C-u>Unite -buffer-name=Sources source<CR>
 nnoremap <silent> fg  :<C-u>Unite -buffer-name=Vimgrep vimgrep -start-insert -keep-focus -no-quit<CR>
 nnoremap <silent> fhc :<C-u>Unite -buffer-name=History history/command<CR>
 nnoremap <silent> fhy :<C-u>Unite -buffer-name=History history/yank<CR>
-nnoremap <silent> fhl :<C-u>Unite -buffer-name=Help help<CR>
 nnoremap <silent> fhs :<C-u>Unite -buffer-name=History history/search<CR>
-nnoremap <silent> fl  :<C-u>Unite -buffer-name=Lines line -no-quit<CR>
+nnoremap <silent> fhl :<C-u>Unite -buffer-name=Help help<CR>
 nnoremap <silent> fma :<C-u>Unite -buffer-name=Mappings mapping<CR>
 nnoremap <silent> fme :<C-u>Unite -buffer-name=Messages output:message<CR>
 nnoremap <silent> fo  :<C-u>Unite -buffer-name=Outlines outline<CR>
+nnoremap <silent> fl  :<C-u>Unite -buffer-name=Line line -start-insert -no-quit<CR>
 nnoremap <silent> fr  :<C-u>Unite -buffer-name=Registers register<CR>
-nnoremap <silent> fs  :<C-u>Unite -buffer-name=Files file file_mru<CR>
-nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
 nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
+nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
 nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix qf -no-quit -auto-resize -direction=botright<CR>
 nnoremap <silent> fup :<C-u>Unite -buffer-name=NeobundleUpdateLog -log neobundle/update -direction=botright<CR>
 nnoremap <silent> fed :<C-u>Unite -buffer-name=english english_dictionary<CR>
@@ -507,6 +506,13 @@ let g:vimfiler_directory_display_top = 1
 let g:vimfiler_preview_action = 'below'
 let g:vimfiler_split_action = 'right'
 let g:vimfiler_enable_auto_cd = 1
+function! s:configVimFiler()
+    nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
+    vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
+    nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
+    nnoremap <silent><buffer><expr> <C-b> vimfiler#do_action('bookmark')
+    nnoremap <silent><buffer> f/ :<C-u>UniteWithCurrentDir file -buffer-name=search -default-action=vimfiler -start-insert<CR>
+endfunction
 
 " SrcExpl
 nmap <silent> <Leader>sc :SrcExplToggle<CR>
@@ -623,11 +629,7 @@ let g:tweetvim_display_time = 1
 let g:tweetvim_say_insert_account = 1
 let g:tweetvim_async_post = 1
 let g:tweetvim_open_say_cmd = 'split'
-if !exists('g:neocomplcache_dictionary_filetype_lists')
-    let g:neocomplcache_dictionary_filetype_lists = {}
-endif
-let neco_dic = g:neocomplcache_dictionary_filetype_lists
-let neco_dic.tweetvim_say = $HOME . '/.tweetvim/screen_name'
+let g:tweetvim_config_dir = expand('~/.vim/tweetvim')
 
 " Shaberu
 let g:shaberu_user_define_say_command = 'say -v Kyoko "%%TEXT%%"'
@@ -690,14 +692,6 @@ function! s:configHighlight()
     highlight MatchParen cterm=bold,underline ctermbg=3
     highlight Search ctermbg=3 ctermfg=0
     highlight TabLineSel ctermbg=5
-endfunction
-
-" VimFiler
-function! s:configVimFiler()
-    nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
-    vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
-    nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
-    " nnoremap <silent><buffer> / :<C-u>UniteWithCurrentDir file -buffer-name=search -default-action=vimfiler -start-insert <CR>
 endfunction
 
 " Conque
