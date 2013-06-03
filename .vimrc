@@ -54,7 +54,7 @@ set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold�
 set history=500                 " コマンドの保存履歴数
 set viminfo='1000,<500,f1       " viminfoへの保存設定
 set tags=./tags,tags            " タグが検索されるファイル
-set viewoptions=cursor,folds    " :mkviewで保存する設定
+set viewoptions=cursor ",folds    " :mkviewで保存する設定
 if isdirectory(expand('~/.vim/undo'))
     set undodir=~/.vim/undo
     set undofile
@@ -266,7 +266,14 @@ endif
 " Plugin
 "-------------------------------------------------------------------------------"
 
-" set runtimepath+=~/Dropbox/Program/Vim/NyaruLine
+set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
+function! g:nyaruline_after_init_hook(controler)
+    let g:vimfiler_force_overwrite_statusline = 0
+    " echo 'call hook'
+
+    call a:controler.default.n.add_atom(-1, '%{exists("g:loaded_vimfiler")?vimfiler#get_status_string():""}',  'NYARU_VIMF_N', a:controler.get_highlight_param('164a84', 'c1d8ac', 'NONE'), 'left')
+    " echo a:controler.default.n.get_statusline_expr()
+endfunction
 " set runtimepath+=~/Dropbox/Program/Vim/Pastel
 " set runtimepath+=~/Dropbox/Program/Vim/unite-battle_editors
 " set runtimepath+=~/Dropbox/Program/Vim/unite-rss
@@ -296,18 +303,15 @@ NeoBundle 'Shougo/vimproc', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix'
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'kana/vim-textobj-user'
-NeoBundle 'mattn/learn-vimscript'
 NeoBundle 'modsound/gips-vim'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
 NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'supermomonga/shaberu.vim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
-NeoBundle 'ujihisa/neco-look'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', '', 'loadInsert'
@@ -317,7 +321,7 @@ NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'deton/jasegment.vim', { 'autoload' : { 'function_prefix' : 'jasegment' } }
 NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
-NeoBundleLazy 'http://conque.googlecode.com/svn/trunk/', { 'directory' : 'conque', 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
+NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'itchyny/thumbnail.vim', { 'autoload' : {'commands' : 'Thumbnail'} }
 NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : ['<Plug>(operator-replace)'] } }
 NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'operator' } }
@@ -326,6 +330,7 @@ NeoBundleLazy 'kana/vim-smartinput', '', 'loadInsert'
 NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
+NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'mkd' } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'insert' : '1', 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
@@ -333,6 +338,7 @@ NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
 NeoBundleLazy 'thinca/vim-showtime'
 NeoBundleLazy 'uguu-org/vim-matrix-screensaver', { 'autoload' : {'commands' : 'Matrix'} }
+NeoBundleLazy 'ujihisa/neco-look', '', 'loadInsert'
 NeoBundleLazy 'vim-jp/cpp-vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
@@ -342,22 +348,25 @@ NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
 
 NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : 'Unite', 'function_prefix' : 'unite' }}
-NeoBundle 'Shougo/unite-help.git'
-NeoBundle 'Shougo/unite-outline'
-NeoBundle 'Shougo/unite-ssh'
-NeoBundle 'mattn/unite-advent_calendar'
-NeoBundle 'mopp/unite-battle_editors'
-NeoBundle 'mopp/unite-rss'
-NeoBundle 'sgur/unite-qf'
-NeoBundle 'thinca/vim-unite-history'
-NeoBundle 'tsukkee/unite-tag'
-NeoBundle 'osyo-manga/vim-reanimate'
+NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
+NeoBundleLazy 'Shougo/unite-outline', { 'autoload' : { 'unite_sources' : ['outline'],} }
+NeoBundleLazy 'Shougo/unite-ssh', { 'autoload' : { 'unite_sources' : ['ssh'],} }
+NeoBundleLazy 'sgur/unite-qf', { 'autoload' : { 'unite_sources' : ['qf'],} }
+NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['history/command', 'history/yank', 'history/search'],} }
+NeoBundleLazy 'tsukkee/unite-tag', { 'autoload' : { 'unite_sources' : ['tag'],} }
+NeoBundleLazy 'osyo-manga/vim-reanimate', { 'autoload' : { 'unite_sources' : ['Reanimate'], 'commands' : ['ReanimateLoad', 'ReanimateSave']} }
 
 NeoBundleLazy 'basyura/TweetVim', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay'], 'unite_sources' : ['tweetvim'],} }
 NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'mattn/excitetranslate-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
+NeoBundle 'git://github.com/mattn/habatobi-vim.git'
+
+" NeoBundle 'supermomonga/shaberu.vim'
+" NeoBundle 'mattn/unite-advent_calendar'
+" NeoBundle 'mopp/unite-battle_editors'
+" NeoBundle 'mopp/unite-rss'
 
 if has('python')
     " pip install --user git+git://github.com/Lokaltog/powerline
@@ -416,62 +425,63 @@ endfunction
 " neocomplete
 let s:bundle = neobundle#get('neocomplete.vim')
 function! s:bundle.hooks.on_source(bundle)
-    let g:neocomplete_enable_at_startup = 1
-    let g:neocomplete_enable_smart_case = 0
-    let g:neocomplete_enable_auto_delimiter = 1
-    let g:neocomplete_data_directory = expand('~/.vim/neocomplete')
-    let g:neocomplete_skip_auto_completion_time = '0.5'
-    let g:neocomplete_force_overwrite_completefunc = 1
-    let g:neocomplete_text_mode_filetypes = {
+    let g:neocomplete#enable_at_startup = 1
+    let g:neocomplete#enable_smart_case = 1
+    let g:neocomplete#enable_auto_delimiter = 1
+    let g:neocomplete#data_directory = expand('~/.vim/neocomplete')
+    let g:neocomplete#skip_auto_completion_time = '0.5'
+    let g:neocomplete#text_mode_filetypes = {
                 \ 'mkd' : 1,
                 \ 'markdown' : 1,
                 \ 'gitcommit' : 1,
                 \ 'text' : 1,
                 \ }
 
-    if !exists('g:neocomplete_same_filetype_lists')
-        let g:neocomplete_same_filetype_lists = {}
+    if !exists('g:neocomplete#same_filetype_lists')
+        let g:neocomplete#same_filetype_lists = {}
     endif
-    let g:neocomplete_same_filetype_lists._ = '_'   " 全てのバッファから補完をする
+    let g:neocomplete#same_filetype_lists._ = '_'   " 全てのバッファから補完をする
 
-    if !exists('g:neocomplete_delimiter_patterns')
-        let g:neocomplete_delimiter_patterns= {}
+    if !exists('g:neocomplete#delimiter_patterns')
+        let g:neocomplete#delimiter_patterns= {}
     endif
-    let g:neocomplete_delimiter_patterns.vim = ['#', '.']
-    let g:neocomplete_delimiter_patterns.cpp = ['::', '.']
-    let g:neocomplete_delimiter_patterns.c = ['.']
+    let g:neocomplete#delimiter_patterns.vim = ['#', '.']
+    let g:neocomplete#delimiter_patterns.cpp = ['::', '.']
+    let g:neocomplete#delimiter_patterns.c = ['.']
 
-    if !exists('g:neocomplete_omni_functions')
-        let g:neocomplete_omni_functions = {}
+    if !exists('g:neocomplete#omni_functions')
+        let g:neocomplete#omni_functions = {}
     endif
-    let g:neocomplete_omni_functions.java = 'javaapi#complete'
+    let g:neocomplete#omni_functions.java = 'javaapi#complete'
 
-    if !exists('g:neocomplete_omni_patterns')
-        let g:neocomplete_omni_patterns = {}
+    if !exists('g:neocomplete#sources#omni#input_patterns')
+        let g:neocomplete#sources#omni#input_patterns = {}
     endif
-    let g:neocomplete_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+    let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
-    if !exists('g:neocomplete_force_omni_patterns')
-        let g:neocomplete_force_omni_patterns = {}
+    if !exists('g:neocomplete#force_omni_input_patterns')
+        let g:neocomplete#force_omni_input_patterns = {}
     endif
-    let g:neocomplete_force_omni_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-    let g:neocomplete_force_omni_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
-    " 数字記号類の後に.か->が来た場合に補完実行する
-    let g:neocomplete_force_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete_force_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-    let g:neocomplete_force_omni_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete_force_omni_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    let g:neocomplete#force_overwrite_completefunc = 1
+    let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
+    let g:neocomplete#force_omni_input_patterns.java = '[^.[:digit:] *\t]\%(\.\|\)'
+    let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    " 数字記号類以外の後に.か->が来た場合に補完実行する
 
-    if !exists('g:neocomplete_vimfuncs')
-        let g:neocomplete_vimfuncs = {}
+    if !exists('g:neocomplete#sources#vim#complete_functions')
+        let g:neocomplete#sources#vim#complete_functions = {}
     endif
-    let g:neocomplete_vimfuncs.Ref = 'ref#complete'
-    let g:neocomplete_vimfuncs.Unite = 'unite#complete_source'
-    let g:neocomplete_vimfuncs.VimFiler = 'vimfiler#complete'
-    let g:neocomplete_vimfuncs.Vinarise = 'vinarise#complete'
+    let g:neocomplete#sources#vim#complete_functions.Ref = 'ref#complete'
+    let g:neocomplete#sources#vim#complete_functions.Unite = 'unite#complete_source'
+    let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
+    let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
 
     inoremap <expr> <Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
     imap <C-u> <Plug>(neocomplete_start_unite_complete)
+    imap <C-q> <Plug>(neocomplete_start_unite_quick_match)
 endfunction
 unlet s:bundle
 
@@ -599,7 +609,7 @@ function! s:likeIDE()
     wincmd l
     TagbarToggle
     wincmd h
-    " SrcExplToggle
+    SrcExplToggle
 endfunction
 nnoremap <silent> <Leader>id :call <SID>likeIDE()<CR>
 
@@ -745,8 +755,8 @@ augroup general
     autocmd InsertLeave * setlocal nopaste
 
     " 状態の保存と復元
-    autocmd BufWinLeave ?* silent mkview!
-    autocmd BufWinEnter ?* silent loadview
+    autocmd BufWinLeave ?* if(bufname('%')!='') | silent mkview! | endif
+    autocmd BufWinEnter ?* if(bufname('%')!='') | silent loadview | endif
 
     " 独自ハイライト
     autocmd Colorscheme * call s:configHighlight()
@@ -788,3 +798,4 @@ augroup END
 
 colorscheme desert
 syntax enable           " 強調表示有効
+set nofoldenable
