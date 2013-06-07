@@ -54,7 +54,7 @@ set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold�
 set history=500                 " コマンドの保存履歴数
 set viminfo='1000,<500,f1       " viminfoへの保存設定
 set tags=./tags,tags            " タグが検索されるファイル
-set viewoptions=cursor ",folds    " :mkviewで保存する設定
+set viewoptions=cursor,folds    " :mkviewで保存する設定
 if isdirectory(expand('~/.vim/undo'))
     set undodir=~/.vim/undo
     set undofile
@@ -263,22 +263,27 @@ endif
 
 
 "-------------------------------------------------------------------------------"
-" Plugin
+" Developing
 "-------------------------------------------------------------------------------"
-
-set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
 function! g:nyaruline_after_init_hook(controler)
     let g:vimfiler_force_overwrite_statusline = 0
-    " echo 'call hook'
-
     call a:controler.default.n.add_atom(-1, '%{exists("g:loaded_vimfiler")?vimfiler#get_status_string():""}',  'NYARU_VIMF_N', a:controler.get_highlight_param('164a84', 'c1d8ac', 'NONE'), 'left')
+
+    " echo 'call hook'
     " echo a:controler.default.n.get_statusline_expr()
 endfunction
+
 " set runtimepath+=~/Dropbox/Program/Vim/Pastel
 " set runtimepath+=~/Dropbox/Program/Vim/unite-battle_editors
 " set runtimepath+=~/Dropbox/Program/Vim/unite-rss
-set runtimepath+=~/Dropbox/Program/Vim/rogue.vim
+" set runtimepath+=~/Dropbox/Program/Vim/rogue.vim
+set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
+" set runtimepath+=~/Dropbox/Program/Vim/jumper.vim
 
+
+"-------------------------------------------------------------------------------"
+" Plugin
+"-------------------------------------------------------------------------------"
 " neobundleが存在しない場合これ以降を読み込まない
 if !isdirectory(expand('~/.vim/bundle/neobundle.vim'))
     finish
@@ -361,8 +366,8 @@ NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'mattn/excitetranslate-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
-NeoBundle 'git://github.com/mattn/habatobi-vim.git'
 
+" NeoBundle 'git://github.com/mattn/habatobi-vim.git'
 " NeoBundle 'supermomonga/shaberu.vim'
 " NeoBundle 'mattn/unite-advent_calendar'
 " NeoBundle 'mopp/unite-battle_editors'
@@ -370,7 +375,7 @@ NeoBundle 'git://github.com/mattn/habatobi-vim.git'
 
 if has('python')
     " pip install --user git+git://github.com/Lokaltog/powerline
-    NeoBundle 'Lokaltog/powerline', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
+    " NeoBundle 'Lokaltog/powerline', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
 else
     NeoBundle 'Lokaltog/vim-powerline'
     let g:Powerline_stl_path_style = 'short'
@@ -463,8 +468,8 @@ function! s:bundle.hooks.on_source(bundle)
         let g:neocomplete#force_omni_input_patterns = {}
     endif
     let g:neocomplete#force_overwrite_completefunc = 1
-    let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-    let g:neocomplete#force_omni_input_patterns.java = '[^.[:digit:] *\t]\%(\.\|\)'
+    " let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
+    let g:neocomplete#force_omni_input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
     let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
@@ -798,4 +803,3 @@ augroup END
 
 colorscheme desert
 syntax enable           " 強調表示有効
-set nofoldenable
