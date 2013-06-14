@@ -278,6 +278,7 @@ endfunction
 " set runtimepath+=~/Dropbox/Program/Vim/unite-rss
 " set runtimepath+=~/Dropbox/Program/Vim/rogue.vim
 set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
+set runtimepath+=~/Dropbox/Program/Vim/AOJ.vim
 " set runtimepath+=~/Dropbox/Program/Vim/jumper.vim
 
 
@@ -295,7 +296,6 @@ if has('vim_starting')
 else
     call neobundle#call_hook('on_source')
 endif
-
 call neobundle#rc()
 
 NeoBundleFetch 'Shougo/neobundle.vim'
@@ -304,11 +304,10 @@ let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '
 
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/context_filetype.vim'
-NeoBundle 'Shougo/vimproc', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
+NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'kana/vim-textobj-user'
-NeoBundle 'modsound/gips-vim'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'thinca/vim-quickrun'
@@ -361,17 +360,18 @@ NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['h
 NeoBundleLazy 'tsukkee/unite-tag', { 'autoload' : { 'unite_sources' : ['tag'],} }
 NeoBundleLazy 'osyo-manga/vim-reanimate', { 'autoload' : { 'unite_sources' : ['Reanimate'], 'commands' : ['ReanimateLoad', 'ReanimateSave']} }
 
-NeoBundleLazy 'basyura/TweetVim', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimSay'], 'unite_sources' : ['tweetvim'],} }
+NeoBundleLazy 'basyura/TweetVim', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimUserStream'], 'unite_sources' : ['tweetvim'],} }
 NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'mattn/excitetranslate-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
 
-" NeoBundle 'git://github.com/mattn/habatobi-vim.git'
-" NeoBundle 'supermomonga/shaberu.vim'
+" NeoBundle 'mattn/habatobi-vim'
 " NeoBundle 'mattn/unite-advent_calendar'
+" NeoBundle 'modsound/gips-vim'
 " NeoBundle 'mopp/unite-battle_editors'
 " NeoBundle 'mopp/unite-rss'
+" NeoBundle 'supermomonga/shaberu.vim'
 
 if has('python')
     " pip install --user git+git://github.com/Lokaltog/powerline
@@ -394,13 +394,18 @@ let g:unite_source_file_mru_limit = 50
 let g:unite_cursor_line_highlight = 'TabLineSel'
 let g:unite_enable_short_source_names = 1
 let g:unite_source_history_yank_enable = 1
+if executable('ag')
+    let g:unite_source_grep_command = 'ag'
+    let g:unite_source_grep_default_opts = '--nocolor --nogroup'
+    let g:unite_source_grep_max_candidates = 200
+endif
 nnoremap <silent> fre :<C-u>UniteResume<CR>
 nnoremap <silent> fb  :<C-u>Unite -buffer-name=Buffers buffer:!<CR>
 nnoremap <silent> fk  :<C-u>Unite -buffer-name=Bookmark bookmark -default-action=vimfiler<CR>
 nnoremap <silent> fs  :<C-u>Unite -buffer-name=Files file file_mru<CR>
 nnoremap <silent> fd  :<C-u>Unite -buffer-name=Directory -default-action=tabopen directory directory_mru<CR>
 nnoremap <silent> ff  :<C-u>Unite -buffer-name=Sources source<CR>
-nnoremap <silent> fg  :<C-u>Unite -buffer-name=Vimgrep vimgrep -start-insert -keep-focus -no-quit<CR>
+nnoremap <silent> fg  :<C-u>Unite -buffer-name=ag grep -keep-focus -no-quit<CR>
 nnoremap <silent> fhc :<C-u>Unite -buffer-name=History history/command<CR>
 nnoremap <silent> fhy :<C-u>Unite -buffer-name=History history/yank<CR>
 nnoremap <silent> fhs :<C-u>Unite -buffer-name=History history/search<CR>
@@ -408,7 +413,7 @@ nnoremap <silent> fhl :<C-u>Unite -buffer-name=Help help<CR>
 nnoremap <silent> fma :<C-u>Unite -buffer-name=Mappings mapping<CR>
 nnoremap <silent> fme :<C-u>Unite -buffer-name=Messages output:message<CR>
 nnoremap <silent> fo  :<C-u>Unite -buffer-name=Outlines outline<CR>
-nnoremap <silent> fl  :<C-u>Unite -buffer-name=Line line -start-insert -no-quit<CR>
+nnoremap <silent> fl  :<C-u>Unite -buffer-name=Line line -no-quit<CR>
 nnoremap <silent> fr  :<C-u>Unite -buffer-name=Registers register<CR>
 nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
 nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
@@ -497,7 +502,7 @@ let g:clang_auto_select = 0
 " Neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
-imap <C-l> <Plug>(neosnippet_jump_or_expand)
+" imap <C-l> <Plug>(neosnippet_jump_or_expand)
 set conceallevel=2 concealcursor=i
 
 " Easymotion
@@ -595,12 +600,13 @@ unlet s:bundle
 " Smartchr
 let s:bundle = neobundle#get('vim-smartchr')
 function! s:bundle.hooks.on_source(bundle)
-    inoremap <expr> , smartchr#one_of(', ', ',')
     inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
     inoremap <expr> + smartchr#one_of(' + ', '++', '+')
     inoremap <expr> - smartchr#one_of(' - ', '--', '-')
     inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
-    inoremap <expr> . smartchr#loop('.', '->', ' => ')
+    inoremap <expr> , smartchr#loop(', ', '->', ' => ')
+    inoremap <expr> ! smartchr#loop('! ', ' != ', '!')
+
     if &filetype ==? 'lisp'
         inoremap <expr> ; smartchr#loop('; ', ';')
     endif
@@ -645,6 +651,7 @@ let g:tweetvim_say_insert_account = 1
 let g:tweetvim_async_post = 1
 let g:tweetvim_open_say_cmd = 'split'
 let g:tweetvim_config_dir = expand('~/.vim/tweetvim')
+let g:tweetvim_display_username = 1
 
 " Shaberu
 let g:shaberu_user_define_say_command = 'say -v Kyoko "%%TEXT%%"'
@@ -740,7 +747,7 @@ function! s:configCCpp()
     setlocal cindent
 endfunction
 
-" 行末の空白を削除 TODO コマンド化
+" 行末の空白を削除
 function! s:remove_tail_space()
     let c = getpos('.')
     g/.*\s$/normal $gelD
@@ -803,3 +810,4 @@ augroup END
 
 colorscheme desert
 syntax enable           " 強調表示有効
+set re=2
