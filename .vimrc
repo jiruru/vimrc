@@ -266,8 +266,8 @@ endif
 " Developing
 "-------------------------------------------------------------------------------"
 function! g:nyaruline_after_init_hook(controler)
-    let g:vimfiler_force_overwrite_statusline = 0
-    call a:controler.default.n.add_atom(-1, '%{exists("g:loaded_vimfiler")?vimfiler#get_status_string():""}',  'NYARU_VIMF_N', a:controler.get_highlight_param('164a84', 'c1d8ac', 'NONE'), 'left')
+    " let g:vimfiler_force_overwrite_statusline = 0
+    " call a:controler.default.n.add_atom(-1, '%{exists("g:loaded_vimfiler")?vimfiler#get_status_string():""}',  'NYARU_VIMF_N', a:controler.get_highlight_param('164a84', 'c1d8ac', 'NONE'), 'left')
 
     " echo 'call hook'
     " echo a:controler.default.n.get_statusline_expr()
@@ -438,48 +438,66 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#enable_at_startup = 1
     let g:neocomplete#enable_smart_case = 1
     let g:neocomplete#enable_auto_delimiter = 1
+    let g:neocomplete#min_keyword_length = 3
+    let g:neocomplete#enable_prefetch = 1
     let g:neocomplete#data_directory = expand('~/.vim/neocomplete')
-    let g:neocomplete#skip_auto_completion_time = '0.5'
-    let g:neocomplete#text_mode_filetypes = {
-                \ 'mkd' : 1,
-                \ 'markdown' : 1,
-                \ 'gitcommit' : 1,
-                \ 'text' : 1,
-                \ }
+    let g:neocomplete#skip_auto_completion_time = '' "オムニ補完と相性が悪いかもしれない
 
-    if !exists('g:neocomplete#same_filetype_lists')
-        let g:neocomplete#same_filetype_lists = {}
+    " 英単語補完用に以下のfiletypeをtextと同様に扱う
+    if !exists('g:neocomplete#text_mode_filetypes')
+        let g:neocomplete#text_mode_filetypes = {}
     endif
-    let g:neocomplete#same_filetype_lists._ = '_'   " 全てのバッファから補完をする
+    let g:neocomplete#text_mode_filetypes.mkd = 1
+    let g:neocomplete#text_mode_filetypes.markdown = 1
+    let g:neocomplete#text_mode_filetypes.gitcommit = 1
+    let g:neocomplete#text_mode_filetypes.text = 1
+    let g:neocomplete#text_mode_filetypes.txt = 1
+
+    " 補完時に他のfiletypeの候補も参照する
+    if !exists('g:neocomplete#same_filetypes')
+        let g:neocomplete#same_filetypes = {}
+    endif
+    let g:neocomplete#same_filetypes._ = '_'
 
     if !exists('g:neocomplete#delimiter_patterns')
         let g:neocomplete#delimiter_patterns= {}
     endif
     let g:neocomplete#delimiter_patterns.vim = ['#', '.']
     let g:neocomplete#delimiter_patterns.cpp = ['::', '.']
-    let g:neocomplete#delimiter_patterns.c = ['.']
+    let g:neocomplete#delimiter_patterns.c = ['.', '->']
+    let g:neocomplete#delimiter_patterns.java = ['.']
 
-    if !exists('g:neocomplete#omni_functions')
-        let g:neocomplete#omni_functions = {}
+    " 外部オムニ補完関数を直接呼び出す
+    " if !exists('g:neocomplete#force_omni_input_patterns')
+        " let g:neocomplete#force_omni_input_patterns = {}
+    " endif
+    " let g:neocomplete#force_overwrite_completefunc = 1
+    " let g:neocomplete#force_omni_input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
+    " let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+    " let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    " let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
+    " let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    " 数字記号類以外の後に.か->が来た場合に補完実行する
+
+    " syntaxファイル内での候補に使われる最小文字数
+    let g:neocomplete#sources#syntax#min_keyword_length = 3
+
+    " neocompleteが呼び出すオムニ補完関数名
+    if !exists('g:neocomplete#sources#omni#functions')
+        let g:neocomplete#sources#omni#functions = {}
     endif
-    let g:neocomplete#omni_functions.java = 'javaapi#complete'
+    let g:neocomplete#sources#omni#functions.java = 'javaapi#complete'
+    let g:neocomplete#sources#omni#functions.c = 'ClangComplete'
+    let g:neocomplete#sources#omni#functions.cpp = 'ClangComplete'
 
+    " オムニ補完関数呼び出し時の条件
     if !exists('g:neocomplete#sources#omni#input_patterns')
         let g:neocomplete#sources#omni#input_patterns = {}
     endif
     let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-
-    if !exists('g:neocomplete#force_omni_input_patterns')
-        let g:neocomplete#force_omni_input_patterns = {}
-    endif
-    let g:neocomplete#force_overwrite_completefunc = 1
-    " let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-    let g:neocomplete#force_omni_input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-    let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-    " 数字記号類以外の後に.か->が来た場合に補完実行する
+    let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\.\%(\h\w*\)\?\|[a-zA-Z].*'
+    let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|[a-zA-Z].*'
+	let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
     if !exists('g:neocomplete#sources#vim#complete_functions')
         let g:neocomplete#sources#vim#complete_functions = {}
@@ -489,9 +507,9 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
     let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
 
-    inoremap <expr> <Space> pumvisible() ? neocomplete#close_popup() : "\<Space>"
-    imap <C-u> <Plug>(neocomplete_start_unite_complete)
-    imap <C-q> <Plug>(neocomplete_start_unite_quick_match)
+    inoremap <expr> <C-l> neocomplete#complete_common_string()
+    imap <C-k>  <Plug>(neocomplete_start_unite_complete)
+    imap <C-q>  <Plug>(neocomplete_start_unite_quick_match)
 endfunction
 unlet s:bundle
 
@@ -545,6 +563,8 @@ let g:SrcExpl_pluginList = ["__Tag_List__", "NERD_tree_1", "Source_Explorer", "*
 let g:tagbar_width = 35
 let g:tagbar_autoshowtag = 1
 let g:tagbar_autofocus = 1
+let g:tagbar_sort = 0
+let g:tagbar_compact = 1
 highlight TagbarScope ctermfg=5
 highlight TagbarType cterm=bold ctermfg=55
 highlight TagbarHighlight cterm=bold,underline ctermfg=1
@@ -758,7 +778,7 @@ augroup general
     autocmd!
 
     " .vimrc
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+    autocmd BufWritePost nested $MYVIMRC source $MYVIMRC
 
     " 書き込み時に行末の空白を削除
     autocmd BufWritePre * silent call s:remove_tail_space()
