@@ -335,11 +335,13 @@ NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle'
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
-NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'mkd' } }
+NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
+NeoBundleLazy 'kannokanno/previm', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'insert' : '1', 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
+NeoBundleLazy 'thinca/vim-scouter'
 NeoBundleLazy 'thinca/vim-showtime'
 NeoBundleLazy 'uguu-org/vim-matrix-screensaver', { 'autoload' : {'commands' : 'Matrix'} }
 NeoBundleLazy 'ujihisa/neco-look', '', 'loadInsert'
@@ -484,8 +486,8 @@ function! s:bundle.hooks.on_source(bundle)
     endif
     let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
     let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\.\%(\h\w*\)\?\|[a-zA-Z].*'
-    let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|[a-zA-Z].*'
-    let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?\|[a-zA-Z].*'
+    let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?'
+    let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
     if !exists('g:neocomplete#sources#vim#complete_functions')
         let g:neocomplete#sources#vim#complete_functions = {}
@@ -496,7 +498,6 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
 
     inoremap <expr> <C-l> neocomplete#complete_common_string()
-    imap <C-k>  <Plug>(neocomplete_start_unite_complete)
     imap <C-q>  <Plug>(neocomplete_start_unite_quick_match)
 endfunction
 unlet s:bundle
@@ -730,7 +731,6 @@ endfunction
 
 " Lisp
 function! s:configLisp()
-    nnoremap <silent> <Leader>li <Esc>:!sbcl --script %<CR>
     setlocal nocindent
     setlocal autoindent
     setlocal nosmartindent
@@ -781,7 +781,7 @@ augroup general
 
     " Text
     autocmd BufReadPre *.txt setlocal filetype=text
-    autocmd BufReadPre *.txt setlocal wrap
+    " autocmd BufReadPre *.txt setlocal wrap
 
     " git
     autocmd FileType git setlocal foldlevel=99
@@ -805,10 +805,10 @@ augroup general
     autocmd BufReadPre *.nas setlocal filetype=NASM
 
     " Arduino
-    autocmd BufNewFile,BufRead *.pde,*.ino setlocal filetype=arduino
+    autocmd BufNewFile,BufRead *.pde,*.ino nested setlocal filetype=arduino
 
     " json
-    autocmd BufRead,BufNewFile *.json setlocal filetype=json autoindent
+    autocmd BufRead,BufNewFile *.json nested setlocal filetype=json autoindent
 
     " Java
     autocmd CompleteDone *.java call javaapi#showRef()
