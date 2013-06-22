@@ -157,6 +157,11 @@ inoremap <Left> <Nop>
 inoremap <Right> <Nop>
 inoremap <Up> <Nop>
 inoremap <Down> <Nop>
+noremap <BS> <Nop>
+noremap <Left> <Nop>
+noremap <Right> <Nop>
+noremap <Up> <Nop>
+noremap <Down> <Nop>
 
 " 移動系
 noremap! <C-A> <Home>
@@ -616,12 +621,13 @@ unlet s:bundle
 " Smartchr
 let s:bundle = neobundle#get('vim-smartchr')
 function! s:bundle.hooks.on_source(bundle)
-    inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
-    inoremap <expr> + smartchr#one_of(' + ', '++', '+')
-    inoremap <expr> - smartchr#one_of(' - ', '--', '-')
-    inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
-    inoremap <expr> , smartchr#loop(', ', '->', ' => ')
+    inoremap <expr> + smartchr#loop(' + ', '++', '+')
+    inoremap <expr> - smartchr#loop(' - ', '--', '-')
+    inoremap <expr> / smartchr#loop(' / ', '// ', '/')
+    inoremap <expr> % smartchr#loop(' % ', '%')
     inoremap <expr> ! smartchr#loop('! ', ' != ', '!')
+    inoremap <expr> , smartchr#loop(', ', '->', ' => ')
+    inoremap <expr> = smartchr#loop(' = ', ' == ', '=')
 
     if &filetype ==? 'lisp'
         inoremap <expr> ; smartchr#loop('; ', ';')
