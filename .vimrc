@@ -470,6 +470,18 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#delimiter_patterns.c = ['.', '->']
     let g:neocomplete#delimiter_patterns.java = ['.']
 
+    " 外部オムニ補完関数を直接呼び出す
+    if !exists('g:neocomplete#force_omni_input_patterns')
+        let g:neocomplete#force_omni_input_patterns = {}
+    endif
+    let g:neocomplete#force_overwrite_completefunc = 1
+    let g:neocomplete#force_omni_input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    " 数字記号類以外の後に.か->が来た場合に補完実行する
+
     " syntaxファイル内での候補に使われる最小文字数
     let g:neocomplete#sources#syntax#min_keyword_length = 3
 
@@ -478,8 +490,6 @@ function! s:bundle.hooks.on_source(bundle)
         let g:neocomplete#sources#omni#functions = {}
     endif
     let g:neocomplete#sources#omni#functions.java = 'javaapi#complete'
-    let g:neocomplete#sources#omni#functions.c = 'ClangComplete'
-    let g:neocomplete#sources#omni#functions.cpp = 'ClangComplete'
 
     " オムニ補完関数呼び出し時の条件
     if !exists('g:neocomplete#sources#omni#input_patterns')
