@@ -497,8 +497,6 @@ function! s:bundle.hooks.on_source(bundle)
     endif
     let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
     let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\.\%(\h\w*\)\?\|[a-zA-Z].*'
-    let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?'
-    let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
 
     if !exists('g:neocomplete#sources#vim#complete_functions')
         let g:neocomplete#sources#vim#complete_functions = {}
@@ -752,10 +750,10 @@ endfunction
 " C/C++
 function! s:configCCpp()
     NeoBundleSource cpp-vim
-    if has('mac') && isdirectory('/opt/local/libexec/llvm-3.3/lib/')
-        let g:clang_library_path = '/opt/local/libexec/llvm-3.3/lib/'
-        let g:clang_user_options = '-I /opt/local/include/ -I /opt/local/include/boost/'
-        let g:clang_executable_path = '/opt/local/bin/'
+    if has('mac') && isdirectory('/usr/lib')
+        let g:clang_library_path = '/usr/local/lib/'
+        let g:clang_user_options = '-I/usr/local/include/ -I/usr/local/include/boost/'
+        let g:clang_executable_path = '/usr/local/bin/'
         NeoBundleSource clang_complete
     endif
     setlocal nosmartindent
