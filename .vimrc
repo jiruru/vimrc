@@ -284,6 +284,7 @@ endfunction
 " set runtimepath+=~/Dropbox/Program/Vim/rogue.vim
 set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
 set runtimepath+=~/Dropbox/Program/Vim/AOJ.vim
+" set runtimepath+=~/Dropbox/Program/Vim/twinbuffer.vim
 " set runtimepath+=~/Dropbox/Program/Vim/jumper.vim
 
 
@@ -721,6 +722,9 @@ noremap [rr :ReanimateSave <CR>
 noremap ]rr :ReanimateLoad <CR>
 noremap [rn :ReanimateSave <C-R>%<CR>
 noremap ]rn :ReanimateLoad <C-R>%<CR>
+
+" VimConsole
+let g:vimconsole#auto_redraw = 1
 
 
 "-------------------------------------------------------------------------------"
