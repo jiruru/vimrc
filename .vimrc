@@ -607,14 +607,13 @@ function! s:bundle.hooks.on_source(bundle)
     " \ 'input': "<C-o>:call setline('.', substitute(getline('.'), '\\s\\+$', '', ''))<CR><CR>",
     " \ })
 
-    if &filetype ==? 'lisp'
-        call smartinput#map_to_trigger('i', '*', '*', '*')
-        call smartinput#define_rule({
-                    \ 'at'    : 'defparameter \*\%#',
-                    \ 'char'  : '*',
-                    \ 'input' : '*<Left>',
-                    \ })
-    endif
+    call smartinput#map_to_trigger('i', '*', '*', '*')
+    call smartinput#define_rule({
+                \ 'at'    : 'defparameter \*\%#',
+                \ 'char'  : '*',
+                \ 'input' : '*<Left>',
+                \ 'filetype' : [ 'lisp' ]
+                \ })
 endfunction
 unlet s:bundle
 
