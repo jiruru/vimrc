@@ -349,7 +349,6 @@ NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
 NeoBundleLazy 'thinca/vim-scouter'
-NeoBundleLazy 'thinca/vim-showtime'
 NeoBundleLazy 'uguu-org/vim-matrix-screensaver', { 'autoload' : {'commands' : 'Matrix'} }
 NeoBundleLazy 'ujihisa/neco-look', '', 'loadInsert'
 NeoBundleLazy 'vim-jp/cpp-vim'
@@ -380,6 +379,7 @@ NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(o
 " NeoBundle 'modsound/gips-vim'
 " NeoBundle 'mopp/unite-battle_editors'
 " NeoBundle 'mopp/unite-rss'
+" NeoBundle 'mopp/AOJ.vim'
 " NeoBundle 'supermomonga/shaberu.vim'
 
 if has('python')
