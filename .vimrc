@@ -47,7 +47,7 @@ let &path = '.,' . substitute($PATH, ';', ',', 'g')
 set foldenable
 set foldcolumn=3            " 左側に折りたたみガイド表示$
 set foldmethod=indent       " 折畳の判別
-set foldtext=g:ToFoldFunc() " 折りたたみ時の表示設定
+set foldtext=g:to_fold() " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
 
 " 履歴など
@@ -97,7 +97,7 @@ let g:lispsyntax_clisp = 1
 " Functions
 "-------------------------------------------------------------------------------"
 " 折り畳み時表示テキスト設定用関数
-function! g:ToFoldFunc()
+function! g:to_fold()
     " 折りたたみ開始行取得
     let line = getline(v:foldstart)
 
@@ -349,7 +349,6 @@ NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
 NeoBundleLazy 'thinca/vim-scouter'
-NeoBundleLazy 'uguu-org/vim-matrix-screensaver', { 'autoload' : {'commands' : 'Matrix'} }
 NeoBundleLazy 'ujihisa/neco-look', '', 'loadInsert'
 NeoBundleLazy 'vim-jp/cpp-vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
@@ -374,6 +373,7 @@ NeoBundleLazy 'mattn/excitetranslate-vim', { 'depends' : 'mattn/webapi-vim', 'au
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
 
+" NeoBundleLazy 'uguu-org/vim-matrix-screensaver', { 'autoload' : {'commands' : 'Matrix'} }
 " NeoBundle 'mattn/habatobi-vim'
 " NeoBundle 'mattn/unite-advent_calendar'
 " NeoBundle 'modsound/gips-vim'
@@ -432,7 +432,7 @@ nnoremap <silent> fed :<C-u>Unite -buffer-name=english english_dictionary<CR>
 nnoremap <silent> fex :<C-u>Unite -buffer-name=example english_example<CR>
 nnoremap <silent> fet :<C-u>Unite -buffer-name=thesaurus english_thesaurus<CR>
 nnoremap <silent> fa  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
-function! s:configUnite()
+function! s:config_unite()
     imap <buffer> <TAB> <Plug>(unite_select_next_line)
     imap <buffer> jj <Plug>(unite_insert_leave)
     nmap <buffer> ' <Plug>(unite_quick_match_default_action)
@@ -547,7 +547,7 @@ let g:vimfiler_directory_display_top = 1
 let g:vimfiler_preview_action = 'below'
 let g:vimfiler_split_action = 'right'
 let g:vimfiler_enable_auto_cd = 1
-function! s:configVimFiler()
+function! s:config_vimfiler()
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
     vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
     nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
@@ -636,7 +636,7 @@ endfunction
 unlet s:bundle
 
 " Like A IDE :)
-function! s:likeIDE()
+function! s:like_IDE()
     cd %:p:h
     VimFilerExplorer -simple
     wincmd l
@@ -644,7 +644,7 @@ function! s:likeIDE()
     wincmd h
     SrcExplToggle
 endfunction
-nnoremap <silent> <Leader>id :call <SID>likeIDE()<CR>
+nnoremap <silent> <Leader>id :call <SID>like_IDE()<CR>
 
 " Ref-vim
 let g:ref_open = 'split'
@@ -732,7 +732,7 @@ let g:vimconsole#auto_redraw = 1
 "-------------------------------------------------------------------------------"
 
 " Highlight
-function! s:configHighlight()
+function! s:config_highlight()
     highlight Cursor ctermbg=55
     highlight FoldColumn ctermfg=130
     highlight Folded cterm=bold,underline ctermfg=14 ctermbg=55
@@ -742,13 +742,13 @@ function! s:configHighlight()
 endfunction
 
 " Conque
-function! s:deleteConqueTerm(buffer_name)
+function! s:delete_conque_term(buffer_name)
     let term_obj = conque_term#get_instance(a:buffer_name)
     call term_obj.close()
 endfunction
 
 " Lisp
-function! s:configLisp()
+function! s:config_lisp()
     setlocal nocindent
     setlocal autoindent
     setlocal nosmartindent
@@ -757,7 +757,7 @@ function! s:configLisp()
 endfunction
 
 " C/C++
-function! s:configCCpp()
+function! s:config_ccpp()
     NeoBundleSource cpp-vim
     if has('mac') && isdirectory('/usr/lib')
         let g:clang_library_path = '/usr/local/lib/'
@@ -795,7 +795,7 @@ augroup general
     autocmd BufWinEnter ?* if(bufname('%')!='') | silent loadview | endif
 
     " 独自ハイライト
-    autocmd Colorscheme * call s:configHighlight()
+    autocmd Colorscheme * call s:config_highlight()
 
     " Text
     autocmd BufReadPre *.txt setlocal filetype=text
@@ -805,19 +805,19 @@ augroup general
     autocmd FileType git setlocal foldlevel=99
 
     " VimFiler
-    autocmd FileType vimfiler call s:configVimFiler()
+    autocmd FileType vimfiler call s:config_vimfiler()
 
     " Conque
-    autocmd BufWinLeave zsh* call s:deleteConqueTerm(expand('%'))
+    autocmd BufWinLeave zsh* call s:delete_conque_term(expand('%'))
 
     " Unite
-    autocmd FileType unite call s:configUnite()
+    autocmd FileType unite call s:config_unite()
 
     " Lisp
-    autocmd FileType lisp call s:configLisp()
+    autocmd FileType lisp call s:config_lisp()
 
     " C/C++
-    autocmd FileType c,cpp call s:configCCpp()
+    autocmd FileType c,cpp call s:config_ccpp()
 
     " nask
     autocmd BufReadPre *.nas setlocal filetype=NASM
