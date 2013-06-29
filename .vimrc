@@ -210,7 +210,7 @@ nnoremap * *zz
 nnoremap '. '.zz
 nnoremap '' ''zz
 
-" Yand & Paste
+" Yank & Paste
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
 
@@ -299,8 +299,6 @@ endif
 " NeoBundle
 if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim
-else
-    call neobundle#call_hook('on_source')
 endif
 call neobundle#rc()
 
@@ -324,6 +322,7 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-jp/vimdoc-ja'
+NeoBundleFetch 'honza/vim-snippets'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', '', 'loadInsert'
 NeoBundleLazy 'Shougo/neosnippet', '', 'loadInsert'
@@ -373,14 +372,14 @@ NeoBundleLazy 'mattn/excitetranslate-vim', { 'depends' : 'mattn/webapi-vim', 'au
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
 
-" NeoBundleLazy 'uguu-org/vim-matrix-screensaver', { 'autoload' : {'commands' : 'Matrix'} }
 " NeoBundle 'mattn/habatobi-vim'
 " NeoBundle 'mattn/unite-advent_calendar'
 " NeoBundle 'modsound/gips-vim'
+" NeoBundle 'mopp/AOJ.vim'
 " NeoBundle 'mopp/unite-battle_editors'
 " NeoBundle 'mopp/unite-rss'
-" NeoBundle 'mopp/AOJ.vim'
 " NeoBundle 'supermomonga/shaberu.vim'
+" NeoBundleLazy 'uguu-org/vim-matrix-screensaver', { 'autoload' : {'commands' : 'Matrix'} }
 
 if has('python')
     " pip install --user git+git://github.com/Lokaltog/powerline
@@ -396,6 +395,10 @@ else
 endif
 
 filetype plugin indent on
+
+if !has('vim_starting')
+    call neobundle#call_hook('on_source')
+endif
 
 " Unite
 let g:unite_data_directory = expand('~/.vim/unite')
@@ -441,10 +444,12 @@ function! s:config_unite()
     nnoremap <buffer><expr> t unite#do_action('tabopen')
 endfunction
 
+
 " neocomplete
 let s:bundle = neobundle#get('neocomplete.vim')
 function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#enable_at_startup = 1
+    return
     let g:neocomplete#enable_smart_case = 1
     let g:neocomplete#enable_auto_delimiter = 1
     let g:neocomplete#min_keyword_length = 3
@@ -524,7 +529,11 @@ let g:clang_auto_select = 0
 " Neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+xmap <C-l> <Plug>(neosnippet_start_unite_snippet_target)
+imap <C-l> <Plug>(neosnippet_start_unite_snippet)
 set conceallevel=2 concealcursor=i
+let g:neosnippet#snippets_directory = expand('~/.vim/bundle/vim-snippets/snippets') . '/*.snippets'
 
 " Easymotion
 let g:EasyMotion_leader_key = '<Leader>e'
@@ -834,4 +843,3 @@ augroup END
 
 colorscheme desert
 syntax enable           " 強調表示有効
-set re=2
