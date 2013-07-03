@@ -142,10 +142,6 @@ if has('mac') && !has('gui_running')
     for i in map( range(char2nr('a'), char2nr('z')) + range(char2nr('A'), char2nr('Z')) + range(char2nr('0'), char2nr('9')) , 'nr2char(v:val)')
         execute 'set <M-'.i.'>='.i
     endfor
-
-    map <NUL> <C-Space>
-    map! <NUL> <C-Space>
-    map <C-Space> "*yy
 endif
 
 " <Leader>を変更
@@ -213,6 +209,11 @@ nnoremap '' ''zz
 " Yank & Paste
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
+map <C-Space> "*yy
+
+" <C-Space> で <NUL> が来るため
+map <NUL> <C-Space>
+map! <NUL> <C-Space>
 
 " 入れ替え
 noremap ; :
@@ -236,7 +237,7 @@ nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'
 " nnoremap <silent> <Leader>O   :<C-u>for i in range(1, v:count1) \| call append(line('.')-1, '') \| endfor \| silent! call repeat#set("<Space>O", v:count1)<CR>
 
 " Tagが複数あればリスト表示
-nnoremap <C-]> g<C-]>zz
+" nnoremap <C-]> g<C-]>zz
 
 " バッファの一覧と選択
 nnoremap <Leader>b :ls<CR>:b
@@ -279,13 +280,13 @@ function! g:nyaruline_after_init_hook(controler)
 endfunction
 
 " set runtimepath+=~/Dropbox/Program/Vim/Pastel
+" set runtimepath+=~/Dropbox/Program/Vim/jumper.vim
+" set runtimepath+=~/Dropbox/Program/Vim/rogue.vim
+" set runtimepath+=~/Dropbox/Program/Vim/twinbuffer.vim
 " set runtimepath+=~/Dropbox/Program/Vim/unite-battle_editors
 " set runtimepath+=~/Dropbox/Program/Vim/unite-rss
-" set runtimepath+=~/Dropbox/Program/Vim/rogue.vim
-set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
 set runtimepath+=~/Dropbox/Program/Vim/AOJ.vim
-" set runtimepath+=~/Dropbox/Program/Vim/twinbuffer.vim
-" set runtimepath+=~/Dropbox/Program/Vim/jumper.vim
+set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
 
 
 "-------------------------------------------------------------------------------"
@@ -449,13 +450,12 @@ endfunction
 let s:bundle = neobundle#get('neocomplete.vim')
 function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#enable_at_startup = 1
-    return
     let g:neocomplete#enable_smart_case = 1
     let g:neocomplete#enable_auto_delimiter = 1
     let g:neocomplete#min_keyword_length = 3
     let g:neocomplete#enable_prefetch = 1
     let g:neocomplete#data_directory = expand('~/.vim/neocomplete')
-    let g:neocomplete#skip_auto_completion_time = '' "オムニ補完と相性が悪いかもしれない
+    let g:neocomplete#skip_auto_completion_time = ''    "オムニ補完と相性が悪いかもしれない
 
     " 英単語補完用に以下のfiletypeをtextと同様に扱う
     if !exists('g:neocomplete#text_mode_filetypes')
@@ -525,6 +525,8 @@ unlet s:bundle
 " Clang_complete
 let g:clang_complete_auto = 0
 let g:clang_auto_select = 0
+let g:clang_jumpto_declaration_key = 'dummy'
+let g:clang_jumpto_back_key = 'dummy'
 
 " Neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
