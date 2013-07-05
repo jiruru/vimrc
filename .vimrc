@@ -531,8 +531,8 @@ let g:clang_jumpto_back_key = 'dummy'
 " Neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
-xmap <C-k> <Plug>(neosnippet_expand_target)
-xmap <C-l> <Plug>(neosnippet_start_unite_snippet_target)
+" xmap <C-k> <Plug>(neosnippet_expand_target)
+" xmap <C-l> <Plug>(neosnippet_start_unite_snippet_target)
 imap <C-l> <Plug>(neosnippet_start_unite_snippet)
 set conceallevel=2 concealcursor=i
 let g:neosnippet#snippets_directory = expand('~/.vim/bundle/vim-snippets/snippets') . '/*.snippets'
@@ -626,6 +626,13 @@ function! s:bundle.hooks.on_source(bundle)
                 \ 'input' : '*<Left>',
                 \ 'filetype' : [ 'lisp' ]
                 \ })
+
+    call smartinput#map_to_trigger('i', '%', '%', '%')
+    call smartinput#define_rule({
+                \ 'at'    : '\%([^''"]\+\|^\)\%#',
+                \ 'char'  : '%',
+                \ 'input' : "<C-R>\=smartchr#loop(' % ', '%')<CR>",
+                \ })
 endfunction
 unlet s:bundle
 
@@ -635,7 +642,7 @@ function! s:bundle.hooks.on_source(bundle)
     inoremap <expr> + smartchr#loop(' + ', '++', '+')
     inoremap <expr> - smartchr#loop(' - ', '--', '-')
     inoremap <expr> / smartchr#loop(' / ', '// ', '/')
-    inoremap <expr> % smartchr#loop(' % ', '%')
+    " inoremap <expr> % smartchr#loop(' % ', '%')
     inoremap <expr> ! smartchr#loop('! ', ' != ', '!')
     inoremap <expr> , smartchr#loop(', ', '->', ' => ')
     inoremap <expr> = smartchr#loop(' = ', ' == ', '=')
