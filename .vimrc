@@ -629,7 +629,7 @@ function! s:bundle.hooks.on_source(bundle)
 
     call smartinput#map_to_trigger('i', '%', '%', '%')
     call smartinput#define_rule({
-                \ 'at'    : '\%([^''"]\+\|^\)\%#',
+                \ 'at'    : '\%([^''"]\*\|^\|%\)\%#',
                 \ 'char'  : '%',
                 \ 'input' : "<C-R>\=smartchr#loop(' % ', '%')<CR>",
                 \ })
