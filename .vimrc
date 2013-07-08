@@ -613,12 +613,6 @@ function! s:bundle.hooks.on_source(bundle)
                 \ 'input' : '<Del><BS>'
                 \ })
 
-    " call smartinput#define_rule({
-    " \ 'at': '\s\+\%#',
-    " \ 'char': '<CR>',
-    " \ 'input': "<C-o>:call setline('.', substitute(getline('.'), '\\s\\+$', '', ''))<CR><CR>",
-    " \ })
-
     call smartinput#map_to_trigger('i', '*', '*', '*')
     call smartinput#define_rule({
                 \ 'at'    : 'defparameter \*\%#',
@@ -629,9 +623,9 @@ function! s:bundle.hooks.on_source(bundle)
 
     call smartinput#map_to_trigger('i', '%', '%', '%')
     call smartinput#define_rule({
-                \ 'at'    : '\%([^''"]\*\|^\|%\)\%#',
+                \ 'at'    : '\%([^''"][\sA-Za-z]\*\|^\|%\)\%#',
                 \ 'char'  : '%',
-                \ 'input' : "<C-R>\=smartchr#loop(' % ', '%')<CR>",
+                \ 'input' : "<C-R>=smartchr#one_of(' % ', '%')<CR>",
                 \ })
 endfunction
 unlet s:bundle
@@ -639,13 +633,12 @@ unlet s:bundle
 " Smartchr
 let s:bundle = neobundle#get('vim-smartchr')
 function! s:bundle.hooks.on_source(bundle)
-    inoremap <expr> + smartchr#loop(' + ', '++', '+')
-    inoremap <expr> - smartchr#loop(' - ', '--', '-')
-    inoremap <expr> / smartchr#loop(' / ', '// ', '/')
-    " inoremap <expr> % smartchr#loop(' % ', '%')
-    inoremap <expr> ! smartchr#loop('! ', ' != ', '!')
-    inoremap <expr> , smartchr#loop(', ', '->', ' => ')
-    inoremap <expr> = smartchr#loop(' = ', ' == ', '=')
+    inoremap <expr> + smartchr#one_of(' + ', '++', '+')
+    inoremap <expr> - smartchr#one_of(' - ', '--', '-')
+    inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
+    inoremap <expr> ! smartchr#one_of('! ', ' != ', '!')
+    inoremap <expr> , smartchr#one_of(', ', '->', ' => ')
+    inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
 
     if &filetype ==? 'lisp'
         inoremap <expr> ; smartchr#loop('; ', ';')
@@ -838,7 +831,7 @@ augroup general
     autocmd FileType c,cpp call s:config_ccpp()
 
     " nask
-    autocmd BufReadPre *.nas setlocal filetype=NASM
+    autocmd BufReadPre *.nas setlocal filetype=nasm
 
     " Arduino
     autocmd BufNewFile,BufRead *.pde,*.ino nested setlocal filetype=arduino
@@ -852,3 +845,4 @@ augroup END
 
 colorscheme desert
 syntax enable           " 強調表示有効
+" set re=1
