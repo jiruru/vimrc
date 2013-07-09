@@ -672,7 +672,7 @@ let g:ConqueTerm_CloseOnEnd = 1
 let g:ConqueTerm_StartMessages = 0
 let g:ConqueTerm_CWInsert = 0
 let g:ConqueTerm_EscKey = 'jj'
-noremap <silent> <Leader>sh :ConqueTermVSplit zsh<CR>
+noremap <silent> <Leader>sh :ConqueTermVSplit $SHELL<CR>
 
 " TweetVim
 let g:tweetvim_tweet_per_page = 60
