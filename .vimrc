@@ -431,10 +431,6 @@ nnoremap <silent> fr  :<C-u>Unite -buffer-name=Registers register<CR>
 nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
 nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
 nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix qf -no-quit -auto-resize -direction=botright<CR>
-nnoremap <silent> fup :<C-u>Unite -buffer-name=NeobundleUpdateLog -log neobundle/update -direction=botright<CR>
-nnoremap <silent> fed :<C-u>Unite -buffer-name=english english_dictionary<CR>
-nnoremap <silent> fex :<C-u>Unite -buffer-name=example english_example<CR>
-nnoremap <silent> fet :<C-u>Unite -buffer-name=thesaurus english_thesaurus<CR>
 nnoremap <silent> fa  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
 function! s:config_unite()
     imap <buffer> <TAB> <Plug>(unite_select_next_line)
@@ -560,6 +556,7 @@ let g:vimfiler_split_action = 'right'
 let g:vimfiler_enable_auto_cd = 1
 function! s:config_vimfiler()
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
+    nmap <buffer> h <Plug>(vimfiler_switch_to_parent_directory)
     vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
     nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
     nnoremap <silent><buffer><expr> <C-b> vimfiler#do_action('bookmark')
@@ -673,7 +670,8 @@ let g:quickrun_config.lisp =  { 'command' : 'clisp', 'exec' : '%c < %s:p' }
 let g:ConqueTerm_ReadUnfocused = 1
 let g:ConqueTerm_CloseOnEnd = 1
 let g:ConqueTerm_StartMessages = 0
-let g:ConqueTerm_CWInsert = 1
+let g:ConqueTerm_CWInsert = 0
+let g:ConqueTerm_EscKey = 'jj'
 noremap <silent> <Leader>sh :ConqueTermVSplit zsh<CR>
 
 " TweetVim
