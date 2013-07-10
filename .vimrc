@@ -206,14 +206,16 @@ nnoremap * *zz
 nnoremap '. '.zz
 nnoremap '' ''zz
 
+" <C-Space> で <NUL> が来るため
+map <NUL> <C-Space>
+map! <NUL> <C-Space>
+
+
 " Yank & Paste
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
 map <C-Space> "*yy
-
-" <C-Space> で <NUL> が来るため
-map <NUL> <C-Space>
-map! <NUL> <C-Space>
+map <C-P> "*p
 
 " 入れ替え
 noremap ; :
@@ -671,8 +673,8 @@ let g:ConqueTerm_ReadUnfocused = 1
 let g:ConqueTerm_CloseOnEnd = 1
 let g:ConqueTerm_StartMessages = 0
 let g:ConqueTerm_CWInsert = 0
-let g:ConqueTerm_EscKey = 'jj'
-noremap <silent> <Leader>sh :ConqueTermVSplit $SHELL<CR>
+let g:ConqueTerm_EscKey = '<C-K>'
+noremap <silent> <Leader>sh :ConqueTermVSplit <C-R>=$SHELL<CR><CR>
 
 " TweetVim
 let g:tweetvim_tweet_per_page = 60
@@ -843,4 +845,3 @@ augroup END
 
 colorscheme desert
 syntax enable           " 強調表示有効
-" set re=1
