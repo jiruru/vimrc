@@ -246,6 +246,7 @@ nnoremap <Leader>b :ls<CR>:b
 
 command! -nargs=0 Nyaruko call append(line('.'), '（」・ω・）」うー！（／・ω・）／にゃー！')
 command! -nargs=0 Mload source %
+command! -nargs=0 MRun make run
 
 
 "-----------------------------------------------------------------------------------"
@@ -287,7 +288,7 @@ endfunction
 " set runtimepath+=~/Dropbox/Program/Vim/twinbuffer.vim
 " set runtimepath+=~/Dropbox/Program/Vim/unite-battle_editors
 " set runtimepath+=~/Dropbox/Program/Vim/unite-rss
-set runtimepath+=~/Dropbox/Program/Vim/AOJ.vim
+" set runtimepath+=~/Dropbox/Program/Vim/AOJ.vim
 set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
 
 
@@ -315,6 +316,9 @@ NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'u
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'kana/vim-textobj-user'
+NeoBundle 'kana/vim-textobj-function'
+NeoBundle 'h1mesuke/textobj-wiw'
+NeoBundle 'sgur/vim-textobj-parameter'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
 NeoBundle 'rbtnn/vimconsole.vim'
 NeoBundle 'scrooloose/nerdcommenter'
@@ -325,7 +329,8 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-jp/vimdoc-ja'
-NeoBundleFetch 'honza/vim-snippets'
+NeoBundle 'tomasr/molokai'
+NeoBundle 'honza/vim-snippets'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', '', 'loadInsert'
 NeoBundleLazy 'Shougo/neosnippet', '', 'loadInsert'
@@ -346,7 +351,7 @@ NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
-NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
+" NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'insert' : '1', 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
@@ -558,7 +563,7 @@ let g:vimfiler_split_action = 'right'
 let g:vimfiler_enable_auto_cd = 1
 function! s:config_vimfiler()
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
-    nmap <buffer> h <Plug>(vimfiler_switch_to_parent_directory)
+    nmap <buffer> <C-H> <Plug>(vimfiler_switch_to_parent_directory)
     vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
     nnoremap <silent><buffer><expr> <C-t> vimfiler#do_action('tabopen')
     nnoremap <silent><buffer><expr> <C-b> vimfiler#do_action('bookmark')
@@ -686,12 +691,6 @@ let g:tweetvim_open_say_cmd = 'split'
 let g:tweetvim_config_dir = expand('~/.vim/tweetvim')
 let g:tweetvim_display_username = 1
 
-" Shaberu
-let g:shaberu_user_define_say_command = 'say -v Kyoko "%%TEXT%%"'
-
-" Gips
-let g:gips_speech_via_shaberu = 1
-
 " JaSegment
 let g:jasegment#model = 'rwcp'
 
@@ -709,6 +708,9 @@ omap ab <Plug>(textobj-multiblock-a)
 omap ib <Plug>(textobj-multiblock-i)
 vmap ab <Plug>(textobj-multiblock-a)
 vmap ib <Plug>(textobj-multiblock-i)
+
+" Textobj-MultiBlock
+let g:textobj_wiw_default_key_mappings_prefix = 's'
 
 " Thumbnail
 nnoremap <Leader>th :Thumbnail<CR>
@@ -793,7 +795,7 @@ augroup general
     autocmd!
 
     " .vimrc
-    autocmd BufWritePost nested $MYVIMRC source $MYVIMRC
+    autocmd BufWritePost $MYVIMRC source $MYVIMRC
 
     " 書き込み時に行末の空白を削除
     autocmd BufWritePre * silent call s:remove_tail_space()
