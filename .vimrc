@@ -274,14 +274,6 @@ endif
 "-------------------------------------------------------------------------------"
 " Developing
 "-------------------------------------------------------------------------------"
-function! g:nyaruline_after_init_hook(controler)
-    " let g:vimfiler_force_overwrite_statusline = 0
-    " call a:controler.default.n.add_atom(-1, '%{exists("g:loaded_vimfiler")?vimfiler#get_status_string():""}',  'NYARU_VIMF_N', a:controler.get_highlight_param('164a84', 'c1d8ac', 'NONE'), 'left')
-
-    " echo 'call hook'
-    " echo a:controler.default.n.get_statusline_expr()
-endfunction
-
 " set runtimepath+=~/Dropbox/Program/Vim/Pastel
 " set runtimepath+=~/Dropbox/Program/Vim/jumper.vim
 " set runtimepath+=~/Dropbox/Program/Vim/rogue.vim
@@ -289,7 +281,7 @@ endfunction
 " set runtimepath+=~/Dropbox/Program/Vim/unite-battle_editors
 " set runtimepath+=~/Dropbox/Program/Vim/unite-rss
 " set runtimepath+=~/Dropbox/Program/Vim/AOJ.vim
-set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
+" set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
 
 
 "-------------------------------------------------------------------------------"
@@ -389,17 +381,18 @@ NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(o
 " NeoBundle 'supermomonga/shaberu.vim'
 " NeoBundleLazy 'uguu-org/vim-matrix-screensaver', { 'autoload' : {'commands' : 'Matrix'} }
 
-if has('python')
+if has('python') && !has('mac')
     " pip install --user git+git://github.com/Lokaltog/powerline
-    " NeoBundle 'Lokaltog/powerline', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
+    NeoBundle 'Lokaltog/powerline', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
 else
-    NeoBundle 'Lokaltog/vim-powerline'
-    let g:Powerline_stl_path_style = 'short'
+    " NeoBundle 'Lokaltog/vim-powerline'
+    " let g:Powerline_stl_path_style = 'short'
 
     " PowerLineの再読み込み
-    if exists('g:Powerline_loaded')
-        silent! call Pl#Load()
-    endif
+    " if exists('g:Powerline_loaded')
+        " silent! call Pl#Load()
+    " endif
+    set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
 endif
 
 filetype plugin indent on
