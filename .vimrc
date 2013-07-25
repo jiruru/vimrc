@@ -321,6 +321,7 @@ NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
+NeoBundle 'bling/vim-airline'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', '', 'loadInsert'
@@ -381,20 +382,6 @@ NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(o
 " NeoBundle 'supermomonga/shaberu.vim'
 " NeoBundleLazy 'uguu-org/vim-matrix-screensaver', { 'autoload' : {'commands' : 'Matrix'} }
 " NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : ['SrcExplToggle', 'SrcExpl', 'SrcExplClose'] } }
-
-if has('python') && !has('mac')
-    " pip install --user git+git://github.com/Lokaltog/powerline
-    NeoBundle 'Lokaltog/powerline', { 'rtp' : '~/.vim/bundle/powerline/powerline/bindings/vim', 'build' : { 'mac' : 'python setup.py build install --user' } }
-else
-    set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
-    " NeoBundle 'Lokaltog/vim-powerline'
-    " let g:Powerline_stl_path_style = 'short'
-
-    " PowerLineの再読み込み
-    " if exists('g:Powerline_loaded')
-        " silent! call Pl#Load()
-    " endif
-endif
 
 filetype plugin indent on
 
@@ -732,6 +719,19 @@ noremap ]rn :ReanimateLoad <C-R>%<CR>
 
 " VimConsole
 let g:vimconsole#auto_redraw = 1
+
+" airline
+let g:airline_left_sep = '»'
+let g:airline_left_sep = '▶'
+let g:airline_right_sep = '«'
+let g:airline_right_sep = '◀'
+let g:airline_linecolumn_prefix = '␊ '
+let g:airline_linecolumn_prefix = '␤ '
+let g:airline_linecolumn_prefix = '¶ '
+let g:airline_fugitive_prefix = '⎇ '
+let g:airline_paste_symbol = 'ρ'
+let g:airline_paste_symbol = 'Þ'
+let g:airline_paste_symbol = '∥'
 
 
 "-------------------------------------------------------------------------------"
