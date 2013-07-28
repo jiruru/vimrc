@@ -74,7 +74,7 @@ let g:loaded_zip = 1
 let g:loaded_zipPlugin = 1
 
 " 外観設定
-" set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
+set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
 set cmdheight=2         " コマンドラインの行数
 set cursorline          " 現在行に下線表示
 set laststatus=2        " ステータスラインを表示する時
@@ -727,12 +727,12 @@ let g:airline_right_sep = '«'
 let g:airline_right_sep = '◀'
 let g:airline_linecolumn_prefix = '␊ '
 let g:airline_linecolumn_prefix = '␤ '
-let g:airline_linecolumn_prefix = '¶ '
-let g:airline_fugitive_prefix = '⎇ '
+let g:airline_linecolumn_prefix = '¶'
+let g:airline_branch_prefix = '⎇ '
 let g:airline_paste_symbol = 'ρ'
 let g:airline_paste_symbol = 'Þ'
 let g:airline_paste_symbol = '∥'
-
+let g:airline_theme='light'
 
 "-------------------------------------------------------------------------------"
 " autocmd
