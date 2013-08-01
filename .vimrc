@@ -343,7 +343,7 @@ NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
-NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
+" NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'insert' : '1', 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
@@ -414,7 +414,7 @@ nnoremap <silent> fhl :<C-u>Unite -buffer-name=Help help<CR>
 nnoremap <silent> fma :<C-u>Unite -buffer-name=Mappings mapping<CR>
 nnoremap <silent> fme :<C-u>Unite -buffer-name=Messages output:message<CR>
 nnoremap <silent> fo  :<C-u>Unite -buffer-name=Outlines outline<CR>
-nnoremap <silent> fl  :<C-u>Unite -buffer-name=Line line -no-quit<CR>
+nnoremap <silent> fl  :<C-u>Unite -buffer-name=Line line/fast:all -no-quit<CR>
 nnoremap <silent> fr  :<C-u>Unite -buffer-name=Registers register<CR>
 nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
 nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
@@ -721,18 +721,12 @@ noremap ]rn :ReanimateLoad <C-R>%<CR>
 let g:vimconsole#auto_redraw = 1
 
 " airline
-let g:airline_left_sep = '»'
 let g:airline_left_sep = '▶'
-let g:airline_right_sep = '«'
 let g:airline_right_sep = '◀'
-let g:airline_linecolumn_prefix = '␊ '
-let g:airline_linecolumn_prefix = '␤ '
 let g:airline_linecolumn_prefix = '¶'
 let g:airline_branch_prefix = '⎇ '
-let g:airline_paste_symbol = 'ρ'
-let g:airline_paste_symbol = 'Þ'
-let g:airline_paste_symbol = '∥'
-let g:airline_theme='light'
+let g:airline_theme = 'simple'
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -789,7 +783,7 @@ augroup general
     autocmd!
 
     " .vimrc
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+    autocmd BufWritePost nested $MYVIMRC source $MYVIMRC
 
     " 書き込み時に行末の空白を削除
     autocmd BufWritePre * silent call s:remove_tail_space()
