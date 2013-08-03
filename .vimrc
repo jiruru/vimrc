@@ -305,6 +305,7 @@ let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/context_filetype.vim'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
+NeoBundle 'bling/vim-airline'
 NeoBundle 'h1mesuke/textobj-wiw'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'kana/vim-niceblock'
@@ -312,6 +313,7 @@ NeoBundle 'kana/vim-textobj-function'
 NeoBundle 'kana/vim-textobj-indent'
 NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
+NeoBundle 'osyo-manga/vim-textobj-multitextobj'
 NeoBundle 'rbtnn/vimconsole.vim'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'sgur/vim-textobj-parameter'
@@ -321,7 +323,6 @@ NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
-NeoBundle 'bling/vim-airline'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', '', 'loadInsert'
@@ -343,7 +344,7 @@ NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
-" NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
+NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'insert' : '1', 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
@@ -690,11 +691,29 @@ omap ib <Plug>(textobj-multiblock-i)
 vmap ab <Plug>(textobj-multiblock-a)
 vmap ib <Plug>(textobj-multiblock-i)
 
-" Textobj-wiw
-let g:textobj_wiw_default_key_mappings_prefix = 's'
-
 " Textobj-Operator-Replace
-map _ <Plug>(operator-replace)
+map _ <Plug>(opirator-replace)
+
+" Textobj-wiw
+" let g:textobj_wiw_default_key_mappings_prefix = 's'
+
+" " Textobj-MultiTextobj TODO
+let g:textobj_multitextobj_textobjects_group_i = {
+            \   'A' : [
+            \       "\<Plug>(textobj-wiw-i)",
+            \       "iw",
+            \    ],
+            \   'B' : [
+            \       "\<Plug>(textobj-wiw-a)",
+            \       "aw",
+            \    ],
+            \}
+map <Plug>(textobj-word-i) <Plug>(textobj-multitextobj-A-i)
+map <Plug>(textobj-word-a) <Plug>(textobj-multitextobj-B-i)
+omap iw <Plug>(textobj-word-i)
+vmap iw <Plug>(textobj-word-i)
+omap aw <Plug>(textobj-word-a)
+vmap aw <Plug>(textobj-word-a)
 
 " Thumbnail
 nnoremap <Leader>th :Thumbnail<CR>
@@ -835,3 +854,4 @@ augroup END
 
 colorscheme desert
 syntax enable           " 強調表示有効
+" set regexpengine=1
