@@ -280,7 +280,7 @@ endif
 " set runtimepath+=~/Dropbox/Program/Vim/twinbuffer.vim
 " set runtimepath+=~/Dropbox/Program/Vim/unite-battle_editors
 " set runtimepath+=~/Dropbox/Program/Vim/unite-rss
-" set runtimepath+=~/Dropbox/Program/Vim/AOJ.vim
+set runtimepath+=~/Dropbox/Program/Vim/AOJ.vim
 " set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
 
 
@@ -307,6 +307,7 @@ NeoBundle 'Shougo/context_filetype.vim'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'bling/vim-airline'
 NeoBundle 'h1mesuke/textobj-wiw'
+NeoBundle 'calorie/vim-swap-windows'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'kana/vim-textobj-function'
@@ -315,6 +316,7 @@ NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
 NeoBundle 'osyo-manga/vim-textobj-multitextobj'
 NeoBundle 'rbtnn/vimconsole.vim'
+NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'sgur/vim-textobj-parameter'
 NeoBundle 'thinca/vim-quickrun'
@@ -326,7 +328,7 @@ NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', '', 'loadInsert'
-NeoBundleLazy 'Shougo/neosnippet', '', 'loadInsert'
+NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ 'VimFiler', 'VimFilerTab', 'VimFilerExplorer',], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'deton/jasegment.vim', { 'autoload' : { 'function_prefix' : 'jasegment' } }
@@ -352,6 +354,7 @@ NeoBundleLazy 'thinca/vim-scouter'
 NeoBundleLazy 'tomasr/molokai'
 NeoBundleLazy 'ujihisa/neco-look', '', 'loadInsert'
 NeoBundleLazy 'vim-jp/cpp-vim'
+NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
 NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
@@ -418,6 +421,7 @@ nnoremap <silent> fo  :<C-u>Unite -buffer-name=Outlines outline<CR>
 nnoremap <silent> fl  :<C-u>Unite -buffer-name=Line line/fast:all -no-quit<CR>
 nnoremap <silent> fr  :<C-u>Unite -buffer-name=Registers register<CR>
 nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
+nnoremap <silent> fn  :<C-u>Unite -buffer-name=Snippet snippet<CR>
 nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
 nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix qf -no-quit -auto-resize -direction=botright<CR>
 nnoremap <silent> fa  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
@@ -501,6 +505,9 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#sources#vim#complete_functions.Unite = 'unite#complete_source'
     let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
     let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
+
+
+    let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
 
     inoremap <expr> <C-l> neocomplete#complete_common_string()
     imap <C-q>  <Plug>(neocomplete_start_unite_quick_match)
@@ -697,7 +704,7 @@ map _ <Plug>(opirator-replace)
 " Textobj-wiw
 " let g:textobj_wiw_default_key_mappings_prefix = 's'
 
-" " Textobj-MultiTextobj TODO
+" Textobj-MultiTextobj TODO
 let g:textobj_multitextobj_textobjects_group_i = {
             \   'A' : [
             \       "\<Plug>(textobj-wiw-i)",
@@ -740,11 +747,23 @@ noremap ]rn :ReanimateLoad <C-R>%<CR>
 let g:vimconsole#auto_redraw = 1
 
 " airline
-let g:airline_left_sep = '▶'
+let g:airline_left_sep = '▶ '
 let g:airline_right_sep = '◀'
 let g:airline_linecolumn_prefix = '¶'
 let g:airline_branch_prefix = '⎇ '
 let g:airline_theme = 'simple'
+
+" syntastic
+let g:syntastic_ignore_files=['*.asm']
+
+" Ambicmd
+cnoremap <expr> <Space> ambicmd#expand('<Space>')
+cnoremap <expr> <CR>    ambicmd#expand('<CR>')
+
+" rainbow parenthesis
+let g:rainbow_active = 1
+let g:rainbow_operators = 1
+let g:rainbow_load_separately = [ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']] ], [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']] ], ]
 
 
 "-------------------------------------------------------------------------------"
