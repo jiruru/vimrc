@@ -306,8 +306,8 @@ NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/context_filetype.vim'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'bling/vim-airline'
-NeoBundle 'h1mesuke/textobj-wiw'
 NeoBundle 'calorie/vim-swap-windows'
+NeoBundle 'h1mesuke/textobj-wiw'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'kana/vim-textobj-function'
@@ -316,9 +316,9 @@ NeoBundle 'kana/vim-textobj-user'
 NeoBundle 'osyo-manga/vim-textobj-multiblock'
 NeoBundle 'osyo-manga/vim-textobj-multitextobj'
 NeoBundle 'rbtnn/vimconsole.vim'
-NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'sgur/vim-textobj-parameter'
+NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
@@ -326,8 +326,8 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-jp/vimdoc-ja'
+NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
-NeoBundleLazy 'Shougo/neocomplete.vim', '', 'loadInsert'
 NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ 'VimFiler', 'VimFilerTab', 'VimFilerExplorer',], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
@@ -354,7 +354,6 @@ NeoBundleLazy 'thinca/vim-scouter'
 NeoBundleLazy 'tomasr/molokai'
 NeoBundleLazy 'ujihisa/neco-look', '', 'loadInsert'
 NeoBundleLazy 'vim-jp/cpp-vim'
-NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
 NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
@@ -375,6 +374,10 @@ NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'mattn/excitetranslate-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
+
+if has('lua')
+    NeoBundleLazy 'Shougo/neocomplete.vim', '', 'loadInsert'
+endif
 
 " NeoBundle 'Shougo/vimshell.vim'
 " NeoBundle 'mattn/habatobi-vim'
@@ -436,83 +439,85 @@ endfunction
 
 
 " neocomplete
-let s:bundle = neobundle#get('neocomplete.vim')
-function! s:bundle.hooks.on_source(bundle)
-    let g:neocomplete#enable_at_startup = 1
-    let g:neocomplete#enable_smart_case = 1
-    let g:neocomplete#enable_auto_delimiter = 1
-    let g:neocomplete#min_keyword_length = 3
-    let g:neocomplete#enable_prefetch = 1
-    let g:neocomplete#data_directory = expand('~/.vim/neocomplete')
-    let g:neocomplete#skip_auto_completion_time = ''    "オムニ補完と相性が悪いかもしれない
+if neobundle#is_installed('thinca/vim-ambicmd')
+    let s:bundle = neobundle#get('neocomplete.vim')
+    function! s:bundle.hooks.on_source(bundle)
+        let g:neocomplete#enable_at_startup = 1
+        let g:neocomplete#enable_smart_case = 1
+        let g:neocomplete#enable_auto_delimiter = 1
+        let g:neocomplete#min_keyword_length = 3
+        let g:neocomplete#enable_prefetch = 1
+        let g:neocomplete#data_directory = expand('~/.vim/neocomplete')
+        let g:neocomplete#skip_auto_completion_time = ''    "オムニ補完と相性が悪いかもしれない
 
-    " 英単語補完用に以下のfiletypeをtextと同様に扱う
-    if !exists('g:neocomplete#text_mode_filetypes')
-        let g:neocomplete#text_mode_filetypes = {}
-    endif
-    let g:neocomplete#text_mode_filetypes.mkd = 1
-    let g:neocomplete#text_mode_filetypes.markdown = 1
-    let g:neocomplete#text_mode_filetypes.gitcommit = 1
-    let g:neocomplete#text_mode_filetypes.text = 1
-    let g:neocomplete#text_mode_filetypes.txt = 1
+        " 英単語補完用に以下のfiletypeをtextと同様に扱う
+        if !exists('g:neocomplete#text_mode_filetypes')
+            let g:neocomplete#text_mode_filetypes = {}
+        endif
+        let g:neocomplete#text_mode_filetypes.mkd = 1
+        let g:neocomplete#text_mode_filetypes.markdown = 1
+        let g:neocomplete#text_mode_filetypes.gitcommit = 1
+        let g:neocomplete#text_mode_filetypes.text = 1
+        let g:neocomplete#text_mode_filetypes.txt = 1
 
-    " 補完時に他のfiletypeの候補も参照する
-    if !exists('g:neocomplete#same_filetypes')
-        let g:neocomplete#same_filetypes = {}
-    endif
-    let g:neocomplete#same_filetypes._ = '_'
+        " 補完時に他のfiletypeの候補も参照する
+        if !exists('g:neocomplete#same_filetypes')
+            let g:neocomplete#same_filetypes = {}
+        endif
+        let g:neocomplete#same_filetypes._ = '_'
 
-    if !exists('g:neocomplete#delimiter_patterns')
-        let g:neocomplete#delimiter_patterns= {}
-    endif
-    let g:neocomplete#delimiter_patterns.vim = ['#', '.']
-    let g:neocomplete#delimiter_patterns.cpp = ['::', '.']
-    let g:neocomplete#delimiter_patterns.c = ['.', '->']
-    let g:neocomplete#delimiter_patterns.java = ['.']
+        if !exists('g:neocomplete#delimiter_patterns')
+            let g:neocomplete#delimiter_patterns= {}
+        endif
+        let g:neocomplete#delimiter_patterns.vim = ['#', '.']
+        let g:neocomplete#delimiter_patterns.cpp = ['::', '.']
+        let g:neocomplete#delimiter_patterns.c = ['.', '->']
+        let g:neocomplete#delimiter_patterns.java = ['.']
 
-    " 外部オムニ補完関数を直接呼び出す
-    if !exists('g:neocomplete#force_omni_input_patterns')
-        let g:neocomplete#force_omni_input_patterns = {}
-    endif
-    let g:neocomplete#force_overwrite_completefunc = 1
-    let g:neocomplete#force_omni_input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-    let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-    " 数字記号類以外の後に.か->が来た場合に補完実行する
+        " 外部オムニ補完関数を直接呼び出す
+        if !exists('g:neocomplete#force_omni_input_patterns')
+            let g:neocomplete#force_omni_input_patterns = {}
+        endif
+        let g:neocomplete#force_overwrite_completefunc = 1
+        let g:neocomplete#force_omni_input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
+        let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
+        let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+        let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
+        let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+        " 数字記号類以外の後に.か->が来た場合に補完実行する
 
-    " syntaxファイル内での候補に使われる最小文字数
-    let g:neocomplete#sources#syntax#min_keyword_length = 3
+        " syntaxファイル内での候補に使われる最小文字数
+        let g:neocomplete#sources#syntax#min_keyword_length = 3
 
-    " neocompleteが呼び出すオムニ補完関数名
-    if !exists('g:neocomplete#sources#omni#functions')
-        let g:neocomplete#sources#omni#functions = {}
-    endif
-    let g:neocomplete#sources#omni#functions.java = 'javaapi#complete'
+        " neocompleteが呼び出すオムニ補完関数名
+        if !exists('g:neocomplete#sources#omni#functions')
+            let g:neocomplete#sources#omni#functions = {}
+        endif
+        let g:neocomplete#sources#omni#functions.java = 'javaapi#complete'
 
-    " オムニ補完関数呼び出し時の条件
-    if !exists('g:neocomplete#sources#omni#input_patterns')
-        let g:neocomplete#sources#omni#input_patterns = {}
-    endif
-    let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-    let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\.\%(\h\w*\)\?\|[a-zA-Z].*'
+        " オムニ補完関数呼び出し時の条件
+        if !exists('g:neocomplete#sources#omni#input_patterns')
+            let g:neocomplete#sources#omni#input_patterns = {}
+        endif
+        let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+        let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\.\%(\h\w*\)\?\|[a-zA-Z].*'
 
-    if !exists('g:neocomplete#sources#vim#complete_functions')
-        let g:neocomplete#sources#vim#complete_functions = {}
-    endif
-    let g:neocomplete#sources#vim#complete_functions.Ref = 'ref#complete'
-    let g:neocomplete#sources#vim#complete_functions.Unite = 'unite#complete_source'
-    let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
-    let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
+        if !exists('g:neocomplete#sources#vim#complete_functions')
+            let g:neocomplete#sources#vim#complete_functions = {}
+        endif
+        let g:neocomplete#sources#vim#complete_functions.Ref = 'ref#complete'
+        let g:neocomplete#sources#vim#complete_functions.Unite = 'unite#complete_source'
+        let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
+        let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
 
 
-    let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
+        let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
 
-    inoremap <expr> <C-l> neocomplete#complete_common_string()
-    imap <C-q>  <Plug>(neocomplete_start_unite_quick_match)
-endfunction
-unlet s:bundle
+        inoremap <expr> <C-l> neocomplete#complete_common_string()
+        imap <C-q>  <Plug>(neocomplete_start_unite_quick_match)
+    endfunction
+    unlet s:bundle
+endif
 
 " Clang_complete
 let g:clang_complete_auto = 0
@@ -753,8 +758,10 @@ let g:airline_theme = 'simple'
 let g:syntastic_ignore_files=['*.asm']
 
 " Ambicmd
-cnoremap <expr> <Space> ambicmd#expand('<Space>')
-cnoremap <expr> <CR>    ambicmd#expand('<CR>')
+if neobundle#is_installed('thinca/vim-ambicmd')
+    cnoremap <expr> <Space> ambicmd#expand('<Space>')
+    cnoremap <expr> <CR>    ambicmd#expand('<CR>')
+endif
 
 " rainbow parenthesis
 let g:rainbow_active = 1
