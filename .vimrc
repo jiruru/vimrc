@@ -571,10 +571,6 @@ let g:tagbar_autoshowtag = 1
 let g:tagbar_autofocus = 1
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
-highlight TagbarScope ctermfg=5
-highlight TagbarType cterm=bold ctermfg=55
-highlight TagbarHighlight cterm=bold,underline ctermfg=1
-highlight TagbarSignature ctermfg=70
 nnoremap <silent> tb :<C-U>TagbarToggle<CR>
 
 " Smartinput
@@ -873,4 +869,3 @@ augroup END
 
 colorscheme desert
 syntax enable           " 強調表示有効
-" set regexpengine=1
