@@ -210,7 +210,6 @@ nnoremap '' ''zz
 map <NUL> <C-Space>
 map! <NUL> <C-Space>
 
-
 " Yank & Paste
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
@@ -618,9 +617,19 @@ function! s:bundle.hooks.on_source(bundle)
 
     call smartinput#map_to_trigger('i', '%', '%', '%')
     call smartinput#define_rule({
-                \ 'at'    : '\%([^''"][\sA-Za-z]\*\|^\|%\)\%#',
-                \ 'char'  : '%',
-                \ 'input' : "<C-R>=smartchr#one_of(' % ', '%')<CR>",
+                \ 'char' : '%',
+                \ 'at' : '\%#',
+                \ 'input' : "<C-R>=smartchr#loop(' % ', '%')<CR>"
+                \ })
+    call smartinput#define_rule({
+                \ 'char' : '%',
+                \ 'at' : '^\([^\"]*\"[^\"]*\"\)*[^\"]*\"[^\"]*\%#',
+                \ 'input' : "%"
+                \ })
+    call smartinput#define_rule({
+                \ 'char' : '%',
+                \ 'at' : '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
+                \ 'input' : "%"
                 \ })
 endfunction
 unlet s:bundle
