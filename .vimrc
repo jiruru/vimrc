@@ -279,7 +279,7 @@ endif
 " set runtimepath+=~/Dropbox/Program/Vim/twinbuffer.vim
 " set runtimepath+=~/Dropbox/Program/Vim/unite-battle_editors
 " set runtimepath+=~/Dropbox/Program/Vim/unite-rss
-set runtimepath+=~/Dropbox/Program/Vim/AOJ.vim
+" set runtimepath+=~/Dropbox/Program/Vim/AOJ.vim
 " set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
 
 
@@ -631,6 +631,7 @@ function! s:bundle.hooks.on_source(bundle)
                 \ 'at' : '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
                 \ 'input' : "%"
                 \ })
+
 endfunction
 unlet s:bundle
 
