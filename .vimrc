@@ -510,7 +510,6 @@ if neobundle#is_installed('neocomplete.vim')
         let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
         let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
 
-
         let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
 
         inoremap <expr> <C-l> neocomplete#complete_common_string()
@@ -813,12 +812,15 @@ endfunction
 " C/C++
 function! s:config_ccpp()
     NeoBundleSource cpp-vim
-    if has('mac') && isdirectory('/usr/lib')
+
+    let clang_path = '/usr/local/bin/'
+    if isdirectory(clang_path) && '' != findfile('clang', clang_path . ';')
         let g:clang_library_path = '/usr/local/lib/'
-        let g:clang_user_options = '-I/usr/local/include/ -I/usr/local/include/boost/'
-        let g:clang_executable_path = '/usr/local/bin/'
+        let g:clang_executable_path = clang_path
+        " let g:clang_user_options = '-I/usr/local/include/ -I/usr/local/include/boost/'
         NeoBundleSource clang_complete
     endif
+
     setlocal nosmartindent
     setlocal nocindent
     setlocal autoindent
