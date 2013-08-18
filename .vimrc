@@ -614,35 +614,50 @@ function! s:bundle.hooks.on_source(bundle)
                 \ 'filetype' : [ 'lisp' ]
                 \ })
 
-    call smartinput#map_to_trigger('i', '%', '%', '%')
-    call smartinput#define_rule({
-                \ 'char' : '%',
-                \ 'at' : '\%#',
-                \ 'input' : "<C-R>=smartchr#loop(' % ', '%')<CR>"
-                \ })
-    call smartinput#define_rule({
-                \ 'char' : '%',
-                \ 'at' : '^\([^\"]*\"[^\"]*\"\)*[^\"]*\"[^\"]*\%#',
-                \ 'input' : "%"
-                \ })
-    call smartinput#define_rule({
-                \ 'char' : '%',
-                \ 'at' : '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
-                \ 'input' : "%"
-                \ })
+    for i in [
+                \ ['<',     "smartchr#loop(' < ', ' << ', '<')" ],
+                \ ['>',     "smartchr#loop(' > ', ' >> ', ' >>> ', '>')"],
+                \ ['+',     "smartchr#loop(' + ', ' ++ ', '+')"],
+                \ ['-',     "smartchr#loop(' - ', ' -- ', '-')"],
+                \ ['/',     "smartchr#loop(' / ', '//', '/')"],
+                \ ['&',     "smartchr#loop(' & ', ' && ', '&')"],
+                \ ['%',     "smartchr#loop(' % ', '%')"],
+                \ ['*',     "smartchr#loop(' * ', '*')"],
+                \ ['<Bar>', "smartchr#loop(' <Bar> ', ' <Bar><Bar> ', '<Bar>')"],
+                \ [',',     "smartchr#loop(', ', ',')"]
+                \ ]
+        call smartinput#map_to_trigger('i', i[0], i[0], i[0])
+        call smartinput#define_rule({
+                    \ 'char' : i[0],
+                    \ 'at' : '\%#',
+                    \ 'input' : "<C-R>=".i[1]."<CR>"
+                    \ })
+        " call smartinput#define_rule({'char' : i[0], 'at' : '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#', 'input' : i[0]})
+        call smartinput#define_rule({
+                    \ 'char' : i[0],
+                    \  'at' : '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#',
+                    \ 'input' : i[0]
+                    \ })
+    endfor
 
+    call smartinput#map_to_trigger('i', '=', '=', '=')
+    call smartinput#define_rule({'char' : '=', 'at' : '\%#', 'input' : "<C-R>=smartchr#loop(' = ', ' == ', '=')<CR>"})
+    call smartinput#define_rule({'char' : '=', 'at' : '[&+-/<>|] \%#', 'input' : '<BS>= '})
+    call smartinput#define_rule({'char' : '=', 'at' : '!\%#', 'input' : '= '})
+    " call smartinput#define_rule({'char' : '=', 'at' : '^\([^"]*"[^"]*"\)*[^"]*"[^"]*\%#', 'input' : '='})
+    call smartinput#define_rule({'char' : '=', 'at' : '^\([^'']*''[^'']*''\)*[^'']*''[^'']*\%#', 'input' : '='})
 endfunction
 unlet s:bundle
 
 " Smartchr
 let s:bundle = neobundle#get('vim-smartchr')
 function! s:bundle.hooks.on_source(bundle)
-    inoremap <expr> + smartchr#one_of(' + ', '++', '+')
-    inoremap <expr> - smartchr#one_of(' - ', '--', '-')
-    inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
-    inoremap <expr> ! smartchr#one_of('! ', ' != ', '!')
+    " inoremap <expr> + smartchr#one_of(' + ', '++', '+')
+    " inoremap <expr> - smartchr#one_of(' - ', '--', '-')
+    " inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
+    " inoremap <expr> ! smartchr#one_of('! ', ' != ', '!')
+    " inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
     inoremap <expr> , smartchr#one_of(', ', '->', ' => ')
-    inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
 
     if &filetype ==? 'lisp'
         inoremap <expr> ; smartchr#loop('; ', ';')
