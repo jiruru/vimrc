@@ -554,7 +554,7 @@ let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_directory_display_top = 1
 let g:vimfiler_preview_action = 'below'
 let g:vimfiler_split_action = 'right'
-let g:vimfiler_enable_auto_cd = 1
+" let g:vimfiler_enable_auto_cd = 1
 function! s:config_vimfiler()
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
     nmap <buffer> <C-H> <Plug>(vimfiler_switch_to_parent_directory)
