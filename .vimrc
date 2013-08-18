@@ -187,6 +187,9 @@ noremap <M-l> gt
 noremap <Leader>sp :split<Space>
 noremap <Leader>vsp :vsplit<Space>
 
+" 現在バッファをTabで開く
+noremap <Leader>tsp :tab split<CR>
+
 " エラーリスト移動
 nnoremap <silent> [o :cprevious<CR>
 nnoremap <silent> ]o :cnext<CR>
@@ -223,6 +226,7 @@ noremap : ;
 " カーソル下のwordをhelpする
 " nnoremap <silent> <Leader>h :vertical aboveleft help <C-R><C-W><CR>
 nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
+nnoremap <silent> <Leader>ht :tab help <C-R><C-W><CR>
 
 " .vimrcを開く
 nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
@@ -833,7 +837,7 @@ function! s:config_ccpp()
         let g:clang_library_path = '/usr/local/lib/'
         let g:clang_executable_path = clang_path
         " let g:clang_user_options = '-I/usr/local/include/ -I/usr/local/include/boost/'
-        NeoBundleSource clang_complete
+        " NeoBundleSource clang_complete
     endif
 
     setlocal nosmartindent
@@ -889,6 +893,7 @@ augroup general
 
     " C/C++
     autocmd FileType c,cpp call s:config_ccpp()
+    autocmd BufReadPost *.h setlocal filetype=c
 
     " nask
     autocmd BufReadPre *.nas setlocal filetype=nasm
