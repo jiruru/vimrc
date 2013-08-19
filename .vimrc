@@ -813,7 +813,7 @@ function! s:config_ccpp()
         let g:clang_library_path = '/usr/local/lib/'
         let g:clang_executable_path = clang_path
         " let g:clang_user_options = '-I/usr/local/include/ -I/usr/local/include/boost/'
-        " NeoBundleSource clang_complete
+        NeoBundleSource clang_complete
     endif
 
     setlocal nosmartindent
