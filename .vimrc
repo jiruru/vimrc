@@ -305,6 +305,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '1' } } }
 
+NeoBundle "osyo-manga/shabadou.vim"
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/context_filetype.vim'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
@@ -312,6 +313,7 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'calorie/vim-swap-windows'
 NeoBundle 'h1mesuke/textobj-wiw'
 NeoBundle 'honza/vim-snippets'
+NeoBundle 'jceb/vim-hier'
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'kana/vim-textobj-function'
 NeoBundle 'kana/vim-textobj-indent'
@@ -363,14 +365,13 @@ NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operat
 NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
-NeoBundle 'rhysd/quickrun-unite-qf-outputter'
 
 NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : 'Unite', 'function_prefix' : 'unite' }}
 NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
 NeoBundleLazy 'Shougo/unite-outline', { 'autoload' : { 'unite_sources' : ['outline'],} }
 NeoBundleLazy 'Shougo/unite-ssh', { 'autoload' : { 'unite_sources' : ['ssh'],} }
 NeoBundleLazy 'osyo-manga/vim-reanimate', { 'autoload' : { 'unite_sources' : ['Reanimate'], 'commands' : ['ReanimateLoad', 'ReanimateSave']} }
-NeoBundleLazy 'sgur/unite-qf', { 'autoload' : { 'unite_sources' : ['qf'],} }
+NeoBundleLazy 'osyo-manga/unite-quickfix', { 'autoload' : { 'unite_sources' : ['quickfix'],} }
 NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['history/command', 'history/yank', 'history/search'],} }
 NeoBundleLazy 'tsukkee/unite-tag', { 'autoload' : { 'unite_sources' : ['tag'],} }
 
@@ -431,9 +432,15 @@ nnoremap <silent> fr  :<C-u>Unite -buffer-name=Registers register<CR>
 nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
 nnoremap <silent> fn  :<C-u>Unite -buffer-name=Snippet snippet<CR>
 nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
-nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix qf -no-quit -direction=botright<CR>
+nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
 nnoremap <silent> fa  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
 function! s:config_unite()
+    " multi-line を切る
+    let g:unite_quickfix_is_multiline=0
+
+    " コンバータに converter_quickfix_highlight を設定
+    call unite#custom_source('quickfix', 'converters', 'converter_quickfix_highlight')
+    call unite#custom_source('location_list', 'converters', 'converter_quickfix_highlight')
     imap <buffer> <TAB> <Plug>(unite_select_next_line)
     imap <buffer> jj <Plug>(unite_insert_leave)
     nmap <buffer> ' <Plug>(unite_quick_match_default_action)
@@ -667,17 +674,9 @@ let g:ref_source_webdict_sites.default = 'Wikipedia:ja'
 
 " QuickRun
 let g:quickrun_config = {}
-let g:quickrun_config._ = { 'outputter' : 'unite_qf', 'outputter/buffer/split' : ':vertical rightbelow', 'runner' : 'vimproc' }
+let g:quickrun_config._ = { 'outputter' : 'quickfix', 'outputter/buffer/split' : ':vertical rightbelow', 'runner' : 'vimproc' }
 let g:quickrun_config.lisp = { 'command' : 'clisp', 'exec' : '%c < %s:p' }
-let g:quickrun_config.make = { 'command' : "make",  'exec' : '%c %o', 'runner' : 'vimproc' }
-" let g:quickrun_config = {
-" \   "make" : {
-" \       "command"   : "make",
-" \       "exec" : "%c %o",
-" \       "outputter" : "error:buffer:quickfix",
-" \       "runner" : "vimproc",
-" \   },
-" \}
+let g:quickrun_config.make = { 'command' : "make",  'exec' : '%c %o', 'runner' : 'vimproc', "outputter/quickfix/open_cmd" : "", "hook/unite_quickfix/enable_exit" : 1, "hook/unite_quickfix/enable_failure" : 1}
 
 " Conque
 let g:ConqueTerm_ReadUnfocused = 1
