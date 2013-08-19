@@ -363,6 +363,7 @@ NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operat
 NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
+NeoBundle 'rhysd/quickrun-unite-qf-outputter'
 
 NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : 'Unite', 'function_prefix' : 'unite' }}
 NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
@@ -373,8 +374,8 @@ NeoBundleLazy 'sgur/unite-qf', { 'autoload' : { 'unite_sources' : ['qf'],} }
 NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['history/command', 'history/yank', 'history/search'],} }
 NeoBundleLazy 'tsukkee/unite-tag', { 'autoload' : { 'unite_sources' : ['tag'],} }
 
-NeoBundleLazy 'basyura/TweetVim', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimUserStream'], 'unite_sources' : ['tweetvim'],} }
-NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
+" NeoBundleLazy 'basyura/TweetVim', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimUserStream'], 'unite_sources' : ['tweetvim'],} }
+" NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'mattn/excitetranslate-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
@@ -430,7 +431,7 @@ nnoremap <silent> fr  :<C-u>Unite -buffer-name=Registers register<CR>
 nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
 nnoremap <silent> fn  :<C-u>Unite -buffer-name=Snippet snippet<CR>
 nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
-nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix qf -no-quit -auto-resize -direction=botright<CR>
+nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix qf -no-quit -direction=botright<CR>
 nnoremap <silent> fa  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
 function! s:config_unite()
     imap <buffer> <TAB> <Plug>(unite_select_next_line)
@@ -666,9 +667,17 @@ let g:ref_source_webdict_sites.default = 'Wikipedia:ja'
 
 " QuickRun
 let g:quickrun_config = {}
-" let g:quickrun_config._ = { 'runner' : 'vimproc', 'outputter/buffer/split' : ':botright 10sp' }
-let g:quickrun_config._ = { 'outputter/buffer/split' : ':vertical rightbelow' }
-let g:quickrun_config.lisp =  { 'command' : 'clisp', 'exec' : '%c < %s:p' }
+let g:quickrun_config._ = { 'outputter' : 'unite_qf', 'outputter/buffer/split' : ':vertical rightbelow', 'runner' : 'vimproc' }
+let g:quickrun_config.lisp = { 'command' : 'clisp', 'exec' : '%c < %s:p' }
+let g:quickrun_config.make = { 'command' : "make",  'exec' : '%c %o', 'runner' : 'vimproc' }
+" let g:quickrun_config = {
+" \   "make" : {
+" \       "command"   : "make",
+" \       "exec" : "%c %o",
+" \       "outputter" : "error:buffer:quickfix",
+" \       "runner" : "vimproc",
+" \   },
+" \}
 
 " Conque
 let g:ConqueTerm_ReadUnfocused = 1
