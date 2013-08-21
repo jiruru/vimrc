@@ -769,11 +769,13 @@ let g:airline_linecolumn_prefix = '¶'
 let g:airline_branch_prefix = '⎇ '
 let g:airline_theme = 'simple'
 let g:airline#extensions#tagbar#enabled = 1
-  let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 
 " syntastic
-let g:syntastic_ignore_files=['*.asm']
+let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [], 'passive_filetypes': ['nasm'] }
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_loc_list_height = 5
 
 " Ambicmd
 if neobundle#is_installed('vim-ambicmd')
