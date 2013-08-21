@@ -769,6 +769,8 @@ let g:airline_linecolumn_prefix = '¶'
 let g:airline_branch_prefix = '⎇ '
 let g:airline_theme = 'simple'
 let g:airline#extensions#tagbar#enabled = 1
+  let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#branch#enabled = 1
 
 " syntastic
 let g:syntastic_ignore_files=['*.asm']
