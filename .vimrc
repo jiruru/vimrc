@@ -180,8 +180,8 @@ noremap <silent> <F3> :<C-U>bnext<CR>
 
 " Tab操作
 noremap <Leader>to :tabnew<Space>
-noremap <M-h> gT
-noremap <M-l> gt
+noremap <Leader>j gT
+noremap <Leader>l gt
 
 " 画面分割
 noremap <Leader>sp :split<Space>
@@ -203,11 +203,11 @@ noremap <silent> <S-Up> :<C-U>wincmd -<CR>
 noremap <silent> <S-Down> :<C-U>wincmd +<CR>
 
 " 検索とジャンプで中央へ
-nnoremap n nzz
-nnoremap N Nzz
-nnoremap * *zz
-nnoremap '. '.zz
-nnoremap '' ''zz
+" nnoremap n nzz
+" nnoremap N Nzz
+" nnoremap * *zz
+" nnoremap '. '.zz
+" nnoremap '' ''zz
 
 " <C-Space> で <NUL> が来るため
 map <NUL> <C-Space>
@@ -323,6 +323,7 @@ NeoBundle 'rbtnn/vimconsole.vim'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'sgur/vim-textobj-parameter'
 NeoBundle 'taku-o/vim-copypath'
+NeoBundle "osyo-manga/vim-anzu"
 NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
@@ -373,7 +374,7 @@ NeoBundleLazy 'Shougo/unite-ssh', { 'autoload' : { 'unite_sources' : ['ssh'],} }
 NeoBundleLazy 'osyo-manga/vim-reanimate', { 'autoload' : { 'unite_sources' : ['Reanimate'], 'commands' : ['ReanimateLoad', 'ReanimateSave']} }
 NeoBundleLazy 'osyo-manga/unite-quickfix', { 'autoload' : { 'unite_sources' : ['quickfix'],} }
 NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['history/command', 'history/yank', 'history/search'],} }
-NeoBundleLazy 'tsukkee/unite-tag', { 'autoload' : { 'unite_sources' : ['tag'],} }
+" NeoBundleLazy 'tsukkee/unite-tag', { 'autoload' : { 'unite_sources' : ['tag'],} }
 
 " NeoBundleLazy 'basyura/TweetVim', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimUserStream'], 'unite_sources' : ['tweetvim'],} }
 " NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
@@ -790,6 +791,11 @@ let g:rainbow_active = 1
 let g:rainbow_operators = 1
 let g:rainbow_load_separately = [ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']] ], [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']] ], ]
 
+" anzu
+nmap n <Plug>(anzu-n-with-echo)
+nmap N <Plug>(anzu-N-with-echo)
+nmap * <Plug>(anzu-star-with-echo)
+nmap # <Plug>(anzu-sharp-with-echo)
 
 "-------------------------------------------------------------------------------"
 " autocmd
