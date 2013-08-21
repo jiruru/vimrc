@@ -313,7 +313,6 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'calorie/vim-swap-windows'
 NeoBundle 'h1mesuke/textobj-wiw'
 NeoBundle 'honza/vim-snippets'
-NeoBundle 'jceb/vim-hier'
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'kana/vim-textobj-function'
 NeoBundle 'kana/vim-textobj-indent'
@@ -408,6 +407,7 @@ let g:unite_source_file_mru_limit = 50
 let g:unite_cursor_line_highlight = 'TabLineSel'
 let g:unite_enable_short_source_names = 1
 let g:unite_source_history_yank_enable = 1
+let g:unite_force_overwrite_statusline = 0
 if executable('ag')
     let g:unite_source_grep_command = 'ag'
     let g:unite_source_grep_default_opts = '--nocolor --nogroup'
@@ -434,10 +434,9 @@ nnoremap <silent> fn  :<C-u>Unite -buffer-name=Snippet snippet<CR>
 nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
 nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
 nnoremap <silent> fa  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
+" multi-line を切る
+let g:unite_quickfix_is_multiline=0
 function! s:config_unite()
-    " multi-line を切る
-    let g:unite_quickfix_is_multiline=0
-
     " コンバータに converter_quickfix_highlight を設定
     call unite#custom_source('quickfix', 'converters', 'converter_quickfix_highlight')
     call unite#custom_source('location_list', 'converters', 'converter_quickfix_highlight')
@@ -565,7 +564,8 @@ let g:vimfiler_tree_opened_icon = '▾'
 let g:vimfiler_directory_display_top = 1
 let g:vimfiler_preview_action = 'below'
 let g:vimfiler_split_action = 'right'
-" let g:vimfiler_enable_auto_cd = 1
+let g:vimfiler_enable_auto_cd = 0
+let g:vimfiler_force_overwrite_statusline = 0
 function! s:config_vimfiler()
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
     nmap <buffer> <C-H> <Plug>(vimfiler_switch_to_parent_directory)
