@@ -181,7 +181,7 @@ noremap <silent> <F3> :<C-U>bnext<CR>
 " Tab操作
 noremap <Leader>to :tabnew<Space>
 noremap <Leader>j gT
-noremap <Leader>l gt
+noremap <Leader>k gt
 
 " 画面分割
 noremap <Leader>sp :split<Space>
