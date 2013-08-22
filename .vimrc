@@ -292,10 +292,11 @@ endif
 "-------------------------------------------------------------------------------"
 " neobundleが存在しない場合これ以降を読み込まない
 if !isdirectory(expand('~/.vim/bundle/neobundle.vim'))
+    echoerr 'No NeoBundle !'
     finish
 endif
 
-" NeoBundle
+" neobundle
 if has('vim_starting')
     set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
