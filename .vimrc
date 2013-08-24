@@ -41,7 +41,7 @@ set ignorecase          " 大文字小文字無視
 set smartcase           " 大文字があれば通常の検索
 set completeopt=menu    " 挿入モードでの補完設定
 set wildmenu            " コマンドの補完候補を表示
-let &path = '.,' . substitute($PATH, ';', ',', 'g')
+let &path = '.,./include/' . substitute($PATH, '/[a-zA-Z]*bin:', '/include/,', 'g')
 
 " 折りたたみ
 set foldenable
