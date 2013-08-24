@@ -718,7 +718,7 @@ vmap ab <Plug>(textobj-multiblock-a)
 vmap ib <Plug>(textobj-multiblock-i)
 
 " operator-replace
-map _ <Plug>(opirator-replace)
+map _ <Plug>(operator-replace)
 
 " Textobj-wiw
 " let g:textobj_wiw_default_key_mappings_prefix = 's'
