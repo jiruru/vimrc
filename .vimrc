@@ -307,6 +307,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '1' } } }
 
 NeoBundle "osyo-manga/shabadou.vim"
+NeoBundle "osyo-manga/vim-anzu"
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/context_filetype.vim'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
@@ -314,6 +315,7 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'calorie/vim-swap-windows'
 NeoBundle 'h1mesuke/textobj-wiw'
 NeoBundle 'honza/vim-snippets'
+NeoBundle 'itchyny/dictionary.vim'
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'kana/vim-textobj-function'
 NeoBundle 'kana/vim-textobj-indent'
@@ -324,7 +326,6 @@ NeoBundle 'rbtnn/vimconsole.vim'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'sgur/vim-textobj-parameter'
 NeoBundle 'taku-o/vim-copypath'
-NeoBundle "osyo-manga/vim-anzu"
 NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
@@ -338,10 +339,10 @@ NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
 NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ 'VimFiler', 'VimFilerTab', 'VimFilerExplorer',], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
-NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
 NeoBundleLazy 'deton/jasegment.vim', { 'autoload' : { 'function_prefix' : 'jasegment' } }
 NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
+NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
 NeoBundleLazy 'itchyny/thumbnail.vim', { 'autoload' : {'commands' : 'Thumbnail'} }
 NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : ['<Plug>(operator-replace)'] } }
 NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'operator' } }
@@ -598,10 +599,10 @@ function! s:bundle.hooks.on_source(bundle)
     call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
     call smartinput#define_rule({ 'char' : '<Space>', 'at' : '(\%#)', 'input' : '<Space><Space><Left>'})
 
-    let lst = [   ['<',     "smartchr#loop(' < ', ' << ', '<')" ],
-                \ ['>',     "smartchr#loop(' > ', ' >> ', ' >>> ', '>')"],
-                \ ['+',     "smartchr#loop(' + ', ' ++ ', '+')"],
-                \ ['-',     "smartchr#loop(' - ', ' -- ', '-')"],
+    let lst = [   ['<',     "smartchr#loop(' < ', '<<', '<')" ],
+                \ ['>',     "smartchr#loop(' > ', '>>', ' >>> ', '>')"],
+                \ ['+',     "smartchr#loop(' + ', '++', '+')"],
+                \ ['-',     "smartchr#loop(' - ', '--', '-')"],
                 \ ['/',     "smartchr#loop(' / ', '//', '/')"],
                 \ ['&',     "smartchr#loop(' & ', ' && ', '&')"],
                 \ ['%',     "smartchr#loop(' % ', '%')"],
