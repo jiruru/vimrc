@@ -312,6 +312,7 @@ NeoBundle "osyo-manga/vim-anzu"
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/context_filetype.vim'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
+NeoBundle 'YankRing.vim'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'calorie/vim-swap-windows'
 NeoBundle 'h1mesuke/textobj-wiw'
@@ -331,9 +332,6 @@ NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
-if executable('git')
-    NeoBundle 'tpope/vim-fugitive'
-endif
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-jp/vimdoc-ja'
@@ -387,6 +385,10 @@ NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['h
 NeoBundleLazy 'mattn/excitetranslate-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
+
+if executable('git')
+    NeoBundle 'tpope/vim-fugitive'
+endif
 
 if has('lua')
     NeoBundleLazy 'Shougo/neocomplete.vim', '', 'loadInsert'
@@ -583,11 +585,11 @@ function! s:config_vimfiler()
 endfunction
 
 " SrcExpl
-nmap <silent> <Leader>sc :SrcExplToggle<CR>
-let g:SrcExpl_RefreshTime = 1
-let g:SrcExpl_UpdateTags = 1
-let g:SrcExpl_WinHeight = 10
-let g:SrcExpl_pluginList = ["__Tag_List__", "NERD_tree_1", "Source_Explorer", "*unite*", "*vimfiler* - explorer", "__Tagbar__" ]
+" nmap <silent> <Leader>sc :SrcExplToggle<CR>
+" let g:SrcExpl_RefreshTime = 1
+" let g:SrcExpl_UpdateTags = 1
+" let g:SrcExpl_WinHeight = 10
+" let g:SrcExpl_pluginList = ["__Tag_List__", "NERD_tree_1", "Source_Explorer", "*unite*", "*vimfiler* - explorer", "__Tagbar__" ]
 
 " TagBar
 let g:tagbar_width = 35
@@ -801,7 +803,13 @@ let g:rainbow_load_separately = [ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']]
 nmap n <Plug>(anzu-n-with-echo)
 nmap N <Plug>(anzu-N-with-echo)
 nmap * <Plug>(anzu-star-with-echo)
-nmap # <Plug>(anzu-sharp-with-echo)
+nmap # <Plug>(anzu-sharp-with-echo)'
+
+" YankRing.vim
+let g:yankring_history_file = '.vim/yankring_history'
+let g:yankring_o_keys = 'b B w W e E d y $ G ;'
+nnoremap <silent> <Leader>yr :YRShow<CR>
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
