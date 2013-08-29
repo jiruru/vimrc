@@ -22,6 +22,7 @@ set swapfile
 " インデント設定
 set backspace=2      " Backspaceの動作
 set cindent
+set smartindent
 set expandtab        " <Tab>の代わりに空白
 set shiftwidth=4     " 自動インデントなどでずれる幅
 set smarttab         " 行頭に<Tab>でshiftwidth分インデント
@@ -330,7 +331,9 @@ NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
-NeoBundle 'tpope/vim-fugitive'
+if executable('git')
+    NeoBundle 'tpope/vim-fugitive'
+endif
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-jp/vimdoc-ja'
@@ -516,7 +519,7 @@ if neobundle#is_installed('neocomplete.vim')
             let g:neocomplete#sources#omni#input_patterns = {}
         endif
         let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-        let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\.\%(\h\w*\)\?\|[a-zA-Z].*'
+        " let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\.\%(\h\w*\)\?\|[a-zA-Z].*'
 
         if !exists('g:neocomplete#sources#vim#complete_functions')
             let g:neocomplete#sources#vim#complete_functions = {}
