@@ -145,7 +145,6 @@ if has('mac') && !has('gui_running')
     endfor
 endif
 
-" <Leader>を変更
 let g:mapleader = ' '
 
 " 矯正
@@ -203,13 +202,6 @@ noremap <silent> <S-Right> :<C-U>wincmd ><CR>
 noremap <silent> <S-Up> :<C-U>wincmd -<CR>
 noremap <silent> <S-Down> :<C-U>wincmd +<CR>
 
-" 検索とジャンプで中央へ
-" nnoremap n nzz
-" nnoremap N Nzz
-" nnoremap * *zz
-" nnoremap '. '.zz
-" nnoremap '' ''zz
-
 " <C-Space> で <NUL> が来るため
 map <NUL> <C-Space>
 map! <NUL> <C-Space>
@@ -243,49 +235,10 @@ nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'
 " nnoremap <silent> <Leader>O   :<C-u>for i in range(1, v:count1) \| call append(line('.')-1, '') \| endfor \| silent! call repeat#set("<Space>O", v:count1)<CR>
 
 " Tagが複数あればリスト表示
-" nnoremap <C-]> g<C-]>zz
+nnoremap <C-]> g<C-]>zz
 
 " バッファの一覧と選択
 nnoremap <Leader>b :ls<CR>:b
-
-command! -nargs=0 Nyaruko call append(line('.'), '（」・ω・）」うー！（／・ω・）／にゃー！')
-command! -nargs=0 Mload source %
-command! -nargs=0 MRun make run
-
-
-"-----------------------------------------------------------------------------------"
-" 環境依存設定                                                                      |
-"-----------------------------------------------------------------------------------"
-" Macのみの設定
-if has('mac')
-    " Mac の辞書.appで開く from http://qiita.com/items/6928282c5c843aad81d4
-    " 引数に渡したワードを検索
-    command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
-    " カーソル下のワードを検索
-    command! -nargs=0 MacDictCWord call system('open '.shellescape('dict://'.shellescape(expand('<cword>'))))
-    " 辞書.app を閉じる
-    command! -nargs=0 MacDictClose call system("osascript -e 'tell application \"Dictionary\" to quit'")
-    " 辞書にフォーカスを当てる
-    command! -nargs=0 MacDictFocus call system("osascript -e 'tell application \"Dictionary\" to activate'")
-    " キーマッピング
-    nnoremap <silent> <Leader>do :<C-u>MacDictCWord<CR>
-    vnoremap <silent> <Leader>doy :<C-u>MacDict<Space><C-r>*<CR>
-    nnoremap <silent> <Leader>dc :<C-u>MacDictClose<CR>
-    nnoremap <silent> <Leader>df :<C-u>MacDictFocus<CR>
-endif
-
-
-"-------------------------------------------------------------------------------"
-" Developing
-"-------------------------------------------------------------------------------"
-" set runtimepath+=~/Dropbox/Program/Vim/Pastel
-" set runtimepath+=~/Dropbox/Program/Vim/jumper.vim
-" set runtimepath+=~/Dropbox/Program/Vim/rogue.vim
-" set runtimepath+=~/Dropbox/Program/Vim/twinbuffer.vim
-" set runtimepath+=~/Dropbox/Program/Vim/unite-battle_editors
-" set runtimepath+=~/Dropbox/Program/Vim/unite-rss
-" set runtimepath+=~/Dropbox/Program/Vim/AOJ.vim
-" set runtimepath+=~/Dropbox/Program/Vim/nyaruline.vim
 
 
 "-------------------------------------------------------------------------------"
@@ -317,9 +270,6 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'calorie/vim-swap-windows'
 NeoBundle 'h1mesuke/textobj-wiw'
 NeoBundle 'honza/vim-snippets'
-if has('mac')
-    NeoBundle 'itchyny/dictionary.vim'
-endif
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'kana/vim-textobj-function'
 NeoBundle 'kana/vim-textobj-indent'
@@ -382,10 +332,15 @@ NeoBundleLazy 'osyo-manga/vim-reanimate', { 'autoload' : { 'unite_sources' : ['R
 NeoBundleLazy 'osyo-manga/unite-quickfix', { 'autoload' : { 'unite_sources' : ['quickfix'],} }
 NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['history/command', 'history/yank', 'history/search'],} }
 
+NeoBundleLazy 'basyura/TweetVim', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimUserStream'], 'unite_sources' : ['tweetvim'],} }
+NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'mattn/excitetranslate-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
 
+if has('mac')
+    NeoBundle 'itchyny/dictionary.vim'
+endif
 
 if has('lua')
     NeoBundleLazy 'Shougo/neocomplete.vim', '', 'loadInsert'
@@ -430,7 +385,6 @@ nnoremap <silent> fn  :<C-u>Unite -buffer-name=Snippet snippet<CR>
 nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
 nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
 nnoremap <silent> fa  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
-" multi-line を切る
 let g:unite_quickfix_is_multiline=0
 function! s:config_unite()
     " コンバータに converter_quickfix_highlight を設定
@@ -570,13 +524,6 @@ function! s:config_vimfiler()
     nnoremap <silent><buffer><expr> <C-b> vimfiler#do_action('bookmark')
 endfunction
 
-" SrcExpl
-" nmap <silent> <Leader>sc :SrcExplToggle<CR>
-" let g:SrcExpl_RefreshTime = 1
-" let g:SrcExpl_UpdateTags = 1
-" let g:SrcExpl_WinHeight = 10
-" let g:SrcExpl_pluginList = ["__Tag_List__", "NERD_tree_1", "Source_Explorer", "*unite*", "*vimfiler* - explorer", "__Tagbar__" ]
-
 " TagBar
 let g:tagbar_width = 35
 let g:tagbar_autoshowtag = 1
@@ -713,9 +660,6 @@ vmap ib <Plug>(textobj-multiblock-i)
 " operator-replace
 map _ <Plug>(operator-replace)
 
-" Textobj-wiw
-" let g:textobj_wiw_default_key_mappings_prefix = 's'
-
 " Textobj-MultiTextobj TODO
 let g:textobj_multitextobj_textobjects_group_i = {
             \   'A' : [
@@ -740,8 +684,6 @@ nnoremap <Leader>th :Thumbnail<CR>
 " Alpaca_english
 if has('ruby')
     let g:alpaca_english_enable = 1
-else
-    let g:alpaca_english_enable = 0
 endif
 
 " Gist
@@ -795,6 +737,9 @@ nmap # <Plug>(anzu-sharp-with-echo)'
 let g:yankring_history_file = '.vim/yankring_history'
 let g:yankring_o_keys = 'b B w W e E d y $ G ;'
 nnoremap <silent> <Leader>yr :YRShow<CR>
+
+" Dictionary.vim
+nnoremap <silent> <Leader>do :<C-u>Dictionary<Space><C-r>*<CR>
 
 
 "-------------------------------------------------------------------------------"
