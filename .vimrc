@@ -277,6 +277,7 @@ NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
+NeoBundle 'itchyny/dictionary.vim', { 'disabled' : (!has('mac')) }
 NeoBundle 'tpope/vim-fugitive', { 'augroup' : 'fugitive',  'external_commands' : 'git' }
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
@@ -316,6 +317,7 @@ NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operat
 NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
+NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
 
 NeoBundle 'h1mesuke/textobj-wiw'
 NeoBundle 'kana/vim-textobj-function'
@@ -338,14 +340,6 @@ NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
 NeoBundleLazy 'mattn/excitetranslate-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : { 'commands' : 'ExciteTranslate' } }
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
-
-if has('mac')
-    NeoBundle 'itchyny/dictionary.vim'
-endif
-
-if has('lua')
-    NeoBundleLazy 'Shougo/neocomplete.vim', '', 'loadInsert'
-endif
 
 filetype plugin indent on
 
