@@ -148,12 +148,12 @@ endif
 let g:mapleader = ' '
 
 " 矯正
-inoremap <BS> <Nop>
+" inoremap <BS> <Nop>
 inoremap <Left> <Nop>
 inoremap <Right> <Nop>
 inoremap <Up> <Nop>
 inoremap <Down> <Nop>
-noremap <BS> <Nop>
+" noremap <BS> <Nop>
 noremap <Left> <Nop>
 noremap <Right> <Nop>
 noremap <Up> <Nop>
@@ -568,8 +568,8 @@ function! s:bundle.hooks.on_source(bundle)
     call smartinput#define_rule({ 'char' : '<BS>' , 'at' : '<\s*>\%#'   , 'input' : '<C-O>dF<<BS>'})
     call smartinput#define_rule({ 'char' : '<BS>' , 'at' : '\[\s*\]\%#' , 'input' : '<C-O>dF[<BS>'})
 
-    for op in ['<', '>', '+', '-', '/', '&', '%', '*', '|']
-        call smartinput#define_rule({ 'char' : '<BS>' , 'at' : ' ' . op . ' #/%' , 'input' : '<BS><BS><BS>'})
+    for op in ['<', '>', '+', '-', '/', '&', '%', '\*', '|']
+        call smartinput#define_rule({ 'char' : '<BS>' , 'at' : ' ' . op . ' \%#' , 'input' : '<BS><BS><BS>'})
     endfor
 
     call smartinput#map_to_trigger('i', '*', '*', '*')
