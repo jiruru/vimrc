@@ -1,4 +1,4 @@
 vimrc
 =====
 
-my .vimrc
+This is Vim Configuration File By mopp.

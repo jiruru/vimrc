@@ -274,6 +274,7 @@ NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
+NeoBundle 'tomasr/molokai'
 NeoBundle 'tpope/vim-fugitive', { 'augroup' : 'fugitive',  'external_commands' : 'git' }
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
@@ -310,7 +311,6 @@ NeoBundleLazy 'taku-o/vim-copypath', { 'autoload' : { 'commands'  : ['CopyFileNa
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
 NeoBundleLazy 'thinca/vim-scouter'
-NeoBundleLazy 'tomasr/molokai'
 NeoBundleLazy 'ujihisa/neco-look', '', 'loadInsert'
 NeoBundleLazy 'vim-jp/cpp-vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
@@ -633,6 +633,7 @@ let g:tweetvim_async_post = 1
 let g:tweetvim_open_say_cmd = 'split'
 let g:tweetvim_config_dir = expand('~/.vim/tweetvim')
 let g:tweetvim_display_username = 1
+let g:tweetvim_display_icon = 1
 
 " JaSegment
 let g:jasegment#model = 'rwcp'
@@ -808,7 +809,7 @@ augroup general
     autocmd BufWinEnter ?* if(bufname('%')!='') | silent loadview | endif
 
     " 独自ハイライト
-    autocmd Colorscheme * call s:config_highlight()
+    " autocmd Colorscheme * call s:config_highlight()
 
     " Text
     autocmd BufReadPre *.txt setlocal filetype=text
@@ -846,5 +847,6 @@ augroup general
     autocmd CompleteDone *.java call javaapi#showRef()
 augroup END
 
-colorscheme desert
+" colorscheme desert
+colorscheme molokai
 syntax enable           " 強調表示有効
