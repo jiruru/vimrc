@@ -262,7 +262,6 @@ let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '
 
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
-NeoBundle 'YankRing.vim'
 NeoBundle 'bling/vim-airline'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'kana/vim-niceblock'
@@ -728,11 +727,6 @@ nmap n <Plug>(anzu-n-with-echo)
 nmap N <Plug>(anzu-N-with-echo)
 nmap * <Plug>(anzu-star-with-echo)
 nmap # <Plug>(anzu-sharp-with-echo)'
-
-" YankRing.vim
-let g:yankring_history_file = '.vim/yankring_history'
-let g:yankring_o_keys = 'b B w W e E d y $ G ;'
-nnoremap <silent> <Leader>yr :YRShow<CR>
 
 " Dictionary.vim
 nnoremap <silent> <Leader>do :<C-u>Dictionary -cursor-word<CR>
