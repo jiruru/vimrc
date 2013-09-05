@@ -237,9 +237,6 @@ nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'
 " Tagが複数あればリスト表示
 nnoremap <C-]> g<C-]>zz
 
-" バッファの一覧と選択
-nnoremap <Leader>b :ls<CR>:b
-
 
 "-------------------------------------------------------------------------------"
 " Plugin
@@ -644,32 +641,51 @@ map <Leader>op <Plug>(openbrowser-open)
 " learn-vimscript
 nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
 
-" Textobj-MultiBlock
-omap ab <Plug>(textobj-multiblock-a)
-omap ib <Plug>(textobj-multiblock-i)
-vmap ab <Plug>(textobj-multiblock-a)
-vmap ib <Plug>(textobj-multiblock-i)
-
 " operator-replace
 map _ <Plug>(operator-replace)
 
-" Textobj-MultiTextobj TODO
+" Textobj-wiw
+let g:textobj_wiw_no_default_key_mappings = 0
+map mw <Plug>(textobj-wiw-n)
+map mb <Plug>(textobj-wiw-p)
+map me <Plug>(textobj-wiw-N)
+map mge <Plug>(textobj-wiw-P)
+
+" Textobj-MultiTextobj
 let g:textobj_multitextobj_textobjects_group_i = {
-            \   'A' : [
+            \   "A" : [
+            \       "i,",
             \       "\<Plug>(textobj-wiw-i)",
             \       "iw",
             \    ],
-            \   'B' : [
+            \   "B" : [
+            \       "it",
+            \       "\<Plug>(textobj-multiblock-i)",
+            \    ],
+            \}
+let g:textobj_multitextobj_textobjects_group_a = {
+            \   "A" : [
+            \       "a,",
             \       "\<Plug>(textobj-wiw-a)",
             \       "aw",
             \    ],
+            \   "B" : [
+            \       "at",
+            \       "\<Plug>(textobj-multiblock-a)",
+            \    ],
             \}
-map <Plug>(textobj-word-i) <Plug>(textobj-multitextobj-A-i)
-map <Plug>(textobj-word-a) <Plug>(textobj-multitextobj-B-i)
+map <Plug>(textobj-word-i)  <Plug>(textobj-multitextobj-A-i)
+map <Plug>(textobj-word-a)  <Plug>(textobj-multitextobj-A-a)
+map <Plug>(textobj-block-i) <Plug>(textobj-multitextobj-B-i)
+map <Plug>(textobj-block-a) <Plug>(textobj-multitextobj-B-a)
 omap iw <Plug>(textobj-word-i)
 vmap iw <Plug>(textobj-word-i)
 omap aw <Plug>(textobj-word-a)
 vmap aw <Plug>(textobj-word-a)
+omap ib <Plug>(textobj-block-i)
+vmap ib <Plug>(textobj-block-i)
+omap ab <Plug>(textobj-block-a)
+vmap ab <Plug>(textobj-block-a)
 
 " Thumbnail
 nnoremap <Leader>th :Thumbnail<CR>
