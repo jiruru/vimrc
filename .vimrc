@@ -750,16 +750,6 @@ nnoremap <silent> <Leader>do :<C-u>Dictionary -cursor-word<CR>
 " autocmd
 "-------------------------------------------------------------------------------"
 
-" Highlight
-function! s:config_highlight()
-    highlight Cursor ctermbg=55
-    highlight FoldColumn ctermfg=130
-    highlight Folded cterm=bold,underline ctermfg=14 ctermbg=55
-    highlight MatchParen cterm=bold,underline ctermbg=3
-    highlight Search ctermbg=3 ctermfg=0
-    highlight TabLineSel ctermbg=5
-endfunction
-
 " Conque
 function! s:delete_conque_term(buffer_name)
     let term_obj = conque_term#get_instance(a:buffer_name)
@@ -816,9 +806,6 @@ augroup general
     autocmd BufWinLeave ?* if(bufname('%')!='') | silent mkview! | endif
     autocmd BufWinEnter ?* if(bufname('%')!='') | silent loadview | endif
 
-    " 独自ハイライト
-    " autocmd Colorscheme * call s:config_highlight()
-
     " Text
     autocmd BufReadPre *.txt setlocal filetype=text
     " autocmd BufReadPre *.txt setlocal wrap
@@ -855,6 +842,5 @@ augroup general
     autocmd CompleteDone *.java call javaapi#showRef()
 augroup END
 
-" colorscheme desert
 colorscheme molokai
 syntax enable           " 強調表示有効
