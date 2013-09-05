@@ -314,9 +314,7 @@ NeoBundleLazy 'ujihisa/neco-look', '', 'loadInsert'
 NeoBundleLazy 'vim-jp/cpp-vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : '<Plug>(operator-suddendeath)'} }
-NeoBundleLazy 'yuratomo/gmail.vim', { 'autoload' : {'commands' : 'Gmail'} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
-NeoBundleLazy 'yuratomo/w3m.vim', { 'autoload' : {'commands' : 'W3m'} }
 
 NeoBundle 'h1mesuke/textobj-wiw'
 NeoBundle 'kana/vim-textobj-function'
