@@ -237,6 +237,22 @@ nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'
 " Tagが複数あればリスト表示
 nnoremap <C-]> g<C-]>zz
 
+if has('mac')
+    " 引数に渡したワードを検索
+    command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
+    " カーソル下のワードを検索
+    command! -nargs=0 MacDictCWord call system('open '.shellescape('dict://'.shellescape(expand('<cword>'))))
+    " 辞書.app を閉じる
+    command! -nargs=0 MacDictClose call system("osascript -e 'tell application \"Dictionary\" to quit'")
+    " 辞書にフォーカスを当てる
+    command! -nargs=0 MacDictFocus call system("osascript -e 'tell application \"Dictionary\" to activate'")
+    " キーマッピング
+    nnoremap <silent><Leader>do :<C-u>MacDictCWord<CR>
+    vnoremap <silent><Leader>do y:<C-u>MacDict<Space><C-r>*<CR>
+    nnoremap <silent><Leader>dc :<C-u>MacDictClose<CR>
+    nnoremap <silent><Leader>df :<C-u>MacDictFocus<CR>
+endif
+
 
 "-------------------------------------------------------------------------------"
 " Plugin
@@ -258,6 +274,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '1' } } }
 
 NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'bling/vim-airline'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'kana/vim-niceblock'
@@ -280,7 +297,6 @@ NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' 
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
 NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete'}, 'VimFiler', 'VimFilerTab', 'VimFilerExplorer',], 'explorer' : 1,} }
-NeoBundleLazy 'Shougo/vimproc.vim' ,{  'autoload' : { 'function_prefix' : 'context_filetype' }, 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'calorie/vim-swap-windows'
 NeoBundleLazy 'deton/jasegment.vim', { 'autoload' : { 'function_prefix' : 'jasegment' } }
@@ -743,7 +759,7 @@ nmap * <Plug>(anzu-star-with-echo)
 nmap # <Plug>(anzu-sharp-with-echo)'
 
 " Dictionary.vim
-nnoremap <silent> <Leader>do :<C-u>Dictionary -cursor-word<CR>
+nnoremap <silent> <Leader>dr :<C-u>Dictionary -cursor-word<CR>
 
 
 "-------------------------------------------------------------------------------"
