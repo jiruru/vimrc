@@ -169,10 +169,10 @@ noremap! <M-f> <S-Right>
 noremap! <M-b> <S-Left>
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
-" noremap <C-J> G
-" noremap <C-K> gg
-" noremap <C-H> ^
-" noremap <C-L> $
+noremap <C-J> G
+noremap <C-K> gg
+noremap <C-H> ^
+noremap <C-L> $
 
 " バッファ操作
 noremap <silent> <F2> :<C-U>bprevious<CR>
@@ -646,10 +646,10 @@ map _ <Plug>(operator-replace)
 
 " Textobj-wiw
 let g:textobj_wiw_no_default_key_mappings = 0
-map <C-K> <Plug>(textobj-wiw-n)
-map <C-J> <Plug>(textobj-wiw-p)
-map <C-L> <Plug>(textobj-wiw-N)
-map <C-H> <Plug>(textobj-wiw-P)
+map mw <Plug>(textobj-wiw-n)
+map mb <Plug>(textobj-wiw-p)
+map me <Plug>(textobj-wiw-N)
+map mge <Plug>(textobj-wiw-P)
 
 " Textobj-MultiTextobj
 let g:textobj_multitextobj_textobjects_group_i = {
