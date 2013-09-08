@@ -768,9 +768,9 @@ nnoremap <silent> <Leader>dr :<C-u>Dictionary -cursor-word<CR>
 
 " Highlight
 function! s:config_highlight()
-    highlight Cursor ctermbg=55
-    highlight FoldColumn ctermfg=130
-    highlight Folded cterm=bold,underline ctermfg=14 ctermbg=55
+    " highlight Cursor ctermbg=55
+    " highlight FoldColumn ctermfg=130
+    " highlight Folded cterm=bold,underline ctermfg=14 ctermbg=55
     highlight MatchParen cterm=bold,underline ctermbg=3
     highlight Search ctermbg=3 ctermfg=0
     highlight TabLineSel ctermbg=5
@@ -833,7 +833,7 @@ augroup general
     autocmd BufWinEnter ?* if(bufname('%')!='') | silent loadview | endif
 
     " 独自ハイライト
-    " autocmd Colorscheme * call s:config_highlight()
+    autocmd Colorscheme * call s:config_highlight()
 
     " Text
     autocmd BufReadPre *.txt setlocal filetype=text
@@ -871,6 +871,5 @@ augroup general
     autocmd CompleteDone *.java call javaapi#showRef()
 augroup END
 
-" colorscheme desert
 colorscheme molokai
 syntax enable           " 強調表示有効
