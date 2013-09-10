@@ -287,7 +287,7 @@ NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tomasr/molokai'
-NeoBundle 'tpope/vim-fugitive', { 'augroup' : 'fugitive',  'external_commands' : 'git' }
+NeoBundle 'tpope/vim-fugitive', { 'augroup' : 'fugitive',  'external_commands' : 'git', 'disabled' : (!executable('git')) }
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-jp/vimdoc-ja'
