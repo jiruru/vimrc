@@ -287,7 +287,7 @@ NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tomasr/molokai'
-NeoBundle 'tpope/vim-fugitive', { 'augroup' : 'fugitive',  'external_commands' : 'git', 'disabled' : (!executable('git')) }
+NeoBundle 'tpope/vim-fugitive', { 'external_commands' : 'git', 'disabled' : (!executable('git')) }
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-jp/vimdoc-ja'
@@ -299,7 +299,6 @@ NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sourc
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete'}, 'VimFiler', 'VimFilerTab', 'VimFilerExplorer',], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'calorie/vim-swap-windows'
-NeoBundleLazy 'deton/jasegment.vim', { 'autoload' : { 'function_prefix' : 'jasegment' } }
 NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
 NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
@@ -644,9 +643,6 @@ let g:tweetvim_open_say_cmd = 'split'
 let g:tweetvim_config_dir = expand('~/.vim/tweetvim')
 let g:tweetvim_display_username = 1
 let g:tweetvim_display_icon = 1
-
-" JaSegment
-let g:jasegment#model = 'rwcp'
 
 " SuddenDeath
 map <Leader>x <Plug>(operator-suddendeath)
