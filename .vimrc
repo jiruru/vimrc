@@ -308,7 +308,7 @@ NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : ['<Plu
 NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'operator' } }
 NeoBundleLazy 'kana/vim-smartchr', '', 'loadInsert'
 NeoBundleLazy 'kana/vim-smartinput', '', 'loadInsert'
-NeoBundleLazy 'kannokanno/previm', { 'autoload' : { 'filetypes' : 'markdown' } }
+NeoBundleLazy 'kannokanno/previm', { 'autoload' : { 'command' : 'PrevimOpen' } }
 NeoBundleLazy 'koron/nyancat-vim', { 'autoload' : { 'commands' : [ 'Nyancat', 'Nyancat2',], } }
 NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
