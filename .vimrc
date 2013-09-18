@@ -363,6 +363,7 @@ let g:unite_cursor_line_highlight = 'TabLineSel'
 let g:unite_enable_short_source_names = 1
 let g:unite_source_history_yank_enable = 1
 let g:unite_force_overwrite_statusline = 0
+let g:unite_source_bookmark_directory = expand('~/.vim/bookmark')
 if executable('ag')
     let g:unite_source_grep_command = 'ag'
     let g:unite_source_grep_default_opts = '--nocolor --nogroup'
@@ -371,7 +372,7 @@ endif
 nnoremap <silent> fre :<C-u>UniteResume<CR>
 nnoremap <silent> fb  :<C-u>Unite -buffer-name=Buffers buffer:!<CR>
 nnoremap <silent> fk  :<C-u>Unite -buffer-name=Bookmark bookmark -default-action=vimfiler<CR>
-nnoremap <silent> fs  :<C-u>Unite -buffer-name=Files file file_mru<CR>
+nnoremap <silent> fs  :<C-u>Unite -buffer-name=Files file_mru<CR>
 nnoremap <silent> fd  :<C-u>Unite -buffer-name=Directory -default-action=tabopen directory directory_mru<CR>
 nnoremap <silent> ff  :<C-u>Unite -buffer-name=Sources source<CR>
 nnoremap <silent> fg  :<C-u>Unite -buffer-name=ag grep -keep-focus -no-quit<CR>
