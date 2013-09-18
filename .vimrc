@@ -287,12 +287,12 @@ NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tomasr/molokai'
-NeoBundle 'tpope/vim-fugitive', { 'external_commands' : 'git', 'disabled' : (!executable('git')) }
+NeoBundle 'tpope/vim-fugitive', { 'external_commands' : ['git'], 'disabled' : (!executable('git')) }
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
-NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install' } }
+NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
 NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
@@ -643,6 +643,9 @@ let g:tweetvim_open_say_cmd = 'split'
 let g:tweetvim_config_dir = expand('~/.vim/tweetvim')
 let g:tweetvim_display_username = 1
 let g:tweetvim_display_icon = 1
+
+" JaSegment
+let g:jasegment#model = 'rwcp'
 
 " SuddenDeath
 map <Leader>x <Plug>(operator-suddendeath)
