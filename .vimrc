@@ -645,9 +645,6 @@ let g:tweetvim_config_dir = expand('~/.vim/tweetvim')
 let g:tweetvim_display_username = 1
 let g:tweetvim_display_icon = 1
 
-" JaSegment
-let g:jasegment#model = 'rwcp'
-
 " SuddenDeath
 map <Leader>x <Plug>(operator-suddendeath)
 
