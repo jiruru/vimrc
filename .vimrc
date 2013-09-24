@@ -308,7 +308,7 @@ NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : ['<Plu
 NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'operator' } }
 NeoBundleLazy 'kana/vim-smartchr', '', 'loadInsert'
 NeoBundleLazy 'kana/vim-smartinput', '', 'loadInsert'
-NeoBundleLazy 'kannokanno/previm', { 'autoload' : { 'command' : 'PrevimOpen' } }
+NeoBundleLazy 'kannokanno/previm', { 'autoload' : { 'filetype' : 'markdown' } }
 NeoBundleLazy 'koron/nyancat-vim', { 'autoload' : { 'commands' : [ 'Nyancat', 'Nyancat2',], } }
 NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
@@ -420,7 +420,6 @@ if neobundle#is_installed('neocomplete.vim')
         if !exists('g:neocomplete#text_mode_filetypes')
             let g:neocomplete#text_mode_filetypes = {}
         endif
-        let g:neocomplete#text_mode_filetypes.mkd = 1
         let g:neocomplete#text_mode_filetypes.markdown = 1
         let g:neocomplete#text_mode_filetypes.gitcommit = 1
         let g:neocomplete#text_mode_filetypes.text = 1
@@ -863,6 +862,9 @@ augroup general
 
     " json
     autocmd BufRead,BufNewFile *.json nested setlocal filetype=json autoindent
+
+    " json
+    autocmd BufRead,BufNewFile *.md nested setlocal filetype=markdown
 
     " Java
     autocmd CompleteDone *.java call javaapi#showRef()
