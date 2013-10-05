@@ -294,7 +294,7 @@ NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
-NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
+NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')?(1):(0)), 'vim_version' : '7.3.885' }
 NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete'}, 'VimFiler', 'VimFilerTab', 'VimFilerExplorer',], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
@@ -302,7 +302,7 @@ NeoBundleLazy 'calorie/vim-swap-windows'
 NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
 NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
-NeoBundleLazy 'itchyny/dictionary.vim', { 'autoload' : { 'commands' : 'Dictionary'}, 'disabled' : (!has('mac')) }
+NeoBundleLazy 'itchyny/dictionary.vim', { 'autoload' : { 'commands' : 'Dictionary'}, 'disabled' : (!has('mac')?(1):(0)) }
 NeoBundleLazy 'itchyny/thumbnail.vim', { 'autoload' : {'commands' : 'Thumbnail'} }
 NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : ['<Plug>(operator-replace)'] } }
 NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'operator' } }
