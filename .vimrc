@@ -254,6 +254,8 @@ if has('mac')
 endif
 
 
+
+set runtimepath+=~/Dropbox/Program/Vim/twinkle.vim
 "-------------------------------------------------------------------------------"
 " Plugin
 "-------------------------------------------------------------------------------"
@@ -291,6 +293,7 @@ NeoBundle 'tpope/vim-fugitive', { 'external_commands' : ['git'], 'disabled' : (!
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-jp/vimdoc-ja'
+NeoBundle 'vim-jp/vital.vim.git'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
@@ -414,6 +417,7 @@ if neobundle#is_installed('neocomplete.vim')
         let g:neocomplete#enable_auto_delimiter = 1
         let g:neocomplete#min_keyword_length = 3
         let g:neocomplete#enable_prefetch = 1
+        let g:neocomplete#enable_auto_delimiter = 1
         let g:neocomplete#data_directory = expand('~/.vim/neocomplete')
         let g:neocomplete#skip_auto_completion_time = ''    "オムニ補完と相性が悪いかもしれない
 
