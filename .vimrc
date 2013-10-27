@@ -294,6 +294,7 @@ NeoBundle 'tpope/vim-repeat'
 " NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'vim-jp/vital.vim.git'
+NeoBundle 'mattn/sonictemplate-vim'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
@@ -830,7 +831,7 @@ augroup general
     autocmd!
 
     " .vimrc
-    autocmd BufWritePost $MYVIMRC source $MYVIMRC
+    autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
 
     " 書き込み時に行末の空白を削除
     autocmd BufWritePre * silent call s:remove_tail_space()
