@@ -291,7 +291,7 @@ NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'tpope/vim-fugitive', { 'external_commands' : ['git'], 'disabled' : (!executable('git')) }
 NeoBundle 'tpope/vim-repeat'
-NeoBundle 'tpope/vim-surround'
+" NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'vim-jp/vital.vim.git'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
@@ -318,7 +318,8 @@ NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'}
 NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
-NeoBundleLazy 'rhysd/vim-operator-surround', { 'depends' : 'kana/vim-operator-user', 'autoload' : { 'mappings' : ['<Plug>(operator-surround-append)', '<Plug>(operator-surround-delete)', '<Plug>(operator-surround-replace)'] } }
+" NeoBundleLazy 'rhysd/vim-operator-surround', { 'depends' : 'kana/vim-operator-user', 'autoload' : { 'mappings' : ['<Plug>(operator-surround-append)', '<Plug>(operator-surround-delete)', '<Plug>(operator-surround-replace)'] } }
+NeoBundle 'rhysd/vim-operator-surround'
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'insert' : '1', 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
@@ -665,6 +666,7 @@ map _ <Plug>(operator-replace)
 map <silent>ys <Plug>(operator-surround-append)
 map <silent>yd <Plug>(operator-surround-delete)
 map <silent>yr <Plug>(operator-surround-replace)
+nmap <silent>yss <Plug>(operator-surround-append)<Plug>(textobj-multiblock-a)
 nmap <silent>ydd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
 nmap <silent>yrr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
 
