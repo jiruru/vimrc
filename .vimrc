@@ -221,9 +221,6 @@ noremap : ;
 nnoremap <silent> <Leader>h :help <C-R><C-W><CR>
 nnoremap <silent> <Leader>ht :tab help <C-R><C-W><CR>
 
-" .vimrcを開く
-nnoremap <silent> <Leader>ev :tabnew $MYVIMRC<CR>
-
 " カレントウィンドウのカレントディレクトリを変更
 nnoremap <Leader>cd :lcd %:p:h<CR>
 
@@ -254,8 +251,6 @@ if has('mac')
 endif
 
 
-
-set runtimepath+=~/Dropbox/Program/Vim/twinkle.vim
 "-------------------------------------------------------------------------------"
 " Plugin
 "-------------------------------------------------------------------------------"
@@ -295,6 +290,7 @@ NeoBundle 'tpope/vim-repeat'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'vim-jp/vital.vim.git'
 NeoBundle 'mattn/sonictemplate-vim'
+NeoBundle 'mopp/openvimrc.vim'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
@@ -772,6 +768,8 @@ nmap # <Plug>(anzu-sharp-with-echo)'
 " Dictionary.vim
 nnoremap <silent> <Leader>dr :<C-u>Dictionary -cursor-word<CR>
 
+" OpenVimrc
+nmap <silent> <Leader>ev <Plug>(openvimrc-open)
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -822,6 +820,9 @@ endfunction
 
 " 行末の空白を削除
 function! s:remove_tail_space()
+    if &filetype == 'markdown'
+        return
+    endif
     let c = getpos('.')
     g/.*\s$/normal $gelD
     call setpos('.', c)
