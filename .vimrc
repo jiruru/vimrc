@@ -270,14 +270,18 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '1' } } }
 
+NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'bling/vim-airline'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'kana/vim-niceblock'
+NeoBundle 'mattn/sonictemplate-vim'
+NeoBundle 'mopp/openvimrc.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
 NeoBundle 'osyo-manga/vim-anzu'
 NeoBundle 'rbtnn/vimconsole.vim'
+NeoBundle 'rhysd/vim-operator-surround'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'thinca/vim-quickrun'
@@ -286,11 +290,8 @@ NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'tpope/vim-fugitive', { 'external_commands' : ['git'], 'disabled' : (!executable('git')) }
 NeoBundle 'tpope/vim-repeat'
-" NeoBundle 'tpope/vim-surround'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'vim-jp/vital.vim.git'
-NeoBundle 'mattn/sonictemplate-vim'
-NeoBundle 'mopp/openvimrc.vim'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
@@ -315,8 +316,6 @@ NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'}
 NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
-" NeoBundleLazy 'rhysd/vim-operator-surround', { 'depends' : 'kana/vim-operator-user', 'autoload' : { 'mappings' : ['<Plug>(operator-surround-append)', '<Plug>(operator-surround-delete)', '<Plug>(operator-surround-replace)'] } }
-NeoBundle 'rhysd/vim-operator-surround'
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'insert' : '1', 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
@@ -660,9 +659,12 @@ nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
 map _ <Plug>(operator-replace)
 
 " operator-surround
-map <silent>ys <Plug>(operator-surround-append)
-map <silent>yd <Plug>(operator-surround-delete)
-map <silent>yr <Plug>(operator-surround-replace)
+nmap <silent>ys <Plug>(operator-surround-append)
+omap <silent>ys <Plug>(operator-surround-append)
+nmap <silent>yd <Plug>(operator-surround-delete)
+omap <silent>yd <Plug>(operator-surround-delete)
+nmap <silent>yr <Plug>(operator-surround-replace)
+omap <silent>yr <Plug>(operator-surround-replace)
 nmap <silent>yss <Plug>(operator-surround-append)<Plug>(textobj-multiblock-a)
 nmap <silent>ydd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
 nmap <silent>yrr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
@@ -770,6 +772,14 @@ nnoremap <silent> <Leader>dr :<C-u>Dictionary -cursor-word<CR>
 
 " OpenVimrc
 nmap <silent> <Leader>ev <Plug>(openvimrc-open)
+
+" yankround
+let g:yankround_dir = '~/.vim/yankround'
+nmap p <Plug>(yankround-p)
+nmap P <Plug>(yankround-P)
+nmap <C-p> <Plug>(yankround-prev)
+nmap <C-n> <Plug>(yankround-next)
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
