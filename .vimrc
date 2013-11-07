@@ -80,7 +80,7 @@ set cmdheight=2         " コマンドラインの行数
 set cursorline          " 現在行に下線表示
 set laststatus=2        " ステータスラインを表示する時
 set list
-set listchars=eol:$,tab:>\ ,trail:\|,extends:<,precedes:<
+set listchars=tab:>\ ,trail:\|,extends:<,precedes:<
 set nowrap              " はみ出しの折り返し設定
 set number              " 行番号表示
 set ruler               " カーソルの現在地表示
@@ -294,6 +294,7 @@ NeoBundle 'tpope/vim-repeat'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'vim-jp/vital.vim'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
+NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
 NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
@@ -315,7 +316,7 @@ NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle'
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
-NeoBundleLazy 'osyo-manga/vim-marching', { 'autoload' : { 'filetype' : ['c', 'cpp'] , 'insert' : '1'} }
+NeoBundleLazy 'osyo-manga/vim-marching', { 'autoload' : { 'filetype' : ['cpp'] , 'insert' : '1'} }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
@@ -836,6 +837,15 @@ function! s:config_ccpp()
     setlocal nocindent
     setlocal autoindent
     setlocal cindent
+
+    if &filetype == 'c'
+        let clang_path = '/usr/local/bin/'
+        if isdirectory(clang_path) && '' != findfile('clang', clang_path . ';')
+            let g:clang_library_path = '/usr/local/lib/'
+            let g:clang_executable_path = clang_path
+            NeoBundleSource clang_complete
+        endif
+    endif
 endfunction
 
 " 行末の空白を削除
