@@ -292,9 +292,8 @@ NeoBundle 'tomasr/molokai'
 NeoBundle 'tpope/vim-fugitive', { 'external_commands' : ['git'], 'disabled' : (!executable('git')) }
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'vim-jp/vimdoc-ja'
-NeoBundle 'vim-jp/vital.vim'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
-NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
+NeoBundleLazy 'Rip-Rip/clang_complete', { 'autoload' : { 'filetype' : 'c' , 'insert' : '1'} ,  'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
 NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
@@ -316,7 +315,7 @@ NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle'
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
-NeoBundleLazy 'osyo-manga/vim-marching', { 'autoload' : { 'filetype' : ['cpp'] , 'insert' : '1'} }
+NeoBundleLazy 'osyo-manga/vim-marching', { 'autoload' : { 'filetype' : 'cpp' , 'insert' : '1'} }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
@@ -327,6 +326,7 @@ NeoBundleLazy 'thinca/vim-painter'
 NeoBundleLazy 'thinca/vim-scouter'
 NeoBundleLazy 'ujihisa/neco-look', '', 'loadInsert'
 NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : 'cpp' } }
+NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : ['<Plug>(operator-suddendeath)']} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
@@ -486,10 +486,25 @@ endfunction
 unlet s:bundle
 
 " Clang_complete
-let g:clang_complete_auto = 0
-let g:clang_auto_select = 0
-let g:clang_jumpto_declaration_key = 'dummy'
-let g:clang_jumpto_back_key = 'dummy'
+let s:bundle = neobundle#get('clang_complete')
+function! s:bundle.hooks.on_source(bundle)
+    let clang_exe = 'clang'
+    if !executable(clang_exe)
+        return
+    endif
+
+    let g:clang_complete_auto = 0
+    let g:clang_auto_select = 0
+    let g:clang_jumpto_declaration_key = 'dummy'
+    let g:clang_jumpto_back_key = 'dummy'
+
+    let clang_path = '/usr/local/'
+    if isdirectory(clang_path) && '' != findfile('clang', clang_path . 'bin;')
+        let g:clang_executable_path = clang_path.'bin/'
+        let g:clang_library_path = clang_path.'lib/'
+    endif
+endfunction
+unlet s:bundle
 
 " Neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
@@ -837,15 +852,6 @@ function! s:config_ccpp()
     setlocal nocindent
     setlocal autoindent
     setlocal cindent
-
-    if &filetype == 'c'
-        let clang_path = '/usr/local/bin/'
-        if isdirectory(clang_path) && '' != findfile('clang', clang_path . ';')
-            let g:clang_library_path = '/usr/local/lib/'
-            let g:clang_executable_path = clang_path
-            NeoBundleSource clang_complete
-        endif
-    endif
 endfunction
 
 " 行末の空白を削除
