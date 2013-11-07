@@ -209,8 +209,8 @@ map! <NUL> <C-Space>
 " Yank & Paste
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
-map <C-Space> "*yy
-map <C-P> "*p
+noremap <C-Space> "*yy
+noremap mp "*p
 
 " 入れ替え
 noremap ; :
@@ -280,6 +280,7 @@ NeoBundle 'mattn/sonictemplate-vim'
 NeoBundle 'mopp/openvimrc.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
 NeoBundle 'osyo-manga/vim-anzu'
+NeoBundle 'osyo-manga/vim-reunions'
 NeoBundle 'rbtnn/vimconsole.vim'
 NeoBundle 'rhysd/vim-operator-surround'
 NeoBundle 'scrooloose/nerdcommenter'
@@ -293,7 +294,6 @@ NeoBundle 'tpope/vim-repeat'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'vim-jp/vital.vim'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
-NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
 NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
@@ -315,6 +315,7 @@ NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle'
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
+NeoBundleLazy 'osyo-manga/vim-marching', { 'autoload' : { 'filetype' : ['c', 'cpp'] , 'insert' : '1'} }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
@@ -324,7 +325,7 @@ NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
 NeoBundleLazy 'thinca/vim-scouter'
 NeoBundleLazy 'ujihisa/neco-look', '', 'loadInsert'
-NeoBundleLazy 'vim-jp/cpp-vim'
+NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : 'cpp' } }
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : ['<Plug>(operator-suddendeath)']} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
@@ -406,84 +407,82 @@ endfunction
 
 
 " neocomplete
-if neobundle#is_installed('neocomplete.vim')
-    let s:bundle = neobundle#get('neocomplete.vim')
-    function! s:bundle.hooks.on_source(bundle)
-        let g:neocomplete#enable_at_startup = 1
-        let g:neocomplete#enable_smart_case = 1
-        let g:neocomplete#enable_auto_delimiter = 1
-        let g:neocomplete#min_keyword_length = 3
-        let g:neocomplete#enable_prefetch = 1
-        let g:neocomplete#enable_auto_delimiter = 1
-        let g:neocomplete#data_directory = expand('~/.vim/neocomplete')
-        let g:neocomplete#skip_auto_completion_time = ''    "オムニ補完と相性が悪いかもしれない
+let s:bundle = neobundle#get('neocomplete.vim')
+function! s:bundle.hooks.on_source(bundle)
+    let g:neocomplete#enable_at_startup = 1
+    let g:neocomplete#enable_smart_case = 1
+    let g:neocomplete#enable_auto_delimiter = 1
+    let g:neocomplete#min_keyword_length = 3
+    let g:neocomplete#enable_prefetch = 1
+    let g:neocomplete#enable_auto_delimiter = 1
+    let g:neocomplete#data_directory = expand('~/.vim/neocomplete')
+    let g:neocomplete#skip_auto_completion_time = ''    "オムニ補完と相性が悪いかもしれない
 
-        " 英単語補完用に以下のfiletypeをtextと同様に扱う
-        if !exists('g:neocomplete#text_mode_filetypes')
-            let g:neocomplete#text_mode_filetypes = {}
-        endif
-        let g:neocomplete#text_mode_filetypes.markdown = 1
-        let g:neocomplete#text_mode_filetypes.gitcommit = 1
-        let g:neocomplete#text_mode_filetypes.text = 1
-        let g:neocomplete#text_mode_filetypes.txt = 1
+    " 英単語補完用に以下のfiletypeをtextと同様に扱う
+    if !exists('g:neocomplete#text_mode_filetypes')
+        let g:neocomplete#text_mode_filetypes = {}
+    endif
+    let g:neocomplete#text_mode_filetypes.markdown = 1
+    let g:neocomplete#text_mode_filetypes.gitcommit = 1
+    let g:neocomplete#text_mode_filetypes.text = 1
+    let g:neocomplete#text_mode_filetypes.txt = 1
 
-        " 補完時に他のfiletypeの候補も参照する
-        if !exists('g:neocomplete#same_filetypes')
-            let g:neocomplete#same_filetypes = {}
-        endif
-        let g:neocomplete#same_filetypes._ = '_'
+    " 補完時に他のfiletypeの候補も参照する
+    if !exists('g:neocomplete#same_filetypes')
+        let g:neocomplete#same_filetypes = {}
+    endif
+    let g:neocomplete#same_filetypes._ = '_'
 
-        if !exists('g:neocomplete#delimiter_patterns')
-            let g:neocomplete#delimiter_patterns= {}
-        endif
-        let g:neocomplete#delimiter_patterns.vim = ['#', '.']
-        let g:neocomplete#delimiter_patterns.cpp = ['::', '.']
-        let g:neocomplete#delimiter_patterns.c = ['.', '->']
-        let g:neocomplete#delimiter_patterns.java = ['.']
+    if !exists('g:neocomplete#delimiter_patterns')
+        let g:neocomplete#delimiter_patterns= {}
+    endif
+    let g:neocomplete#delimiter_patterns.vim = ['#', '.']
+    let g:neocomplete#delimiter_patterns.cpp = ['::', '.']
+    let g:neocomplete#delimiter_patterns.c = ['.', '->']
+    let g:neocomplete#delimiter_patterns.java = ['.']
 
-        " 外部オムニ補完関数を直接呼び出す
-        if !exists('g:neocomplete#force_omni_input_patterns')
-            let g:neocomplete#force_omni_input_patterns = {}
-        endif
-        let g:neocomplete#force_overwrite_completefunc = 1
-        let g:neocomplete#force_omni_input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
-        let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-        let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-        let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
-        let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-        " 数字記号類以外の後に.か->が来た場合に補完実行する
+    " 外部オムニ補完関数を直接呼び出す
+    if !exists('g:neocomplete#force_omni_input_patterns')
+        let g:neocomplete#force_omni_input_patterns = {}
+    endif
+    let g:neocomplete#force_overwrite_completefunc = 1
+    let g:neocomplete#force_omni_input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+    let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+    let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    " 数字記号類以外の後に.か->が来た場合に補完実行する
 
-        " syntaxファイル内での候補に使われる最小文字数
-        let g:neocomplete#sources#syntax#min_keyword_length = 3
+    " syntaxファイル内での候補に使われる最小文字数
+    let g:neocomplete#sources#syntax#min_keyword_length = 3
 
-        " neocompleteが呼び出すオムニ補完関数名
-        if !exists('g:neocomplete#sources#omni#functions')
-            let g:neocomplete#sources#omni#functions = {}
-        endif
-        let g:neocomplete#sources#omni#functions.java = 'javaapi#complete'
+    " neocompleteが呼び出すオムニ補完関数名
+    if !exists('g:neocomplete#sources#omni#functions')
+        let g:neocomplete#sources#omni#functions = {}
+    endif
+    let g:neocomplete#sources#omni#functions.java = 'javaapi#complete'
 
-        " オムニ補完関数呼び出し時の条件
-        if !exists('g:neocomplete#sources#omni#input_patterns')
-            let g:neocomplete#sources#omni#input_patterns = {}
-        endif
-        let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-        " let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\.\%(\h\w*\)\?\|[a-zA-Z].*'
+    " オムニ補完関数呼び出し時の条件
+    if !exists('g:neocomplete#sources#omni#input_patterns')
+        let g:neocomplete#sources#omni#input_patterns = {}
+    endif
+    let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
+    " let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\.\%(\h\w*\)\?\|[a-zA-Z].*'
 
-        if !exists('g:neocomplete#sources#vim#complete_functions')
-            let g:neocomplete#sources#vim#complete_functions = {}
-        endif
-        let g:neocomplete#sources#vim#complete_functions.Ref = 'ref#complete'
-        let g:neocomplete#sources#vim#complete_functions.Unite = 'unite#complete_source'
-        let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
-        let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
+    if !exists('g:neocomplete#sources#vim#complete_functions')
+        let g:neocomplete#sources#vim#complete_functions = {}
+    endif
+    let g:neocomplete#sources#vim#complete_functions.Ref = 'ref#complete'
+    let g:neocomplete#sources#vim#complete_functions.Unite = 'unite#complete_source'
+    let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
+    let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
 
-        let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
+    let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
 
-        inoremap <expr> <C-l> neocomplete#complete_common_string()
-        imap <C-q>  <Plug>(neocomplete_start_unite_quick_match)
-    endfunction
-    unlet s:bundle
-endif
+    inoremap <expr> <C-l> neocomplete#complete_common_string()
+    imap <C-q>  <Plug>(neocomplete_start_unite_quick_match)
+endfunction
+unlet s:bundle
 
 " Clang_complete
 let g:clang_complete_auto = 0
@@ -494,8 +493,6 @@ let g:clang_jumpto_back_key = 'dummy'
 " Neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
-" xmap <C-k> <Plug>(neosnippet_expand_target)
-" xmap <C-l> <Plug>(neosnippet_start_unite_snippet_target)
 imap <C-l> <Plug>(neosnippet_start_unite_snippet)
 set conceallevel=2 concealcursor=i
 let g:neosnippet#snippets_directory = expand('~/.vim/bundle/vim-snippets/snippets') . '/*.snippets'
@@ -780,6 +777,29 @@ nmap P <Plug>(yankround-P)
 nmap <C-p> <Plug>(yankround-prev)
 nmap <C-n> <Plug>(yankround-next)
 
+" marching
+let s:bundle = neobundle#get('vim-marching')
+function! s:bundle.hooks.on_source(bundle)
+    if has('mac')
+        let clang_exe = 'clang-3.4'
+    else
+        let clang_exe = 'clang'
+    endif
+
+    if !executable(clang_exe)
+        echomsg 'Clang is NOT found.'
+        return
+    endif
+
+    " systemの戻り値に注意
+    let g:marching_clang_command = substitute(system('where '.clang_exe), '\r\|\n', '', 'g')
+    let g:marching_clang_command_option = "-Wall -std=c++1y"
+    let g:marching_enable_neocomplete = 1
+
+    set updatetime=200
+endfunction
+unlet s:bundle
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -812,16 +832,6 @@ endfunction
 
 " C/C++
 function! s:config_ccpp()
-    NeoBundleSource cpp-vim
-
-    let clang_path = '/usr/local/bin/'
-    if isdirectory(clang_path) && '' != findfile('clang', clang_path . ';')
-        let g:clang_library_path = '/usr/local/lib/'
-        let g:clang_executable_path = clang_path
-        " let g:clang_user_options = '-I/usr/local/include/ -I/usr/local/include/boost/'
-        NeoBundleSource clang_complete
-    endif
-
     setlocal nosmartindent
     setlocal nocindent
     setlocal autoindent
