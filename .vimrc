@@ -817,9 +817,6 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 unlet s:bundle
 
-" Over
-noremap / :OverCommandLine<CR>
-
 
 "-------------------------------------------------------------------------------"
 " autocmd
