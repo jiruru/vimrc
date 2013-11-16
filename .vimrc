@@ -305,6 +305,7 @@ NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' 
 NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
 NeoBundleLazy 'itchyny/dictionary.vim', { 'autoload' : { 'commands' : 'Dictionary'}, 'disabled' : (!has('mac')) }
 NeoBundleLazy 'itchyny/thumbnail.vim', { 'autoload' : {'commands' : 'Thumbnail'} }
+NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : {'commands' : 'OverCommandLine'} }
 NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : ['<Plug>(operator-replace)'] } }
 NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'operator' } }
 NeoBundleLazy 'kana/vim-smartchr', '', 'loadInsert'
@@ -816,6 +817,9 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 unlet s:bundle
 
+" Over
+noremap / :OverCommandLine<CR>
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -922,5 +926,8 @@ augroup general
     autocmd CompleteDone *.java call javaapi#showRef()
 augroup END
 
-colorscheme molokai
+" colorscheme molokai
 syntax enable           " 強調表示有効
+set runtimepath+=~/Dropbox/Program/Vim/Pastel/
+" colorscheme mopkai
+colorscheme molokai
