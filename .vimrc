@@ -288,7 +288,8 @@ NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
-NeoBundle 'tomasr/molokai'
+" NeoBundle 'tomasr/molokai'
+NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'tpope/vim-fugitive', { 'external_commands' : ['git'], 'disabled' : (!executable('git')) }
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'vim-jp/vimdoc-ja'
@@ -822,16 +823,6 @@ unlet s:bundle
 " autocmd
 "-------------------------------------------------------------------------------"
 
-" Highlight
-function! s:config_highlight()
-    " highlight Cursor ctermbg=55
-    " highlight FoldColumn ctermfg=130
-    " highlight Folded cterm=bold,underline ctermfg=14 ctermbg=55
-    highlight MatchParen cterm=bold,underline ctermbg=3
-    highlight Search ctermbg=3 ctermfg=0
-    highlight TabLineSel ctermbg=5
-endfunction
-
 " Conque
 function! s:delete_conque_term(buffer_name)
     let term_obj = conque_term#get_instance(a:buffer_name)
@@ -881,9 +872,6 @@ augroup general
     autocmd BufWinLeave ?* if(bufname('%')!='') | silent mkview! | endif
     autocmd BufWinEnter ?* if(bufname('%')!='') | silent loadview | endif
 
-    " 独自ハイライト
-    autocmd Colorscheme * call s:config_highlight()
-
     " Text
     autocmd BufReadPre *.txt setlocal filetype=text
     " autocmd BufReadPre *.txt setlocal wrap
@@ -924,7 +912,5 @@ augroup general
 augroup END
 
 " colorscheme molokai
+colorscheme mopkai
 syntax enable           " 強調表示有効
-set runtimepath+=~/Dropbox/Program/Vim/Pastel/
-" colorscheme mopkai
-colorscheme molokai
