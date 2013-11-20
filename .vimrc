@@ -277,7 +277,10 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'mattn/sonictemplate-vim'
+NeoBundle 'mopp/layoutplugin.vim'
+NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/openvimrc.vim'
+NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
 NeoBundle 'osyo-manga/vim-anzu'
 NeoBundle 'osyo-manga/vim-reunions'
@@ -286,10 +289,10 @@ NeoBundle 'rhysd/vim-operator-surround'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'supermomonga/shaberu.vim'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
-" NeoBundle 'tomasr/molokai'
-NeoBundle 'mopp/mopkai.vim'
+NeoBundle 'tomasr/molokai'
 NeoBundle 'tpope/vim-fugitive', { 'external_commands' : ['git'], 'disabled' : (!executable('git')) }
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'vim-jp/vimdoc-ja'
@@ -300,13 +303,11 @@ NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.v
 NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete'}, 'VimFiler', 'VimFilerTab', 'VimFilerExplorer',], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
-NeoBundleLazy 'calorie/vim-swap-windows'
 NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
 NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
 NeoBundleLazy 'itchyny/dictionary.vim', { 'autoload' : { 'commands' : 'Dictionary'}, 'disabled' : (!has('mac')) }
 NeoBundleLazy 'itchyny/thumbnail.vim', { 'autoload' : {'commands' : 'Thumbnail'} }
-NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : {'commands' : 'OverCommandLine'} }
 NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : ['<Plug>(operator-replace)'] } }
 NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'operator' } }
 NeoBundleLazy 'kana/vim-smartchr', '', 'loadInsert'
@@ -318,6 +319,7 @@ NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'}
 NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
 NeoBundleLazy 'osyo-manga/vim-marching', { 'autoload' : { 'filetype' : 'cpp' , 'insert' : '1'} }
+NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : {'commands' : 'OverCommandLine'} }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
@@ -818,6 +820,9 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 unlet s:bundle
 
+" LayoutPlugin
+let g:layoutplugin#is_append_vimrc = 1
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -846,24 +851,11 @@ function! s:config_ccpp()
     setlocal cindent
 endfunction
 
-" 行末の空白を削除
-function! s:remove_tail_space()
-    if &filetype == 'markdown'
-        return
-    endif
-    let c = getpos('.')
-    g/.*\s$/normal $gelD
-    call setpos('.', c)
-endfunction
-
 augroup general
     autocmd!
 
     " .vimrc
     autocmd BufWritePost $MYVIMRC nested source $MYVIMRC
-
-    " 書き込み時に行末の空白を削除
-    autocmd BufWritePre * silent call s:remove_tail_space()
 
     " 挿入モード解除時に自動でpasteをoff
     autocmd InsertLeave * setlocal nopaste
@@ -874,7 +866,6 @@ augroup general
 
     " Text
     autocmd BufReadPre *.txt setlocal filetype=text
-    " autocmd BufReadPre *.txt setlocal wrap
 
     " git
     autocmd FileType git setlocal foldlevel=99
@@ -904,13 +895,13 @@ augroup general
     " json
     autocmd BufRead,BufNewFile *.json nested setlocal filetype=json autoindent
 
-    " json
+    " markdown
     autocmd BufRead,BufNewFile *.md nested setlocal filetype=markdown
 
     " Java
     autocmd CompleteDone *.java call javaapi#showRef()
 augroup END
 
-" colorscheme molokai
 colorscheme mopkai
 syntax enable           " 強調表示有効
+" set runtimepath+=/Users/mopp/Dropbox/Program/Vim/shinchoku.vim/
