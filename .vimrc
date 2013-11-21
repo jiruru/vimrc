@@ -277,9 +277,7 @@ NeoBundle 'bling/vim-airline'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'mattn/sonictemplate-vim'
-NeoBundle 'mopp/layoutplugin.vim'
 NeoBundle 'mopp/mopkai.vim'
-NeoBundle 'mopp/openvimrc.vim'
 NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
 NeoBundle 'osyo-manga/vim-anzu'
@@ -287,9 +285,9 @@ NeoBundle 'osyo-manga/vim-reunions'
 NeoBundle 'rbtnn/vimconsole.vim'
 NeoBundle 'rhysd/vim-operator-surround'
 NeoBundle 'scrooloose/nerdcommenter'
+NeoBundle 'supermomonga/shaberu.vim'
 NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'supermomonga/shaberu.vim'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tomasr/molokai'
@@ -297,7 +295,7 @@ NeoBundle 'tpope/vim-fugitive', { 'external_commands' : ['git'], 'disabled' : (!
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
-NeoBundleLazy 'Rip-Rip/clang_complete', { 'autoload' : { 'filetype' : 'c' , 'insert' : '1'} ,  'build' : { 'mac' : 'make install', 'others' : 'make install'} }
+NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
 NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
@@ -318,17 +316,19 @@ NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle'
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
-NeoBundleLazy 'osyo-manga/vim-marching', { 'autoload' : { 'filetype' : 'cpp' , 'insert' : '1'} }
+NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
+NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : ['<Plug>(openvimrc-open)'] } }
+NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : {'commands' : 'OverCommandLine'} }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
-NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'insert' : '1', 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
+NeoBundleLazy 'taichouchou2/alpaca_english', { 'disabled' : (!has('ruby')), 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
 NeoBundleLazy 'taku-o/vim-copypath', { 'autoload' : { 'commands'  : ['CopyFileName', 'CopyPath'] } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
 NeoBundleLazy 'thinca/vim-scouter'
-NeoBundleLazy 'ujihisa/neco-look', '', 'loadInsert'
+NeoBundleLazy 'ujihisa/neco-look', { 'disabled' : (has('ruby')) }
 NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : 'cpp' } }
 NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
@@ -372,6 +372,7 @@ let g:unite_source_history_yank_enable = 1
 let g:unite_force_overwrite_statusline = 0
 let g:unite_source_bookmark_directory = expand('~/.vim/bookmark')
 if executable('ag')
+    " for the silver searcher
     let g:unite_source_grep_command = 'ag'
     let g:unite_source_grep_default_opts = '--nocolor --nogroup'
     let g:unite_source_grep_max_candidates = 200
@@ -487,13 +488,60 @@ function! s:bundle.hooks.on_source(bundle)
     inoremap <expr> <C-l> neocomplete#complete_common_string()
     imap <C-q>  <Plug>(neocomplete_start_unite_quick_match)
 endfunction
+
+function! s:bundle.hooks.on_post_source(bundle)
+    if &filetype ==? 'c'
+        NeoBundleSource clang_complete
+    elseif &filetype ==? 'cpp'
+        NeoBundleSource vim-marching
+    endif
+
+    if has('ruby')
+        NeoBundleSource alpaca_english
+    else
+        NeoBundleSource neco-look
+    endif
+endfunction
+unlet s:bundle
+
+" marching
+function! s:check_clang()
+    if has('mac')
+        let clang_exe = 'clang-3.4'
+    else
+        let clang_exe = 'clang'
+    endif
+
+    if !executable(clang_exe)
+        echomsg 'Clang is NOT found.'
+        return ''
+    endif
+
+    return clang_exe
+endfunction
+
+let s:bundle = neobundle#get('vim-marching')
+function! s:bundle.hooks.on_source(bundle)
+    echomsg 'marching'
+    let clang_exe = s:check_clang()
+    if clang_exe == ''
+        return
+    endif
+
+    " systemの戻り値に注意
+    let g:marching_clang_command = substitute(system('where '.clang_exe), '\r\|\n', '', 'g')
+    let g:marching_clang_command_option = "-Wall -std=c++1y"
+    let g:marching_enable_neocomplete = 1
+
+    set updatetime=200
+endfunction
 unlet s:bundle
 
 " Clang_complete
 let s:bundle = neobundle#get('clang_complete')
 function! s:bundle.hooks.on_source(bundle)
-    let clang_exe = 'clang'
-    if !executable(clang_exe)
+    let clang_exe = s:check_clang()
+    if clang_exe == ''
         return
     endif
 
@@ -502,11 +550,10 @@ function! s:bundle.hooks.on_source(bundle)
     let g:clang_jumpto_declaration_key = 'dummy'
     let g:clang_jumpto_back_key = 'dummy'
 
-    let clang_path = '/usr/local/'
-    if isdirectory(clang_path) && '' != findfile('clang', clang_path . 'bin;')
-        let g:clang_executable_path = clang_path.'bin/'
-        let g:clang_library_path = clang_path.'lib/'
-    endif
+    let clang_path = substitute(system('where ' . clang_exe), 'bin/' . clang_exe, '', 'g')
+    let clang_path = substitute(clang_path, '\r\|\n', '', 'g')
+    let g:clang_executable_path = clang_path.'bin/'
+    let g:clang_library_path = clang_path.'lib/'
 endfunction
 unlet s:bundle
 
@@ -797,29 +844,6 @@ nmap P <Plug>(yankround-P)
 nmap <C-p> <Plug>(yankround-prev)
 nmap <C-n> <Plug>(yankround-next)
 
-" marching
-let s:bundle = neobundle#get('vim-marching')
-function! s:bundle.hooks.on_source(bundle)
-    if has('mac')
-        let clang_exe = 'clang-3.4'
-    else
-        let clang_exe = 'clang'
-    endif
-
-    if !executable(clang_exe)
-        echomsg 'Clang is NOT found.'
-        return
-    endif
-
-    " systemの戻り値に注意
-    let g:marching_clang_command = substitute(system('where '.clang_exe), '\r\|\n', '', 'g')
-    let g:marching_clang_command_option = "-Wall -std=c++1y"
-    let g:marching_enable_neocomplete = 1
-
-    set updatetime=200
-endfunction
-unlet s:bundle
-
 " LayoutPlugin
 let g:layoutplugin#is_append_vimrc = 1
 
@@ -884,7 +908,7 @@ augroup general
 
     " C/C++
     autocmd FileType c,cpp call s:config_ccpp()
-    autocmd BufReadPost *.h setlocal filetype=c
+    autocmd BufReadPost *.h nested setlocal filetype=c
 
     " nask
     autocmd BufReadPre *.nas setlocal filetype=nasm
@@ -896,7 +920,7 @@ augroup general
     autocmd BufRead,BufNewFile *.json nested setlocal filetype=json autoindent
 
     " markdown
-    autocmd BufRead,BufNewFile *.md nested setlocal filetype=markdown
+    autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} nested setlocal filetype=markdown
 
     " Java
     autocmd CompleteDone *.java call javaapi#showRef()
@@ -904,4 +928,6 @@ augroup END
 
 colorscheme mopkai
 syntax enable           " 強調表示有効
+
+" temporaly
 " set runtimepath+=/Users/mopp/Dropbox/Program/Vim/shinchoku.vim/
