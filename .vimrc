@@ -286,9 +286,7 @@ NeoBundle 'rbtnn/vimconsole.vim'
 NeoBundle 'rhysd/vim-operator-surround'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'supermomonga/shaberu.vim'
-NeoBundle 'thinca/vim-ambicmd'
 NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'tpope/vim-fugitive', { 'external_commands' : ['git'], 'disabled' : (!executable('git')) }
@@ -522,7 +520,6 @@ endfunction
 
 let s:bundle = neobundle#get('vim-marching')
 function! s:bundle.hooks.on_source(bundle)
-    echomsg 'marching'
     let clang_exe = s:check_clang()
     if clang_exe == ''
         return
@@ -679,12 +676,6 @@ function! s:like_IDE()
 endfunction
 nnoremap <silent> <Leader>id :call <SID>like_IDE()<CR>
 
-" Ref-vim
-let g:ref_open = 'split'
-let g:ref_source_webdict_cmd = 'w3m -t 4 -cols 180 -dump %s'
-let g:ref_source_webdict_sites = { 'Wikipedia:ja' : 'http://ja.wikipedia.org/wiki/%s', 'Weblio' : 'http://ejje.weblio.jp/content/%s', 'Weblio-Thesaurus' : 'http://ejje.weblio.jp/english-thesaurus/content/%s'}
-let g:ref_source_webdict_sites.default = 'Wikipedia:ja'
-
 " QuickRun
 let g:quickrun_config = {}
 let g:quickrun_config._ = { 'outputter' : 'quickfix', 'outputter/buffer/split' : ':vertical rightbelow', 'runner' : 'vimproc' }
@@ -777,7 +768,7 @@ omap ab <Plug>(textobj-block-a)
 vmap ab <Plug>(textobj-block-a)
 
 " Thumbnail
-nnoremap <Leader>th :Thumbnail<CR>
+nnoremap <silent> <Leader>th :Thumbnail<CR>
 
 " Alpaca_english
 if has('ruby')
@@ -812,13 +803,6 @@ let g:airline#extensions#branch#enabled = 1
 let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [], 'passive_filetypes': ['nasm'] }
 " let g:syntastic_auto_loc_list = 1
 let g:syntastic_loc_list_height = 5
-
-" Ambicmd
-if neobundle#is_installed('vim-ambicmd')
-    cnoremap <expr> <CR>    ambicmd#expand('<CR>')
-    cnoremap <expr> <Space> ambicmd#expand('<Space>')
-    " cnoremap <expr> <Tab>   ambicmd#expand('<Tab>')
-endif
 
 " rainbow parenthesis
 let g:rainbow_active = 1
