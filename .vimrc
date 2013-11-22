@@ -234,6 +234,9 @@ nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'
 " Tagが複数あればリスト表示
 nnoremap <C-]> g<C-]>zz
 
+" カーソル位置のハイライト情報表示
+command! -nargs=0 EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
+
 if has('mac')
     " 引数に渡したワードを検索
     command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
@@ -248,6 +251,21 @@ if has('mac')
     vnoremap <silent><Leader>do y:<C-u>MacDict<Space><C-r>*<CR>
     nnoremap <silent><Leader>dc :<C-u>MacDictClose<CR>
     nnoremap <silent><Leader>df :<C-u>MacDictFocus<CR>
+endif
+
+
+"-------------------------------------------------------------------------------"
+" GUI
+"-------------------------------------------------------------------------------"
+if has('gui_running')
+    " gm
+    set guioptions-=e
+    set guioptions-=r
+    set guioptions-=l
+
+    let no_buffers_menu = 1
+    set guifont=Ricty-Regular:h13
+    set mousehide
 endif
 
 
@@ -910,8 +928,8 @@ augroup general
     autocmd CompleteDone *.java call javaapi#showRef()
 augroup END
 
-colorscheme mopkai
 syntax enable           " 強調表示有効
+colorscheme mopkai      " syntaxコマンドよりもあとにすること
 
 " temporaly
 " set runtimepath+=/Users/mopp/Dropbox/Program/Vim/shinchoku.vim/
