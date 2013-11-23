@@ -67,6 +67,10 @@ set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらな�
 set timeout                     " マッピングのタイムアウト有効
 set timeoutlen=1000             " マッピングのタイムアウト時間
 set ttimeoutlen=0               " キーコードのタイムアウト時間
+if !has('gui_running')
+    set spelllang+=cjk              " 日本語などの文字をスペルミスとしない
+endif
+set spell
 let g:loaded_netrwPlugin = 1    " 標準Pluginを読み込まない
 let g:loaded_tar = 1
 let g:loaded_tarPlugin= 1
@@ -262,10 +266,12 @@ if has('gui_running')
     set guioptions-=e
     set guioptions-=r
     set guioptions-=l
+    set guioptions-=L
 
     let no_buffers_menu = 1
     set guifont=Ricty-Regular:h13
     set mousehide
+    set vb t_vb=
 endif
 
 
@@ -315,7 +321,7 @@ NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'o
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
 NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
-NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete'}, 'VimFiler', 'VimFilerTab', 'VimFilerExplorer',], 'explorer' : 1,} }
+NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete'}, 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir',], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
@@ -407,7 +413,7 @@ nnoremap <silent> fhl :<C-u>Unite -buffer-name=Help help<CR>
 nnoremap <silent> fma :<C-u>Unite -buffer-name=Mappings mapping<CR>
 nnoremap <silent> fme :<C-u>Unite -buffer-name=Messages output:message<CR>
 nnoremap <silent> fo  :<C-u>Unite -buffer-name=Outlines outline<CR>
-nnoremap <silent> fl  :<C-u>Unite -buffer-name=Line line/fast:all -no-quit<CR>
+nnoremap <silent> fl  :<C-u>Unite -buffer-name=Line line:all -no-quit<CR>
 nnoremap <silent> fr  :<C-u>Unite -buffer-name=Registers register<CR>
 nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
 nnoremap <silent> fn  :<C-u>Unite -buffer-name=Snippet snippet<CR>
@@ -588,8 +594,7 @@ nmap <Leader><Leader> <Plug>NERDCommenterToggle
 vmap <Leader><Leader> <Plug>NERDCommenterNested
 
 " VimFiler
-nnoremap <silent> fvs :VimFilerExplorer<CR>
-nnoremap <silent> fvr :VimFilerExplorer -status ssh://ains<CR>
+nnoremap <silent> fvs :VimFilerBufferDir -explorer<CR>
 nnoremap <silent> fvo :VimFilerTab -status<CR>
 let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
 let g:vimfiler_as_default_explorer = 1
