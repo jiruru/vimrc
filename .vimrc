@@ -179,8 +179,10 @@ noremap <C-H> ^
 noremap <C-L> $
 
 " バッファ操作
-noremap <silent> <F2> :<C-U>bprevious<CR>
-noremap <silent> <F3> :<C-U>bnext<CR>
+noremap <silent> B[ :<C-U>bfirst<CR>
+noremap <silent> B] :<C-U>blast<CR>
+noremap <silent> b[ :<C-U>bprevious<CR>
+noremap <silent> b] :<C-U>bnext<CR>
 
 " Tab操作
 noremap <Leader>to :tabnew<Space>
@@ -432,7 +434,6 @@ function! s:config_unite()
     nnoremap <buffer><expr> l unite#smart_map('l', unite#do_action('default'))
     nnoremap <buffer><expr> t unite#do_action('tabopen')
 endfunction
-
 
 " neocomplete
 let s:bundle = neobundle#get('neocomplete.vim')
@@ -688,18 +689,7 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 unlet s:bundle
 
-" Like A IDE :)
-function! s:like_IDE()
-    cd %:p:h
-    VimFilerExplorer -simple
-    wincmd l
-    TagbarToggle
-    wincmd h
-    SrcExplToggle
-endfunction
-nnoremap <silent> <Leader>id :call <SID>like_IDE()<CR>
-
-" QuickRun
+" QuickRun FIXME
 let g:quickrun_config = {}
 let g:quickrun_config._ = { 'outputter' : 'quickfix', 'outputter/buffer/split' : ':vertical rightbelow', 'runner' : 'vimproc' }
 let g:quickrun_config.lisp = { 'command' : 'clisp', 'exec' : '%c < %s:p' }
@@ -754,7 +744,14 @@ map mb <Plug>(textobj-wiw-p)
 map me <Plug>(textobj-wiw-N)
 map mge <Plug>(textobj-wiw-P)
 
-" Textobj-MultiTextobj
+" textobj-multiblock
+let g:textobj_multiblock_blocks = [
+            \ ['(', ')'], ['[', ']'], ['{', '}'], ['<', '>'], ['"', '"'], ["'", "'"],
+            \ ['\_^\s*\<function\>.*', '\_^\s*endfunction\_$'],
+            \ ['\_^\s*\<if\>.*', '\_^\s*\<endif\>\s*\_$'],
+            \]
+
+" textobj-multitextobj
 let g:textobj_multitextobj_textobjects_group_i = {
             \   "A" : [
             \       "i,",
@@ -836,7 +833,7 @@ let g:rainbow_load_separately = [ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']]
 nmap n <Plug>(anzu-n-with-echo)
 nmap N <Plug>(anzu-N-with-echo)
 nmap * <Plug>(anzu-star-with-echo)
-nmap # <Plug>(anzu-sharp-with-echo)'
+nmap # <Plug>(anzu-sharp-with-echo)
 
 " Dictionary.vim
 nnoremap <silent> <Leader>dr :<C-u>Dictionary -cursor-word<CR>
