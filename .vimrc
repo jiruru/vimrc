@@ -70,7 +70,7 @@ set ttimeoutlen=0               " キーコードのタイムアウト時間
 if !has('gui_running')
     set spelllang+=cjk              " 日本語などの文字をスペルミスとしない
 endif
-set spell
+" set spell
 let g:loaded_netrwPlugin = 1    " 標準Pluginを読み込まない
 let g:loaded_tar = 1
 let g:loaded_tarPlugin= 1
@@ -179,10 +179,10 @@ noremap <C-H> ^
 noremap <C-L> $
 
 " バッファ操作
-noremap <silent> B[ :<C-U>bfirst<CR>
-noremap <silent> B] :<C-U>blast<CR>
-noremap <silent> b[ :<C-U>bprevious<CR>
-noremap <silent> b] :<C-U>bnext<CR>
+noremap <silent> [B :<C-U>bfirst<CR>
+noremap <silent> ]B :<C-U>blast<CR>
+noremap <silent> [b :<C-U>bprevious<CR>
+noremap <silent> ]b :<C-U>bnext<CR>
 
 " Tab操作
 noremap <Leader>to :tabnew<Space>
@@ -313,6 +313,7 @@ NeoBundle 'rhysd/vim-operator-surround'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'supermomonga/shaberu.vim'
 NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'tpope/vim-fugitive', { 'external_commands' : ['git'], 'disabled' : (!executable('git')) }
@@ -416,7 +417,7 @@ nnoremap <silent> fma :<C-u>Unite -buffer-name=Mappings mapping<CR>
 nnoremap <silent> fme :<C-u>Unite -buffer-name=Messages output:message<CR>
 nnoremap <silent> fo  :<C-u>Unite -buffer-name=Outlines outline<CR>
 nnoremap <silent> fl  :<C-u>Unite -buffer-name=Line line:all -no-quit<CR>
-nnoremap <silent> fr  :<C-u>Unite -buffer-name=Registers register<CR>
+nnoremap <silent> fr  :<C-u>Unite -buffer-name=Ref/man ref/man<CR>
 nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
 nnoremap <silent> fn  :<C-u>Unite -buffer-name=Snippet snippet<CR>
 nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
@@ -579,14 +580,14 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 unlet s:bundle
 
-" Neosnippet
+" neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 imap <C-l> <Plug>(neosnippet_start_unite_snippet)
 set conceallevel=2 concealcursor=i
 let g:neosnippet#snippets_directory = expand('~/.vim/bundle/vim-snippets/snippets') . '/*.snippets'
 
-" Easymotion
+" easymotion
 let g:EasyMotion_leader_key = '<Leader>e'
 
 " NERDCommenter
@@ -622,6 +623,12 @@ let g:tagbar_autofocus = 1
 let g:tagbar_sort = 0
 let g:tagbar_compact = 1
 nnoremap <silent> tb :<C-U>TagbarToggle<CR>
+
+" Ref-vim
+let g:ref_open = 'split'
+let g:ref_source_webdict_cmd = 'w3m -t 4 -cols 180 -dump %s'
+let g:ref_source_webdict_sites = { 'Wikipedia:ja' : 'http://ja.wikipedia.org/wiki/%s', 'Weblio' : 'http://ejje.weblio.jp/content/%s', 'Weblio-Thesaurus' : 'http://ejje.weblio.jp/english-thesaurus/content/%s'}
+let g:ref_source_webdict_sites.default = 'Wikipedia:ja'
 
 " Smartinput
 let s:bundle = neobundle#get('vim-smartinput')
@@ -935,3 +942,4 @@ colorscheme mopkai      " syntaxコマンドよりもあとにすること
 
 " temporaly
 " set runtimepath+=/Users/mopp/Dropbox/Program/Vim/shinchoku.vim/
+set runtimepath+=/Users/mopp/Dropbox/Program/Vim/unite-animemap/
