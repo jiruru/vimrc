@@ -271,9 +271,11 @@ if has('gui_running')
     set guioptions-=L
 
     let no_buffers_menu = 1
+
     set guifont=Ricty-Regular:h13
     set mousehide
     set vb t_vb=
+    set macmeta
 endif
 
 
@@ -302,6 +304,7 @@ NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'u
 NeoBundle 'bling/vim-airline'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'kana/vim-niceblock'
+NeoBundle 'mattn/googlesuggest-complete-vim'
 NeoBundle 'mattn/sonictemplate-vim'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/tailCleaner.vim'
@@ -339,7 +342,7 @@ NeoBundleLazy 'kannokanno/previm', { 'autoload' : { 'filetype' : 'markdown' } }
 NeoBundleLazy 'koron/nyancat-vim', { 'autoload' : { 'commands' : [ 'Nyancat', 'Nyancat2',], } }
 NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
-NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
+NeoBundleLazy 'mattn/gist-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
 NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : ['<Plug>(openvimrc-open)'] } }
@@ -943,3 +946,5 @@ colorscheme mopkai      " syntaxコマンドよりもあとにすること
 " temporaly
 " set runtimepath+=/Users/mopp/Dropbox/Program/Vim/shinchoku.vim/
 set runtimepath+=/Users/mopp/Dropbox/Program/Vim/unite-animemap/
+set runtimepath+=/Users/mopp/Dropbox/Program/Vim/googlesuggest-complete-vim/
+set runtimepath+=/Users/mopp/Program/Vim/AOJ.vim
