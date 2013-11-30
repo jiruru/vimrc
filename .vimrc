@@ -128,7 +128,7 @@ endfunction
 
 
 "-----------------------------------------------------------------------------------"
-" Mapping                                                                           |
+" Mappings                                                                          |
 "-----------------------------------------------------------------------------------"
 " コマンド        | ノーマル | 挿入 | コマンドライン | ビジュアル | 選択 | 演算待ち |
 " map  / noremap  |    @     |  -   |       -        |     @      |  @   |    @     |
@@ -143,11 +143,11 @@ endfunction
 "-----------------------------------------------------------------------------------"
 
 " Metaキーを有効化 Reference from http://d.hatena.ne.jp/thinca/20101215/1292340358
-if has('mac') && !has('gui_running')
-    for i in map( range(char2nr('a'), char2nr('z')) + range(char2nr('A'), char2nr('Z')) + range(char2nr('0'), char2nr('9')) , 'nr2char(v:val)')
-        execute 'set <M-'.i.'>='.i
-    endfor
-endif
+" if has('mac') && !has('gui_running')
+"     for i in map( range(char2nr('a'), char2nr('z')) + range(char2nr('A'), char2nr('Z')) + range(char2nr('0'), char2nr('9')) , 'nr2char(v:val)')
+"         execute 'set <M-'.i.'>='.i
+"     endfor
+" endif
 
 let g:mapleader = ' '
 
@@ -240,6 +240,24 @@ nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'
 " Tagが複数あればリスト表示
 nnoremap <C-]> g<C-]>zz
 
+" http://vim-users.jp/2011/04/hack214/
+onoremap ( t(
+onoremap ) t)
+onoremap < t<
+onoremap > t>
+onoremap [ t[
+onoremap ] t]
+vnoremap ( t(
+vnoremap ) t)
+vnoremap < t<
+vnoremap > t>
+vnoremap [ t[
+vnoremap ] t]
+
+
+"-------------------------------------------------------------------------------"
+" Commands
+"-------------------------------------------------------------------------------"
 " カーソル位置のハイライト情報表示
 command! -nargs=0 EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
@@ -304,8 +322,10 @@ NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'u
 NeoBundle 'bling/vim-airline'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'kana/vim-niceblock'
+NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'mattn/googlesuggest-complete-vim'
 NeoBundle 'mattn/sonictemplate-vim'
+NeoBundle 'mopp/googlesuggest-source.vim'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
@@ -315,6 +335,7 @@ NeoBundle 'rbtnn/vimconsole.vim'
 NeoBundle 'rhysd/vim-operator-surround'
 NeoBundle 'scrooloose/nerdcommenter'
 NeoBundle 'supermomonga/shaberu.vim'
+NeoBundle 't9md/vim-smalls'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
@@ -327,8 +348,9 @@ NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'o
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
 NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
-NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete'}, 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir',], 'explorer' : 1,} }
+NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete'}, 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate'], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
+NeoBundleLazy 'deris/vim-rengbang', { 'autoload' : { 'commands' : ['RengBang', 'RengBangUsePrev']} }
 NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
 NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
@@ -534,7 +556,7 @@ unlet s:bundle
 " marching
 function! s:check_clang()
     if has('mac')
-        let clang_exe = 'clang-3.4'
+        let clang_exe = 'clang-3.5'
     else
         let clang_exe = 'clang'
     endif
@@ -599,7 +621,7 @@ nmap <Leader><Leader> <Plug>NERDCommenterToggle
 vmap <Leader><Leader> <Plug>NERDCommenterNested
 
 " VimFiler
-nnoremap <silent> fvs :VimFilerBufferDir -explorer<CR>
+nnoremap <silent> fvs :VimFiler -explorer<CR>
 nnoremap <silent> fvo :VimFilerTab -status<CR>
 let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
 let g:vimfiler_as_default_explorer = 1
@@ -861,6 +883,10 @@ nmap <C-n> <Plug>(yankround-next)
 " LayoutPlugin
 let g:layoutplugin#is_append_vimrc = 1
 
+" small
+map <Leader>sm <Plug>(smalls)
+" let g:smalls_jump_keys_auto_show = 1
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -944,7 +970,3 @@ syntax enable           " 強調表示有効
 colorscheme mopkai      " syntaxコマンドよりもあとにすること
 
 " temporaly
-" set runtimepath+=/Users/mopp/Dropbox/Program/Vim/shinchoku.vim/
-set runtimepath+=/Users/mopp/Dropbox/Program/Vim/unite-animemap/
-set runtimepath+=/Users/mopp/Dropbox/Program/Vim/googlesuggest-complete-vim/
-set runtimepath+=/Users/mopp/Program/Vim/AOJ.vim
