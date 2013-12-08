@@ -322,11 +322,10 @@ let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
-" NeoBundle 'bling/vim-airline'
+NeoBundle 'bling/vim-airline'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'kshenoy/vim-signature'
-NeoBundle 'mattn/sonictemplate-vim'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
@@ -343,9 +342,7 @@ NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'tpope/vim-fugitive', { 'external_commands' : ['git'], 'disabled' : (!executable('git')) }
 NeoBundle 'tpope/vim-repeat'
-NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
-NeoBundleLazy 'zhaocai/GoldenView.Vim'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
@@ -368,6 +365,7 @@ NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle'
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'mattn/gist-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
+NeoBundleLazy 'mattn/sonictemplate-vim', { 'autoload' : { 'commands' : [{ 'name' : 'Template', 'complete' : 'customlist,sonictemplate#complete'}], 'function_prefix' : 'sonictemplate' } }
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
 NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : ['<Plug>(openvimrc-open)'] } }
 NeoBundleLazy 'osyo-manga/vim-marching'
@@ -382,10 +380,12 @@ NeoBundleLazy 'thinca/vim-painter'
 NeoBundleLazy 'thinca/vim-scouter'
 NeoBundleLazy 'ujihisa/neco-look', { 'disabled' : (has('ruby')) }
 NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : 'cpp' } }
+NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : ['<Plug>(operator-suddendeath)']} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
+NeoBundleLazy 'zhaocai/GoldenView.Vim'
 
 NeoBundleLazy 'h1mesuke/textobj-wiw', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-wiw-'}}
 NeoBundleLazy 'kana/vim-textobj-function', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-function-'}}
@@ -395,7 +395,7 @@ NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends' : 'kana/vim-texto
 NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': ['<Plug>(textobj-multitextobj-A','<Plug>(textobj-multitextobj-B', '<Plug>(textobj-multitextobj-C', '<Plug>(textobj-multitextobj-D', '<Plug>(textobj-multitextobj-E'] }}
 NeoBundleLazy 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-parameter-'}}
 
-NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : [{ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'}, 'Unite'], 'function_prefix' : 'unite' }}
+NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : [{ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'}], 'function_prefix' : 'unite' }}
 NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
 NeoBundleLazy 'Shougo/unite-outline', { 'autoload' : { 'unite_sources' : ['outline'],} }
 NeoBundleLazy 'Shougo/unite-ssh', { 'autoload' : { 'unite_sources' : ['ssh'],} }
@@ -895,6 +895,10 @@ nmap <silent> <F8> <Plug>GoldenViewSwitchMain
 nmap <silent> <S-F8> <Plug>GoldenViewSwitchToggle
 nmap <silent> <C-W><C-N> <Plug>GoldenViewNext
 nmap <silent> <C-W><C-P> <Plug>GoldenViewPrevious
+
+" sonictemplate
+let g:sonictemplate_key = '<C-G>s'
+let g:sonictemplate_intelligent_key = '<C-G>i'
 
 
 "-------------------------------------------------------------------------------"
