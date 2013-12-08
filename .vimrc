@@ -316,16 +316,17 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '1' } } }
 
+" NeoBundle 'mattn/googlesuggest-complete-vim'
+" NeoBundle 'mopp/googlesuggest-source.vim'
+" NeoBundle 'supermomonga/shaberu.vim'
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
-NeoBundle 'bling/vim-airline'
+" NeoBundle 'bling/vim-airline'
 NeoBundle 'honza/vim-snippets'
 NeoBundle 'kana/vim-niceblock'
 NeoBundle 'kshenoy/vim-signature'
-NeoBundle 'mattn/googlesuggest-complete-vim'
 NeoBundle 'mattn/sonictemplate-vim'
-NeoBundle 'mopp/googlesuggest-source.vim'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
@@ -334,8 +335,8 @@ NeoBundle 'osyo-manga/vim-reunions'
 NeoBundle 'rbtnn/vimconsole.vim'
 NeoBundle 'rhysd/vim-operator-surround'
 NeoBundle 'scrooloose/nerdcommenter'
-NeoBundle 'supermomonga/shaberu.vim'
 NeoBundle 't9md/vim-smalls'
+NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-ref'
 NeoBundle 'thinca/vim-visualstar'
@@ -344,6 +345,7 @@ NeoBundle 'tpope/vim-fugitive', { 'external_commands' : ['git'], 'disabled' : (!
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'vim-jp/vimdoc-ja'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
+NeoBundleLazy 'zhaocai/GoldenView.Vim'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
@@ -385,13 +387,13 @@ NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 
 NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : ['<Plug>(operator-suddendeath)']} }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 
-NeoBundle 'h1mesuke/textobj-wiw'
-NeoBundle 'kana/vim-textobj-function'
-NeoBundle 'kana/vim-textobj-indent'
-NeoBundle 'kana/vim-textobj-user'
-NeoBundle 'osyo-manga/vim-textobj-multiblock'
-NeoBundle 'osyo-manga/vim-textobj-multitextobj'
-NeoBundle 'sgur/vim-textobj-parameter'
+NeoBundleLazy 'h1mesuke/textobj-wiw', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-wiw-'}}
+NeoBundleLazy 'kana/vim-textobj-function', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-function-'}}
+NeoBundleLazy 'kana/vim-textobj-indent', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': ['<Plug>(textobj-indent-', '<Plug>(textobj-indent-same-']}}
+NeoBundleLazy 'kana/vim-textobj-user'
+NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
+NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': ['<Plug>(textobj-multitextobj-A','<Plug>(textobj-multitextobj-B', '<Plug>(textobj-multitextobj-C', '<Plug>(textobj-multitextobj-D', '<Plug>(textobj-multitextobj-E'] }}
+NeoBundleLazy 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-parameter-'}}
 
 NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : [{ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'}, 'Unite'], 'function_prefix' : 'unite' }}
 NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
@@ -885,7 +887,14 @@ let g:layoutplugin#is_append_vimrc = 1
 
 " small
 map <Leader>sm <Plug>(smalls)
-" let g:smalls_jump_keys_auto_show = 1
+
+" Goldenview
+let g:goldenview__enable_default_mapping = 0
+nmap <silent> \ <Plug>GoldenViewSplit
+nmap <silent> <F8> <Plug>GoldenViewSwitchMain
+nmap <silent> <S-F8> <Plug>GoldenViewSwitchToggle
+nmap <silent> <C-W><C-N> <Plug>GoldenViewNext
+nmap <silent> <C-W><C-P> <Plug>GoldenViewPrevious
 
 
 "-------------------------------------------------------------------------------"
