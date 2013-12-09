@@ -186,6 +186,7 @@ noremap <silent> ]b :<C-U>bnext<CR>
 
 " Tab操作
 noremap <Leader>to :tabnew<Space>
+noremap <Leader>tc :tabclose<CR>
 noremap <Leader>j gT
 noremap <Leader>k gt
 
@@ -326,15 +327,12 @@ NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'bling/vim-airline'
-NeoBundle 'honza/vim-snippets'
 NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
-NeoBundle 'osyo-manga/vim-anzu'
 NeoBundle 'osyo-manga/vim-reunions'
 NeoBundle 'rhysd/vim-operator-surround'
-NeoBundle 't9md/vim-smalls'
 NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-visualstar'
@@ -343,12 +341,13 @@ NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
-NeoBundleLazy 'Shougo/neosnippet', { 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
+NeoBundleLazy 'Shougo/neosnippet', { 'depends' : 'honza/vim-snippets', 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete'}, 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate'], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'deris/vim-rengbang', { 'autoload' : { 'commands' : ['RengBang', 'RengBangUsePrev']} }
 NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
+NeoBundleLazy 'honza/vim-snippets'
 NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
 NeoBundleLazy 'itchyny/dictionary.vim', { 'autoload' : { 'commands' : 'Dictionary'}, 'disabled' : (!has('mac')) }
 NeoBundleLazy 'itchyny/thumbnail.vim', { 'autoload' : {'commands' : 'Thumbnail'} }
@@ -366,12 +365,14 @@ NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>
 NeoBundleLazy 'mattn/sonictemplate-vim', { 'autoload' : { 'commands' : [{ 'name' : 'Template', 'complete' : 'customlist,sonictemplate#complete'}], 'function_prefix' : 'sonictemplate' } }
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
 NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : ['<Plug>(openvimrc-open)'] } }
+NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [['n', '<Plug>(anzu-']] }}
 NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : {'commands' : 'OverCommandLine'} }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : {'mappings': [['inx', '<Plug>NERDCommenter']]}}
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
+NeoBundleLazy 't9md/vim-smalls', { 'autoload' : { 'mappings'  : ['nxo', '<Plug>(smalls)'] } }
 NeoBundleLazy 'taichouchou2/alpaca_english', { 'disabled' : (!has('ruby')), 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
 NeoBundleLazy 'taku-o/vim-copypath', { 'autoload' : { 'commands'  : ['CopyFileName', 'CopyPath'] } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
@@ -866,6 +867,8 @@ let g:syntastic_loc_list_height = 5
 let g:rainbow_active = 1
 let g:rainbow_operators = 1
 let g:rainbow_load_separately = [ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']] ], [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']] ], ]
+let g:rainbow_ctermfgs = [ '242', '33', '197', '98', '172', '36', ]
+let g:rainbow_guifgs  = [ '#666666', '#0087ff', '#ff005f', '#875fd7', '#d78700', '#00af87', ]
 
 " anzu
 nmap n <Plug>(anzu-n-with-echo)
