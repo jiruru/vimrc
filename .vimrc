@@ -287,16 +287,26 @@ endif
 if has('gui_running')
     " gm
     set guioptions-=e
+    set guioptions-=m
+    set guioptions-=T
     set guioptions-=r
     set guioptions-=l
     set guioptions-=L
 
     let no_buffers_menu = 1
 
-    set guifont=Ricty-Regular:h13
     set mousehide
-    set vb t_vb=
-    set macmeta
+    set vb
+    set t_vb=
+
+    if has('mac')
+        set macmeta
+        set guifont=Ricty-Regular:h13
+    else
+        set guifont=Ricty\ 11
+        set lines=40
+        set columns=120
+    endif
 endif
 
 
