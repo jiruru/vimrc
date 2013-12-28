@@ -244,12 +244,14 @@ nnoremap <C-]> g<C-]>zz
 " http://vim-users.jp/2011/04/hack214/
 onoremap ( t(
 onoremap ) t)
+onoremap ; t;
 onoremap < t<
 onoremap > t>
 onoremap [ t[
 onoremap ] t]
 vnoremap ( t(
 vnoremap ) t)
+vnoremap ; t;
 vnoremap < t<
 vnoremap > t>
 vnoremap [ t[
@@ -394,7 +396,7 @@ NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operat
 NeoBundleLazy 'h1mesuke/textobj-wiw', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-wiw-'}}
 NeoBundleLazy 'kana/vim-textobj-function', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-function-'}}
 NeoBundleLazy 'kana/vim-textobj-indent', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': ['<Plug>(textobj-indent-', '<Plug>(textobj-indent-same-']}}
-NeoBundleLazy 'kana/vim-textobj-line', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : ['al', 'il'] }}
+NeoBundleLazy 'kana/vim-textobj-line', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : ['<Plug>(textobj-line-'] }}
 NeoBundleLazy 'kana/vim-textobj-user'
 NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
 NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': ['<Plug>(textobj-multitextobj-A','<Plug>(textobj-multitextobj-B', '<Plug>(textobj-multitextobj-C', '<Plug>(textobj-multitextobj-D', '<Plug>(textobj-multitextobj-E'] }}
@@ -792,10 +794,13 @@ map mge <Plug>(textobj-wiw-P)
 " textobj-multiblock
 let g:textobj_multiblock_blocks = [ ['(', ')'], ['[', ']'], ['{', '}'], ['<', '>'], ['"', '"'], ["'", "'"], ['\_^\s*\<function\>.*', '\_^\s*endfunction\_$'], ['\_^\s*\<if\>.*', '\_^\s*\<endif\>\s*\_$'], ]
 
+" textobj-parameter
+omap i, <Plug>(textobj-parameter-i)
+omap a, <Plug>(textobj-parameter-a)
+
 " textobj-multitextobj
 let g:textobj_multitextobj_textobjects_group_i = {
             \   "A" : [
-            \       "i,",
             \       "\<Plug>(textobj-wiw-i)",
             \       "iw",
             \    ],
@@ -806,7 +811,6 @@ let g:textobj_multitextobj_textobjects_group_i = {
             \}
 let g:textobj_multitextobj_textobjects_group_a = {
             \   "A" : [
-            \       "a,",
             \       "\<Plug>(textobj-wiw-a)",
             \       "aw",
             \    ],
@@ -815,18 +819,14 @@ let g:textobj_multitextobj_textobjects_group_a = {
             \       "\<Plug>(textobj-multiblock-a)",
             \    ],
             \}
-map <Plug>(textobj-word-i)  <Plug>(textobj-multitextobj-A-i)
-map <Plug>(textobj-word-a)  <Plug>(textobj-multitextobj-A-a)
-map <Plug>(textobj-block-i) <Plug>(textobj-multitextobj-B-i)
-map <Plug>(textobj-block-a) <Plug>(textobj-multitextobj-B-a)
+omap <Plug>(textobj-word-i)  <Plug>(textobj-multitextobj-A-i)
+omap <Plug>(textobj-word-a)  <Plug>(textobj-multitextobj-A-a)
+omap <Plug>(textobj-block-i) <Plug>(textobj-multitextobj-B-i)
+omap <Plug>(textobj-block-a) <Plug>(textobj-multitextobj-B-a)
 omap iw <Plug>(textobj-word-i)
-vmap iw <Plug>(textobj-word-i)
 omap aw <Plug>(textobj-word-a)
-vmap aw <Plug>(textobj-word-a)
 omap ib <Plug>(textobj-block-i)
-vmap ib <Plug>(textobj-block-i)
 omap ab <Plug>(textobj-block-a)
-vmap ab <Plug>(textobj-block-a)
 
 " Thumbnail
 nnoremap <silent> <Leader>th :Thumbnail<CR>
