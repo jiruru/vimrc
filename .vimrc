@@ -249,13 +249,6 @@ onoremap < t<
 onoremap > t>
 onoremap [ t[
 onoremap ] t]
-vnoremap ( t(
-vnoremap ) t)
-vnoremap ; t;
-vnoremap < t<
-vnoremap > t>
-vnoremap [ t[
-vnoremap ] t]
 
 
 "-------------------------------------------------------------------------------"
@@ -410,7 +403,8 @@ NeoBundleLazy 'kana/vim-textobj-line', { 'depends' : 'kana/vim-textobj-user', 'a
 NeoBundleLazy 'kana/vim-textobj-user'
 NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
 NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': ['<Plug>(textobj-multitextobj-A','<Plug>(textobj-multitextobj-B', '<Plug>(textobj-multitextobj-C', '<Plug>(textobj-multitextobj-D', '<Plug>(textobj-multitextobj-E'] }}
-NeoBundleLazy 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-parameter-'}}
+NeoBundleLazy 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': '<Plug>(textobj-parameter-'}}
+NeoBundleLazy 'terryma/vim-expand-region', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': '<Plug>(expand_region_'}}
 
 NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : [{ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'}], 'function_prefix' : 'unite' }}
 NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
@@ -794,12 +788,16 @@ nmap <silent>yss <Plug>(operator-surround-append)<Plug>(textobj-multiblock-i)
 nmap <silent>ydd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
 nmap <silent>yrr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
 
-" Textobj-wiw
+" textobj-wiw
 let g:textobj_wiw_no_default_key_mappings = 0
 map mw <Plug>(textobj-wiw-n)
 map mb <Plug>(textobj-wiw-p)
 map me <Plug>(textobj-wiw-N)
 map mge <Plug>(textobj-wiw-P)
+
+" vim-expand-region
+vmap K <Plug>(expand_region_expand)
+vmap J <Plug>(expand_region_shrink)
 
 " textobj-multiblock
 let g:textobj_multiblock_blocks = [ ['(', ')'], ['[', ']'], ['{', '}'], ['<', '>'], ['"', '"'], ["'", "'"], ['\_^\s*\<function\>.*', '\_^\s*endfunction\_$'], ['\_^\s*\<if\>.*', '\_^\s*\<endif\>\s*\_$'], ]
@@ -833,10 +831,18 @@ omap <Plug>(textobj-word-i)  <Plug>(textobj-multitextobj-A-i)
 omap <Plug>(textobj-word-a)  <Plug>(textobj-multitextobj-A-a)
 omap <Plug>(textobj-block-i) <Plug>(textobj-multitextobj-B-i)
 omap <Plug>(textobj-block-a) <Plug>(textobj-multitextobj-B-a)
+vmap <Plug>(textobj-word-i)  <Plug>(textobj-multitextobj-A-i)
+vmap <Plug>(textobj-word-a)  <Plug>(textobj-multitextobj-A-a)
+vmap <Plug>(textobj-block-i) <Plug>(textobj-multitextobj-B-i)
+vmap <Plug>(textobj-block-a) <Plug>(textobj-multitextobj-B-a)
 omap iw <Plug>(textobj-word-i)
 omap aw <Plug>(textobj-word-a)
 omap ib <Plug>(textobj-block-i)
 omap ab <Plug>(textobj-block-a)
+vmap iw <Plug>(textobj-word-i)
+vmap aw <Plug>(textobj-word-a)
+vmap ib <Plug>(textobj-block-i)
+vmap ab <Plug>(textobj-block-a)
 
 " Thumbnail
 nnoremap <silent> <Leader>th :Thumbnail<CR>
