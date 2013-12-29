@@ -67,6 +67,7 @@ set whichwrap=b,s,h,l,<,>,[,]   " カーソルを行頭、行末で止まらな�
 set timeout                     " マッピングのタイムアウト有効
 set timeoutlen=1000             " マッピングのタイムアウト時間
 set ttimeoutlen=0               " キーコードのタイムアウト時間
+set matchpairs+=<:>             " 括弧のハイライト追加
 if !has('gui_running')
     set spelllang+=cjk              " 日本語などの文字をスペルミスとしない
 endif
@@ -332,12 +333,10 @@ NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'bling/vim-airline'
-NeoBundle 'kshenoy/vim-signature'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
 NeoBundle 'osyo-manga/vim-reunions'
-NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
@@ -405,6 +404,7 @@ NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends' : 'kana/vim-texto
 NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': ['<Plug>(textobj-multitextobj-A','<Plug>(textobj-multitextobj-B', '<Plug>(textobj-multitextobj-C', '<Plug>(textobj-multitextobj-D', '<Plug>(textobj-multitextobj-E'] }}
 NeoBundleLazy 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': '<Plug>(textobj-parameter-'}}
 NeoBundleLazy 'terryma/vim-expand-region', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': '<Plug>(expand_region_'}}
+NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': ['av', 'iv'] }}
 
 NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : [{ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'}], 'function_prefix' : 'unite' }}
 NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
@@ -765,14 +765,14 @@ let g:tweetvim_config_dir = expand('~/.vim/tweetvim')
 let g:tweetvim_display_username = 1
 let g:tweetvim_display_icon = 1
 
+" learn-vimscript
+nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
+
 " SuddenDeath
 map <Leader>x <Plug>(operator-suddendeath)
 
 " Open-Browser
 map <Leader>op <Plug>(openbrowser-open)
-
-" learn-vimscript
-nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
 
 " operator-replace
 map _ <Plug>(operator-replace)
