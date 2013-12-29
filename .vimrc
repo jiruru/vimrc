@@ -22,6 +22,7 @@ set swapfile
 " インデント設定
 set backspace=2      " Backspaceの動作
 set cindent
+set cinoptions+=:0,g0
 set smartindent
 set expandtab        " <Tab>の代わりに空白
 set shiftwidth=4     " 自動インデントなどでずれる幅
@@ -370,7 +371,8 @@ NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [['n', '<Plug
 NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : {'commands' : 'OverCommandLine'} }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
-NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands'  : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
+NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : ['ClangFormat', 'ClangFormatEchoFormattedCode'] } }
+NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands' : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : {'mappings': [['inx', '<Plug>NERDCommenter']]}}
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 't9md/vim-smalls', { 'autoload' : { 'mappings'  : ['nxo', '<Plug>(smalls)'] } }
@@ -402,9 +404,9 @@ NeoBundleLazy 'kana/vim-textobj-line', { 'depends' : 'kana/vim-textobj-user', 'a
 NeoBundleLazy 'kana/vim-textobj-user'
 NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
 NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': ['<Plug>(textobj-multitextobj-A','<Plug>(textobj-multitextobj-B', '<Plug>(textobj-multitextobj-C', '<Plug>(textobj-multitextobj-D', '<Plug>(textobj-multitextobj-E'] }}
+NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': ['av', 'iv'] }}
 NeoBundleLazy 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': '<Plug>(textobj-parameter-'}}
 NeoBundleLazy 'terryma/vim-expand-region', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': '<Plug>(expand_region_'}}
-NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': ['av', 'iv'] }}
 
 NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : [{ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'}], 'function_prefix' : 'unite' }}
 NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
@@ -961,6 +963,7 @@ function! s:config_ccpp()
     setlocal nocindent
     setlocal autoindent
     setlocal cindent
+    let g:clang_format#command = s:check_clang()
 endfunction
 
 augroup general
