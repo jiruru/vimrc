@@ -592,7 +592,7 @@ function! s:bundle.hooks.on_source(bundle)
     endif
 
     " systemの戻り値に注意
-    let g:marching_clang_command = substitute(system('where '.clang_exe), '\r\|\n', '', 'g')
+    let g:marching_clang_command = substitute(system('where '.clang_exe), '[\r\|\n].*', '', 'g')
     let g:marching_clang_command_option = "-Wall -std=c++1y"
     let g:marching_enable_neocomplete = 1
 
@@ -614,7 +614,7 @@ function! s:bundle.hooks.on_source(bundle)
     let g:clang_jumpto_back_key = 'dummy'
 
     let clang_path = substitute(system('where ' . clang_exe), 'bin/' . clang_exe, '', 'g')
-    let clang_path = substitute(clang_path, '\r\|\n', '', 'g')
+    let clang_path = substitute(clang_path, '[\r\|\n].*', '', 'g')
     let g:clang_executable_path = clang_path.'bin/'
     let g:clang_library_path = clang_path.'lib/'
 endfunction
