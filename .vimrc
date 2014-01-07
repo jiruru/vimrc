@@ -324,12 +324,6 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '1' } } }
 
-" NeoBundle 'mattn/googlesuggest-complete-vim'
-" NeoBundle 'mopp/googlesuggest-source.vim'
-" NeoBundle 'rbtnn/vimconsole.vim'
-" NeoBundle 'supermomonga/shaberu.vim'
-" NeoBundle 'tomasr/molokai'
-
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
@@ -353,12 +347,14 @@ NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
 NeoBundleLazy 'honza/vim-snippets'
 NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
+NeoBundleLazy 'itchyny/calendar.vim', { 'autoload' : { 'commands' : [ { 'name' : 'Calendar', 'complete' : 'customlist,calendar#argument#complete'} ] } }
 NeoBundleLazy 'itchyny/dictionary.vim', { 'autoload' : { 'commands' : 'Dictionary'}, 'disabled' : (!has('mac')) }
 NeoBundleLazy 'itchyny/thumbnail.vim', { 'autoload' : {'commands' : 'Thumbnail'} }
 NeoBundleLazy 'kana/vim-niceblock', { 'autoload' : { 'mappings' : [['v', 'I'], ['v', 'A']] }}
 NeoBundleLazy 'kana/vim-smartchr', '', 'loadInsert'
 NeoBundleLazy 'kana/vim-smartinput', '', 'loadInsert'
 NeoBundleLazy 'kannokanno/previm', { 'depends' : 'tyru/open-browser.vim', 'autoload' : { 'commands' : 'PrevimOpen', 'filetypes' : 'markdown' } }
+NeoBundleLazy 'koron/codic-vim', { 'autoload' : { 'commands' : ['Codic'] } }
 NeoBundleLazy 'koron/nyancat-vim', { 'autoload' : { 'commands' : [ 'Nyancat', 'Nyancat2',], } }
 NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
@@ -375,7 +371,7 @@ NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : ['ClangFor
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands' : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : {'mappings': [['inx', '<Plug>NERDCommenter']]}}
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
-NeoBundleLazy 't9md/vim-smalls', { 'autoload' : { 'mappings'  : ['nxo', '<Plug>(smalls)'] } }
+NeoBundleLazy 't9md/vim-smalls', { 'autoload' : { 'mappings'  : ['<Plug>(smalls)'] } }
 NeoBundleLazy 'taichouchou2/alpaca_english', { 'disabled' : (!has('ruby')), 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
 NeoBundleLazy 'taku-o/vim-copypath', { 'autoload' : { 'commands'  : ['CopyFileName', 'CopyPath'] } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
@@ -389,7 +385,6 @@ NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
-NeoBundleLazy 'zhaocai/GoldenView.Vim'
 
 NeoBundle 'rhysd/vim-operator-surround'
 NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : ['<Plug>(operator-replace)'] } }
@@ -415,7 +410,7 @@ NeoBundleLazy 'Shougo/unite-ssh', { 'autoload' : { 'unite_sources' : ['ssh'],} }
 NeoBundleLazy 'osyo-manga/vim-reanimate', { 'autoload' : { 'unite_sources' : ['Reanimate'], 'commands' : ['ReanimateLoad', 'ReanimateSave']} }
 NeoBundleLazy 'osyo-manga/unite-quickfix', { 'autoload' : { 'unite_sources' : ['quickfix'],} }
 NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['history/command', 'history/yank', 'history/search'],} }
-NeoBundleLazy 'rhysd/codic-vim-with-unite', { 'autoload' : { 'commands' : ['Codic'], 'unite_sources' : ['codic'] } }
+NeoBundleLazy 'rhysd/unite-codic.vim', { 'depends' : 'koron/codic-vim', 'autoload' : { 'unite_sources' : ['codic'] } }
 
 NeoBundleLazy 'basyura/TweetVim', { 'depends' : ['basyura/twibill.vim', 'tyru/open-browser.vim'], 'autoload' : { 'commands' : ['TweetVimHomeTimeline', 'TweetVimUserStream'], 'unite_sources' : ['tweetvim'],} }
 NeoBundleLazy 'basyura/twibill.vim', { 'depends' : 'tyru/open-browser.vim'}
@@ -781,15 +776,18 @@ map <Leader>op <Plug>(openbrowser-open)
 map _ <Plug>(operator-replace)
 
 " operator-surround
-nmap <silent>ys <Plug>(operator-surround-append)
-omap <silent>ys <Plug>(operator-surround-append)
-nmap <silent>yd <Plug>(operator-surround-delete)
-omap <silent>yd <Plug>(operator-surround-delete)
-nmap <silent>yr <Plug>(operator-surround-replace)
-omap <silent>yr <Plug>(operator-surround-replace)
-nmap <silent>yss <Plug>(operator-surround-append)<Plug>(textobj-multiblock-i)
-nmap <silent>ydd <Plug>(operator-surround-delete)<Plug>(textobj-multiblock-a)
-nmap <silent>yrr <Plug>(operator-surround-replace)<Plug>(textobj-multiblock-a)
+nmap <silent> zs <Plug>(operator-surround-append)
+omap <silent> zs <Plug>(operator-surround-append)
+nmap <silent> zd <Plug>(operator-surround-delete)
+omap <silent> zd <Plug>(operator-surround-delete)
+nmap <silent> zr <Plug>(operator-surround-replace)
+omap <silent> zr <Plug>(operator-surround-replace)
+nmap <silent> zss <Plug>(operator-surround-append)<Plug>(textobj-block-i)
+nmap <silent> zdd <Plug>(operator-surround-delete)<Plug>(textobj-block-a)
+nmap <silent> zrr <Plug>(operator-surround-replace)<Plug>(textobj-block-a)
+
+" operator-reverse
+nmap <silent> <Leader>re <Plug>(operator-reverse-text)
 
 " textobj-wiw
 let g:textobj_wiw_no_default_key_mappings = 0
@@ -916,14 +914,6 @@ let g:layoutplugin#is_append_vimrc = 1
 " small
 map <Leader>sm <Plug>(smalls)
 
-" Goldenview
-let g:goldenview__enable_default_mapping = 0
-nmap <silent> \ <Plug>GoldenViewSplit
-nmap <silent> <F8> <Plug>GoldenViewSwitchMain
-nmap <silent> <S-F8> <Plug>GoldenViewSwitchToggle
-nmap <silent> <C-W><C-N> <Plug>GoldenViewNext
-nmap <silent> <C-W><C-P> <Plug>GoldenViewPrevious
-
 " sonictemplate
 let g:sonictemplate_key = '<C-G>s'
 let g:sonictemplate_intelligent_key = '<C-G>i'
@@ -934,9 +924,6 @@ function! s:bundle.hooks.on_post_source(bundle)
     doautoall fugitive BufNewFile
 endfunction
 unlet s:bundle
-
-" operator-reverse
-nmap <silent> <Leader>re <Plug>(operator-reverse-text)
 
 
 "-------------------------------------------------------------------------------"
