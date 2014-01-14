@@ -624,7 +624,8 @@ imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 imap <C-l> <Plug>(neosnippet_start_unite_snippet)
 set conceallevel=2 concealcursor=i
-let g:neosnippet#snippets_directory = expand('~/.vim/bundle/vim-snippets/snippets') . '/*.snippets'
+" let g:neosnippet#snippets_directory = expand('~/.vim/bundle/vim-snippets/snippets') . '/*.snippets,'
+let g:neosnippet#snippets_directory = '~/.vim/bundle/neosnippet-snippets/neosnippets/,~/.vim/bundle/vim-snippets/snippets'
 
 " easymotion
 let g:EasyMotion_leader_key = '<Leader>e'
