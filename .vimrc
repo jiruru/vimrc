@@ -311,6 +311,8 @@ endif
 " neobundleが存在しない場合これ以降を読み込まない
 if !isdirectory(expand('~/.vim/bundle/neobundle.vim'))
     echoerr 'No NeoBundle !'
+    syntax enable
+    colorscheme desert
     finish
 endif
 
@@ -339,7 +341,8 @@ NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
 NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
-NeoBundleLazy 'Shougo/neosnippet', { 'depends' : 'honza/vim-snippets', 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
+NeoBundleLazy 'Shougo/neosnippet', { 'depends' : ['honza/vim-snippets', 'Shougo/neosnippet-snippets'], 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
+NeoBundleLazy 'Shougo/neosnippet-snippets'
 NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete'}, 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate'], 'explorer' : 1,} }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'deris/vim-rengbang', { 'autoload' : { 'commands' : ['RengBang', 'RengBangUsePrev']} }
@@ -592,7 +595,7 @@ function! s:bundle.hooks.on_source(bundle)
     let g:marching_clang_command_option = "-Wall -std=c++1y"
     let g:marching_enable_neocomplete = 1
 
-    set updatetime=200
+    set updatetime=500
 endfunction
 unlet s:bundle
 
