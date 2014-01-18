@@ -22,7 +22,6 @@ set swapfile
 " インデント設定
 set backspace=2      " Backspaceの動作
 set cindent
-set cinoptions+=:0,g0
 set smartindent
 set expandtab        " <Tab>の代わりに空白
 set shiftwidth=4     " 自動インデントなどでずれる幅
@@ -619,12 +618,14 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 unlet s:bundle
 
+" clang-format
+let g:clang_format#style_options = { "AccessModifierOffset" : -4, "BinPackParameters" : "false", "ColumnLimit" : "9999", "BreakBeforeBraces" : "Attach", "AlwaysBreakTemplateDeclarations" : "true", "Standard" : "C++11"}
+
 " neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
 imap <C-l> <Plug>(neosnippet_start_unite_snippet)
 set conceallevel=2 concealcursor=i
-" let g:neosnippet#snippets_directory = expand('~/.vim/bundle/vim-snippets/snippets') . '/*.snippets,'
 let g:neosnippet#snippets_directory = '~/.vim/bundle/neosnippet-snippets/neosnippets/,~/.vim/bundle/vim-snippets/snippets'
 
 " easymotion
@@ -951,11 +952,9 @@ endfunction
 
 " C/C++
 function! s:config_ccpp()
-    setlocal nosmartindent
-    setlocal nocindent
-    setlocal autoindent
-    setlocal cindent
-    let g:clang_format#command = s:check_clang()
+    if has('mac')
+        let g:clang_format#command = "clang-format-3.5"
+    endif
 endfunction
 
 augroup general
