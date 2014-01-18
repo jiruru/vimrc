@@ -333,6 +333,8 @@ NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
 NeoBundle 'osyo-manga/vim-reunions'
 NeoBundle 'thinca/vim-quickrun'
+NeoBundle 'DoxygenToolkit.vim'
+NeoBundle 'CCTree.vim'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
@@ -685,8 +687,8 @@ function! s:bundle.hooks.on_source(bundle)
     call smartinput#map_to_trigger('i', '<Space>', '<Space>', '<Space>')
     call smartinput#define_rule({ 'char' : '<Space>', 'at' : '(\%#)', 'input' : '<Space><Space><Left>'})
 
-    let lst = [   ['<',     "smartchr#loop(' < ', '<<', '<')" ],
-                \ ['>',     "smartchr#loop(' > ', '>>', ' >>> ', '>')"],
+    let lst = [   ['<',     "smartchr#loop(' < ', ' << ', '<')" ],
+                \ ['>',     "smartchr#loop(' > ', ' >> ', ' >>> ', '>')"],
                 \ ['+',     "smartchr#loop(' + ', '++', '+')"],
                 \ ['-',     "smartchr#loop(' - ', '--', '-')"],
                 \ ['/',     "smartchr#loop(' / ', '//', '/')"],
