@@ -190,15 +190,14 @@ noremap <Leader>to :tabnew<Space>
 noremap <Leader>tc :tabclose<CR>
 noremap <Leader>j gT
 noremap <Leader>k gt
+" 現在バッファをTabで開く
+noremap <Leader>tsp :tab split<CR>
 
 " 画面分割
 noremap <Leader>sp :split<Space>
 noremap <Leader>vsp :vsplit<Space>
 
-" 現在バッファをTabで開く
-noremap <Leader>tsp :tab split<CR>
-
-" エラーリスト移動
+" ロケーションリスト移動
 nnoremap <silent> [o :cprevious<CR>
 nnoremap <silent> ]o :cnext<CR>
 nnoremap <silent> [O :<C-u>cfirst<CR>
@@ -440,27 +439,30 @@ if executable('ag')
     let g:unite_source_grep_default_opts = '--nocolor --nogroup'
     let g:unite_source_grep_max_candidates = 200
 endif
-nnoremap <silent> fre :<C-u>UniteResume<CR>
-nnoremap <silent> fb  :<C-u>Unite -buffer-name=Buffers buffer:!<CR>
-nnoremap <silent> fk  :<C-u>Unite -buffer-name=Bookmark bookmark -default-action=vimfiler<CR>
-nnoremap <silent> fs  :<C-u>Unite -buffer-name=Files file_mru<CR>
-nnoremap <silent> fd  :<C-u>Unite -buffer-name=Directory -default-action=tabopen directory directory_mru<CR>
-nnoremap <silent> ff  :<C-u>Unite -buffer-name=Sources source<CR>
-nnoremap <silent> fg  :<C-u>Unite -buffer-name=ag grep -keep-focus -no-quit<CR>
-nnoremap <silent> fhc :<C-u>Unite -buffer-name=History history/command<CR>
-nnoremap <silent> fhy :<C-u>Unite -buffer-name=History history/yank<CR>
-nnoremap <silent> fhs :<C-u>Unite -buffer-name=History history/search<CR>
-nnoremap <silent> fhl :<C-u>Unite -buffer-name=Help help<CR>
-nnoremap <silent> fma :<C-u>Unite -buffer-name=Mappings mapping<CR>
-nnoremap <silent> fme :<C-u>Unite -buffer-name=Messages output:message<CR>
-nnoremap <silent> fo  :<C-u>Unite -buffer-name=Outlines outline<CR>
-nnoremap <silent> fl  :<C-u>Unite -buffer-name=Line line:all -no-quit<CR>
-nnoremap <silent> fr  :<C-u>Unite -buffer-name=Ref/man ref/man<CR>
-nnoremap <silent> fta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
-nnoremap <silent> fn  :<C-u>Unite -buffer-name=Snippet snippet<CR>
-nnoremap <silent> ft  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
-nnoremap <silent> fq  :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
-nnoremap <silent> fa  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
+nmap f [Unite]
+nnoremap [Unite] <Nop>
+nnoremap [Unite] f
+nnoremap <silent> [Unite]re :<C-u>UniteResume<CR>
+nnoremap <silent> [Unite]b  :<C-u>Unite -buffer-name=Buffers buffer:!<CR>
+nnoremap <silent> [Unite]k  :<C-u>Unite -buffer-name=Bookmark bookmark -default-action=vimfiler<CR>
+nnoremap <silent> [Unite]s  :<C-u>Unite -buffer-name=Files file_mru<CR>
+nnoremap <silent> [Unite]d  :<C-u>Unite -buffer-name=Directory -default-action=tabopen directory directory_mru<CR>
+nnoremap <silent> [Unite]f  :<C-u>Unite -buffer-name=Sources source<CR>
+nnoremap <silent> [Unite]g  :<C-u>Unite -buffer-name=ag grep -keep-focus -no-quit<CR>
+nnoremap <silent> [Unite]hc :<C-u>Unite -buffer-name=History history/command<CR>
+nnoremap <silent> [Unite]hy :<C-u>Unite -buffer-name=History history/yank<CR>
+nnoremap <silent> [Unite]hs :<C-u>Unite -buffer-name=History history/search<CR>
+nnoremap <silent> [Unite]hl :<C-u>Unite -buffer-name=Help help<CR>
+nnoremap <silent> [Unite]ma :<C-u>Unite -buffer-name=Mappings mapping<CR>
+nnoremap <silent> [Unite]me :<C-u>Unite -buffer-name=Messages output:message<CR>
+nnoremap <silent> [Unite]o  :<C-u>Unite -buffer-name=Outlines outline<CR>
+nnoremap <silent> [Unite]l  :<C-u>Unite -buffer-name=Line line:all -no-quit<CR>
+nnoremap <silent> [Unite]r  :<C-u>Unite -buffer-name=Ref/man ref/man<CR>
+nnoremap <silent> [Unite]ta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
+nnoremap <silent> [Unite]n  :<C-u>Unite -buffer-name=Snippet snippet<CR>
+nnoremap <silent> [Unite]t  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
+nnoremap <silent> [Unite]q  :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
+nnoremap <silent> [Unite]a  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
 let g:unite_quickfix_is_multiline=0
 function! s:config_unite()
     " コンバータに converter_quickfix_highlight を設定
