@@ -333,8 +333,6 @@ NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
 NeoBundle 'osyo-manga/vim-reunions'
 NeoBundle 'thinca/vim-quickrun'
-NeoBundle 'DoxygenToolkit.vim'
-NeoBundle 'CCTree.vim'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
@@ -1016,3 +1014,4 @@ syntax enable           " 強調表示有効
 colorscheme mopkai      " syntaxコマンドよりもあとにすること
 
 " temporaly
+set runtimepath+=/Users/mopp/Dropbox/Program/Vim/DoxyDoc.vim/
