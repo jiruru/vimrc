@@ -217,6 +217,7 @@ map! <NUL> <C-Space>
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
 noremap <C-Space> "*yy
+noremap mP "*P
 noremap mp "*p
 
 " 入れ替え
@@ -400,7 +401,7 @@ NeoBundleLazy 'kana/vim-textobj-line', { 'depends' : 'kana/vim-textobj-user', 'a
 NeoBundleLazy 'kana/vim-textobj-user'
 NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
 NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': ['<Plug>(textobj-multitextobj-A','<Plug>(textobj-multitextobj-B', '<Plug>(textobj-multitextobj-C', '<Plug>(textobj-multitextobj-D', '<Plug>(textobj-multitextobj-E'] }}
-NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': ['av', 'iv'] }}
+NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': [['ov', 'av'], ['ov', 'iv']] } }
 NeoBundleLazy 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': '<Plug>(textobj-parameter-'}}
 NeoBundleLazy 'terryma/vim-expand-region', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': '<Plug>(expand_region_'}}
 
