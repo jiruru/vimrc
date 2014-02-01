@@ -333,6 +333,7 @@ NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
 NeoBundle 'osyo-manga/vim-reunions'
+NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
@@ -371,10 +372,10 @@ NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : {'commands' : 'OverCommandLi
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : ['ClangFormat', 'ClangFormatEchoFormattedCode'] } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands' : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
-NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : {'mappings': [['inx', '<Plug>NERDCommenter']]}}
+NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : {'mappings' : [['inx', '<Plug>NERDCommenter']]}}
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 't9md/vim-smalls', { 'autoload' : { 'mappings'  : ['<Plug>(smalls)'] } }
-NeoBundleLazy 'taichouchou2/alpaca_english', { 'disabled' : (!has('ruby')), 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources': ['english_dictionary', 'english_example', 'english_thesaurus'], } }
+NeoBundleLazy 'taichouchou2/alpaca_english', { 'disabled' : (!has('ruby')), 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources' : ['english_dictionary', 'english_example', 'english_thesaurus'], } }
 NeoBundleLazy 'taku-o/vim-copypath', { 'autoload' : { 'commands'  : ['CopyFileName', 'CopyPath'] } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
@@ -388,22 +389,23 @@ NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 
-NeoBundle 'rhysd/vim-operator-surround'
-NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : ['<Plug>(operator-replace)'] } }
+NeoBundleLazy 'rhysd/vim-operator-surround', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-surround-append)' ], [ 'n', '<Plug>(operator-surround-delete)' ], [ 'n', '<Plug>(operator-surround-replace)' ] ] } }
+NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : [ [ 'nv', '<Plug>(operator-replace)' ] ] } }
 NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'operator' } }
-NeoBundleLazy 'tyru/operator-reverse.vim', { 'autoload' : { 'mappings'  : ['<Plug>(operator-reverse-'], 'commands' : 'OperatorReverseLines'} }
-NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : ['<Plug>(operator-suddendeath)']} }
+NeoBundleLazy 'tyru/operator-reverse.vim', { 'autoload' : { 'mappings'  : [ [ 'n', '<Plug>(operator-reverse-' ] ], 'commands' : 'OperatorReverseLines' } }
+NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : [ [ 'v', '<Plug>(operator-suddendeath)' ] ] } }
 
-NeoBundleLazy 'h1mesuke/textobj-wiw', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-wiw-'}}
-NeoBundleLazy 'kana/vim-textobj-function', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-function-'}}
-NeoBundleLazy 'kana/vim-textobj-indent', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': ['<Plug>(textobj-indent-', '<Plug>(textobj-indent-same-']}}
-NeoBundleLazy 'kana/vim-textobj-line', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : ['<Plug>(textobj-line-'] }}
+NeoBundleLazy 'h1mesuke/textobj-wiw', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-wiw-' ] ] } }
+NeoBundleLazy 'kana/vim-textobj-function', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ 'ov', '<Plug>(textobj-function-' ] } }
+NeoBundleLazy 'kana/vim-textobj-indent', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-indent-' ], [ 'ov', '<Plug>(textobj-indent-same-]' ] ] } }
+NeoBundleLazy 'kana/vim-textobj-line', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-line-' ] ] } }
+
 NeoBundleLazy 'kana/vim-textobj-user'
-NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': '<Plug>(textobj-multiblock-'}}
-NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'depends' : 'kana/vim-textobj-user', 'autoload': {'mappings': ['<Plug>(textobj-multitextobj-A','<Plug>(textobj-multitextobj-B', '<Plug>(textobj-multitextobj-C', '<Plug>(textobj-multitextobj-D', '<Plug>(textobj-multitextobj-E'] }}
-NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': [['ov', 'av'], ['ov', 'iv']] } }
-NeoBundleLazy 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': '<Plug>(textobj-parameter-'}}
-NeoBundleLazy 'terryma/vim-expand-region', { 'depends' : 'kana/vim-textobj-user', 'autoload': { 'mappings': '<Plug>(expand_region_'}}
+NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ 'ov', '<Plug>(textobj-multiblock-' ] } }
+NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-multitextobj-A' ], [ 'ov', '<Plug>(textobj-multitextobj-B' ], [ 'ov', '<Plug>(textobj-multitextobj-C' ], [ 'ov', '<Plug>(textobj-multitextobj-D' ], [ 'ov', '<Plug>(textobj-multitextobj-E' ] ] } }
+NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', 'av' ], [ 'ov', 'iv' ] ] } }
+NeoBundleLazy 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ 'ov', '<Plug>(textobj-parameter-' ] } }
+NeoBundleLazy 'terryma/vim-expand-region', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ 'ov', '<Plug>(expand_region_' ] } }
 
 NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : [{ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'}], 'function_prefix' : 'unite' }}
 NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
@@ -508,7 +510,7 @@ function! s:bundle.hooks.on_source(bundle)
         let g:neocomplete#delimiter_patterns= {}
     endif
     let g:neocomplete#delimiter_patterns.vim = ['#', '.']
-    let g:neocomplete#delimiter_patterns.cpp = ['::', '.']
+    let g:neocomplete#delimiter_patterns.cpp = [' ::', '.']
     let g:neocomplete#delimiter_patterns.c = ['.', '->']
     let g:neocomplete#delimiter_patterns.java = ['.']
 
@@ -748,7 +750,7 @@ unlet s:bundle
 
 " QuickRun FIXME
 let g:quickrun_config = {}
-let g:quickrun_config._ = { 'outputter' : 'quickfix', 'outputter/buffer/split' : ':vertical rightbelow', 'runner' : 'vimproc' }
+let g:quickrun_config._ = { 'outputter' : 'quickfix', 'outputter/buffer/split' : ' :vertical rightbelow', 'runner' : 'vimproc' }
 let g:quickrun_config.lisp = { 'command' : 'clisp', 'exec' : '%c < %s:p' }
 let g:quickrun_config.make = { 'command' : "make",  'exec' : '%c %o', 'runner' : 'vimproc', "outputter/quickfix/open_cmd" : "", "hook/unite_quickfix/enable_exit" : 1, "hook/unite_quickfix/enable_failure" : 1}
 
@@ -886,7 +888,7 @@ let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 
 " syntastic
-let g:syntastic_mode_map = { 'mode': 'active', 'active_filetypes': [], 'passive_filetypes': ['nasm'] }
+let g:syntastic_mode_map = { 'mode' : 'active', 'active_filetypes' : [], 'passive_filetypes' : ['nasm'] }
 " let g:syntastic_auto_loc_list = 1
 let g:syntastic_loc_list_height = 5
 
