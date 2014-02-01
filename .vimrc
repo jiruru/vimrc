@@ -569,22 +569,22 @@ function! s:bundle.hooks.on_post_source(bundle)
 endfunction
 unlet s:bundle
 
-" marching
 function! s:check_clang()
-    if has('mac')
-        let clang_exe = 'clang-3.5'
-    else
-        let clang_exe = 'clang'
+    let target = 'clang-3.5'
+    if executable(target)
+       return target
     endif
 
-    if !executable(clang_exe)
-        echomsg 'Clang is NOT found.'
-        return ''
+    let target = 'clang'
+    if executable(target)
+       return target
     endif
 
-    return clang_exe
+    echomsg 'Clang is NOT found.'
+    return ''
 endfunction
 
+" marching
 let s:bundle = neobundle#get('vim-marching')
 function! s:bundle.hooks.on_source(bundle)
     let clang_exe = s:check_clang()
