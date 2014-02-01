@@ -374,6 +374,7 @@ NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : ['ClangFor
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands' : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : {'mappings' : [['inx', '<Plug>NERDCommenter']]}}
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
+NeoBundleLazy 'sk1418/blockit', { 'autoload' : { 'commands' : 'Block', 'mappings' : [ [ 'v', '<Plug>BlockitVisual' ] ] } }
 NeoBundleLazy 't9md/vim-smalls', { 'autoload' : { 'mappings'  : ['<Plug>(smalls)'] } }
 NeoBundleLazy 'taichouchou2/alpaca_english', { 'disabled' : (!has('ruby')), 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources' : ['english_dictionary', 'english_example', 'english_thesaurus'], } }
 NeoBundleLazy 'taku-o/vim-copypath', { 'autoload' : { 'commands'  : ['CopyFileName', 'CopyPath'] } }
@@ -934,6 +935,9 @@ function! s:bundle.hooks.on_post_source(bundle)
     doautoall fugitive BufNewFile
 endfunction
 unlet s:bundle
+
+" blockit
+vmap <Leader>tt <Plug>BlockitVisual
 
 
 "-------------------------------------------------------------------------------"
