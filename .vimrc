@@ -890,7 +890,7 @@ let g:airline#extensions#branch#enabled = 1
 
 " syntastic
 let g:syntastic_mode_map = { 'mode' : 'active', 'active_filetypes' : [], 'passive_filetypes' : ['nasm'] }
-" let g:syntastic_auto_loc_list = 1
+let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++'
 let g:syntastic_loc_list_height = 5
 
 " rainbow parenthesis
