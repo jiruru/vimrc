@@ -48,7 +48,7 @@ let &path = '.,./include/,' . substitute($PATH, '/[a-zA-Z]*bin:', '/include/,', 
 set foldenable
 set foldcolumn=3            " 左側に折りたたみガイド表示$
 set foldmethod=indent       " 折畳の判別
-set foldtext=g:to_fold() " 折りたたみ時の表示設定
+set foldtext=g:mopp_fold() " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
 
 " 履歴など
@@ -103,7 +103,7 @@ let g:lispsyntax_clisp = 1
 " Functions
 "-------------------------------------------------------------------------------"
 " 折り畳み時表示テキスト設定用関数
-function! g:to_fold()
+function! g:mopp_fold()
     " 折りたたみ開始行取得
     let line = getline(v:foldstart)
 
@@ -125,6 +125,14 @@ function! g:to_fold()
     endif
 
     return printf('[ %2d Lines Lv%02d ] %s %s %s', (v:foldend-v:foldstart+1), v:foldlevel, line, v:folddashes, v:folddashes)
+endfunction
+
+function! g:mopp_paste(register, paste_type, paste_cmd)
+    let reg_type = getregtype(a:register)
+    let store = getreg(a:register)
+    call setreg(a:register, store, a:paste_type)
+    exe 'normal "' . a:register . a:paste_cmd
+    call setreg(a:register, store, reg_type)
 endfunction
 
 
@@ -216,9 +224,16 @@ map! <NUL> <C-Space>
 " Yank & Paste
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
-noremap <C-Space> "*yy
-noremap mP "*P
-noremap mp "*p
+xnoremap <C-Space> "*yy
+nnoremap <silent> lp :call g:mopp_paste(v:register, 'l', 'p')<CR>
+nnoremap <silent> lP :call g:mopp_paste(v:register, 'l', 'P')<CR>
+nnoremap <silent> cp :call g:mopp_paste(v:register, 'c', 'p')<CR>
+nnoremap <silent> cP :call g:mopp_paste(v:register, 'c', 'P')<CR>
+nnoremap <silent> mlp :call g:mopp_paste('*', 'l', 'p')<CR>
+nnoremap <silent> mlP :call g:mopp_paste('*', 'l', 'P')<CR>
+nnoremap <silent> mcp :call g:mopp_paste('*', 'c', 'p')<CR>
+nnoremap <silent> mcP :call g:mopp_paste('*', 'c', 'P')<CR>
+nnoremap <silent> mp :call g:mopp_paste('*', 'l', 'p')<CR>
 
 " 入れ替え
 noremap ; :
@@ -573,14 +588,14 @@ endfunction
 unlet s:bundle
 
 function! s:check_clang()
-    let target = 'clang-3.5'
+    let target = 'clang-3.4'
     if executable(target)
-       return target
+        return target
     endif
 
     let target = 'clang'
     if executable(target)
-       return target
+        return target
     endif
 
     echomsg 'Clang is NOT found.'
@@ -962,7 +977,7 @@ endfunction
 " C/C++
 function! s:config_ccpp()
     if has('mac')
-        let g:clang_format#command = "clang-format-3.5"
+        let g:clang_format#command = "clang-format-3.4"
     endif
 endfunction
 
