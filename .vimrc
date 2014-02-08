@@ -411,7 +411,7 @@ NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'op
 NeoBundleLazy 'tyru/operator-reverse.vim', { 'autoload' : { 'mappings'  : [ [ 'n', '<Plug>(operator-reverse-' ] ], 'commands' : 'OperatorReverseLines' } }
 NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : [ [ 'v', '<Plug>(operator-suddendeath)' ] ] } }
 
-NeoBundleLazy 'h1mesuke/textobj-wiw', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-wiw-' ] ] } }
+NeoBundleLazy 'h1mesuke/textobj-wiw', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'nov', '<Plug>(textobj-wiw-' ] ] } }
 NeoBundleLazy 'kana/vim-textobj-function', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ 'ov', '<Plug>(textobj-function-' ] } }
 NeoBundleLazy 'kana/vim-textobj-indent', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-indent-' ], [ 'ov', '<Plug>(textobj-indent-same-]' ] ] } }
 NeoBundleLazy 'kana/vim-textobj-line', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-line-' ] ] } }
