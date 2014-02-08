@@ -343,7 +343,7 @@ let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim' ,{ 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
-NeoBundle 'bling/vim-airline'
+NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
@@ -893,18 +893,8 @@ noremap ]rn :ReanimateLoad <C-R>%<CR>
 " VimConsole
 let g:vimconsole#auto_redraw = 1
 
-" airline
-let g:airline_left_sep = '▶ '
-let g:airline_right_sep = '◀'
-let g:airline_linecolumn_prefix = '¶'
-let g:airline_branch_prefix = '⎇ '
-let g:airline_theme = 'simple'
-let g:airline#extensions#tagbar#enabled = 1
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#branch#enabled = 1
-
 " syntastic
-let g:syntastic_mode_map = { 'mode' : 'active', 'active_filetypes' : [], 'passive_filetypes' : ['nasm'] }
+let g:syntastic_mode_map = { 'mode' : 'passive' }
 let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++'
 let g:syntastic_loc_list_height = 5
 
@@ -954,6 +944,114 @@ unlet s:bundle
 " blockit
 vmap <Leader>tt <Plug>BlockitVisual
 
+" lightline
+let g:lightline = {
+            \ 'enable' : {
+            \   'tabline' : 0
+            \ },
+            \ 'colorscheme' : 'wombat',
+            \ 'active' : {
+            \   'left': [ [ 'mode', 'paste' ], [ 'fugitive' ], [ 'filename', 'modified', 'readonly', ] ],
+            \   'right': [ [ 'syntastic', 'lineinfo' ], [ 'percent' ], [ 'fileformat', 'fileencoding', 'filetype' ] ],
+            \ },
+            \ 'inactive' : {
+            \   'left': [ [ 'filename' ] ],
+            \   'right': [ [ 'lineinfo' ], [ 'percent' ] ]
+            \ },
+            \ 'separator' : {
+            \   'left': '',
+            \   'right': ''
+            \ },
+            \ 'subseparator' : {
+            \   'left': '|',
+            \   'right': '|',
+            \ },
+            \ 'component_visible_condition' : {
+            \   'percent'       : '&filetype != "vimfiler"',
+            \   'lineinfo'      : '&filetype != "vimfiler"',
+            \   'paste'         : '&modifiable && &paste',
+            \ },
+            \ 'component_function' : {
+            \   'mode'          : 'g:mline_mode',
+            \   'modified'      : 'g:mline_modified',
+            \   'readonly'      : 'g:mline_readonly',
+            \   'filename'      : 'g:mline_filename',
+            \   'fileformat'    : 'g:mline_fileformat',
+            \   'filetype'      : 'g:mline_filetype',
+            \   'fileencoding'  : 'g:mline_fileencoding',
+            \   'fugitive'      : 'g:mline_fugitive',
+            \ },
+            \ 'component_expand' : {
+            \   'syntastic' : 'SyntasticStatuslineFlag',
+            \ },
+            \ 'component_type': {
+            \   'syntastic' : 'error',
+            \ },
+            \ }
+
+function! g:mline_mode()
+    if &filetype == 'unite'
+        return 'Unite'
+    elseif &filetype == 'vimfiler'
+        return 'VimFiler'
+    elseif &filetype == 'tagbar'
+        return 'Tagbar'
+    else
+        return lightline#mode()
+    endif
+endfunction
+
+function! g:mline_modified()
+    if &filetype =~? 'unite\|vimfiler' || !&modifiable
+        return ''
+    endif
+    return &modified ? '[+]' : '[-]'
+endfunction
+
+function! g:mline_readonly()
+    return &readonly ? 'RO' : ''
+endfunction
+
+function! g:mline_filename()
+    if &filetype == 'unite'
+        return unite#get_status_string()
+    elseif &filetype == 'vimfiler'
+        if winwidth(0) <= 40
+            " TODO
+            return ''
+        endif
+        return vimfiler#get_status_string()
+    elseif &filetype == 'tagbar'
+        return g:lightline.fname
+    endif
+    return '' != expand('%:t') ? expand('%:t') : '[No Name]'
+endfunction
+
+function! g:mline_fugitive()
+    if &modifiable &&  &filetype !~? 'unite\|vimfiler' && exists('*fugitive#head')
+        return '⎇  ' . fugitive#head()
+    endif
+    return ''
+endfunction
+
+function! g:mline_fileformat()
+    return 60 < winwidth(0) ? &fileformat : ''
+endfunction
+
+function! g:mline_filetype()
+    return 60 < winwidth(0) ? &filetype : ''
+endfunction
+
+function! g:mline_fileencoding()
+    return 60 < winwidth(0) ? (strlen(&fenc) ? &fenc : &enc) : ''
+endfunction
+
+function! g:tagbar_status_func(current, sort, fname, ...) abort
+    let g:lightline.fname = a:fname
+    return lightline#statusline(0)
+endfunction
+let g:tagbar_status_func = 'g:tagbar_status_func'
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -979,6 +1077,15 @@ function! s:config_ccpp()
     if has('mac')
         let g:clang_format#command = "clang-format-3.4"
     endif
+endfunction
+
+" for lightline
+function! s:update_syntastic()
+    if !exists(':SyntasticCheck')
+        NeoBundleSource syntastic
+    endif
+    SyntasticCheck
+    call lightline#update()
 endfunction
 
 augroup general
@@ -1030,6 +1137,9 @@ augroup general
 
     " Java
     autocmd CompleteDone *.java call javaapi#showRef()
+
+    " for lightline
+    autocmd BufWritePost * call s:update_syntastic()
 augroup END
 
 syntax enable           " 強調表示有効
