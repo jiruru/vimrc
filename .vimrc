@@ -225,10 +225,10 @@ map! <NUL> <C-Space>
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
 xnoremap <C-Space> "*yy
-nnoremap <silent> lp :call g:mopp_paste(v:register, 'l', 'p')<CR>
-nnoremap <silent> lP :call g:mopp_paste(v:register, 'l', 'P')<CR>
-nnoremap <silent> cp :call g:mopp_paste(v:register, 'c', 'p')<CR>
-nnoremap <silent> cP :call g:mopp_paste(v:register, 'c', 'P')<CR>
+nnoremap <silent> <Leader>lp :call g:mopp_paste(v:register, 'l', 'p')<CR>
+nnoremap <silent> <Leader>lP :call g:mopp_paste(v:register, 'l', 'P')<CR>
+nnoremap <silent> <Leader>cp :call g:mopp_paste(v:register, 'c', 'p')<CR>
+nnoremap <silent> <Leader>cP :call g:mopp_paste(v:register, 'c', 'P')<CR>
 nnoremap <silent> mlp :call g:mopp_paste('*', 'l', 'p')<CR>
 nnoremap <silent> mlP :call g:mopp_paste('*', 'l', 'P')<CR>
 nnoremap <silent> mcp :call g:mopp_paste('*', 'c', 'p')<CR>
