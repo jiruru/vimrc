@@ -946,30 +946,22 @@ vmap <Leader>tt <Plug>BlockitVisual
 
 " lightline
 let g:lightline = {
-            \ 'enable' : {
-            \   'tabline' : 0
-            \ },
-            \ 'colorscheme' : 'wombat',
+            \ 'enable'      : { 'tabline' : 0 },
+            \ 'colorscheme' : 'mopkai',
             \ 'active' : {
-            \   'left': [ [ 'mode', 'paste' ], [ 'fugitive' ], [ 'filename', 'modified', 'readonly', ] ],
-            \   'right': [ [ 'syntastic', 'lineinfo' ], [ 'percent' ], [ 'fileformat', 'fileencoding', 'filetype' ] ],
+            \   'left'  : [ [ 'mode', 'paste' ], [ 'fugitive' ], [ 'readonly' ], [ 'filename', 'modified' ] ],
+            \   'right' : [ [ 'syntastic', 'lineinfo', 'percent' ], [ 'fileencoding', 'fileformat' ], [ 'filetype' ] ],
             \ },
             \ 'inactive' : {
-            \   'left': [ [ 'filename' ] ],
-            \   'right': [ [ 'lineinfo' ], [ 'percent' ] ]
+            \   'left'  : [ [ 'filename' ] ],
+            \   'right' : [ [ 'lineinfo' ], [ 'percent' ] ]
             \ },
-            \ 'separator' : {
-            \   'left': '',
-            \   'right': ''
-            \ },
-            \ 'subseparator' : {
-            \   'left': '|',
-            \   'right': '|',
-            \ },
-            \ 'component_visible_condition' : {
-            \   'percent'       : '&filetype != "vimfiler"',
-            \   'lineinfo'      : '&filetype != "vimfiler"',
-            \   'paste'         : '&modifiable && &paste',
+            \ 'separator'       : { 'left': '', 'right': '' },
+            \ 'subseparator'    : { 'left': '|', 'right': '|' },
+            \ 'component' : {
+            \   'lineinfo'  : "%{&filetype != 'vimfiler' ? printf('%3d:%d', line('.'), col('.')) : ''}",
+            \   'percent'   : "%{&filetype != 'vimfiler' ? printf('%3d%%', float2nr(((1.0 * line('.')) / (1.0 * line('$'))) * 100.0) ) : ''}",
+            \   'paste'     : "%{&modifiable && &paste ? 'Paste' : ''}",
             \ },
             \ 'component_function' : {
             \   'mode'          : 'g:mline_mode',
@@ -988,6 +980,20 @@ let g:lightline = {
             \   'syntastic' : 'error',
             \ },
             \ }
+
+let s:p = { 'normal': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'select': {}, 'inactive': {}, }
+let s:p.normal.left     = [ [ '#262626', '#005fff', 235,  27, 'bold' ], [ '#d75f00', '#262626', 166, 235 ], [ '#262626', 'd70000', 235, 160, 'bold' ], [ '#ffffff', '#0000ff', 247, 232 ] ]
+let s:p.normal.middle   = [ [ '#d70000', '#080808', 160, 232 ] ]
+let s:p.normal.right    = [ [ '#bcbcbc', '#080808', 250, 232 ],         [ '#bcbcbc', '#8a8a8a', 250, 232 ], [ '#af00d7', '#121212', 129, 232, 'bold' ] ]
+let s:p.insert.left     = [ [ '#005f00', '#ffffff',  22, 231, 'bold' ], [ '#ffffff', '#005f00', 231,  22 ] ]
+let s:p.replace.left    = [ [ '#af0000', '#ffffff', 124, 231, 'bold' ], [ '#ffffff', '#af0000', 231, 124 ] ]
+let s:p.visual.left     = [ [ '#5f00ff', '#ffffff',  57, 231, 'bold' ], [ '#ffffff', '#5f00ff', 231,  57 ] ]
+let s:p.normal.error    = [ [ '#d0d0d0', '#ff0000', 252, 196 ] ]
+let s:p.normal.warning  = [ [ '#262626', '#ffff00', 235, 226 ] ]
+let s:p.inactive.right  = [ [ '#121212', '#606060', 233, 241 ], [ '#121212', '#3a3a3a', 233, 237 , 'bold'], [ '#121212', '#262626', 233, 235 ], []]
+let s:p.inactive.middle = [ [ '#303030', '#121212', 236, 233 ] ]
+let s:p.inactive.left   = s:p.inactive.right[1:]
+let g:lightline#colorscheme#mopkai#palette = s:p
 
 function! g:mline_mode()
     if &filetype == 'unite'
@@ -1016,8 +1022,7 @@ function! g:mline_filename()
     if &filetype == 'unite'
         return unite#get_status_string()
     elseif &filetype == 'vimfiler'
-        if winwidth(0) <= 40
-            " TODO
+        if winwidth(0) <= 20
             return ''
         endif
         return vimfiler#get_status_string()
