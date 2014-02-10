@@ -354,7 +354,6 @@ NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
 NeoBundleLazy 'honza/vim-snippets'
 NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
-NeoBundleLazy 'itchyny/calendar.vim', { 'autoload' : { 'commands' : [ { 'name' : 'Calendar', 'complete' : 'customlist,calendar#argument#complete'} ] } }
 NeoBundleLazy 'itchyny/dictionary.vim', { 'autoload' : { 'commands' : 'Dictionary'}, 'disabled' : (!has('mac')) }
 NeoBundleLazy 'itchyny/thumbnail.vim', { 'autoload' : {'commands' : 'Thumbnail'} }
 NeoBundleLazy 'kana/vim-niceblock', { 'autoload' : { 'mappings' : [['v', 'I'], ['v', 'A']] }}
@@ -576,15 +575,11 @@ endfunction
 unlet s:bundle
 
 function! s:check_clang()
-    let target = 'clang-3.4'
-    if executable(target)
-        return target
-    endif
-
-    let target = 'clang'
-    if executable(target)
-        return target
-    endif
+    for t in ['clang-3.5', 'clang-3.4', 'clang']
+        if executable(t)
+            return t
+        endif
+    endfor
 
     echomsg 'Clang is NOT found.'
     return ''
@@ -600,7 +595,7 @@ function! s:bundle.hooks.on_source(bundle)
 
     " systemの戻り値に注意
     let g:marching_clang_command = substitute(system('where '.clang_exe), '[\r\|\n].*', '', 'g')
-    let g:marching_clang_command_option = "-Wall -std=c++1y"
+    let g:marching_clang_command_option = '-Wall -std=c++1y'
     let g:marching_enable_neocomplete = 1
 
     set updatetime=500
@@ -622,8 +617,8 @@ function! s:bundle.hooks.on_source(bundle)
 
     let clang_path = substitute(system('where ' . clang_exe), 'bin/' . clang_exe, '', 'g')
     let clang_path = substitute(clang_path, '[\r\|\n].*', '', 'g')
-    let g:clang_executable_path = clang_path.'bin/'
-    let g:clang_library_path = clang_path.'lib/'
+    let g:clang_executable_path = clang_path . 'bin/'
+    let g:clang_library_path = clang_path . 'lib/'
 endfunction
 unlet s:bundle
 
