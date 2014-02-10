@@ -953,7 +953,7 @@ let g:lightline = {
             \ },
             \ 'inactive' : {
             \   'left'  : [ [ 'filename' ] ],
-            \   'right' : [ [ 'filetype', 'percent' ] ]
+            \   'right' : [ [ 'percent' ], [ 'filetype' ] ]
             \ },
             \ 'separator'       : { 'left': '', 'right': '' },
             \ 'subseparator'    : { 'left': '|', 'right': '|' },
@@ -981,22 +981,26 @@ let g:lightline = {
             \ }
 
 let s:p = { 'normal': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'inactive': {}, }
-let s:base_fg       = [ '#9e9e9e', 247 ]
-let s:base_bg       = [ '#303030', 236 ]
-let s:base_dark     = [ '#0E1119', 232 ]
-let s:base_light    = [ '#e4e4e4', 254 ]
-let s:base          = [ s:base_fg, s:base_dark ]
-let s:p.normal.left     = [ [ s:base_dark, [ '#00afff', 39 ] ], [ [ '#d75f00', 166 ], s:base_dark ], s:base, [ [ '#ff0000', 196 ], s:base_dark ] ]
-let s:p.normal.middle   = [ [ s:base_fg, s:base_bg ] ]
-let s:p.normal.right    = [ s:base, [ [ '#875fd7', 98 ], s:base_dark ] ]
-let s:p.insert.left     = [ [ s:base_dark, [ '#87ff00', 118 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
-let s:p.replace.left    = [ [ s:base_dark, [ '#ff0087', 198 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
-let s:p.visual.left     = [ [ s:base_dark, [ '#d7ff5f', 191 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
-let s:p.inactive.left   = [ [ [ '#4e4e4e', 239 ], s:base_dark ] ]
-let s:p.inactive.middle = [ [ s:base_fg, [ '#000000',  16 ] ] ]
-let s:p.normal.error    = [ [ s:base_dark, [ '#ff0000', 196 ] ] ]
-let s:p.normal.warning  = [ [ s:base_dark, [ '#ffd700', 220 ] ] ]
+let s:cp = {
+            \ 'fg'      : [ '#9e9e9e', 247 ], 'glay'    : [ '#303030', 236 ],
+            \ 'dark'    : [ '#0E1119', 232 ], 'light'   : [ '#e4e4e4', 254 ],
+            \ 'purple'  : [ '#875fd7',  98 ], 'blue'    : [ '#00afff',  39 ],
+            \ 'orange'  : [ '#d75f00', 166 ], 'red'     : [ '#ff0000', 196 ],
+            \ }
+let s:pa = { 'base_glay'   : [ s:cp.fg, s:cp.glay ], 'base_dark'   : [ s:cp.fg, s:cp.dark ], }
+let s:p.normal.left     = [ [ s:cp.dark, s:cp.blue ], [ s:cp.orange, s:cp.dark ], s:pa.base_dark, [ s:cp.red, s:cp.dark ] ]
+let s:p.normal.middle   = [ s:pa.base_glay ]
+let s:p.normal.right    = [ s:pa.base_dark, [ s:cp.purple, s:cp.dark ] ]
+let s:p.insert.left     = [ [ s:cp.dark, [ '#87ff00', 118 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
+let s:p.replace.left    = [ [ s:cp.dark, [ '#ff0087', 198 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
+let s:p.visual.left     = [ [ s:cp.dark, [ '#d7ff5f', 191 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
+let s:p.inactive.left   = [ [ [ '#4e4e4e', 239 ], s:cp.dark ] ]
+let s:p.inactive.middle = [ [ s:cp.fg, [ '#000000',  16 ] ] ]
+let s:p.inactive.right  = [ s:pa.base_dark, [ s:cp.purple, s:cp.dark ] ]
+let s:p.normal.error    = [ [ s:cp.dark, s:cp.red ] ]
+let s:p.normal.warning  = [ [ s:cp.dark, [ '#ffd700', 220 ] ] ]
 let g:lightline#colorscheme#mopkai#palette = lightline#colorscheme#flatten(s:p)
+unlet s:pa s:cp s:p
 
 function! g:mline_mode()
     if &filetype == 'unite'
@@ -1037,7 +1041,8 @@ endfunction
 
 function! g:mline_fugitive()
     if &modifiable &&  &filetype !~? 'unite\|vimfiler' && exists('*fugitive#head')
-        return '⎇  ' . fugitive#head()
+        let t = fugitive#head()
+        return (t != '') ? ('⎇  ' . t) : ''
     endif
     return ''
 endfunction
