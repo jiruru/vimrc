@@ -412,16 +412,15 @@ NeoBundleLazy 'tyru/operator-reverse.vim', { 'autoload' : { 'mappings'  : [ [ 'n
 NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'depends' : 'kana/vim-operator-user', 'autoload' : {'mappings' : [ [ 'v', '<Plug>(operator-suddendeath)' ] ] } }
 
 NeoBundleLazy 'h1mesuke/textobj-wiw', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'nov', '<Plug>(textobj-wiw-' ] ] } }
-NeoBundleLazy 'kana/vim-textobj-function', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ 'ov', '<Plug>(textobj-function-' ] } }
+NeoBundleLazy 'kana/vim-textobj-function', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-function-' ] ] } }
 NeoBundleLazy 'kana/vim-textobj-indent', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-indent-' ], [ 'ov', '<Plug>(textobj-indent-same-]' ] ] } }
 NeoBundleLazy 'kana/vim-textobj-line', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-line-' ] ] } }
-
 NeoBundleLazy 'kana/vim-textobj-user'
-NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ 'ov', '<Plug>(textobj-multiblock-' ] } }
+NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-multiblock-' ] ] } }
 NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-multitextobj-A' ], [ 'ov', '<Plug>(textobj-multitextobj-B' ], [ 'ov', '<Plug>(textobj-multitextobj-C' ], [ 'ov', '<Plug>(textobj-multitextobj-D' ], [ 'ov', '<Plug>(textobj-multitextobj-E' ] ] } }
 NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', 'av' ], [ 'ov', 'iv' ] ] } }
-NeoBundleLazy 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ 'ov', '<Plug>(textobj-parameter-' ] } }
-NeoBundleLazy 'terryma/vim-expand-region', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ 'ov', '<Plug>(expand_region_' ] } }
+NeoBundleLazy 'sgur/vim-textobj-parameter', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-parameter-' ] ] } }
+NeoBundleLazy 'terryma/vim-expand-region', { 'depends' : 'kana/vim-textobj-user', 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(expand_region_' ] ] } }
 
 NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : [{ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'}], 'function_prefix' : 'unite' }}
 NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
