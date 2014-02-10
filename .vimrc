@@ -102,29 +102,18 @@ let g:lispsyntax_clisp = 1
 "-------------------------------------------------------------------------------"
 " Functions
 "-------------------------------------------------------------------------------"
-" 折り畳み時表示テキスト設定用関数
 function! g:mopp_fold()
-    " 折りたたみ開始行取得
-    let line = getline(v:foldstart)
+    let line = ' ' . substitute(getline(v:foldstart), '^\s*', '', '')
+    for i in range(&shiftwidth * v:foldlevel - 2)
+        let line = '-' . line
+    endfor
+    let line = '+' . line
 
-    " 行頭の空白数計算 - 空白で分割→先頭の一致部分を検索しインデックスをheadSpNumに設定
-    let headSpNum = stridx(line, split(line, ' ')[0])
+    let tail = printf('[ %2d Lines Lv%02d ] --- ', (v:foldend - v:foldstart + 1), v:foldlevel)
 
-    " 行頭の空白を置換
-    if (headSpNum == 1)
-        let line = substitute(line, '\ ', '-', '')
-    elseif (1 < headSpNum)
-        let line = substitute(line, '\ ', '+', '')
+    let space_size = (winwidth(0) - &foldcolumn - strdisplaywidth(line . tail) - 1) - ((&number) ? max([&numberwidth, len(line('$'))]) : 0)
 
-        " 区切りとして空白を2つ残す
-        let i = 2
-        while (i < headSpNum)
-            let line = substitute(line, '\ ', '-', '')
-            let i += 1
-        endwhile
-    endif
-
-    return printf('[ %2d Lines Lv%02d ] %s %s %s', (v:foldend-v:foldstart+1), v:foldlevel, line, v:folddashes, v:folddashes)
+    return printf('%s%' . space_size . 'S%s', line, '', tail)
 endfunction
 
 function! g:mopp_paste(register, paste_type, paste_cmd)
