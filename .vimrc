@@ -939,21 +939,21 @@ let g:lightline = {
             \   'left'  : [ [ 'filename' ] ],
             \   'right' : [ [ 'percent' ], [ 'filetype' ] ]
             \ },
-            \ 'separator'       : { 'left': '', 'right': '' },
-            \ 'subseparator'    : { 'left': '|', 'right': '|' },
+            \ 'separator'       : { 'left' : '',  'right' : ''  },
+            \ 'subseparator'    : { 'left' : '|', 'right' : '|' },
             \ 'component' : {
-            \   'lineinfo'  : "%{&filetype != 'vimfiler' ? printf('%3d:%d', line('.'), col('.')) : ''}",
-            \   'percent'   : "%{&filetype != 'vimfiler' ? printf('%3d%%', float2nr(((1.0 * line('.')) / (1.0 * line('$'))) * 100.0) ) : ''}",
-            \   'paste'     : "%{&modifiable && &paste ? 'Paste' : ''}",
+            \   'lineinfo'      : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' ? '' : printf('%03d:%03d', line('.'), col('.')) }",
+            \   'percent'       : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' ? '' : printf('%3d%%', float2nr((1.0 * line('.')) / line('$') * 100.0)) }",
+            \   'fileformat'    : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' || winwidth(0) < 60 ? '' : &fileformat }",
+            \   'filetype'      : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' || winwidth(0) < 60 ? '' : &filetype }",
+            \   'fileencoding'  : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' || winwidth(0) < 60 ? '' : (strlen(&fenc) ? &fenc : &enc) }",
+            \   'paste'         : "%{ &modifiable && &paste ? 'Paste' : '' }",
             \ },
             \ 'component_function' : {
             \   'mode'          : 'g:mline_mode',
             \   'modified'      : 'g:mline_modified',
             \   'readonly'      : 'g:mline_readonly',
             \   'filename'      : 'g:mline_filename',
-            \   'fileformat'    : 'g:mline_fileformat',
-            \   'filetype'      : 'g:mline_filetype',
-            \   'fileencoding'  : 'g:mline_fileencoding',
             \   'fugitive'      : 'g:mline_fugitive',
             \ },
             \ 'component_expand' : {
@@ -999,7 +999,7 @@ function! g:mline_mode()
 endfunction
 
 function! g:mline_modified()
-    if &filetype =~? 'unite\|vimfiler' || !&modifiable
+    if &filetype == 'unite' || !&modifiable
         return ''
     endif
     return &modified ? '[+]' : '[-]'
@@ -1024,23 +1024,11 @@ function! g:mline_filename()
 endfunction
 
 function! g:mline_fugitive()
-    if &modifiable &&  &filetype !~? 'unite\|vimfiler' && exists('*fugitive#head')
+    if &modifiable && &filetype !~? 'unite\|vimfiler' && exists('*fugitive#head')
         let t = fugitive#head()
         return (t != '') ? ('⎇  ' . t) : ''
     endif
     return ''
-endfunction
-
-function! g:mline_fileformat()
-    return 60 < winwidth(0) ? &fileformat : ''
-endfunction
-
-function! g:mline_filetype()
-    return 60 < winwidth(0) ? &filetype : ''
-endfunction
-
-function! g:mline_fileencoding()
-    return 60 < winwidth(0) ? (strlen(&fenc) ? &fenc : &enc) : ''
 endfunction
 
 function! g:tagbar_status_func(current, sort, fname, ...) abort
@@ -1095,7 +1083,7 @@ augroup general
     autocmd InsertLeave * setlocal nopaste
 
     " 状態の保存と復元
-    autocmd BufWinLeave ?* if(bufname('%')!='') | silent mkview! | endif
+    autocmd BufWinLeave ?* if(bufname('%')!='') | silent mkview!  | endif
     autocmd BufWinEnter ?* if(bufname('%')!='') | silent loadview | endif
 
     " Text
