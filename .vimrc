@@ -342,7 +342,6 @@ NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
 NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
-NeoBundleLazy 'Rip-Rip/clang_complete', { 'build' : { 'mac' : 'make install', 'others' : 'make install'} }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
 NeoBundleLazy 'Shougo/neosnippet', { 'depends' : ['honza/vim-snippets', 'Shougo/neosnippet-snippets'], 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
@@ -373,7 +372,7 @@ NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [['n', '<Plug
 NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : {'commands' : 'OverCommandLine'} }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
-NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : ['ClangFormat', 'ClangFormatEchoFormattedCode'] } }
+NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands' : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
 NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : {'mappings' : [['inx', '<Plug>NERDCommenter']]}}
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
@@ -560,9 +559,7 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 
 function! s:bundle.hooks.on_post_source(bundle)
-    if &filetype ==? 'c'
-        NeoBundleSource clang_complete
-    elseif &filetype ==? 'cpp'
+    if &filetype =~? 'c\|cpp'
         NeoBundleSource vim-marching
     endif
 
@@ -595,35 +592,16 @@ function! s:bundle.hooks.on_source(bundle)
 
     " systemの戻り値に注意
     let g:marching_clang_command = substitute(system('where '.clang_exe), '[\r\|\n].*', '', 'g')
-    let g:marching_clang_command_option = '-Wall -std=c++1y'
+    let g:marching_clang_command_option = ''
     let g:marching_enable_neocomplete = 1
 
     set updatetime=500
 endfunction
 unlet s:bundle
 
-" Clang_complete
-let s:bundle = neobundle#get('clang_complete')
-function! s:bundle.hooks.on_source(bundle)
-    let clang_exe = s:check_clang()
-    if clang_exe == ''
-        return
-    endif
-
-    let g:clang_complete_auto = 0
-    let g:clang_auto_select = 0
-    let g:clang_jumpto_declaration_key = 'dummy'
-    let g:clang_jumpto_back_key = 'dummy'
-
-    let clang_path = substitute(system('where ' . clang_exe), 'bin/' . clang_exe, '', 'g')
-    let clang_path = substitute(clang_path, '[\r\|\n].*', '', 'g')
-    let g:clang_executable_path = clang_path . 'bin/'
-    let g:clang_library_path = clang_path . 'lib/'
-endfunction
-unlet s:bundle
-
 " clang-format
-let g:clang_format#style_options = { "AccessModifierOffset" : -4, "BinPackParameters" : "false", "ColumnLimit" : "9999", "BreakBeforeBraces" : "Attach", "AlwaysBreakTemplateDeclarations" : "true", "Standard" : "C++11"}
+let g:clang_format#style_options = { 'AccessModifierOffset' : -4, 'BinPackParameters' : 'false', 'ColumnLimit' : '9999', 'BreakBeforeBraces' : 'Attach', 'AlwaysBreakTemplateDeclarations' : 'true', 'Standard' : 'C++11'}
+let g:clang_format#command = has('mac') ? 'clang-format-3.4' : 'clang-format'
 
 " neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
@@ -1053,13 +1031,6 @@ function! s:config_lisp()
     setlocal lispwords=define
 endfunction
 
-" C/C++
-function! s:config_ccpp()
-    if has('mac')
-        let g:clang_format#command = "clang-format-3.4"
-    endif
-endfunction
-
 " for lightline
 function! s:update_syntastic()
     if !exists(':SyntasticCheck')
@@ -1101,7 +1072,6 @@ augroup general
     autocmd FileType lisp call s:config_lisp()
 
     " C/C++
-    autocmd FileType c,cpp call s:config_ccpp()
     autocmd BufReadPost *.h nested setlocal filetype=c
 
     " nask
