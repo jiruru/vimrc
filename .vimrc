@@ -917,7 +917,7 @@ let g:lightline = {
             \ 'colorscheme' : 'mopkai',
             \ 'active' : {
             \   'left'  : [ [ 'mode', 'paste' ], [ 'fugitive' ], [ 'filename', 'modified' ], [ 'readonly' ] ],
-            \   'right' : [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ] ],
+            \   'right' : [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ] ,[ 'tagbar' ] ],
             \ },
             \ 'inactive' : {
             \   'left'  : [ [ 'filename' ] ],
@@ -933,6 +933,7 @@ let g:lightline = {
             \   'fileencoding'  : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' || winwidth(0) < 60 ? '' : (strlen(&fenc) ? &fenc : &enc) }",
             \   'paste'         : "%{ &modifiable && &paste ? 'Paste' : '' }",
             \   'readonly'      : "%{ &readonly ? 'RO' : '' }",
+            \   'tagbar'        : "%{ tagbar#currenttag('%s','', 'p') }",
             \ },
             \ 'component_function' : {
             \   'mode'          : 'g:mline_mode',
@@ -958,7 +959,7 @@ let s:cp = {
 let s:pa = { 'base_glay'   : [ s:cp.fg, s:cp.glay ], 'base_dark'   : [ s:cp.fg, s:cp.dark ], }
 let s:p.normal.left     = [ [ s:cp.dark, s:cp.blue ], [ s:cp.orange, s:cp.dark ], s:pa.base_dark, [ s:cp.red, s:cp.dark ] ]
 let s:p.normal.middle   = [ s:pa.base_glay ]
-let s:p.normal.right    = [ s:pa.base_dark, [ s:cp.purple, s:cp.dark ] ]
+let s:p.normal.right    = [ s:pa.base_dark, [ s:cp.purple, s:cp.dark ], [ s:cp.dark, [ '#5f87d7', 68 ] ] ]
 let s:p.insert.left     = [ [ s:cp.dark, [ '#87ff00', 118 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
 let s:p.replace.left    = [ [ s:cp.dark, [ '#ff0087', 198 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
 let s:p.visual.left     = [ [ s:cp.dark, [ '#d7ff5f', 191 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
