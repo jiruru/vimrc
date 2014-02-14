@@ -364,13 +364,15 @@ NeoBundleLazy 'koron/nyancat-vim', { 'autoload' : { 'commands' : [ 'Nyancat', 'N
 NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
 NeoBundleLazy 'mattn/gist-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : {'commands' : 'Gist'} }
-NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : ['<Leader>lv'] } }
-NeoBundleLazy 'mattn/sonictemplate-vim', { 'autoload' : { 'commands' : [{ 'name' : 'Template', 'complete' : 'customlist,sonictemplate#complete'}], 'function_prefix' : 'sonictemplate' } }
+NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : [ '<Leader>lv' ] } }
+NeoBundleLazy 'mattn/sonictemplate-vim', { 'autoload' : { 'commands' : [ { 'name' : 'Template', 'complete' : 'customlist,sonictemplate#complete' } ], 'function_prefix' : 'sonictemplate' } }
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
 NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : ['<Plug>(openvimrc-open)'] } }
 NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [['n', '<Plug>(anzu-']] }}
 NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : {'commands' : 'OverCommandLine'} }
+NeoBundleLazy 'osyo-manga/vim-snowdrop'
+NeoBundleLazy 'osyo-manga/vim-stargate', { 'autoload' : { 'commands' : [ { 'name' : 'StargateInclude', 'complete' : 'customlist,stargate#command_complete' } ] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands' : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
@@ -598,6 +600,10 @@ function! s:bundle.hooks.on_source(bundle)
     set updatetime=500
 endfunction
 unlet s:bundle
+
+" snowdrop
+let g:snowdrop#libclang_path = has('mac') ? '/Library/Developer/CommandLineTools/usr/lib' : '/usr/local/lib'
+let g:snowdrop#command_options = { 'cpp' : '-std=c++1y', }
 
 " clang-format
 let g:clang_format#style_options = { 'AccessModifierOffset' : -4, 'BinPackParameters' : 'false', 'ColumnLimit' : '9999', 'BreakBeforeBraces' : 'Attach', 'AlwaysBreakTemplateDeclarations' : 'true', 'Standard' : 'C++11'}
