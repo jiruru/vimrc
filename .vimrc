@@ -597,6 +597,7 @@ function! s:bundle.hooks.on_source(bundle)
     let g:marching_enable_neocomplete = 1
     let g:marching_debug = 1
     let g:marching_include_paths = split(&path, ',')
+    let g:marching#clang_command#options = { 'cpp' : '-Wall -std=gnu++1y', 'c' : '-Wall -std=c11' }
 
     set updatetime=500
 endfunction
