@@ -370,6 +370,7 @@ NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : [ '<Leader
 NeoBundleLazy 'mattn/sonictemplate-vim', { 'autoload' : { 'commands' : [ { 'name' : 'Template', 'complete' : 'customlist,sonictemplate#complete' } ], 'function_prefix' : 'sonictemplate' } }
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
 NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : ['<Plug>(openvimrc-open)'] } }
+NeoBundleLazy 'mopp/makecomp.vim', { 'autoload' : { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] } }
 NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [['n', '<Plug>(anzu-']] }}
 NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : {'commands' : 'OverCommandLine'} }
@@ -1097,3 +1098,4 @@ colorscheme mopkai      " syntaxコマンドよりもあとにすること
 
 " temporaly
 set runtimepath+=/Users/mopp/Dropbox/Program/Vim/DoxyDoc.vim/
+" set runtimepath+=/home/mopp/Dropbox/Program/Vim/makecomp.vim/
