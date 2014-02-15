@@ -42,7 +42,9 @@ set ignorecase          " 大文字小文字無視
 set smartcase           " 大文字があれば通常の検索
 set completeopt=menu    " 挿入モードでの補完設定
 set wildmenu            " コマンドの補完候補を表示
-let &path = '.,./include/,' . substitute($PATH, '/[a-zA-Z]*bin:', '/include/,', 'g')
+let c = substitute(system('pwd'), '[\r\|\n].*', '', 'g')
+let &path = c . '/,' . c . '/include/,' . substitute($PATH, '/[a-zA-Z]*bin:', '/include/,', 'g')
+unlet c
 
 " 折りたたみ
 set foldenable
@@ -596,6 +598,8 @@ function! s:bundle.hooks.on_source(bundle)
     let g:marching_clang_command = substitute(system('where '.clang_exe), '[\r\|\n].*', '', 'g')
     let g:marching_clang_command_option = ''
     let g:marching_enable_neocomplete = 1
+    let g:marching_debug = 1
+    let g:marching_include_paths = split(&path, ',')
 
     set updatetime=500
 endfunction
@@ -933,7 +937,7 @@ let g:lightline = {
             \   'fileencoding'  : "%{ &filetype =~? 'vimfiler\\|tagbar\\|unite' || winwidth(0) < 60 ? '' : (strlen(&fenc) ? &fenc : &enc) }",
             \   'paste'         : "%{ &modifiable && &paste ? 'Paste' : '' }",
             \   'readonly'      : "%{ &readonly ? 'RO' : '' }",
-            \   'tagbar'        : "%{ tagbar#currenttag('%s','', 'p') }",
+            \   'tagbar'        : "%{ exists('*tagbar#currenttag') ? tagbar#currenttag('%s','', 'p') : '' }",
             \ },
             \ 'component_function' : {
             \   'mode'          : 'g:mline_mode',
@@ -956,10 +960,10 @@ let s:cp = {
             \ 'purple'  : [ '#875fd7',  98 ], 'blue'    : [ '#00afff',  39 ],
             \ 'orange'  : [ '#d75f00', 166 ], 'red'     : [ '#ff0000', 196 ],
             \ }
-let s:pa = { 'base_glay'   : [ s:cp.fg, s:cp.glay ], 'base_dark'   : [ s:cp.fg, s:cp.dark ], }
+let s:pa = { 'base_glay' : [ s:cp.fg, s:cp.glay ], 'base_dark' : [ s:cp.fg, s:cp.dark ], 'base_deep' : [ s:cp.fg, [ '#262626', 235 ] ], }
 let s:p.normal.left     = [ [ s:cp.dark, s:cp.blue ], [ s:cp.orange, s:cp.dark ], s:pa.base_dark, [ s:cp.red, s:cp.dark ] ]
 let s:p.normal.middle   = [ s:pa.base_glay ]
-let s:p.normal.right    = [ s:pa.base_dark, [ s:cp.purple, s:cp.dark ], [ s:cp.dark, [ '#5f87d7', 68 ] ] ]
+let s:p.normal.right    = [ s:pa.base_deep, [ s:cp.purple, s:cp.dark ], [ s:cp.dark, [ '#5f87d7', 68 ] ] ]
 let s:p.insert.left     = [ [ s:cp.dark, [ '#87ff00', 118 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
 let s:p.replace.left    = [ [ s:cp.dark, [ '#ff0087', 198 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
 let s:p.visual.left     = [ [ s:cp.dark, [ '#d7ff5f', 191 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
