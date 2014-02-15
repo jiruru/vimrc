@@ -722,11 +722,6 @@ unlet s:bundle
 " Smartchr
 let s:bundle = neobundle#get('vim-smartchr')
 function! s:bundle.hooks.on_source(bundle)
-    " inoremap <expr> + smartchr#one_of(' + ', '++', '+')
-    " inoremap <expr> - smartchr#one_of(' - ', '--', '-')
-    " inoremap <expr> / smartchr#one_of(' / ', '// ', '/')
-    " inoremap <expr> ! smartchr#one_of('! ', ' != ', '!')
-    " inoremap <expr> = smartchr#one_of(' = ', ' == ', '=')
     inoremap <expr> , smartchr#one_of(', ', '->', ' => ')
 
     if &filetype ==? 'lisp'
@@ -748,17 +743,6 @@ let g:ConqueTerm_StartMessages = 0
 let g:ConqueTerm_CWInsert = 0
 let g:ConqueTerm_EscKey = '<C-K>'
 noremap <silent> <Leader>sh :ConqueTermVSplit <C-R>=$SHELL<CR><CR>
-
-" TweetVim
-let g:tweetvim_tweet_per_page = 60
-let g:tweetvim_display_source = 1
-let g:tweetvim_display_time = 1
-let g:tweetvim_say_insert_account = 1
-let g:tweetvim_async_post = 1
-let g:tweetvim_open_say_cmd = 'split'
-let g:tweetvim_config_dir = expand('~/.vim/tweetvim')
-let g:tweetvim_display_username = 1
-let g:tweetvim_display_icon = 1
 
 " learn-vimscript
 nnoremap <Leader>lv :help learn-vimscript.txt<CR> <C-W>L
@@ -786,6 +770,10 @@ nmap <silent> zrr <Plug>(operator-surround-replace)<Plug>(textobj-block-a)
 " operator-reverse
 nmap <silent> <Leader>re <Plug>(operator-reverse-text)
 
+" vim-expand-region
+vmap K <Plug>(expand_region_expand)
+vmap J <Plug>(expand_region_shrink)
+
 " textobj-wiw
 let g:textobj_wiw_no_default_key_mappings = 0
 map mw <Plug>(textobj-wiw-n)
@@ -793,9 +781,11 @@ map mb <Plug>(textobj-wiw-p)
 map me <Plug>(textobj-wiw-N)
 map mge <Plug>(textobj-wiw-P)
 
-" vim-expand-region
-vmap K <Plug>(expand_region_expand)
-vmap J <Plug>(expand_region_shrink)
+" textobj-line
+omap il <Plug>(textobj-line-i)
+omap al <Plug>(textobj-line-a)
+vmap il <Plug>(textobj-line-i)
+vmap al <Plug>(textobj-line-a)
 
 " textobj-multiblock
 let g:textobj_multiblock_blocks = [ ['(', ')'], ['[', ']'], ['{', '}'], ['<', '>'], ['"', '"'], ["'", "'"], ['\_^\s*\<function\>.*', '\_^\s*endfunction\_$'], ['\_^\s*\<if\>.*', '\_^\s*\<endif\>\s*\_$'], ]
