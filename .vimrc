@@ -21,8 +21,8 @@ set swapfile
 
 " インデント設定
 set backspace=2      " Backspaceの動作
+set autoindent
 set cindent
-set smartindent
 set expandtab        " <Tab>の代わりに空白
 set shiftwidth=4     " 自動インデントなどでずれる幅
 set smarttab         " 行頭に<Tab>でshiftwidth分インデント
@@ -1025,7 +1025,6 @@ endfunction
 " Lisp
 function! s:config_lisp()
     setlocal nocindent
-    setlocal autoindent
     setlocal nosmartindent
     setlocal lisp
     setlocal lispwords=define
@@ -1081,7 +1080,7 @@ augroup general
     autocmd BufNewFile,BufRead *.pde,*.ino nested setlocal filetype=arduino
 
     " json
-    autocmd BufRead,BufNewFile *.json nested setlocal filetype=json autoindent
+    autocmd BufRead,BufNewFile *.json nested setlocal filetype=json
 
     " markdown
     autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} nested setlocal filetype=markdown
