@@ -335,6 +335,7 @@ NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'luochen1990/rainbow'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
@@ -343,7 +344,6 @@ NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
-NeoBundle 'vim-scripts/Rainbow-Parentheses-Improved-and2'
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
 NeoBundleLazy 'Shougo/neosnippet', { 'depends' : ['honza/vim-snippets', 'Shougo/neosnippet-snippets'], 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
@@ -369,8 +369,8 @@ NeoBundleLazy 'mattn/gist-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : {
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : [ '<Leader>lv' ] } }
 NeoBundleLazy 'mattn/sonictemplate-vim', { 'autoload' : { 'commands' : [ { 'name' : 'Template', 'complete' : 'customlist,sonictemplate#complete' } ], 'function_prefix' : 'sonictemplate' } }
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
-NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : ['<Plug>(openvimrc-open)'] } }
 NeoBundleLazy 'mopp/makecomp.vim', { 'autoload' : { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] } }
+NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : ['<Plug>(openvimrc-open)'] } }
 NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [['n', '<Plug>(anzu-']] }}
 NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : {'commands' : 'OverCommandLine'} }
@@ -395,6 +395,7 @@ NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : 'cpp' } }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
+NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh' ] } }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 
 NeoBundleLazy 'rhysd/vim-operator-surround', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-surround-append)' ], [ 'n', '<Plug>(operator-surround-delete)' ], [ 'n', '<Plug>(operator-surround-replace)' ] ] } }
@@ -860,10 +861,11 @@ let g:syntastic_loc_list_height = 5
 
 " rainbow parenthesis
 let g:rainbow_active = 1
-let g:rainbow_operators = 1
-let g:rainbow_load_separately = [ [ '*' , [['(', ')'], ['\[', '\]'], ['{', '}']] ], [ '*.{html,htm}' , [['(', ')'], ['\[', '\]'], ['{', '}'], ['<\a[^>]*>', '</[^>]*>']] ], ]
-let g:rainbow_ctermfgs = [ '242', '33', '197', '98', '172', '36', ]
-let g:rainbow_guifgs  = [ '#666666', '#0087ff', '#ff005f', '#875fd7', '#d78700', '#00af87', ]
+let g:rainbow_conf = {
+\   'guifgs' : [ '#666666', '#0087ff', '#ff005f', '#875fd7', '#d78700', '#00af87', ],
+\   'ctermfgs': [ '242', '33', '197', '98', '172', '36', ],
+\   'separately' : { '*': {}, 'vim' : {} },
+\   }
 
 " anzu
 nmap n <Plug>(anzu-n-with-echo)
@@ -934,12 +936,8 @@ let g:lightline = {
             \   'filename'      : 'g:mline_filename',
             \   'fugitive'      : 'g:mline_fugitive',
             \ },
-            \ 'component_expand' : {
-            \   'syntastic' : 'SyntasticStatuslineFlag',
-            \ },
-            \ 'component_type': {
-            \   'syntastic' : 'error',
-            \ },
+            \ 'component_expand'    : { 'syntastic' : 'SyntasticStatuslineFlag', },
+            \ 'component_type'      : { 'syntastic' : 'error', },
             \ }
 
 let s:p = { 'normal': {}, 'insert': {}, 'replace': {}, 'visual': {}, 'inactive': {}, }
@@ -1097,4 +1095,3 @@ colorscheme mopkai      " syntaxコマンドよりもあとにすること
 
 " temporaly
 set runtimepath+=/Users/mopp/Dropbox/Program/Vim/DoxyDoc.vim/
-" set runtimepath+=/home/mopp/Dropbox/Program/Vim/makecomp.vim/
