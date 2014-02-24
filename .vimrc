@@ -22,7 +22,7 @@ set swapfile
 " インデント設定
 set backspace=2      " Backspaceの動作
 set autoindent
-set cindent
+set smartindent
 set expandtab        " <Tab>の代わりに空白
 set shiftwidth=4     " 自動インデントなどでずれる幅
 set smarttab         " 行頭に<Tab>でshiftwidth分インデント
@@ -610,7 +610,8 @@ let g:snowdrop#libclang_path = has('mac') ? '/Library/Developer/CommandLineTools
 let g:snowdrop#command_options = { 'cpp' : '-std=c++1y', }
 
 " clang-format
-let g:clang_format#style_options = { 'AccessModifierOffset' : -4, 'BinPackParameters' : 'false', 'ColumnLimit' : '9999', 'BreakBeforeBraces' : 'Attach', 'AlwaysBreakTemplateDeclarations' : 'true', 'Standard' : 'C++11'}
+" \ 'AllowShortFunctionsOnASingleLine' : 'false',
+let g:clang_format#style_options = { 'AccessModifierOffset' : -4, 'BinPackParameters' : 'false', 'AlignTrailingComments' : 'true', 'AllowShortIfStatementsOnASingleLine' : 'false', 'AllowShortLoopsOnASingleLine' : 'false', 'ColumnLimit' : '9999', 'BreakBeforeBraces' : 'Attach', 'AlwaysBreakTemplateDeclarations' : 'true', 'Standard' : "C++11" }
 let g:clang_format#command = has('mac') ? 'clang-format-3.4' : 'clang-format'
 
 " neosnippet
@@ -856,7 +857,7 @@ let g:vimconsole#auto_redraw = 1
 
 " syntastic
 let g:syntastic_mode_map = { 'mode' : 'passive' }
-let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++'
+let g:syntastic_cpp_compiler_options = '-Wall -W -Wformat=2 -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Wfloat-equal -Wpointer-arith -std=c++11 -stdlib=libc++'
 let g:syntastic_loc_list_height = 5
 
 " rainbow parenthesis
