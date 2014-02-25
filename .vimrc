@@ -48,9 +48,10 @@ unlet c
 
 " 折りたたみ
 set foldenable
-set foldcolumn=3            " 左側に折りたたみガイド表示$
+set foldminlines=0          " これよりも大きな行が折りたたまれる
+set foldcolumn=3            " 左側に折りたたみガイド表示
 set foldmethod=indent       " 折畳の判別
-set foldtext=g:mopp_fold() " 折りたたみ時の表示設定
+set foldtext=g:mopp_fold()  " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
 
 " 履歴など
@@ -611,7 +612,19 @@ let g:snowdrop#command_options = { 'cpp' : '-std=c++1y', }
 
 " clang-format
 " \ 'AllowShortFunctionsOnASingleLine' : 'false',
-let g:clang_format#style_options = { 'AccessModifierOffset' : -4, 'BinPackParameters' : 'false', 'AlignTrailingComments' : 'true', 'AllowShortIfStatementsOnASingleLine' : 'false', 'AllowShortLoopsOnASingleLine' : 'false', 'ColumnLimit' : '9999', 'BreakBeforeBraces' : 'Attach', 'AlwaysBreakTemplateDeclarations' : 'true', 'Standard' : "C++11" }
+let g:clang_format#style_options = {
+            \ 'AccessModifierOffset' : -4,
+            \ 'BinPackParameters' : 'false',
+            \ 'AlignTrailingComments' : 'true',
+            \ 'AllowShortIfStatementsOnASingleLine' : 'false',
+            \ 'AllowShortLoopsOnASingleLine' : 'false',
+            \ 'ColumnLimit' : '9999',
+            \ 'BreakBeforeBraces' : 'Attach',
+            \ 'MaxEmptyLinesToKeep' : '3',
+            \ 'PointerBindsToType' : 'true',
+            \ 'AlwaysBreakTemplateDeclarations' : 'true',
+            \ 'Standard' : "Auto"
+            \ }
 let g:clang_format#command = has('mac') ? 'clang-format-3.4' : 'clang-format'
 
 " neosnippet
@@ -863,10 +876,10 @@ let g:syntastic_loc_list_height = 5
 " rainbow parenthesis
 let g:rainbow_active = 1
 let g:rainbow_conf = {
-\   'guifgs' : [ '#666666', '#0087ff', '#ff005f', '#875fd7', '#d78700', '#00af87', ],
-\   'ctermfgs': [ '242', '33', '197', '98', '172', '36', ],
-\   'separately' : { '*': {}, 'vim' : {} },
-\   }
+            \   'guifgs' : [ '#666666', '#0087ff', '#ff005f', '#875fd7', '#d78700', '#00af87', ],
+            \   'ctermfgs': [ '242', '33', '197', '98', '172', '36', ],
+            \   'separately' : { '*': {}, 'vim' : {} },
+            \   }
 
 " anzu
 nmap n <Plug>(anzu-n-with-echo)
