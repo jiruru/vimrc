@@ -399,7 +399,7 @@ NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh' ] } }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 
-NeoBundleLazy 'rhysd/vim-operator-surround', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-surround-append)' ], [ 'n', '<Plug>(operator-surround-delete)' ], [ 'n', '<Plug>(operator-surround-replace)' ] ] } }
+NeoBundleLazy 'rhysd/vim-operator-surround', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-surround-' ] ] } }
 NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : [ [ 'nv', '<Plug>(operator-replace)' ] ] } }
 NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'operator' } }
 NeoBundleLazy 'tyru/operator-reverse.vim', { 'autoload' : { 'mappings'  : [ [ 'n', '<Plug>(operator-reverse-' ] ], 'commands' : 'OperatorReverseLines' } }
@@ -420,6 +420,7 @@ NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : [{ 'name' : 'Uni
 NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
 NeoBundleLazy 'Shougo/unite-outline', { 'autoload' : { 'unite_sources' : ['outline'],} }
 NeoBundleLazy 'Shougo/unite-ssh', { 'autoload' : { 'unite_sources' : ['ssh'],} }
+NeoBundleLazy 'Shougo/neomru.vim', { 'autoload' : { 'unite_sources' : ['file_mru'],} }
 NeoBundleLazy 'osyo-manga/vim-reanimate', { 'autoload' : { 'unite_sources' : ['Reanimate'], 'commands' : ['ReanimateLoad', 'ReanimateSave']} }
 NeoBundleLazy 'osyo-manga/unite-quickfix', { 'autoload' : { 'unite_sources' : ['quickfix'],} }
 NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['history/command', 'history/yank', 'history/search'],} }
@@ -469,7 +470,7 @@ nnoremap <silent> [Unite]l  :<C-u>Unite -buffer-name=Line line:all -no-quit<CR>
 nnoremap <silent> [Unite]r  :<C-u>Unite -buffer-name=Ref/man ref/man<CR>
 nnoremap <silent> [Unite]ta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
 nnoremap <silent> [Unite]n  :<C-u>Unite -buffer-name=Snippet snippet<CR>
-nnoremap <silent> [Unite]t  :<C-u>Unite -buffer-name=Twitter tweetvim<CR>
+nnoremap <silent> [Unite]tb :<C-u>Unite -buffer-name=Tab tab<CR>
 nnoremap <silent> [Unite]q  :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
 nnoremap <silent> [Unite]a  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
 let g:unite_quickfix_is_multiline=0
