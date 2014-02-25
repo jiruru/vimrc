@@ -611,21 +611,31 @@ let g:snowdrop#libclang_path = has('mac') ? '/Library/Developer/CommandLineTools
 let g:snowdrop#command_options = { 'cpp' : '-std=c++1y', }
 
 " clang-format
-" \ 'AllowShortFunctionsOnASingleLine' : 'false',
-let g:clang_format#style_options = {
-            \ 'AccessModifierOffset' : -4,
-            \ 'BinPackParameters' : 'false',
-            \ 'AlignTrailingComments' : 'true',
-            \ 'AllowShortIfStatementsOnASingleLine' : 'false',
-            \ 'AllowShortLoopsOnASingleLine' : 'false',
-            \ 'ColumnLimit' : '9999',
-            \ 'BreakBeforeBraces' : 'Attach',
-            \ 'MaxEmptyLinesToKeep' : '3',
-            \ 'PointerBindsToType' : 'true',
-            \ 'AlwaysBreakTemplateDeclarations' : 'true',
-            \ 'Standard' : "Auto"
-            \ }
-let g:clang_format#command = has('mac') ? 'clang-format-3.4' : 'clang-format'
+let s:bundle = neobundle#get('vim-clang-format')
+function! s:bundle.hooks.on_source(bundle)
+    let g:clang_format#style_options = {
+                \ 'AccessModifierOffset' : -4,
+                \ 'AlignTrailingComments' : 'true',
+                \ 'AllowShortFunctionsOnASingleLine' : 'false',
+                \ 'AllowShortIfStatementsOnASingleLine' : 'false',
+                \ 'AllowShortLoopsOnASingleLine' : 'false',
+                \ 'AlwaysBreakTemplateDeclarations' : 'true',
+                \ 'BinPackParameters' : 'false',
+                \ 'BreakBeforeBraces' : 'Attach',
+                \ 'ColumnLimit' : '9999',
+                \ 'MaxEmptyLinesToKeep' : '3',
+                \ 'PointerBindsToType' : 'true',
+                \ 'Standard' : "Auto"
+                \ }
+
+    for t in [ 'clang-format-3.5', 'clang-format-3.4', 'clang-format' ]
+        if executable(t)
+            let g:clang_format#command = t
+            break
+        endif
+    endfor
+endfunction
+unlet s:bundle
 
 " neosnippet
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
