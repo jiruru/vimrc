@@ -48,7 +48,6 @@ unlet c
 
 " 折りたたみ
 set foldenable
-set foldminlines=0          " これよりも大きな行が折りたたまれる
 set foldcolumn=3            " 左側に折りたたみガイド表示
 set foldmethod=indent       " 折畳の判別
 set foldtext=g:mopp_fold()  " 折りたたみ時の表示設定
@@ -337,7 +336,9 @@ NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'luochen1990/rainbow'
+NeoBundle 'mopp/autodirmake.vim'
 NeoBundle 'mopp/mopkai.vim'
+NeoBundle 'mopp/DoxyDoc.vim'
 NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
 NeoBundle 'osyo-manga/vim-reunions'
@@ -371,6 +372,7 @@ NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : [ '<Leader
 NeoBundleLazy 'mattn/sonictemplate-vim', { 'autoload' : { 'commands' : [ { 'name' : 'Template', 'complete' : 'customlist,sonictemplate#complete' } ], 'function_prefix' : 'sonictemplate' } }
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
 NeoBundleLazy 'mopp/makecomp.vim', { 'autoload' : { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] } }
+NeoBundleLazy 'mopp/next-alter.vim', { 'autoload' : { 'commands' : 'OpenNAlter', 'mappings'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] } }
 NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : ['<Plug>(openvimrc-open)'] } }
 NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [['n', '<Plug>(anzu-']] }}
 NeoBundleLazy 'osyo-manga/vim-marching'
@@ -1034,6 +1036,9 @@ function! g:tagbar_status_func(current, sort, fname, ...) abort
 endfunction
 let g:tagbar_status_func = 'g:tagbar_status_func'
 
+" next-alter
+nmap <Leader>an <Plug>(next-alter-open)
+let g:next_alter#search_dir = [ './include', '.' , '..', '../include' ]
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -1118,5 +1123,3 @@ augroup END
 syntax enable           " 強調表示有効
 colorscheme mopkai      " syntaxコマンドよりもあとにすること
 
-" temporaly
-set runtimepath+=/Users/mopp/Dropbox/Program/Vim/DoxyDoc.vim/
