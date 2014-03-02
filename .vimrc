@@ -1040,7 +1040,7 @@ function! g:mline_buflist()
     let buf_names = []
     for i in range(1, bufnr('$'))
         if i != current_buf_nr
-            call add(buf_names, fnamemodify(bufname(i), ':t'))
+            call add(buf_names, i . '.' . fnamemodify(bufname(i), ':t'))
         endif
     endfor
 
@@ -1048,7 +1048,7 @@ function! g:mline_buflist()
         return ''
     endif
 
-    return substitute(substitute(string(buf_names), ',', '|', 'g'), "[]['^]", '', 'g')
+    return substitute(substitute(string(buf_names), ',\s', ' | ', 'g'), "[]['^]", '', 'g')
 endfunction
 
 function! g:tagbar_status_func(current, sort, fname, ...) abort
