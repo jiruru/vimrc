@@ -938,7 +938,7 @@ let g:lightline = {
             \ 'enable'      : { 'tabline' : 0 },
             \ 'colorscheme' : 'mopkai',
             \ 'active' : {
-            \   'left'  : [ [ 'mode', 'paste' ], [ 'fugitive' ], [ 'filename', 'modified' ], [ 'readonly' ] ],
+            \   'left'  : [ [ 'mode', 'paste' ], [ 'fugitive' ], [ 'filename', 'modified' ], [ 'readonly' ], [ 'buflist' ] ],
             \   'right' : [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ] ,[ 'tagbar' ] ],
             \ },
             \ 'inactive' : {
@@ -962,6 +962,7 @@ let g:lightline = {
             \   'modified'      : 'g:mline_modified',
             \   'filename'      : 'g:mline_filename',
             \   'fugitive'      : 'g:mline_fugitive',
+            \   'buflist'       : 'g:mline_buflist',
             \ },
             \ 'component_expand'    : { 'syntastic' : 'SyntasticStatuslineFlag', },
             \ 'component_type'      : { 'syntastic' : 'error', },
@@ -1030,6 +1031,26 @@ function! g:mline_fugitive()
     return ''
 endfunction
 
+function! g:mline_buflist()
+    if &filetype =~? 'unite\|vimfiler\|tagbar' || !&modifiable
+        return ''
+    endif
+
+    let current_buf_nr = bufnr('%')
+    let buf_names = []
+    for i in range(1, bufnr('$'))
+        if i != current_buf_nr
+            call add(buf_names, fnamemodify(bufname(i), ':t'))
+        endif
+    endfor
+
+    if len(buf_names) == 0
+        return ''
+    endif
+
+    return substitute(substitute(string(buf_names), ',', '|', 'g'), "[]['^]", '', 'g')
+endfunction
+
 function! g:tagbar_status_func(current, sort, fname, ...) abort
     let g:lightline.fname = a:fname
     return lightline#statusline(0)
@@ -1039,6 +1060,7 @@ let g:tagbar_status_func = 'g:tagbar_status_func'
 " next-alter
 nmap <Leader>an <Plug>(next-alter-open)
 let g:next_alter#search_dir = [ './include', '.' , '..', '../include' ]
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -1122,4 +1144,3 @@ augroup END
 
 syntax enable           " 強調表示有効
 colorscheme mopkai      " syntaxコマンドよりもあとにすること
-
