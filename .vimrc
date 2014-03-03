@@ -248,6 +248,9 @@ nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'
 " Tagが複数あればリスト表示
 nnoremap <C-]> g<C-]>zz
 
+" マクロ
+noremap Q @@
+
 " http://vim-users.jp/2011/04/hack214/
 onoremap ( t(
 onoremap ) t)
@@ -1040,7 +1043,10 @@ function! g:mline_buflist()
     let buf_names = []
     for i in range(1, bufnr('$'))
         if i != current_buf_nr
-            call add(buf_names, i . '.' . fnamemodify(bufname(i), ':t'))
+            let t = fnamemodify(bufname(i), ':t')
+            if t !~? '.jax$'
+                call add(buf_names, i . '.' . t)
+            endif
         endif
     endfor
 
