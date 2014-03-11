@@ -1034,27 +1034,43 @@ function! g:mline_fugitive()
     return ''
 endfunction
 
+let g:mline_buflist_queue = []
+let g:mline_buflist_limit = 6
 function! g:mline_buflist()
-    if &filetype =~? 'unite\|vimfiler\|tagbar' || !&modifiable
+    if &filetype =~? 'unite\|vimfiler\|tagbar' || !&modifiable || len(g:mline_buflist_queue) == 0
         return ''
     endif
 
     let current_buf_nr = bufnr('%')
-    let buf_names = []
-    for i in range(1, bufnr('$'))
-        if i != current_buf_nr
-            let t = fnamemodify(bufname(i), ':t')
-            if t !~? '.jax$'
-                call add(buf_names, i . '.' . t)
-            endif
+    let buf_names_str = ''
+    let last = g:mline_buflist_queue[-1]
+    for i in g:mline_buflist_queue
+        if i == ''
+           continue
+        endif
+
+        let t = fnamemodify(i, ':t')
+        let n = bufnr(t)
+
+        if n != current_buf_nr && t !~? '^$\|.jax$\|vimfiler:\|\[unite\]\|tagbar'
+            let buf_names_str .= printf('[%d]:%s' . (i == last ? '' : ' | '), n, t)
         endif
     endfor
 
-    if len(buf_names) == 0
-        return ''
+    return buf_names_str
+endfunction
+
+function! s:update_recent_buflist(file)
+    let idx = index(g:mline_buflist_queue, a:file)
+    if 0 <= idx
+        call remove(g:mline_buflist_queue, idx)
     endif
 
-    return substitute(substitute(string(buf_names), ',\s', ' | ', 'g'), "[]['^]", '', 'g')
+    call insert(g:mline_buflist_queue, a:file)
+
+    if g:mline_buflist_limit < len(g:mline_buflist_queue)
+        call remove(g:mline_buflist_queue, -1)
+    endif
 endfunction
 
 function! g:tagbar_status_func(current, sort, fname, ...) abort
@@ -1066,6 +1082,7 @@ let g:tagbar_status_func = 'g:tagbar_status_func'
 " next-alter
 nmap <Leader>an <Plug>(next-alter-open)
 let g:next_alter#search_dir = [ './include', '.' , '..', '../include' ]
+let g:next_alter#open_option = 'vertical topleft'
 
 
 "-------------------------------------------------------------------------------"
@@ -1105,11 +1122,11 @@ augroup general
     autocmd InsertLeave * setlocal nopaste
 
     " 状態の保存と復元
-    autocmd BufWinLeave ?* if(bufname('%')!='') | silent mkview!  | endif
-    autocmd BufWinEnter ?* if(bufname('%')!='') | silent loadview | endif
+    autocmd BufWinLeave ?* if (bufname('%') != '') | silent mkview!  | endif
+    autocmd BufWinEnter ?* if (bufname('%') != '') | silent loadview | endif
 
-    " Text
-    autocmd BufReadPre *.txt setlocal filetype=text
+    " Conque
+    autocmd BufWinLeave zsh* call s:delete_conque_term(expand('%'))
 
     " git
     autocmd FileType git setlocal foldlevel=99
@@ -1117,35 +1134,33 @@ augroup general
     " VimFiler
     autocmd FileType vimfiler call s:config_vimfiler()
 
-    " Conque
-    autocmd BufWinLeave zsh* call s:delete_conque_term(expand('%'))
-
     " Unite
     autocmd FileType unite call s:config_unite()
 
     " Lisp
     autocmd FileType lisp call s:config_lisp()
 
-    " C/C++
-    autocmd BufReadPost *.h nested setlocal filetype=c
-
     " nask
-    autocmd BufReadPre *.nas setlocal filetype=nasm
+    autocmd BufWinEnter *.nas nested setlocal filetype=nasm
+
+    " Text
+    autocmd BufWinEnter *.txt nested setlocal filetype=text
 
     " Arduino
-    autocmd BufNewFile,BufRead *.pde,*.ino nested setlocal filetype=arduino
+    autocmd BufWinEnter *.pde,*.ino nested setlocal filetype=arduino
 
     " json
-    autocmd BufRead,BufNewFile *.json nested setlocal filetype=json
+    autocmd BufWinEnter *.json nested setlocal filetype=json
 
     " markdown
-    autocmd BufNewFile,BufRead *.{md,mdwn,mkd,mkdn,mark*} nested setlocal filetype=markdown
+    autocmd BufWinEnter *.{md,mdwn,mkd,mkdn,mark*} nested setlocal filetype=markdown
 
     " Java
     autocmd CompleteDone *.java call javaapi#showRef()
 
     " for lightline
     autocmd BufWritePost * call s:update_syntastic()
+    autocmd TabEnter,BufWinEnter * call s:update_recent_buflist(expand('<amatch>'))
 augroup END
 
 syntax enable           " 強調表示有効
