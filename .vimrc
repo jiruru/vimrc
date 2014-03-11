@@ -1143,14 +1143,11 @@ augroup general
     " nask
     autocmd BufWinEnter *.nas nested setlocal filetype=nasm
 
-    " Text
-    autocmd BufWinEnter *.txt nested setlocal filetype=text
+    " json
+    autocmd BufWinEnter *.json nested setlocal filetype=json
 
     " Arduino
     autocmd BufWinEnter *.pde,*.ino nested setlocal filetype=arduino
-
-    " json
-    autocmd BufWinEnter *.json nested setlocal filetype=json
 
     " markdown
     autocmd BufWinEnter *.{md,mdwn,mkd,mkdn,mark*} nested setlocal filetype=markdown
