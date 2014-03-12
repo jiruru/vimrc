@@ -337,6 +337,7 @@ let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
+NeoBundle 'fholgado/minibufexpl.vim'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'luochen1990/rainbow'
 NeoBundle 'mopp/DoxyDoc.vim'
@@ -667,6 +668,7 @@ unlet s:bundle
 
 " VimFiler
 nnoremap <silent> fvs :VimFiler -explorer<CR>
+nnoremap <silent> fvb :VimFilerBufferDir -explorer<CR>
 nnoremap <silent> fvo :VimFilerTab -status<CR>
 let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
 let g:vimfiler_as_default_explorer = 1
@@ -1037,8 +1039,10 @@ endfunction
 
 let g:mline_buflist_queue = []
 let g:mline_buflist_limit = 6
+let g:mline_buflist_enable = 1
+command! Btoggle :let g:mline_buflist_enable = g:mline_buflist_enable ? 0 : 1 | :redrawstatus
 function! g:mline_buflist()
-    if &filetype =~? 'unite\|vimfiler\|tagbar' || !&modifiable || len(g:mline_buflist_queue) == 0
+    if &filetype =~? 'unite\|vimfiler\|tagbar' || !&modifiable || len(g:mline_buflist_queue) == 0 || g:mline_buflist_enable == 0
         return ''
     endif
 
@@ -1046,14 +1050,10 @@ function! g:mline_buflist()
     let buf_names_str = ''
     let last = g:mline_buflist_queue[-1]
     for i in g:mline_buflist_queue
-        if i == ''
-            continue
-        endif
-
         let t = fnamemodify(i, ':t')
         let n = bufnr(t)
 
-        if n != current_buf_nr && t !~? '^$\|.jax$\|vimfiler:\|\[unite\]\|tagbar'
+        if n != current_buf_nr
             let buf_names_str .= printf('[%d]:%s' . (i == last ? '' : ' | '), n, t)
         endif
     endfor
@@ -1062,6 +1062,11 @@ function! g:mline_buflist()
 endfunction
 
 function! s:update_recent_buflist(file)
+    if a:file =~? '^$\|.jax$\|vimfiler:\|\[unite\]\|tagbar'
+        " exclusio from queue
+        return
+    endif
+
     if len(g:mline_buflist_queue) == 0
         " init
         for i in range(min( [ bufnr('$'), g:mline_buflist_limit ] ))
@@ -1094,6 +1099,10 @@ let g:tagbar_status_func = 'g:tagbar_status_func'
 nmap <Leader>an <Plug>(next-alter-open)
 let g:next_alter#search_dir = [ './include', '.' , '..', '../include' ]
 let g:next_alter#open_option = 'vertical topleft'
+
+" minibufexpl
+let g:miniBufExplBRSplit = 1
+let g:miniBufExplorerAutoStart = 0
 
 
 "-------------------------------------------------------------------------------"
