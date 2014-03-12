@@ -42,7 +42,7 @@ set ignorecase          " 大文字小文字無視
 set smartcase           " 大文字があれば通常の検索
 set completeopt=menu    " 挿入モードでの補完設定
 set wildmenu            " コマンドの補完候補を表示
-let c = substitute(system('pwd'), '[\r\|\n].*', '', 'g')
+let c = substitute($PWD, '[\r\|\n].*', '', 'g')
 let &path = c . '/,' . c . '/include/,' . substitute($PATH, '/[a-zA-Z]*bin:', '/include/,', 'g')
 unlet c
 
@@ -339,9 +339,9 @@ NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'luochen1990/rainbow'
+NeoBundle 'mopp/DoxyDoc.vim'
 NeoBundle 'mopp/autodirmake.vim'
 NeoBundle 'mopp/mopkai.vim'
-NeoBundle 'mopp/DoxyDoc.vim'
 NeoBundle 'mopp/tailCleaner.vim'
 NeoBundle 'osyo-manga/shabadou.vim'
 NeoBundle 'osyo-manga/vim-reunions'
@@ -349,6 +349,7 @@ NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
+NeoBundleLazy 'Mizuchi/STL-Syntax', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
 NeoBundleLazy 'Shougo/neosnippet', { 'depends' : ['honza/vim-snippets', 'Shougo/neosnippet-snippets'], 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
@@ -1046,7 +1047,7 @@ function! g:mline_buflist()
     let last = g:mline_buflist_queue[-1]
     for i in g:mline_buflist_queue
         if i == ''
-           continue
+            continue
         endif
 
         let t = fnamemodify(i, ':t')
@@ -1061,6 +1062,16 @@ function! g:mline_buflist()
 endfunction
 
 function! s:update_recent_buflist(file)
+    if len(g:mline_buflist_queue) == 0
+        " init
+        for i in range(min( [ bufnr('$'), g:mline_buflist_limit ] ))
+            if bufexists(i)
+                call add(g:mline_buflist_queue, fnamemodify(bufname(i), ':p'))
+            endif
+        endfor
+    endif
+
+    " update exist buffer
     let idx = index(g:mline_buflist_queue, a:file)
     if 0 <= idx
         call remove(g:mline_buflist_queue, idx)
