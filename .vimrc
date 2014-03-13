@@ -50,7 +50,7 @@ unlet c
 set foldenable
 set foldcolumn=3            " 左側に折りたたみガイド表示
 set foldmethod=indent       " 折畳の判別
-set foldtext=g:mopp_fold()  " 折りたたみ時の表示設定
+set foldtext=Mopp_fold()  " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
 
 " 履歴など
@@ -104,7 +104,7 @@ let g:lispsyntax_clisp = 1
 "-------------------------------------------------------------------------------"
 " Functions
 "-------------------------------------------------------------------------------"
-function! g:mopp_fold()
+function! Mopp_fold()
     let line = ' ' . substitute(getline(v:foldstart), '^\s*', '', '')
     for i in range(&shiftwidth * v:foldlevel - 2)
         let line = '-' . line
@@ -118,7 +118,7 @@ function! g:mopp_fold()
     return printf('%s%' . space_size . 'S%s', line, '', tail)
 endfunction
 
-function! g:mopp_paste(register, paste_type, paste_cmd)
+function! Mopp_paste(register, paste_type, paste_cmd)
     let reg_type = getregtype(a:register)
     let store = getreg(a:register)
     call setreg(a:register, store, a:paste_type)
@@ -216,15 +216,15 @@ map! <NUL> <C-Space>
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
 xnoremap <C-Space> "*yy
-nnoremap <silent> <Leader>lp :call g:mopp_paste(v:register, 'l', 'p')<CR>
-nnoremap <silent> <Leader>lP :call g:mopp_paste(v:register, 'l', 'P')<CR>
-nnoremap <silent> <Leader>cp :call g:mopp_paste(v:register, 'c', 'p')<CR>
-nnoremap <silent> <Leader>cP :call g:mopp_paste(v:register, 'c', 'P')<CR>
-nnoremap <silent> mlp :call g:mopp_paste('*', 'l', 'p')<CR>
-nnoremap <silent> mlP :call g:mopp_paste('*', 'l', 'P')<CR>
-nnoremap <silent> mcp :call g:mopp_paste('*', 'c', 'p')<CR>
-nnoremap <silent> mcP :call g:mopp_paste('*', 'c', 'P')<CR>
-nnoremap <silent> mp :call g:mopp_paste('*', 'l', 'p')<CR>
+nnoremap <silent> <Leader>lp :call Mopp_paste(v:register, 'l', 'p')<CR>
+nnoremap <silent> <Leader>lP :call Mopp_paste(v:register, 'l', 'P')<CR>
+nnoremap <silent> <Leader>cp :call Mopp_paste(v:register, 'c', 'p')<CR>
+nnoremap <silent> <Leader>cP :call Mopp_paste(v:register, 'c', 'P')<CR>
+nnoremap <silent> mlp :call Mopp_paste('*', 'l', 'p')<CR>
+nnoremap <silent> mlP :call Mopp_paste('*', 'l', 'P')<CR>
+nnoremap <silent> mcp :call Mopp_paste('*', 'c', 'p')<CR>
+nnoremap <silent> mcP :call Mopp_paste('*', 'c', 'P')<CR>
+nnoremap <silent> mp :call Mopp_paste('*', 'l', 'p')<CR>
 
 " 入れ替え
 noremap ; :
@@ -381,7 +381,7 @@ NeoBundleLazy 'mopp/next-alter.vim', { 'autoload' : { 'commands' : 'OpenNAlter',
 NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : ['<Plug>(openvimrc-open)'] } }
 NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [['n', '<Plug>(anzu-']] }}
 NeoBundleLazy 'osyo-manga/vim-marching'
-NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : {'commands' : 'OverCommandLine'} }
+NeoBundleLazy 'osyo-manga/vim-over', 'ver.2.0', { 'autoload' : { 'commands' : 'OverCommandLine' } }
 NeoBundleLazy 'osyo-manga/vim-snowdrop'
 NeoBundleLazy 'osyo-manga/vim-stargate', { 'autoload' : { 'commands' : [ { 'name' : 'StargateInclude', 'complete' : 'customlist,stargate#command_complete' } ] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
@@ -964,11 +964,11 @@ let g:lightline = {
             \   'tagbar'        : "%{ exists('*tagbar#currenttag') ? tagbar#currenttag('%s','', 'f') : '' }",
             \ },
             \ 'component_function' : {
-            \   'mode'          : 'g:mline_mode',
-            \   'modified'      : 'g:mline_modified',
-            \   'filename'      : 'g:mline_filename',
-            \   'fugitive'      : 'g:mline_fugitive',
-            \   'buflist'       : 'g:mline_buflist',
+            \   'mode'          : 'Mline_mode',
+            \   'modified'      : 'Mline_modified',
+            \   'filename'      : 'Mline_filename',
+            \   'fugitive'      : 'Mline_fugitive',
+            \   'buflist'       : 'Mline_bufhist',
             \ },
             \ 'component_expand'    : { 'syntastic' : 'SyntasticStatuslineFlag', },
             \ 'component_type'      : { 'syntastic' : 'error', },
@@ -996,7 +996,7 @@ let s:p.normal.warning  = [ [ s:cp.dark, [ '#ffd700', 220 ] ] ]
 let g:lightline#colorscheme#mopkai#palette = lightline#colorscheme#flatten(s:p)
 unlet s:pa s:cp s:p
 
-function! g:mline_mode()
+function! Mline_mode()
     if &filetype == 'unite'
         return 'Unite'
     elseif &filetype == 'vimfiler'
@@ -1008,14 +1008,14 @@ function! g:mline_mode()
     endif
 endfunction
 
-function! g:mline_modified()
+function! Mline_modified()
     if &filetype == 'unite' || !&modifiable
         return ''
     endif
     return &modified ? '[+]' : '[-]'
 endfunction
 
-function! g:mline_filename()
+function! Mline_filename()
     if &filetype == 'unite'
         return unite#get_status_string()
     elseif &filetype == 'vimfiler'
@@ -1029,7 +1029,7 @@ function! g:mline_filename()
     return '' != expand('%:t') ? expand('%:t') : '[No Name]'
 endfunction
 
-function! g:mline_fugitive()
+function! Mline_fugitive()
     if &modifiable && &filetype !~? 'unite\|vimfiler' && exists('*fugitive#head')
         let t = fugitive#head()
         return (t != '') ? ('⎇  ' . t) : ''
@@ -1037,19 +1037,21 @@ function! g:mline_fugitive()
     return ''
 endfunction
 
-let g:mline_buflist_queue = []
-let g:mline_buflist_limit = 6
-let g:mline_buflist_enable = 1
-command! Btoggle :let g:mline_buflist_enable = g:mline_buflist_enable ? 0 : 1 | :redrawstatus
-function! g:mline_buflist()
-    if &filetype =~? 'unite\|vimfiler\|tagbar' || !&modifiable || len(g:mline_buflist_queue) == 0 || g:mline_buflist_enable == 0
+let g:mline_bufhist_queue = []
+let g:mline_bufhist_limit = 4
+let g:mline_bufhist_exclution_pat = '^$\|.jax$\|vimfiler:\|\[unite\]\|tagbar'
+let g:mline_bufhist_enable = 1
+command! Btoggle :let g:mline_bufhist_enable = g:mline_bufhist_enable ? 0 : 1 | :redrawstatus!
+
+function! Mline_bufhist()
+    if &filetype =~? 'unite\|vimfiler\|tagbar' || !&modifiable || len(g:mline_bufhist_queue) == 0 || g:mline_bufhist_enable == 0
         return ''
     endif
 
     let current_buf_nr = bufnr('%')
     let buf_names_str = ''
-    let last = g:mline_buflist_queue[-1]
-    for i in g:mline_buflist_queue
+    let last = g:mline_bufhist_queue[-1]
+    for i in g:mline_bufhist_queue
         let t = fnamemodify(i, ':t')
         let n = bufnr(t)
 
@@ -1062,30 +1064,31 @@ function! g:mline_buflist()
 endfunction
 
 function! s:update_recent_buflist(file)
-    if a:file =~? '^$\|.jax$\|vimfiler:\|\[unite\]\|tagbar'
-        " exclusio from queue
+    if a:file =~? g:mline_bufhist_exclution_pat
+        " exclusion from queue
         return
     endif
 
-    if len(g:mline_buflist_queue) == 0
+    if len(g:mline_bufhist_queue) == 0
         " init
-        for i in range(min( [ bufnr('$'), g:mline_buflist_limit ] ))
-            if bufexists(i)
-                call add(g:mline_buflist_queue, fnamemodify(bufname(i), ':p'))
+        for i in range(min( [ bufnr('$'), g:mline_bufhist_limit + 1 ] ))
+            let t = bufname(i)
+            if bufexists(i) && t !~? g:mline_bufhist_exclution_pat
+                call add(g:mline_bufhist_queue, fnamemodify(t, ':p'))
             endif
         endfor
     endif
 
     " update exist buffer
-    let idx = index(g:mline_buflist_queue, a:file)
+    let idx = index(g:mline_bufhist_queue, a:file)
     if 0 <= idx
-        call remove(g:mline_buflist_queue, idx)
+        call remove(g:mline_bufhist_queue, idx)
     endif
 
-    call insert(g:mline_buflist_queue, a:file)
+    call insert(g:mline_bufhist_queue, a:file)
 
-    if g:mline_buflist_limit < len(g:mline_buflist_queue)
-        call remove(g:mline_buflist_queue, -1)
+    if g:mline_bufhist_limit + 1 < len(g:mline_bufhist_queue)
+        call remove(g:mline_bufhist_queue, -1)
     endif
 endfunction
 
