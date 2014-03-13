@@ -215,16 +215,16 @@ map! <NUL> <C-Space>
 " Yank & Paste
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
-xnoremap <C-Space> "*yy
+xnoremap <C-Space> "+yy
 nnoremap <silent> <Leader>lp :call Mopp_paste(v:register, 'l', 'p')<CR>
 nnoremap <silent> <Leader>lP :call Mopp_paste(v:register, 'l', 'P')<CR>
 nnoremap <silent> <Leader>cp :call Mopp_paste(v:register, 'c', 'p')<CR>
 nnoremap <silent> <Leader>cP :call Mopp_paste(v:register, 'c', 'P')<CR>
-nnoremap <silent> mlp :call Mopp_paste('*', 'l', 'p')<CR>
-nnoremap <silent> mlP :call Mopp_paste('*', 'l', 'P')<CR>
-nnoremap <silent> mcp :call Mopp_paste('*', 'c', 'p')<CR>
-nnoremap <silent> mcP :call Mopp_paste('*', 'c', 'P')<CR>
-nnoremap <silent> mp :call Mopp_paste('*', 'l', 'p')<CR>
+nnoremap <silent> mlp :call Mopp_paste('+', 'l', 'p')<CR>
+nnoremap <silent> mlP :call Mopp_paste('+', 'l', 'P')<CR>
+nnoremap <silent> mcp :call Mopp_paste('+', 'c', 'p')<CR>
+nnoremap <silent> mcP :call Mopp_paste('+', 'c', 'P')<CR>
+nnoremap <silent> mp  :call Mopp_paste('+', 'l', 'p')<CR>
 
 " 入れ替え
 noremap ; :
@@ -378,26 +378,26 @@ NeoBundleLazy 'mattn/sonictemplate-vim', { 'autoload' : { 'commands' : [ { 'name
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
 NeoBundleLazy 'mopp/makecomp.vim', { 'autoload' : { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] } }
 NeoBundleLazy 'mopp/next-alter.vim', { 'autoload' : { 'commands' : 'OpenNAlter', 'mappings'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] } }
-NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : ['<Plug>(openvimrc-open)'] } }
-NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [['n', '<Plug>(anzu-']] }}
+NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : [ '<Plug>(openvimrc-open)' ] } }
+NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [ ['n', '<Plug>(anzu-' ] ] } }
 NeoBundleLazy 'osyo-manga/vim-marching'
-NeoBundleLazy 'osyo-manga/vim-over', 'ver.2.0', { 'autoload' : { 'commands' : 'OverCommandLine' } }
+NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : { 'commands' : 'OverCommandLine' } }
 NeoBundleLazy 'osyo-manga/vim-snowdrop'
 NeoBundleLazy 'osyo-manga/vim-stargate', { 'autoload' : { 'commands' : [ { 'name' : 'StargateInclude', 'complete' : 'customlist,stargate#command_complete' } ] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands' : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
-NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : {'mappings' : [['inx', '<Plug>NERDCommenter']]}}
+NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : { 'mappings' : [ [ 'nx', '<Plug>NERDCommenter' ] ] } }
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'sk1418/blockit', { 'autoload' : { 'commands' : 'Block', 'mappings' : [ [ 'v', '<Plug>BlockitVisual' ] ] } }
-NeoBundleLazy 't9md/vim-smalls', { 'autoload' : { 'mappings'  : ['<Plug>(smalls)'] } }
-NeoBundleLazy 'taichouchou2/alpaca_english', { 'disabled' : (!has('ruby')), 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources' : ['english_dictionary', 'english_example', 'english_thesaurus'], } }
+NeoBundleLazy 't9md/vim-smalls', { 'autoload' : { 'mappings'  : [ '<Plug>(smalls)' ] } }
+NeoBundleLazy 'taichouchou2/alpaca_english', { 'disabled' : (!has('ruby')), 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources' : [ 'english_dictionary', 'english_example', 'english_thesaurus' ], } }
 NeoBundleLazy 'taku-o/vim-copypath', { 'autoload' : { 'commands'  : ['CopyFileName', 'CopyPath'] } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
-NeoBundleLazy 'thinca/vim-ref', { 'autoload' : { 'commands' : [ { 'name' : 'Ref', 'complete' : 'customlist,ref#complete'}], 'mappings'  : ['<Plug>(ref-keyword)'] } }
+NeoBundleLazy 'thinca/vim-ref', { 'autoload' : { 'commands' : [ { 'name' : 'Ref', 'complete' : 'customlist,ref#complete' } ], 'mappings'  : [ '<Plug>(ref-keyword)' ] } }
 NeoBundleLazy 'thinca/vim-scouter'
-NeoBundleLazy 'tpope/vim-fugitive', { 'external_commands' : ['git'], 'disabled' : (!executable('git')), 'autoload' : { 'commands' : ['Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep'] } }
+NeoBundleLazy 'tpope/vim-fugitive', { 'external_commands' : [ 'git' ], 'disabled' : (!executable('git')), 'autoload' : { 'commands' : [ 'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep' ] } }
 NeoBundleLazy 'ujihisa/neco-look', { 'disabled' : (has('ruby')) }
 NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : 'cpp' } }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
