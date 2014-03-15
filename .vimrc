@@ -306,7 +306,7 @@ if has('gui_running')
         set macmeta
         set guifont=Ricty-Regular:h13
     else
-        set guifont=Ricty\ 11
+        set guifont=Ricty\ 12
         set lines=40
         set columns=120
     endif
@@ -889,7 +889,8 @@ let g:vimconsole#auto_redraw = 1
 
 " syntastic
 let g:syntastic_mode_map = { 'mode' : 'passive' }
-let g:syntastic_cpp_compiler_options = '-Wall -W -Wformat=2 -Wcast-qual -Wcast-align -Wwrite-strings -Wconversion -Wfloat-equal -Wpointer-arith -std=c++11 -stdlib=libc++'
+let g:syntastic_c_compiler_options = '-std=c11 -Wall -Wextra -Wpadded -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wdeclaration-after-statement -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
+let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++ -Wall -Wextra -Wpadded -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wdeclaration-after-statement -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
 let g:syntastic_loc_list_height = 5
 
 " rainbow parenthesis
