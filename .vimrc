@@ -1102,7 +1102,10 @@ let g:tagbar_status_func = 'g:tagbar_status_func'
 " next-alter
 nmap <Leader>an <Plug>(next-alter-open)
 let g:next_alter#search_dir = [ './include', '.' , '..', '../include' ]
-let g:next_alter#open_option = 'vertical topleft'
+" let g:next_alter#open_option = 'vertical topleft'
+
+" mopkai
+let g:mopkai_is_not_set_normal_ctermbg = !has('mac')
 
 " minibufexpl
 let g:miniBufExplBRSplit = 1
