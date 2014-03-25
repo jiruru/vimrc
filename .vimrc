@@ -164,7 +164,7 @@ noremap <Up> <Nop>
 noremap <Down> <Nop>
 
 " 移動
-noremap! <C-A> <Home>
+" noremap! <C-A> <Home>
 noremap! <C-E> <End>
 noremap! <C-F> <Right>
 noremap! <C-B> <Left>
@@ -247,6 +247,10 @@ nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'
 
 " Tagが複数あればリスト表示
 nnoremap <C-]> g<C-]>zz
+
+" xでレジスタを汚さない
+nnoremap x "_x
+nnoremap X "_X
 
 " マクロ
 noremap Q @@
