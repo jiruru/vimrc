@@ -1046,7 +1046,7 @@ let g:mline_bufhist_queue = []
 let g:mline_bufhist_limit = 4
 let g:mline_bufhist_exclution_pat = '^$\|.jax$\|vimfiler:\|\[unite\]\|tagbar'
 let g:mline_bufhist_enable = 1
-command! Btoggle :let g:mline_bufhist_enable = g:mline_bufhist_enable ? 0 : 1 | :redrawstatus!
+command! Btoggle :let g:mline_bufhist_enable = g:mline_bufhist_enable ? 0 : 1 | :redrawstatus! | MBEOpen
 
 function! Mline_bufhist()
     if &filetype =~? 'unite\|vimfiler\|tagbar' || !&modifiable || len(g:mline_bufhist_queue) == 0 || g:mline_bufhist_enable == 0
