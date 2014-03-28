@@ -249,8 +249,8 @@ nnoremap <silent> <CR> :<C-u>for i in range(1, v:count1) \| call append(line('.'
 nnoremap <C-]> g<C-]>zz
 
 " xでレジスタを汚さない
-nnoremap x "_x
-nnoremap X "_X
+" nnoremap x "_x
+" nnoremap X "_X
 
 " マクロ
 noremap Q @@
