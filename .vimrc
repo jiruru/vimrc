@@ -322,7 +322,6 @@ endif
 "-------------------------------------------------------------------------------"
 " neobundleが存在しない場合これ以降を読み込まない
 if !isdirectory(expand('~/.vim/bundle/neobundle.vim'))
-    echoerr 'No NeoBundle !'
     syntax enable
     colorscheme desert
     finish
@@ -1114,6 +1113,10 @@ let g:mopkai_is_not_set_normal_ctermbg = !has('mac')
 " minibufexpl
 let g:miniBufExplBRSplit = 1
 let g:miniBufExplorerAutoStart = 0
+
+" sudo.vim
+command! -nargs=0 Sw :w sudo:%
+command! -nargs=0 Swq :wq sudo:%
 
 
 "-------------------------------------------------------------------------------"
