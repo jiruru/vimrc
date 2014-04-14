@@ -892,9 +892,11 @@ let g:vimconsole#auto_redraw = 1
 
 " syntastic
 let g:syntastic_mode_map = { 'mode' : 'passive' }
-let g:syntastic_c_compiler_options = '-std=c11 -Wall -Wextra -Wpadded -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
-let g:syntastic_cpp_compiler_options = '-std=c++11 -stdlib=libc++ -Wall -Wextra -Wpadded -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
+let s:option = '-Wall -Wextra -Wpadded -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
+let g:syntastic_c_compiler_options = ($USER == 'mopp' ? '-std=c11 ' : '') . s:option
+let g:syntastic_cpp_compiler_options = ($USER == 'mopp' ? '-std=c++11 -stdlib=libc++ ' : '') . s:option
 let g:syntastic_loc_list_height = 5
+unlet s:option
 
 " rainbow parenthesis
 let g:rainbow_active = 1
@@ -1045,7 +1047,7 @@ let g:mline_bufhist_queue = []
 let g:mline_bufhist_limit = 4
 let g:mline_bufhist_exclution_pat = '^$\|.jax$\|vimfiler:\|\[unite\]\|tagbar'
 let g:mline_bufhist_enable = 1
-command! Btoggle :let g:mline_bufhist_enable = g:mline_bufhist_enable ? 0 : 1 | :redrawstatus! | MBEOpen
+command! Btoggle :let g:mline_bufhist_enable = (g:mline_bufhist_enable ? 0 : 1) | :redrawstatus! | MBEOpenAll
 
 function! Mline_bufhist()
     if &filetype =~? 'unite\|vimfiler\|tagbar' || !&modifiable || len(g:mline_bufhist_queue) == 0 || g:mline_bufhist_enable == 0
@@ -1108,7 +1110,7 @@ let g:next_alter#search_dir = [ './include', '.' , '..', '../include' ]
 " let g:next_alter#open_option = 'vertical topleft'
 
 " mopkai
-let g:mopkai_is_not_set_normal_ctermbg = !has('mac')
+let g:mopkai_is_not_set_normal_ctermbg = or(!has('mac'), ($USER != 'mopp'))
 
 " minibufexpl
 let g:miniBufExplBRSplit = 1
