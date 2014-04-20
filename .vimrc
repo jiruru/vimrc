@@ -408,6 +408,8 @@ NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh' ] } }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
+NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
+NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
 
 NeoBundleLazy 'rhysd/vim-operator-surround', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-surround-' ] ] } }
 NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : [ [ 'nv', '<Plug>(operator-replace)' ] ] } }
@@ -891,12 +893,18 @@ noremap ]rn :ReanimateLoad <C-R>%<CR>
 let g:vimconsole#auto_redraw = 1
 
 " syntastic
-let g:syntastic_mode_map = { 'mode' : 'passive' }
-let s:option = '-Wall -Wextra -Wpadded -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
-let g:syntastic_c_compiler_options = ($USER == 'mopp' ? '-std=c11 ' : '') . s:option
-let g:syntastic_cpp_compiler_options = ($USER == 'mopp' ? '-std=c++11 -stdlib=libc++ ' : '') . s:option
-let g:syntastic_loc_list_height = 5
-unlet s:option
+let s:bundle = neobundle#get('syntastic')
+function! s:bundle.hooks.on_source(bundle)
+    let g:syntastic_mode_map = { 'mode' : 'passive' }
+    let op = '-Wall -Wextra -Wpadded -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
+    let t = s:check_clang()
+    let g:syntastic_c_compiler = ((t == '') ? 'gcc' : t)
+    let g:syntastic_cpp_compiler = ((t == '') ? 'g++' : t . '++')
+    let g:syntastic_c_compiler_options = ($USER == 'mopp' ? '-std=c11 ' : '') . op
+    let g:syntastic_cpp_compiler_options = ($USER == 'mopp' ? '-std=c++11 -stdlib=libc++ ' : '') . op
+    let g:syntastic_loc_list_height = 5
+endfunction
+unlet s:bundle
 
 " rainbow parenthesis
 let g:rainbow_active = 1
@@ -1178,6 +1186,9 @@ augroup general
 
     " nask
     autocmd BufWinEnter *.nas nested setlocal filetype=nasm
+
+    " C, C++
+    autocmd BufWinEnter *.{c,cpp,h,hpp} setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*\ ,ex:*/,://
 
     " json
     autocmd BufWinEnter *.json nested setlocal filetype=json
