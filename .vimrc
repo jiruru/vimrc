@@ -99,6 +99,7 @@ set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'
 let g:lisp_rainbow = 1
 let g:lisp_instring = 1
 let g:lispsyntax_clisp = 1
+let g:c_syntax_for_h = 1
 
 
 "-------------------------------------------------------------------------------"
@@ -197,10 +198,10 @@ noremap <Leader>sp :split<Space>
 noremap <Leader>vsp :vsplit<Space>
 
 " ロケーションリスト移動
-nnoremap <silent> [o :cprevious<CR>
-nnoremap <silent> ]o :cnext<CR>
-nnoremap <silent> [O :<C-u>cfirst<CR>
-nnoremap <silent> ]O :<C-u>clast<CR>
+nnoremap <silent> [o :lprevious<CR>
+nnoremap <silent> ]o :lnext<CR>
+nnoremap <silent> [O :<C-u>lfirst<CR>
+nnoremap <silent> ]O :<C-u>llast<CR>
 
 " Windowサイズ変更
 noremap <silent> <S-Left> :<C-U>wincmd <<CR>
@@ -263,6 +264,8 @@ onoremap < t<
 onoremap > t>
 onoremap [ t[
 onoremap ] t]
+
+nnoremap <Leader>w :write<CR>
 
 
 "-------------------------------------------------------------------------------"
@@ -353,7 +356,6 @@ NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
-NeoBundleLazy 'Mizuchi/STL-Syntax', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
 NeoBundleLazy 'Shougo/neosnippet', { 'depends' : ['honza/vim-snippets', 'Shougo/neosnippet-snippets'], 'autoload' : { 'insert' : '1', 'unite_sources' : ['neosnippet/runtime', 'neosnippet/user', 'snippet']} }
@@ -378,10 +380,12 @@ NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'}
 NeoBundleLazy 'mattn/gist-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : [ '<Leader>lv' ] } }
 NeoBundleLazy 'mattn/sonictemplate-vim', { 'autoload' : { 'commands' : [ { 'name' : 'Template', 'complete' : 'customlist,sonictemplate#complete' } ], 'function_prefix' : 'sonictemplate' } }
+NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
 NeoBundleLazy 'mopp/makecomp.vim', { 'autoload' : { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] } }
 NeoBundleLazy 'mopp/next-alter.vim', { 'autoload' : { 'commands' : 'OpenNAlter', 'mappings'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] } }
 NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : [ '<Plug>(openvimrc-open)' ] } }
+NeoBundleLazy 'octol/vim-cpp-enhanced-highlight', { 'autoload' : { 'filetypes' : [ 'cpp' ] } }
 NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [ ['n', '<Plug>(anzu-' ] ] } }
 NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : { 'commands' : 'OverCommandLine' } }
@@ -402,14 +406,14 @@ NeoBundleLazy 'thinca/vim-ref', { 'autoload' : { 'commands' : [ { 'name' : 'Ref'
 NeoBundleLazy 'thinca/vim-scouter'
 NeoBundleLazy 'tpope/vim-fugitive', { 'external_commands' : [ 'git' ], 'disabled' : (!executable('git')), 'autoload' : { 'commands' : [ 'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep' ] } }
 NeoBundleLazy 'ujihisa/neco-look', { 'disabled' : (has('ruby')) }
+NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
 NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : 'cpp' } }
+
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh' ] } }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
-NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
-NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
 
 NeoBundleLazy 'rhysd/vim-operator-surround', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-surround-' ] ] } }
 NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : [ [ 'nv', '<Plug>(operator-replace)' ] ] } }
@@ -1106,11 +1110,11 @@ function! s:update_recent_buflist(file)
     endif
 endfunction
 
-function! g:tagbar_status_func(current, sort, fname, ...) abort
+function! Tagbar_status_func(current, sort, fname, ...) abort
     let g:lightline.fname = a:fname
     return lightline#statusline(0)
 endfunction
-let g:tagbar_status_func = 'g:tagbar_status_func'
+let g:tagbar_status_func = 'Tagbar_status_func'
 
 " next-alter
 nmap <Leader>an <Plug>(next-alter-open)
