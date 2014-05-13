@@ -274,6 +274,51 @@ nnoremap <Leader>w :write<CR>
 " カーソル位置のハイライト情報表示
 command! -nargs=0 EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
+" 式を実行させてその返り値を指定した基数の数値で出力する.
+function! s:exp_conv(s, base)
+    " execute expression.
+    execute 'let t =' a:s
+    let num = str2nr(t, 10)
+
+    if !(a:base == 2 || a:base == 8 || a:base == 10 || a:base == 16)
+        echoerr "Base is 2, 8, 10, 16 only."
+        return
+    endif
+
+    let str = ''
+    if a:base == 2
+        while 0 < num
+            let str = string(num % 2) . str
+            let num = num / 2
+
+            " insert space every 4digit.
+            let m = strlen(substitute(str, '\s', '', 'g')) % 4
+            if m == 0
+                let str = ' ' . str
+            endif
+        endwhile
+
+        if m != 0
+            for i in range(4 - m)
+                let str = '0' . str
+            endfor
+        endif
+    else
+        let str = printf(((a:base == 10) ? "%d" : ((a:base == 16) ? "0x%x" : "%o")), num)
+    endif
+
+    echomsg str
+    return str
+endfunction
+command! -nargs=1 Bin call <SID>exp_conv(<f-args>, 2)
+command! -nargs=1 Dec call <SID>exp_conv(<f-args>, 10)
+command! -nargs=1 Hex call <SID>exp_conv(<f-args>, 16)
+inoremap <silent> <expr> <C-G>b <SID>exp_conv(input('= '),  2)
+inoremap <silent> <expr> <C-G>d <SID>exp_conv(input('= '), 10)
+inoremap <silent> <expr> <C-G>h <SID>exp_conv(input('= '), 16)
+imap <C-G><C-B> <C-G>b
+imap <C-G><C-H> <C-G>h
+
 if has('mac')
     " 引数に渡したワードを検索
     command! -nargs=1 MacDict      call system('open '.shellescape('dict://'.<q-args>))
@@ -472,7 +517,6 @@ nnoremap <silent> [Unite]re :<C-u>UniteResume<CR>
 nnoremap <silent> [Unite]b  :<C-u>Unite -buffer-name=Buffers buffer:!<CR>
 nnoremap <silent> [Unite]k  :<C-u>Unite -buffer-name=Bookmark bookmark -default-action=vimfiler<CR>
 nnoremap <silent> [Unite]s  :<C-u>Unite -buffer-name=Files file_mru<CR>
-nnoremap <silent> [Unite]d  :<C-u>Unite -buffer-name=Directory -default-action=tabopen directory directory_mru<CR>
 nnoremap <silent> [Unite]f  :<C-u>Unite -buffer-name=Sources source<CR>
 nnoremap <silent> [Unite]g  :<C-u>Unite -buffer-name=ag grep -keep-focus -no-quit<CR>
 nnoremap <silent> [Unite]hc :<C-u>Unite -buffer-name=History history/command<CR>
@@ -484,7 +528,6 @@ nnoremap <silent> [Unite]me :<C-u>Unite -buffer-name=Messages output:message<CR>
 nnoremap <silent> [Unite]o  :<C-u>Unite -buffer-name=Outlines outline<CR>
 nnoremap <silent> [Unite]l  :<C-u>Unite -buffer-name=Line line:all -no-quit<CR>
 nnoremap <silent> [Unite]r  :<C-u>Unite -buffer-name=Ref/man ref/man<CR>
-nnoremap <silent> [Unite]ta :<C-u>Unite -buffer-name=Tags tag tag/file<CR>
 nnoremap <silent> [Unite]n  :<C-u>Unite -buffer-name=Snippet snippet<CR>
 nnoremap <silent> [Unite]tb :<C-u>Unite -buffer-name=Tab tab<CR>
 nnoremap <silent> [Unite]q  :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
