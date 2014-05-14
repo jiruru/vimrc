@@ -477,7 +477,7 @@ NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'autoload' : { 'mappings' : [ [
 NeoBundleLazy 'sgur/vim-textobj-parameter', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-parameter-' ] ] } }
 NeoBundleLazy 'terryma/vim-expand-region', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(expand_region_' ] ] } }
 
-NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'commands' : [{ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'}], 'function_prefix' : 'unite' }}
+NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'insert' : '1', 'commands' : [{ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'}], 'function_prefix' : 'unite' }}
 NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
 NeoBundleLazy 'Shougo/unite-outline', { 'autoload' : { 'unite_sources' : ['outline'],} }
 NeoBundleLazy 'Shougo/unite-ssh', { 'autoload' : { 'unite_sources' : ['ssh'],} }
@@ -619,7 +619,8 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
 
     inoremap <expr> <C-l> neocomplete#complete_common_string()
-    imap <C-q>  <Plug>(neocomplete_start_unite_quick_match)
+    imap <C-i> <Plug>(neocomplete_start_unite_quick_match)
+    imap <C-q> <Plug>(neocomplete_start_unite_complete)
 endfunction
 
 function! s:bundle.hooks.on_post_source(bundle)
