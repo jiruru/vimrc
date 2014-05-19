@@ -619,7 +619,7 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
 
     inoremap <expr> <C-l> neocomplete#complete_common_string()
-    imap <C-i> <Plug>(neocomplete_start_unite_quick_match)
+    imap <C-f> <Plug>(neocomplete_start_unite_quick_match)
     imap <C-q> <Plug>(neocomplete_start_unite_complete)
 endfunction
 
