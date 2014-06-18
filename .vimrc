@@ -57,7 +57,7 @@ set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold�
 set history=500                 " コマンドの保存履歴数
 set viminfo='1000,<500,f1       " viminfoへの保存設定
 set tags=./tags,tags            " タグが検索されるファイル
-set viewoptions=cursor,folds    " :mkviewで保存する設定
+" set viewoptions=cursor,folds    " :mkviewで保存する設定
 if isdirectory(expand('~/.vim/undo'))
     set undodir=~/.vim/undo
     set undofile
@@ -276,13 +276,20 @@ command! -nargs=0 EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'nam
 
 " 式を実行させてその返り値を指定した基数の数値で出力する.
 function! s:exp_conv(s, base)
-    " execute expression.
-    execute 'let t =' a:s
-    let num = str2nr(t, 10)
+    if a:s == ''
+        return
+    endif
 
     if !(a:base == 2 || a:base == 8 || a:base == 10 || a:base == 16)
         echoerr "Base is 2, 8, 10, 16 only."
         return
+    endif
+
+    " execute expression.
+    execute 'let t =' a:s
+    let num = str2nr(t, 10)
+    if num < 0
+       let num = -1 * num
     endif
 
     let str = ''
@@ -390,6 +397,7 @@ NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
 NeoBundle 'fholgado/minibufexpl.vim'
 NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'luochen1990/rainbow'
 NeoBundle 'mopp/DoxyDoc.vim'
 NeoBundle 'mopp/autodirmake.vim'
@@ -436,6 +444,7 @@ NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : { 'commands' : 'OverCommandLine' } }
 NeoBundleLazy 'osyo-manga/vim-snowdrop'
 NeoBundleLazy 'osyo-manga/vim-stargate', { 'autoload' : { 'commands' : [ { 'name' : 'StargateInclude', 'complete' : 'customlist,stargate#command_complete' } ] } }
+NeoBundleLazy 'othree/html5.vim.git', { 'autoload' : { 'filetypes' : [ 'eruby', 'html' ] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands' : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
@@ -619,7 +628,7 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
 
     inoremap <expr> <C-l> neocomplete#complete_common_string()
-    imap <C-f> <Plug>(neocomplete_start_unite_quick_match)
+    imap <C-b> <Plug>(neocomplete_start_unite_quick_match)
     imap <C-q> <Plug>(neocomplete_start_unite_complete)
 endfunction
 
@@ -726,8 +735,8 @@ nnoremap <silent> fvo :VimFilerTab -status<CR>
 let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
 let g:vimfiler_as_default_explorer = 1
 let g:vimfiler_safe_mode_by_default = 0
-let g:vimfiler_tree_closed_icon = '▸'
-let g:vimfiler_tree_opened_icon = '▾'
+" let g:vimfiler_tree_closed_icon = '▶'
+let g:vimfiler_tree_opened_icon = '▼'
 let g:vimfiler_directory_display_top = 1
 let g:vimfiler_preview_action = 'below'
 let g:vimfiler_split_action = 'right'
@@ -944,7 +953,7 @@ let g:vimconsole#auto_redraw = 1
 let s:bundle = neobundle#get('syntastic')
 function! s:bundle.hooks.on_source(bundle)
     let g:syntastic_mode_map = { 'mode' : 'passive' }
-    let op = '-Wall -Wextra -Wpadded -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
+    let op = '-Wall -Wextra -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
     let t = s:check_clang()
     let g:syntastic_c_compiler = ((t == '') ? 'gcc' : t)
     let g:syntastic_cpp_compiler = ((t == '') ? 'g++' : t . '++')
@@ -1175,6 +1184,11 @@ let g:miniBufExplorerAutoStart = 0
 " sudo.vim
 command! -nargs=0 Sw :w sudo:%
 command! -nargs=0 Swq :wq sudo:%
+
+" easy-align
+vmap <Enter> <Plug>(LiveEasyAlign)
+nmap <Leader>aa <Plug>(LiveEasyAlign)
+
 
 
 "-------------------------------------------------------------------------------"
