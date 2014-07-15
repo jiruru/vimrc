@@ -271,6 +271,8 @@ nnoremap <Leader>w :write<CR>
 "-------------------------------------------------------------------------------"
 " Commands
 "-------------------------------------------------------------------------------"
+command! -nargs=0 Reload execute "edit" expand('%:p')
+
 " カーソル位置のハイライト情報表示
 command! -nargs=0 EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
@@ -506,19 +508,6 @@ if !has('vim_starting')
 endif
 
 " Unite
-let g:unite_data_directory = expand('~/.vim/unite')
-let g:unite_source_file_mru_limit = 50
-let g:unite_cursor_line_highlight = 'TabLineSel'
-let g:unite_enable_short_source_names = 1
-let g:unite_source_history_yank_enable = 1
-let g:unite_force_overwrite_statusline = 0
-let g:unite_source_bookmark_directory = expand('~/.vim/bookmark')
-if executable('ag')
-    " for the silver searcher
-    let g:unite_source_grep_command = 'ag'
-    let g:unite_source_grep_default_opts = '--nocolor --nogroup'
-    let g:unite_source_grep_max_candidates = 200
-endif
 nmap f [Unite]
 nnoremap [Unite] <Nop>
 nnoremap [Unite] f
@@ -542,10 +531,30 @@ nnoremap <silent> [Unite]tb :<C-u>Unite -buffer-name=Tab tab<CR>
 nnoremap <silent> [Unite]q  :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
 nnoremap <silent> [Unite]a  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
 let g:unite_quickfix_is_multiline=0
-function! s:config_unite()
-    " コンバータに converter_quickfix_highlight を設定
-    call unite#custom_source('quickfix', 'converters', 'converter_quickfix_highlight')
-    call unite#custom_source('location_list', 'converters', 'converter_quickfix_highlight')
+let s:bundle = neobundle#get('unite.vim')
+function! s:bundle.hooks.on_source(bundle)
+    let g:unite_data_directory = expand('~/.vim/unite')
+    let g:unite_source_file_mru_limit = 50
+    let g:unite_cursor_line_highlight = 'TabLineSel'
+    let g:unite_enable_short_source_names = 1
+    let g:unite_source_history_yank_enable = 1
+    let g:unite_force_overwrite_statusline = 0
+    let g:unite_source_bookmark_directory = expand('~/.vim/bookmark')
+    if executable('pt')
+        " for the platinum searcher
+        let g:unite_source_grep_command = 'pt'
+        let g:unite_source_grep_default_opts = '--nogroup --nocolor'
+        let g:unite_source_grep_recursive_opt = ''
+        let g:unite_source_grep_encoding = 'utf-8'
+    elseif executable('ag')
+        " for the silver searcher
+        let g:unite_source_grep_command = 'ag'
+        let g:unite_source_grep_default_opts = '--nocolor --nogroup'
+        let g:unite_source_grep_max_candidates = 200
+    endif
+endfunction
+unlet s:bundle
+function! s:on_exe_unite()
     imap <buffer> <TAB> <Plug>(unite_select_next_line)
     imap <buffer> jj <Plug>(unite_insert_leave)
     nmap <buffer> ' <Plug>(unite_quick_match_default_action)
@@ -1241,7 +1250,7 @@ augroup general
     autocmd FileType vimfiler call s:config_vimfiler()
 
     " Unite
-    autocmd FileType unite call s:config_unite()
+    autocmd FileType unite call s:on_exe_unite()
 
     " Lisp
     autocmd FileType lisp call s:config_lisp()
@@ -1271,3 +1280,5 @@ augroup END
 
 syntax enable           " 強調表示有効
 colorscheme mopkai      " syntaxコマンドよりもあとにすること
+
+set runtimepath+=/home/mopp/Dropbox/Program/Vim/tmp/buflist.vim/
