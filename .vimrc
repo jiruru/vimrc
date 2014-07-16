@@ -45,6 +45,7 @@ set wildmenu            " コマンドの補完候補を表示
 let c = substitute($PWD, '[\r\|\n].*', '', 'g')
 let &path = c . '/,' . c . '/include/,' . substitute($PATH, '/[a-zA-Z]*bin:', '/include/,', 'g')
 unlet c
+set cscopequickfix=s-,c-,d-,i-,t-,e-
 
 " 折りたたみ
 set foldenable
@@ -397,18 +398,11 @@ let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
-NeoBundle 'fholgado/minibufexpl.vim'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'luochen1990/rainbow'
-NeoBundle 'mopp/DoxyDoc.vim'
-NeoBundle 'mopp/autodirmake.vim'
 NeoBundle 'mopp/mopkai.vim'
-NeoBundle 'mopp/tailCleaner.vim'
-NeoBundle 'osyo-manga/shabadou.vim'
-NeoBundle 'osyo-manga/vim-reunions'
 NeoBundle 'sudo.vim'
-NeoBundle 'thinca/vim-quickrun'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
@@ -419,6 +413,7 @@ NeoBundleLazy 'Shougo/vimfiler', { 'depends' : 'Shougo/unite.vim', 'autoload' : 
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'deris/vim-rengbang', { 'autoload' : { 'commands' : ['RengBang', 'RengBangUsePrev']} }
 NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
+NeoBundleLazy 'fholgado/minibufexpl.vim', { 'autoload' : { 'commands' : [ 'MBEOpen', 'MBEOpenAll', 'MBEToggle'] } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : {'commands' : 'Gitv'} }
 NeoBundleLazy 'honza/vim-snippets'
 NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
@@ -436,10 +431,13 @@ NeoBundleLazy 'mattn/gist-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : {
 NeoBundleLazy 'mattn/learn-vimscript', { 'autoload' : { 'mappings'  : [ '<Leader>lv' ] } }
 NeoBundleLazy 'mattn/sonictemplate-vim', { 'autoload' : { 'commands' : [ { 'name' : 'Template', 'complete' : 'customlist,sonictemplate#complete' } ], 'function_prefix' : 'sonictemplate' } }
 NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
+NeoBundleLazy 'mopp/DoxyDoc.vim', { 'autoload' : { 'commands' : [ 'DoxyDoc', 'DoxyDocAuthor' ] } }
+NeoBundleLazy 'mopp/autodirmake.vim', '', 'loadInsert'
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
 NeoBundleLazy 'mopp/makecomp.vim', { 'autoload' : { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] } }
 NeoBundleLazy 'mopp/next-alter.vim', { 'autoload' : { 'commands' : 'OpenNAlter', 'mappings'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] } }
 NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : [ '<Plug>(openvimrc-open)' ] } }
+NeoBundleLazy 'mopp/tailCleaner.vim', '', 'loadInsert'
 NeoBundleLazy 'octol/vim-cpp-enhanced-highlight', { 'autoload' : { 'filetypes' : [ 'cpp' ] } }
 NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [ ['n', '<Plug>(anzu-' ] ] } }
 NeoBundleLazy 'osyo-manga/vim-marching'
@@ -458,12 +456,14 @@ NeoBundleLazy 'taichouchou2/alpaca_english', { 'disabled' : (!has('ruby')), 'bui
 NeoBundleLazy 'taku-o/vim-copypath', { 'autoload' : { 'commands'  : ['CopyFileName', 'CopyPath'] } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
+NeoBundleLazy 'thinca/vim-quickrun'
 NeoBundleLazy 'thinca/vim-ref', { 'autoload' : { 'commands' : [ { 'name' : 'Ref', 'complete' : 'customlist,ref#complete' } ], 'mappings'  : [ '<Plug>(ref-keyword)' ] } }
 NeoBundleLazy 'thinca/vim-scouter'
 NeoBundleLazy 'tpope/vim-fugitive', { 'external_commands' : [ 'git' ], 'disabled' : (!executable('git')), 'autoload' : { 'commands' : [ 'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep' ] } }
 NeoBundleLazy 'ujihisa/neco-look', { 'disabled' : (has('ruby')) }
 NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
 NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : 'cpp' } }
+NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : [ 'SrcExpl', 'SrcExplToggle' ] } }
 
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-jp/vital.vim'
@@ -1198,6 +1198,10 @@ command! -nargs=0 Swq :wq sudo:%
 vmap <Enter> <Plug>(LiveEasyAlign)
 nmap <Leader>aa <Plug>(LiveEasyAlign)
 
+" SrcExpl
+let g:SrcExpl_pluginList = [ "__Tag_List__", "*unite*", "*VimFiler*"]
+let g:SrcExpl_isUpdateTags = 0
+let g:SrcExpl_gobackKey = '<C-\><C-b>'
 
 
 "-------------------------------------------------------------------------------"
