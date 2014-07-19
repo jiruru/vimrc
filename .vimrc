@@ -395,120 +395,115 @@ let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '
 
 call neobundle#begin()
 
-if neobundle#has_cache()
-    NeoBundleLoadCache
-else
-    NeoBundleFetch 'Shougo/neobundle.vim'
+NeoBundleFetch 'Shougo/neobundle.vim'
 
-    NeoBundle 'LeafCage/yankround.vim'
-    NeoBundle 'Lokaltog/vim-easymotion'
-    NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
-    NeoBundle 'itchyny/lightline.vim'
-    NeoBundle 'junegunn/vim-easy-align'
-    NeoBundle 'luochen1990/rainbow'
-    NeoBundle 'mopp/mopkai.vim'
-    NeoBundle 'sudo.vim'
-    NeoBundle 'thinca/vim-visualstar'
-    NeoBundle 'tpope/vim-repeat'
+NeoBundle 'LeafCage/yankround.vim'
+NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
+NeoBundle 'itchyny/lightline.vim'
+NeoBundle 'junegunn/vim-easy-align'
+NeoBundle 'luochen1990/rainbow'
+NeoBundle 'mopp/mopkai.vim'
+NeoBundle 'sudo.vim'
+NeoBundle 'thinca/vim-visualstar'
+NeoBundle 'tpope/vim-repeat'
 
-    " NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
-    " NeoBundleLazy 'itchyny/dictionary.vim', { 'autoload' : { 'commands' : 'Dictionary'}, 'disabled' : (!has('mac')) }
-    " NeoBundleLazy 'itchyny/thumbnail.vim', { 'autoload' : {'commands' : 'Thumbnail'} }
-    NeoBundleLazy 'LeafCage/cmdlineplus.vim', { 'autoload' : { 'mappings': [ [ 'c', '<Plug>(cmdlineplus-' ] ] } }
-    NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
-    NeoBundleLazy 'Shougo/neocomplete.vim', { 'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')) }
-    NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo/neosnippet-snippets' ], 'autoload' : { 'insert' : '1', 'unite_sources' : [ 'neosnippet/runtime', 'neosnippet/user', 'snippet' ] } }
-    NeoBundleLazy 'Shougo/neosnippet-snippets'
-    NeoBundleLazy 'Shougo/vimfiler', { 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete' }, 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ], 'explorer' : 1 } }
-    NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
-    NeoBundleLazy 'deris/vim-rengbang', { 'autoload' : { 'commands' : [ 'RengBang', 'RengBangUsePrev' ] } }
-    NeoBundleLazy 'fholgado/minibufexpl.vim', { 'autoload' : { 'commands' : [ 'MBEOpen', 'MBEOpenAll', 'MBEToggle' ] } }
-    NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : { 'commands' : 'Gitv' } }
-    NeoBundleLazy 'honza/vim-snippets'
-    NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
-    NeoBundleLazy 'kana/vim-niceblock', { 'autoload' : { 'mappings' : [['v', 'I'], ['v', 'A']] }}
-    NeoBundleLazy 'kana/vim-smartchr', '', 'loadInsert'
-    NeoBundleLazy 'kana/vim-smartinput', '', 'loadInsert'
-    NeoBundleLazy 'kannokanno/previm', { 'autoload' : { 'commands' : 'PrevimOpen', 'filetypes' : 'markdown' } }
-    NeoBundleLazy 'koron/codic-vim', { 'autoload' : { 'commands' : [ 'Codic' ] } }
-    NeoBundleLazy 'koron/nyancat-vim', { 'autoload' : { 'commands' : [ 'Nyancat', 'Nyancat2',], } }
-    NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
-    NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
-    NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
-    NeoBundleLazy 'mattn/learn-vimscript'
-    NeoBundleLazy 'mattn/sonictemplate-vim', { 'autoload' : { 'commands' : [ { 'name' : 'Template', 'complete' : 'customlist,sonictemplate#complete' } ], 'function_prefix' : 'sonictemplate' } }
-    NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
-    NeoBundleLazy 'mopp/DoxyDoc.vim', { 'autoload' : { 'commands' : [ 'DoxyDoc', 'DoxyDocAuthor' ] } }
-    NeoBundleLazy 'mopp/autodirmake.vim', '', 'loadInsert'
-    NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
-    NeoBundleLazy 'mopp/makecomp.vim', { 'autoload' : { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] } }
-    NeoBundleLazy 'mopp/next-alter.vim', { 'autoload' : { 'commands' : 'OpenNAlter', 'mappings'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] } }
-    NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : [ '<Plug>(openvimrc-open)' ] } }
-    NeoBundleLazy 'mopp/tailCleaner.vim', '', 'loadInsert'
-    NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [ ['n', '<Plug>(anzu-' ] ] } }
-    NeoBundleLazy 'osyo-manga/vim-marching'
-    NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : { 'commands' : 'OverCommandLine' } }
-    NeoBundleLazy 'osyo-manga/vim-snowdrop'
-    NeoBundleLazy 'osyo-manga/vim-stargate', { 'autoload' : { 'commands' : [ { 'name' : 'StargateInclude', 'complete' : 'customlist,stargate#command_complete' } ] } }
-    NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] } }
-    NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands' : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
-    NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : { 'mappings' : [ [ 'nx', '<Plug>NERDCommenter' ] ] } }
-    NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
-    NeoBundleLazy 'sk1418/blockit', { 'autoload' : { 'commands' : 'Block', 'mappings' : [ [ 'v', '<Plug>BlockitVisual' ] ] } }
-    NeoBundleLazy 't9md/vim-smalls', { 'autoload' : { 'mappings'  : [ '<Plug>(smalls)' ] } }
-    NeoBundleLazy 'taichouchou2/alpaca_english', { 'disabled' : (!has('ruby')), 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources' : [ 'english_dictionary', 'english_example', 'english_thesaurus' ], } }
-    NeoBundleLazy 'taku-o/vim-copypath', { 'autoload' : { 'commands'  : ['CopyFileName', 'CopyPath'] } }
-    NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
-    NeoBundleLazy 'thinca/vim-painter'
-    NeoBundleLazy 'thinca/vim-quickrun'
-    NeoBundleLazy 'thinca/vim-ref', { 'autoload' : { 'commands' : [ { 'name' : 'Ref', 'complete' : 'customlist,ref#complete' } ], 'mappings'  : [ '<Plug>(ref-keyword)' ] } }
-    NeoBundleLazy 'thinca/vim-scouter'
-    NeoBundleLazy 'tpope/vim-fugitive', { 'external_commands' : [ 'git' ], 'disabled' : (!executable('git')), 'autoload' : { 'commands' : [ 'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep' ] } }
-    NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
-    NeoBundleLazy 'ujihisa/neco-look', { 'disabled' : (has('ruby')) }
-    NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : [ 'SrcExpl', 'SrcExplToggle' ] } }
+" NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
+" NeoBundleLazy 'itchyny/dictionary.vim', { 'autoload' : { 'commands' : 'Dictionary'}, 'disabled' : (!has('mac')) }
+" NeoBundleLazy 'itchyny/thumbnail.vim', { 'autoload' : {'commands' : 'Thumbnail'} }
+NeoBundleLazy 'LeafCage/cmdlineplus.vim', { 'autoload' : { 'mappings': [ [ 'c', '<Plug>(cmdlineplus-' ] ] } }
+NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
+NeoBundleLazy 'Shougo/neocomplete.vim', { 'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')) }
+NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo/neosnippet-snippets' ], 'autoload' : { 'insert' : '1', 'unite_sources' : [ 'neosnippet/runtime', 'neosnippet/user', 'snippet' ] } }
+NeoBundleLazy 'Shougo/neosnippet-snippets'
+NeoBundleLazy 'Shougo/vimfiler', { 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete' }, 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ], 'explorer' : 1 } }
+NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
+NeoBundleLazy 'deris/vim-rengbang', { 'autoload' : { 'commands' : [ 'RengBang', 'RengBangUsePrev' ] } }
+NeoBundleLazy 'fholgado/minibufexpl.vim', { 'autoload' : { 'commands' : [ 'MBEOpen', 'MBEOpenAll', 'MBEToggle' ] } }
+NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : { 'commands' : 'Gitv' } }
+NeoBundleLazy 'honza/vim-snippets'
+NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
+NeoBundleLazy 'kana/vim-niceblock', { 'autoload' : { 'mappings' : [['v', 'I'], ['v', 'A']] }}
+NeoBundleLazy 'kana/vim-smartchr', '', 'loadInsert'
+NeoBundleLazy 'kana/vim-smartinput', '', 'loadInsert'
+NeoBundleLazy 'kannokanno/previm', { 'autoload' : { 'commands' : 'PrevimOpen', 'filetypes' : 'markdown' } }
+NeoBundleLazy 'koron/codic-vim', { 'autoload' : { 'commands' : [ 'Codic' ] } }
+NeoBundleLazy 'koron/nyancat-vim', { 'autoload' : { 'commands' : [ 'Nyancat', 'Nyancat2',], } }
+NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
+NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
+NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
+NeoBundleLazy 'mattn/learn-vimscript'
+NeoBundleLazy 'mattn/sonictemplate-vim', { 'autoload' : { 'commands' : [ { 'name' : 'Template', 'complete' : 'customlist,sonictemplate#complete' } ], 'function_prefix' : 'sonictemplate' } }
+NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
+NeoBundleLazy 'mopp/DoxyDoc.vim', { 'autoload' : { 'commands' : [ 'DoxyDoc', 'DoxyDocAuthor' ] } }
+NeoBundleLazy 'mopp/autodirmake.vim', '', 'loadInsert'
+NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
+NeoBundleLazy 'mopp/makecomp.vim', { 'autoload' : { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] } }
+NeoBundleLazy 'mopp/next-alter.vim', { 'autoload' : { 'commands' : 'OpenNAlter', 'mappings'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] } }
+NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : [ '<Plug>(openvimrc-open)' ] } }
+NeoBundleLazy 'mopp/tailCleaner.vim', '', 'loadInsert'
+NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [ ['n', '<Plug>(anzu-' ] ] } }
+NeoBundleLazy 'osyo-manga/vim-marching'
+NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : { 'commands' : 'OverCommandLine' } }
+NeoBundleLazy 'osyo-manga/vim-snowdrop'
+NeoBundleLazy 'osyo-manga/vim-stargate', { 'autoload' : { 'commands' : [ { 'name' : 'StargateInclude', 'complete' : 'customlist,stargate#command_complete' } ] } }
+NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] } }
+NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands' : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
+NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : { 'mappings' : [ [ 'nx', '<Plug>NERDCommenter' ] ] } }
+NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
+NeoBundleLazy 'sk1418/blockit', { 'autoload' : { 'commands' : 'Block', 'mappings' : [ [ 'v', '<Plug>BlockitVisual' ] ] } }
+NeoBundleLazy 't9md/vim-smalls', { 'autoload' : { 'mappings'  : [ '<Plug>(smalls)' ] } }
+NeoBundleLazy 'taichouchou2/alpaca_english', { 'disabled' : (!has('ruby')), 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources' : [ 'english_dictionary', 'english_example', 'english_thesaurus' ], } }
+NeoBundleLazy 'taku-o/vim-copypath', { 'autoload' : { 'commands'  : ['CopyFileName', 'CopyPath'] } }
+NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
+NeoBundleLazy 'thinca/vim-painter'
+NeoBundleLazy 'thinca/vim-quickrun'
+NeoBundleLazy 'thinca/vim-ref', { 'autoload' : { 'commands' : [ { 'name' : 'Ref', 'complete' : 'customlist,ref#complete' } ], 'mappings'  : [ '<Plug>(ref-keyword)' ] } }
+NeoBundleLazy 'thinca/vim-scouter'
+NeoBundleLazy 'tpope/vim-fugitive', { 'external_commands' : [ 'git' ], 'disabled' : (!executable('git')), 'autoload' : { 'commands' : [ 'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep' ] } }
+NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
+NeoBundleLazy 'ujihisa/neco-look', { 'disabled' : (has('ruby')) }
+NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : [ 'SrcExpl', 'SrcExplToggle' ] } }
 
-    NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
-    NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
-    NeoBundleLazy 'octol/vim-cpp-enhanced-highlight', { 'autoload' : { 'filetypes' : [ 'cpp' ] } }
-    NeoBundleLazy 'othree/html5.vim.git', { 'autoload' : { 'filetypes' : [ 'eruby', 'html' ] } }
-    NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
-    NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
-    NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : 'cpp' } }
-    NeoBundleLazy 'vim-jp/vimdoc-ja'
-    NeoBundleLazy 'vim-jp/vital.vim'
-    NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
-    NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh' ] } }
-    NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
+NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
+NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
+NeoBundleLazy 'octol/vim-cpp-enhanced-highlight', { 'autoload' : { 'filetypes' : [ 'cpp' ] } }
+NeoBundleLazy 'othree/html5.vim.git', { 'autoload' : { 'filetypes' : [ 'eruby', 'html' ] } }
+NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
+NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
+NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : 'cpp' } }
+NeoBundleLazy 'vim-jp/vimdoc-ja'
+NeoBundleLazy 'vim-jp/vital.vim'
+NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
+NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh' ] } }
+NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
 
-    NeoBundleLazy 'rhysd/vim-operator-surround', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-surround-' ] ] } }
-    NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : [ [ 'nv', '<Plug>(operator-replace)' ] ] } }
-    NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'operator' } }
-    NeoBundleLazy 'tyru/operator-reverse.vim', { 'autoload' : { 'mappings'  : [ [ 'n', '<Plug>(operator-reverse-' ] ], 'commands' : 'OperatorReverseLines' } }
-    NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'autoload' : {'mappings' : [ [ 'v', '<Plug>(operator-suddendeath)' ] ] } }
+NeoBundleLazy 'rhysd/vim-operator-surround', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-surround-' ] ] } }
+NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : [ [ 'nv', '<Plug>(operator-replace)' ] ] } }
+NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'operator' } }
+NeoBundleLazy 'tyru/operator-reverse.vim', { 'autoload' : { 'mappings'  : [ [ 'n', '<Plug>(operator-reverse-' ] ], 'commands' : 'OperatorReverseLines' } }
+NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'autoload' : {'mappings' : [ [ 'v', '<Plug>(operator-suddendeath)' ] ] } }
 
-    NeoBundleLazy 'h1mesuke/textobj-wiw', { 'autoload' : { 'mappings' : [ [ 'nov', '<Plug>(textobj-wiw-' ] ] } }
-    NeoBundleLazy 'kana/vim-textobj-function', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-function-' ] ] } }
-    NeoBundleLazy 'kana/vim-textobj-indent', { 'autoload' : { 'mappings' : [ [ 'ov', 'ai' ], [ 'ov', 'ii' ], [ 'ov', 'aI' ], [ 'ov', 'iI' ] ] } }
-    NeoBundleLazy 'kana/vim-textobj-line', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-line-' ] ] } }
-    NeoBundleLazy 'kana/vim-textobj-user', { 'autoload' : { 'function_prefix' : 'textobj' } }
-    NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-multiblock-' ] ] } }
-    NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-multitextobj-A' ], [ 'ov', '<Plug>(textobj-multitextobj-B' ], [ 'ov', '<Plug>(textobj-multitextobj-C' ], [ 'ov', '<Plug>(textobj-multitextobj-D' ], [ 'ov', '<Plug>(textobj-multitextobj-E' ] ] } }
-    NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'autoload' : { 'mappings' : [ [ 'ov', 'av' ], [ 'ov', 'iv' ] ] } }
-    NeoBundleLazy 'sgur/vim-textobj-parameter', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-parameter-' ] ] } }
-    NeoBundleLazy 'terryma/vim-expand-region', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(expand_region_' ] ] } }
+NeoBundleLazy 'h1mesuke/textobj-wiw', { 'autoload' : { 'mappings' : [ [ 'nov', '<Plug>(textobj-wiw-' ] ] } }
+NeoBundleLazy 'kana/vim-textobj-function', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-function-' ] ] } }
+NeoBundleLazy 'kana/vim-textobj-indent', { 'autoload' : { 'mappings' : [ [ 'ov', 'ai' ], [ 'ov', 'ii' ], [ 'ov', 'aI' ], [ 'ov', 'iI' ] ] } }
+NeoBundleLazy 'kana/vim-textobj-line', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-line-' ] ] } }
+NeoBundleLazy 'kana/vim-textobj-user', { 'autoload' : { 'function_prefix' : 'textobj' } }
+NeoBundleLazy 'osyo-manga/vim-textobj-multiblock', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-multiblock-' ] ] } }
+NeoBundleLazy 'osyo-manga/vim-textobj-multitextobj', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-multitextobj-A' ], [ 'ov', '<Plug>(textobj-multitextobj-B' ], [ 'ov', '<Plug>(textobj-multitextobj-C' ], [ 'ov', '<Plug>(textobj-multitextobj-D' ], [ 'ov', '<Plug>(textobj-multitextobj-E' ] ] } }
+NeoBundleLazy 'rhysd/vim-textobj-word-column', { 'autoload' : { 'mappings' : [ [ 'ov', 'av' ], [ 'ov', 'iv' ] ] } }
+NeoBundleLazy 'sgur/vim-textobj-parameter', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-parameter-' ] ] } }
+NeoBundleLazy 'terryma/vim-expand-region', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(expand_region_' ] ] } }
 
-    NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'insert' : '1', 'commands' : [{ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'}], 'function_prefix' : 'unite' }}
-    NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
-    NeoBundleLazy 'Shougo/unite-outline', { 'autoload' : { 'unite_sources' : ['outline'],} }
-    NeoBundleLazy 'Shougo/unite-ssh', { 'autoload' : { 'unite_sources' : ['ssh'],} }
-    NeoBundleLazy 'Shougo/neomru.vim', { 'autoload' : { 'unite_sources' : ['file_mru'],} }
-    NeoBundleLazy 'osyo-manga/vim-reanimate', { 'autoload' : { 'unite_sources' : ['Reanimate'], 'commands' : ['ReanimateLoad', 'ReanimateSave']} }
-    NeoBundleLazy 'osyo-manga/unite-quickfix', { 'autoload' : { 'unite_sources' : ['quickfix'],} }
-    NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['history/command', 'history/yank', 'history/search'],} }
-    NeoBundleLazy 'rhysd/unite-codic.vim', { 'depends' : 'koron/codic-vim', 'autoload' : { 'unite_sources' : ['codic'] } }
-    NeoBundleSaveCache
-endif
+NeoBundleLazy 'Shougo/unite.vim', { 'autoload' : { 'insert' : '1', 'commands' : [{ 'name' : 'Unite', 'complete' : 'customlist,unite#complete_source'}], 'function_prefix' : 'unite' }}
+NeoBundleLazy 'Shougo/unite-help', { 'autoload' : { 'unite_sources' : ['help'],} }
+NeoBundleLazy 'Shougo/unite-outline', { 'autoload' : { 'unite_sources' : ['outline'],} }
+NeoBundleLazy 'Shougo/unite-ssh', { 'autoload' : { 'unite_sources' : ['ssh'],} }
+NeoBundleLazy 'Shougo/neomru.vim', { 'autoload' : { 'unite_sources' : ['file_mru'],} }
+NeoBundleLazy 'osyo-manga/vim-reanimate', { 'autoload' : { 'unite_sources' : ['Reanimate'], 'commands' : ['ReanimateLoad', 'ReanimateSave']} }
+NeoBundleLazy 'osyo-manga/unite-quickfix', { 'autoload' : { 'unite_sources' : ['quickfix'],} }
+NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['history/command', 'history/yank', 'history/search'],} }
+NeoBundleLazy 'rhysd/unite-codic.vim', { 'depends' : 'koron/codic-vim', 'autoload' : { 'unite_sources' : ['codic'] } }
 
 call neobundle#end()
 
@@ -522,25 +517,26 @@ endif
 nmap f [Unite]
 nnoremap [Unite] <Nop>
 nnoremap [Unite] f
-nnoremap <silent> [Unite]re :<C-u>UniteResume<CR>
-nnoremap <silent> [Unite]b  :<C-u>Unite -buffer-name=Buffers buffer:!<CR>
-nnoremap <silent> [Unite]k  :<C-u>Unite -buffer-name=Bookmark bookmark -default-action=vimfiler<CR>
-nnoremap <silent> [Unite]s  :<C-u>Unite -buffer-name=Files file_mru<CR>
-nnoremap <silent> [Unite]f  :<C-u>Unite -buffer-name=Sources source<CR>
-nnoremap <silent> [Unite]g  :<C-u>Unite -buffer-name=ag grep -keep-focus -no-quit<CR>
-nnoremap <silent> [Unite]hc :<C-u>Unite -buffer-name=History history/command<CR>
-nnoremap <silent> [Unite]hy :<C-u>Unite -buffer-name=History history/yank<CR>
-nnoremap <silent> [Unite]hs :<C-u>Unite -buffer-name=History history/search<CR>
-nnoremap <silent> [Unite]hl :<C-u>Unite -buffer-name=Help help<CR>
-nnoremap <silent> [Unite]ma :<C-u>Unite -buffer-name=Mappings mapping<CR>
-nnoremap <silent> [Unite]me :<C-u>Unite -buffer-name=Messages output:message<CR>
-nnoremap <silent> [Unite]o  :<C-u>Unite -buffer-name=Outlines outline<CR>
-nnoremap <silent> [Unite]l  :<C-u>Unite -buffer-name=Line line:all -no-quit<CR>
-nnoremap <silent> [Unite]r  :<C-u>Unite -buffer-name=Ref/man ref/man<CR>
-nnoremap <silent> [Unite]n  :<C-u>Unite -buffer-name=Snippet snippet<CR>
-nnoremap <silent> [Unite]tb :<C-u>Unite -buffer-name=Tab tab<CR>
-nnoremap <silent> [Unite]q  :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
-nnoremap <silent> [Unite]a  :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
+nnoremap <silent> [Unite]re      :<C-u>UniteResume<CR>
+nnoremap <silent> [Unite]b       :<C-u>Unite -buffer-name=Buffers buffer:!<CR>
+nnoremap <silent> [Unite]k       :<C-u>Unite -buffer-name=Bookmark bookmark -default-action=vimfiler<CR>
+nnoremap <silent> [Unite]s       :<C-u>Unite -buffer-name=Files file_mru<CR>
+nnoremap <silent> [Unite]f       :<C-u>Unite -buffer-name=Sources source<CR>
+nnoremap <silent> [Unite]g       :<C-u>Unite -buffer-name=SearchCode grep -keep-focus -no-quit<CR>
+nnoremap <silent> [Unite]<Space> :<C-u>Unite -buffer-name=SearchCode grep -keep-focus -no-quit<CR>
+nnoremap <silent> [Unite]hc      :<C-u>Unite -buffer-name=History history/command<CR>
+nnoremap <silent> [Unite]hy      :<C-u>Unite -buffer-name=History history/yank<CR>
+nnoremap <silent> [Unite]hs      :<C-u>Unite -buffer-name=History history/search<CR>
+nnoremap <silent> [Unite]hl      :<C-u>Unite -buffer-name=Help help<CR>
+nnoremap <silent> [Unite]ma      :<C-u>Unite -buffer-name=Mappings mapping<CR>
+nnoremap <silent> [Unite]me      :<C-u>Unite -buffer-name=Messages output:message<CR>
+nnoremap <silent> [Unite]o       :<C-u>Unite -buffer-name=Outlines outline<CR>
+nnoremap <silent> [Unite]l       :<C-u>Unite -buffer-name=Line line:all -no-quit<CR>
+nnoremap <silent> [Unite]r       :<C-u>Unite -buffer-name=Ref/man ref/man<CR>
+nnoremap <silent> [Unite]n       :<C-u>Unite -buffer-name=Snippet snippet<CR>
+nnoremap <silent> [Unite]tb      :<C-u>Unite -buffer-name=Tab tab<CR>
+nnoremap <silent> [Unite]q       :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
+nnoremap <silent> [Unite]a       :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
 let g:unite_quickfix_is_multiline = 0
 let s:bundle = neobundle#get('unite.vim')
 function! s:bundle.hooks.on_source(bundle)
@@ -550,6 +546,7 @@ function! s:bundle.hooks.on_source(bundle)
     let g:unite_enable_short_source_names = 1
     let g:unite_source_history_yank_enable = 1
     let g:unite_force_overwrite_statusline = 0
+    let g:unite_source_grep_max_candidates = 200
     let g:unite_source_bookmark_directory = expand('~/.vim/bookmark')
     if executable('pt')
         " for the platinum searcher
@@ -560,7 +557,7 @@ function! s:bundle.hooks.on_source(bundle)
     elseif executable('ag')
         " for the silver searcher
         let g:unite_source_grep_command = 'ag'
-        let g:unite_source_grep_default_opts = '--nocolor --nogroup'
+        let g:unite_source_grep_default_opts = '-i --line-numbers --nocolor --nogroup --hidden --ignore ''.hg'' --ignore ''.svn'' --ignore ''.git'' --ignore ''.bzr'''
         let g:unite_source_grep_max_candidates = 200
     endif
 endfunction
@@ -1211,13 +1208,13 @@ vmap <Enter> <Plug>(LiveEasyAlign)
 nmap <Leader>aa <Plug>(LiveEasyAlign)
 
 " SrcExpl
-let g:SrcExpl_pluginList = [ "__Tag_List__", "*unite*", "*VimFiler*"]
+let g:SrcExpl_pluginList = [ "__Tag_List__", "*Unite*", "*VimFiler*"]
 let g:SrcExpl_isUpdateTags = 0
 let g:SrcExpl_gobackKey = '<C-\><C-b>'
 
 " cmdlineplus
-cmap <C-j> <Plug>(cmdlineplus-forward-word)
-cmap <C-l> <Plug>(cmdlineplus-backward-word)
+cmap <C-l> <Plug>(cmdlineplus-forward-word)
+cmap <C-j> <Plug>(cmdlineplus-backward-word)
 cmap <C-k> <Plug>(cmdlineplus-killline)
 cmap <C-\><C-\> <Plug>(cmdlineplus-escape-special)
 cmap <C-\>i <Plug>(cmdlineplus-escape-input)
@@ -1231,6 +1228,7 @@ cmap <C-\>; <Plug>(cmdlineplus-;)
 cmap <C-\>, <Plug>(cmdlineplus-,)
 cmap <C-\>d <Plug>(cmdlineplus-df)
 cmap <C-\>D <Plug>(cmdlineplus-dF)
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
