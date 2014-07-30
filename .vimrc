@@ -58,7 +58,7 @@ set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold�
 set history=500                 " コマンドの保存履歴数
 set viminfo='1000,<500,f1       " viminfoへの保存設定
 set tags=./tags,tags            " タグが検索されるファイル
-" set viewoptions=cursor,folds    " :mkviewで保存する設定
+set viewoptions=cursor,folds    " :mkviewで保存する設定
 if isdirectory(expand('~/.vim/undo'))
     set undodir=~/.vim/undo
     set undofile
@@ -71,9 +71,9 @@ set timeout                     " マッピングのタイムアウト有効
 set timeoutlen=1000             " マッピングのタイムアウト時間
 set ttimeoutlen=0               " キーコードのタイムアウト時間
 set matchpairs+=<:>             " 括弧のハイライト追加
-if !has('gui_running')
-    set spelllang+=cjk              " 日本語などの文字をスペルミスとしない
-endif
+" if !has('gui_running')
+"     set spelllang+=cjk              " 日本語などの文字をスペルミスとしない
+" endif
 " set spell
 let g:loaded_netrwPlugin = 1    " 標準Pluginを読み込まない
 let g:loaded_tar = 1
@@ -81,6 +81,9 @@ let g:loaded_tarPlugin= 1
 let g:loaded_vimballPlugin = 1
 let g:loaded_zip = 1
 let g:loaded_zipPlugin = 1
+let g:loaded_gzip = 1
+let g:loaded_rrhelper = 1
+let g:loaded_2html_plugin = 1
 
 " 外観設定
 set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
@@ -400,6 +403,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
+NeoBundle 'fholgado/minibufexpl.vim'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'luochen1990/rainbow'
@@ -408,9 +412,6 @@ NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
 
-" NeoBundleLazy 'Shougo/neocomplete.vim', { 'depends' : 'Shougo/context_filetype.vim',  'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')), 'vim_version' : '7.3.885' }
-" NeoBundleLazy 'itchyny/dictionary.vim', { 'autoload' : { 'commands' : 'Dictionary'}, 'disabled' : (!has('mac')) }
-" NeoBundleLazy 'itchyny/thumbnail.vim', { 'autoload' : {'commands' : 'Thumbnail'} }
 NeoBundleLazy 'LeafCage/cmdlineplus.vim', { 'autoload' : { 'mappings': [ [ 'c', '<Plug>(cmdlineplus-' ] ] } }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
 NeoBundleLazy 'Shougo/neocomplete.vim', { 'autoload' : { 'insert' : '1' }, 'disabled' : (!has('lua')) }
@@ -418,11 +419,10 @@ NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo
 NeoBundleLazy 'Shougo/neosnippet-snippets'
 NeoBundleLazy 'Shougo/vimfiler', { 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete' }, 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ], 'explorer' : 1 } }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
+NeoBundleLazy 'derekwyatt/vim-scala', { 'autoload' : { 'filetypes' : 'scala' } }
 NeoBundleLazy 'deris/vim-rengbang', { 'autoload' : { 'commands' : [ 'RengBang', 'RengBangUsePrev' ] } }
-NeoBundleLazy 'fholgado/minibufexpl.vim', { 'autoload' : { 'commands' : [ 'MBEOpen', 'MBEOpenAll', 'MBEToggle' ] } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : { 'commands' : 'Gitv' } }
 NeoBundleLazy 'honza/vim-snippets'
-NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
 NeoBundleLazy 'kana/vim-niceblock', { 'autoload' : { 'mappings' : [['v', 'I'], ['v', 'A']] }}
 NeoBundleLazy 'kana/vim-smartchr', '', 'loadInsert'
 NeoBundleLazy 'kana/vim-smartinput', '', 'loadInsert'
@@ -466,6 +466,7 @@ NeoBundleLazy 'ujihisa/neco-look', { 'disabled' : (has('ruby')) }
 NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : [ 'SrcExpl', 'SrcExplToggle' ] } }
 
 NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
+NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
 NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
 NeoBundleLazy 'octol/vim-cpp-enhanced-highlight', { 'autoload' : { 'filetypes' : [ 'cpp' ] } }
 NeoBundleLazy 'othree/html5.vim.git', { 'autoload' : { 'filetypes' : [ 'eruby', 'html' ] } }
