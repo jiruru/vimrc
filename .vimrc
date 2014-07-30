@@ -410,6 +410,7 @@ NeoBundle 'luochen1990/rainbow'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-visualstar'
+NeoBundle 'myusuf3/numbers.vim'
 NeoBundle 'tpope/vim-repeat'
 
 NeoBundleLazy 'LeafCage/cmdlineplus.vim', { 'autoload' : { 'mappings': [ [ 'c', '<Plug>(cmdlineplus-' ] ] } }
@@ -419,7 +420,7 @@ NeoBundleLazy 'Shougo/neosnippet', { 'depends' : [ 'honza/vim-snippets', 'Shougo
 NeoBundleLazy 'Shougo/neosnippet-snippets'
 NeoBundleLazy 'Shougo/vimfiler', { 'autoload' : { 'commands' : [ { 'name' : 'VimFiler', 'complete' : 'customlist,vimfiler#complete' }, 'VimFiler', 'VimFilerTab', 'VimFilerBufferDir', 'VimFilerCreate' ], 'explorer' : 1 } }
 NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
-NeoBundleLazy 'derekwyatt/vim-scala', { 'autoload' : { 'filetypes' : 'scala' } }
+NeoBundleLazy 'Nemo157/scala.vim', { 'autoload' : { 'filetypes' : 'scala' } }
 NeoBundleLazy 'deris/vim-rengbang', { 'autoload' : { 'commands' : [ 'RengBang', 'RengBangUsePrev' ] } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : { 'commands' : 'Gitv' } }
 NeoBundleLazy 'honza/vim-snippets'
@@ -1217,6 +1218,9 @@ cmap <C-\>, <Plug>(cmdlineplus-,)
 cmap <C-\>d <Plug>(cmdlineplus-df)
 cmap <C-\>D <Plug>(cmdlineplus-dF)
 
+" numbers
+let g:numbers_exclude = [ 'Unite', 'tagbar', 'startify', 'vimfiler', ]
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -1238,6 +1242,10 @@ endfunction
 
 " for lightline
 function! s:update_syntastic()
+    if &filetype == 'scala'
+       return
+    endif
+
     if !exists(':SyntasticCheck')
         NeoBundleSource syntastic
     endif
