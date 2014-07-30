@@ -583,35 +583,28 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#enable_auto_delimiter = 1
     let g:neocomplete#data_directory = expand('~/.vim/neocomplete')
     let g:neocomplete#skip_auto_completion_time = ''    "オムニ補完と相性が悪いかもしれない
+    let g:neocomplete#enable_fuzzy_completion = 1
 
     " 英単語補完用に以下のfiletypeをtextと同様に扱う
-    if !exists('g:neocomplete#text_mode_filetypes')
-        let g:neocomplete#text_mode_filetypes = {}
-    endif
+    let g:neocomplete#text_mode_filetypes = get(g:, 'neocomplete#text_mode_filetypes', {})
     let g:neocomplete#text_mode_filetypes.markdown = 1
     let g:neocomplete#text_mode_filetypes.gitcommit = 1
     let g:neocomplete#text_mode_filetypes.text = 1
     let g:neocomplete#text_mode_filetypes.txt = 1
 
     " 補完時に他のfiletypeの候補も参照する
-    if !exists('g:neocomplete#same_filetypes')
-        let g:neocomplete#same_filetypes = {}
-    endif
+    let g:neocomplete#same_filetypes = get(g:, 'neocomplete#same_filetypes', {})
     let g:neocomplete#same_filetypes._ = '_'
 
-    if !exists('g:neocomplete#delimiter_patterns')
-        let g:neocomplete#delimiter_patterns= {}
-    endif
+    let g:neocomplete#delimiter_patterns = get(g:, 'neocomplete#delimiter_patterns', {})
     let g:neocomplete#delimiter_patterns.vim = ['#', '.']
     let g:neocomplete#delimiter_patterns.cpp = [' ::', '.']
     let g:neocomplete#delimiter_patterns.c = ['.', '->']
     let g:neocomplete#delimiter_patterns.java = ['.']
 
     " 外部オムニ補完関数を直接呼び出す
-    if !exists('g:neocomplete#force_omni_input_patterns')
-        let g:neocomplete#force_omni_input_patterns = {}
-    endif
     let g:neocomplete#force_overwrite_completefunc = 1
+    let g:neocomplete#force_omni_input_patterns = get(g:, 'neocomplete#force_omni_input_patterns', {})
     let g:neocomplete#force_omni_input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
     let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
@@ -623,21 +616,15 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#sources#syntax#min_keyword_length = 3
 
     " neocompleteが呼び出すオムニ補完関数名
-    if !exists('g:neocomplete#sources#omni#functions')
-        let g:neocomplete#sources#omni#functions = {}
-    endif
+    let g:neocomplete#sources#omni#functions = get(g:, 'neocomplete#sources#omni#functions', {})
     let g:neocomplete#sources#omni#functions.java = 'javaapi#complete'
 
     " オムニ補完関数呼び出し時の条件
-    if !exists('g:neocomplete#sources#omni#input_patterns')
-        let g:neocomplete#sources#omni#input_patterns = {}
-    endif
+    let g:neocomplete#sources#omni#input_patterns = get(g:, 'neocomplete#sources#omni#input_patterns', {})
     let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
     " let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\.\%(\h\w*\)\?\|[a-zA-Z].*'
 
-    if !exists('g:neocomplete#sources#vim#complete_functions')
-        let g:neocomplete#sources#vim#complete_functions = {}
-    endif
+    let g:neocomplete#sources#vim#complete_functions = get(g:, 'neocomplete#sources#vim#complete_functions', {})
     let g:neocomplete#sources#vim#complete_functions.Ref = 'ref#complete'
     let g:neocomplete#sources#vim#complete_functions.Unite = 'unite#complete_source'
     let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
@@ -645,9 +632,10 @@ function! s:bundle.hooks.on_source(bundle)
 
     let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
 
-    inoremap <expr> <C-l> neocomplete#complete_common_string()
     imap <C-b> <Plug>(neocomplete_start_unite_quick_match)
-    imap <C-q> <Plug>(neocomplete_start_unite_complete)
+    imap <C-g><C-q> <Plug>(neocomplete_start_unite_complete)
+    inoremap<expr> <C-g><C-c> neocomplete#undo_completion()
+    inoremap<expr> <C-l> neocomplete#complete_common_string()
 endfunction
 
 function! s:bundle.hooks.on_post_source(bundle)
@@ -662,6 +650,12 @@ function! s:bundle.hooks.on_post_source(bundle)
     endif
 endfunction
 unlet s:bundle
+
+" neosnippet
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+set conceallevel=2 concealcursor=i
+let g:neosnippet#snippets_directory = '~/.vim/bundle/neosnippet-snippets/neosnippets/,~/.vim/bundle/vim-snippets/snippets'
 
 function! s:check_clang()
     for t in ['clang-3.5', 'clang-3.4', 'clang']
@@ -724,13 +718,6 @@ function! s:bundle.hooks.on_source(bundle)
     endfor
 endfunction
 unlet s:bundle
-
-" neosnippet
-imap <C-k> <Plug>(neosnippet_expand_or_jump)
-smap <C-k> <Plug>(neosnippet_expand_or_jump)
-imap <C-l> <Plug>(neosnippet_start_unite_snippet)
-set conceallevel=2 concealcursor=i
-let g:neosnippet#snippets_directory = '~/.vim/bundle/neosnippet-snippets/neosnippets/,~/.vim/bundle/vim-snippets/snippets'
 
 " easymotion
 let g:EasyMotion_leader_key = '<Leader>e'
