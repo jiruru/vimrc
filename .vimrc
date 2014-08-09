@@ -414,6 +414,7 @@ NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'myusuf3/numbers.vim'
 NeoBundle 'tpope/vim-repeat'
+" NeoBundle "osyo-manga/vim-brightest"
 
 NeoBundleLazy 'LeafCage/cmdlineplus.vim', { 'autoload' : { 'mappings': [ [ 'c', '<Plug>(cmdlineplus-' ] ] } }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
