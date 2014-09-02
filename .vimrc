@@ -278,8 +278,6 @@ onoremap ] t]
 
 nnoremap <Leader>w :write<CR>
 
-nnoremap <silent> <Leader>n :setlocal invrelativenumber<CR>
-
 
 "-------------------------------------------------------------------------------"
 " Commands
@@ -1187,6 +1185,7 @@ cmap <C-\>D <Plug>(cmdlineplus-dF)
 
 " smartnumber
 let g:snumber_enable_startup = 1
+nnoremap <silent> <Leader>n :SNumbersToggleRelative<CR>
 
 
 "-------------------------------------------------------------------------------"
