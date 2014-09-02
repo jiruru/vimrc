@@ -51,7 +51,7 @@ set cscopequickfix=s-,c-,d-,i-,t-,e-
 set foldenable
 set foldcolumn=3            " 左側に折りたたみガイド表示
 set foldmethod=indent       " 折畳の判別
-set foldtext=Mopp_fold()  " 折りたたみ時の表示設定
+set foldtext=Mopp_fold()    " 折りたたみ時の表示設定
 set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold内に移動すれば自動で開く
 
 " 履歴など
@@ -123,12 +123,19 @@ function! Mopp_fold()
     return printf('%s%' . space_size . 'S%s', line, '', tail)
 endfunction
 
+
 function! Mopp_paste(register, paste_type, paste_cmd)
     let reg_type = getregtype(a:register)
     let store = getreg(a:register)
     call setreg(a:register, store, a:paste_type)
     exe 'normal "' . a:register . a:paste_cmd
     call setreg(a:register, store, reg_type)
+endfunction
+
+
+function! Mopp_copy_to_clipboard()
+    silent execute "normal! '<,'>" '"*yy'
+    let @+ = @*
 endfunction
 
 
@@ -220,16 +227,16 @@ map! <NUL> <C-Space>
 " Yank & Paste
 nnoremap Y y$
 nnoremap <silent> <Leader>pp :set paste!<CR>
-xnoremap <C-Space> "+yy
-nnoremap <silent> <Leader>lp :call Mopp_paste(v:register, 'l', 'p')<CR>
-nnoremap <silent> <Leader>lP :call Mopp_paste(v:register, 'l', 'P')<CR>
-nnoremap <silent> <Leader>cp :call Mopp_paste(v:register, 'c', 'p')<CR>
-nnoremap <silent> <Leader>cP :call Mopp_paste(v:register, 'c', 'P')<CR>
-nnoremap <silent> mlp :call Mopp_paste('+', 'l', 'p')<CR>
-nnoremap <silent> mlP :call Mopp_paste('+', 'l', 'P')<CR>
-nnoremap <silent> mcp :call Mopp_paste('+', 'c', 'p')<CR>
-nnoremap <silent> mcP :call Mopp_paste('+', 'c', 'P')<CR>
-nnoremap <silent> mp  :call Mopp_paste('+', 'l', 'p')<CR>
+xnoremap <silent> <C-Space>  :<C-U>call Mopp_copy_to_clipboard()<CR>
+nnoremap <silent> <Leader>lp :<C-U>call Mopp_paste(v:register, 'l', 'p')<CR>
+nnoremap <silent> <Leader>lP :<C-U>call Mopp_paste(v:register, 'l', 'P')<CR>
+nnoremap <silent> <Leader>cp :<C-U>call Mopp_paste(v:register, 'c', 'p')<CR>
+nnoremap <silent> <Leader>cP :<C-U>call Mopp_paste(v:register, 'c', 'P')<CR>
+nnoremap <silent> mlp :<C-U>call Mopp_paste('*', 'l', 'p')<CR>
+nnoremap <silent> mlP :<C-U>call Mopp_paste('*', 'l', 'P')<CR>
+nnoremap <silent> mcp :<C-U>call Mopp_paste('*', 'c', 'p')<CR>
+nnoremap <silent> mcP :<C-U>call Mopp_paste('*', 'c', 'P')<CR>
+nnoremap <silent> mp  :<C-U>call Mopp_paste('*', 'l', 'p')<CR>
 
 " 入れ替え
 noremap ; :
@@ -402,19 +409,20 @@ call neobundle#begin()
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
+" NeoBundle 'fholgado/minibufexpl.vim'
+" NeoBundle 'osyo-manga/vim-brightest'
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
-NeoBundle 'fholgado/minibufexpl.vim'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'luochen1990/rainbow'
+NeoBundle 'mopp/mopbuf.vim'
+NeoBundle 'mopp/smartnumber.vim'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-visualstar'
-NeoBundle 'myusuf3/numbers.vim'
 NeoBundle 'tpope/vim-repeat'
-" NeoBundle "osyo-manga/vim-brightest"
 
 NeoBundleLazy 'LeafCage/cmdlineplus.vim', { 'autoload' : { 'mappings': [ [ 'c', '<Plug>(cmdlineplus-' ] ] } }
 NeoBundleLazy 'Shougo/context_filetype.vim', { 'autoload' : { 'function_prefix' : 'context_filetype' } }
@@ -1048,7 +1056,7 @@ let g:lightline = {
             \   'modified'      : 'Mline_modified',
             \   'filename'      : 'Mline_filename',
             \   'fugitive'      : 'Mline_fugitive',
-            \   'buflist'       : 'Mline_bufhist',
+            \   'buflist'       : 'Mline_buflist',
             \ },
             \ 'component_expand'    : { 'syntastic' : 'SyntasticStatuslineFlag', },
             \ 'component_type'      : { 'syntastic' : 'error', },
@@ -1117,59 +1125,16 @@ function! Mline_fugitive()
     return ''
 endfunction
 
-let g:mline_bufhist_queue = []
-let g:mline_bufhist_limit = 4
-let g:mline_bufhist_exclution_pat = '^$\|.jax$\|vimfiler:\|\[unite\]\|tagbar'
-let g:mline_bufhist_enable = 1
-command! Btoggle :let g:mline_bufhist_enable = (g:mline_bufhist_enable ? 0 : 1) | :redrawstatus! | MBEOpenAll
-
-function! Mline_bufhist()
-    if &filetype =~? 'unite\|vimfiler\|tagbar' || !&modifiable || len(g:mline_bufhist_queue) == 0 || g:mline_bufhist_enable == 0
-        return ''
+let g:mopbuf_settings = get(g:, 'mopbuf_settings', {})
+let g:mopbuf_settings['auto_open_each_tab'] = 0
+function! Mline_buflist()
+    if mopbuf#managed_buffer_num() <= 4 && mopbuf#is_show_display_buffer() == 0
+        return mopbuf#get_buffers_str_exclude(bufnr(''))
     endif
 
-    let current_buf_nr = bufnr('%')
-    let buf_names_str = ''
-    let last = g:mline_bufhist_queue[-1]
-    for i in g:mline_bufhist_queue
-        let t = fnamemodify(i, ':t')
-        let n = bufnr(t)
+    let g:mopbuf_settings.auto_open_each_tab = 1
 
-        if n != current_buf_nr
-            let buf_names_str .= printf('[%d]:%s' . (i == last ? '' : ' | '), n, t)
-        endif
-    endfor
-
-    return buf_names_str
-endfunction
-
-function! s:update_recent_buflist(file)
-    if a:file =~? g:mline_bufhist_exclution_pat
-        " exclusion from queue
-        return
-    endif
-
-    if len(g:mline_bufhist_queue) == 0
-        " init
-        for i in range(min( [ bufnr('$'), g:mline_bufhist_limit + 1 ] ))
-            let t = bufname(i)
-            if bufexists(i) && t !~? g:mline_bufhist_exclution_pat
-                call add(g:mline_bufhist_queue, fnamemodify(t, ':p'))
-            endif
-        endfor
-    endif
-
-    " update exist buffer
-    let idx = index(g:mline_bufhist_queue, a:file)
-    if 0 <= idx
-        call remove(g:mline_bufhist_queue, idx)
-    endif
-
-    call insert(g:mline_bufhist_queue, a:file)
-
-    if g:mline_bufhist_limit + 1 < len(g:mline_bufhist_queue)
-        call remove(g:mline_bufhist_queue, -1)
-    endif
+    return ''
 endfunction
 
 function! Tagbar_status_func(current, sort, fname, ...) abort
@@ -1220,8 +1185,8 @@ cmap <C-\>, <Plug>(cmdlineplus-,)
 cmap <C-\>d <Plug>(cmdlineplus-df)
 cmap <C-\>D <Plug>(cmdlineplus-dF)
 
-" numbers
-let g:numbers_exclude = [ 'Unite', 'tagbar', 'startify', 'vimfiler', ]
+" smartnumber
+let g:snumber_enable_startup = 1
 
 
 "-------------------------------------------------------------------------------"
@@ -1245,7 +1210,7 @@ endfunction
 " for lightline
 function! s:update_syntastic()
     if &filetype == 'scala'
-       return
+        return
     endif
 
     if !exists(':SyntasticCheck')
@@ -1303,10 +1268,7 @@ augroup general
 
     " for lightline
     autocmd BufWritePost * call s:update_syntastic()
-    autocmd TabEnter,BufWinEnter * call s:update_recent_buflist(expand('<amatch>'))
 augroup END
 
 syntax enable           " 強調表示有効
 colorscheme mopkai      " syntaxコマンドよりもあとにすること
-
-set runtimepath+=/home/mopp/Dropbox/Program/Vim/tmp/buflist.vim/
