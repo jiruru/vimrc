@@ -302,7 +302,7 @@ function! s:exp_conv(s, base)
     execute 'let t =' a:s
     let num = str2nr(t, 10)
     if num < 0
-       let num = -1 * num
+        let num = -1 * num
     endif
 
     let str = ''
@@ -333,11 +333,36 @@ endfunction
 command! -nargs=1 Bin call <SID>exp_conv(<f-args>, 2)
 command! -nargs=1 Dec call <SID>exp_conv(<f-args>, 10)
 command! -nargs=1 Hex call <SID>exp_conv(<f-args>, 16)
-inoremap <silent> <expr> <C-G>b <SID>exp_conv(input('= '),  2)
-inoremap <silent> <expr> <C-G>d <SID>exp_conv(input('= '), 10)
-inoremap <silent> <expr> <C-G>h <SID>exp_conv(input('= '), 16)
+inoremap <silent><expr> <C-G>b <SID>exp_conv(input('= '),  2)
+inoremap <silent><expr> <C-G>d <SID>exp_conv(input('= '), 10)
+inoremap <silent><expr> <C-G>h <SID>exp_conv(input('= '), 16)
 imap <C-G><C-B> <C-G>b
 imap <C-G><C-H> <C-G>h
+
+function! s:tab_buffer(buf)
+    if bufexists(a:buf) == 0
+        echoerr string(a:buf) . ' NOT exists buffer'
+        return
+    endif
+    silent execute 'tab sbuffer ' . a:buf
+endfunction
+command! -nargs=1 -complete=buffer TabBuffer :call <SID>tab_buffer(<q-args>)
+
+function! s:drop_buffer(buf)
+    if bufexists(a:buf) == 0
+        echoerr string(a:buf) . ' NOT exists buffer'
+        return
+    endif
+
+    let is_number = len(substitute(a:buf, '\d*', '', 'g'))
+
+    if is_number == 0
+        silent execute 'drop' expand('#' . a:buf . ':p')
+    else
+        silent execute 'drop' a:buf
+    endif
+endfunction
+command! -nargs=1 -complete=file DropBuffer :call <SID>drop_buffer(<q-args>)
 
 if has('mac')
     " 引数に渡したワードを検索
@@ -942,9 +967,6 @@ vmap aw <Plug>(textobj-word-a)
 vmap ib <Plug>(textobj-block-i)
 vmap ab <Plug>(textobj-block-a)
 
-" Thumbnail
-nnoremap <silent> <Leader>th :Thumbnail<CR>
-
 " Alpaca_english
 if has('ruby')
     let g:alpaca_english_enable = 1
@@ -991,9 +1013,6 @@ nmap n <Plug>(anzu-n-with-echo)
 nmap N <Plug>(anzu-N-with-echo)
 nmap * <Plug>(anzu-star-with-echo)
 nmap # <Plug>(anzu-sharp-with-echo)
-
-" Dictionary.vim
-nnoremap <silent> <Leader>dr :<C-u>Dictionary -cursor-word<CR>
 
 " OpenVimrc
 nmap <silent> <Leader>ev <Plug>(openvimrc-open)
@@ -1125,6 +1144,7 @@ endfunction
 
 let g:mopbuf_settings = get(g:, 'mopbuf_settings', {})
 let g:mopbuf_settings['auto_open_each_tab'] = 0
+let g:mopbuf_settings['sort_order'] = 'mru'
 function! Mline_buflist()
     if mopbuf#managed_buffer_num() <= 4 && mopbuf#is_show_display_buffer() == 0
         return mopbuf#get_buffers_str_exclude(bufnr(''))
