@@ -339,27 +339,33 @@ inoremap <silent><expr> <C-G>h <SID>exp_conv(input('= '), 16)
 imap <C-G><C-B> <C-G>b
 imap <C-G><C-H> <C-G>h
 
+function! s:str2nr_possible(str)
+    return (len(substitute(a:str, '\d*', '', 'g')) == 0 )? str2nr(a:str) : a:str
+endfunction
+
 function! s:tab_buffer(buf)
-    if bufexists(a:buf) == 0
-        echoerr string(a:buf) . ' NOT exists buffer'
+    let b = s:str2nr_possible(a:buf)
+
+    if bufexists(b) == 0
+        echoerr string(b) . ' NOT exists buffer'
         return
     endif
-    silent execute 'tab sbuffer ' . a:buf
+
+    silent execute 'tab sbuffer ' . b
 endfunction
 command! -nargs=1 -complete=buffer TabBuffer :call <SID>tab_buffer(<q-args>)
 
 function! s:drop_buffer(buf)
-    if bufexists(a:buf) == 0
-        echoerr string(a:buf) . ' NOT exists buffer'
-        return
-    endif
+    let b = s:str2nr_possible(a:buf)
 
-    let is_number = len(substitute(a:buf, '\d*', '', 'g'))
-
-    if is_number == 0
-        silent execute 'drop' expand('#' . a:buf . ':p')
+    if type(b) == type(0)
+        if bufexists(b) == 0
+            echoerr 'Buffer ' . b . ' NOT exists.'
+            return
+        endif
+        silent execute 'drop' expand('#' . b . ':p')
     else
-        silent execute 'drop' a:buf
+        silent execute 'drop' b
     endif
 endfunction
 command! -nargs=1 -complete=file DropBuffer :call <SID>drop_buffer(<q-args>)
@@ -500,10 +506,10 @@ NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : [ 'SrcExpl', 'S
 
 NeoBundleLazy 'Nemo157/scala.vim', { 'autoload' : { 'filetypes' : 'scala' } }
 NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
-NeoBundleLazy 'info.vim', { 'autoload' : { 'commands' : 'Info'} }
+NeoBundleLazy 'info.vim', { 'autoload' : { 'commands'  : 'Info'} }
 NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
-NeoBundleLazy 'octol/vim-cpp-enhanced-highlight', { 'autoload' : { 'filetypes' : [ 'cpp' ] } }
-NeoBundleLazy 'othree/html5.vim.git', { 'autoload' : { 'filetypes' : [ 'eruby', 'html' ] } }
+NeoBundleLazy 'octol/vim-cpp-enhanced-highlight', { 'autoload' : { 'filetypes' : 'cpp' } }
+NeoBundleLazy 'othree/html5.vim', { 'autoload' : { 'filetypes' : [ 'eruby', 'html' ] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
 NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : 'cpp' } }
@@ -512,12 +518,15 @@ NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh' ] } }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
+NeoBundleLazy 'jelera/vim-javascript-syntax', { 'autoload' : { 'filetypes' : ['javascript'] } }
+NeoBundleLazy 'jiangmiao/simple-javascript-indenter', { 'autoload' : { 'filetypes' : ['javascript'] } }
+NeoBundleLazy 'ahayman/vim-nodejs-complete', { 'autoload' : { 'filetypes' : ['javascript'] } }
 
 NeoBundleLazy 'rhysd/vim-operator-surround', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-surround-' ] ] } }
-NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings'  : [ [ 'nv', '<Plug>(operator-replace)' ] ] } }
+NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings' : [ [ 'nv', '<Plug>(operator-replace)' ] ] } }
 NeoBundleLazy 'kana/vim-operator-user', { 'autoload' : { 'function_prefix' : 'operator' } }
-NeoBundleLazy 'tyru/operator-reverse.vim', { 'autoload' : { 'mappings'  : [ [ 'n', '<Plug>(operator-reverse-' ] ], 'commands' : 'OperatorReverseLines' } }
-NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'autoload' : {'mappings' : [ [ 'v', '<Plug>(operator-suddendeath)' ] ] } }
+NeoBundleLazy 'tyru/operator-reverse.vim', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-reverse-' ] ], 'commands' : 'OperatorReverseLines' } }
+NeoBundleLazy 'yomi322/vim-operator-suddendeath', { 'autoload' : { 'mappings' : [ [ 'v', '<Plug>(operator-suddendeath)' ] ] } }
 
 NeoBundleLazy 'h1mesuke/textobj-wiw', { 'autoload' : { 'mappings' : [ [ 'nov', '<Plug>(textobj-wiw-' ] ] } }
 NeoBundleLazy 'kana/vim-textobj-function', { 'autoload' : { 'mappings' : [ [ 'ov', '<Plug>(textobj-function-' ] ] } }
@@ -646,23 +655,25 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
     " 数字記号類以外の後に.か->が来た場合に補完実行する
 
-    " syntaxファイル内での候補に使われる最小文字数
-    let g:neocomplete#sources#syntax#min_keyword_length = 3
-
     " neocompleteが呼び出すオムニ補完関数名
     let g:neocomplete#sources#omni#functions = get(g:, 'neocomplete#sources#omni#functions', {})
     let g:neocomplete#sources#omni#functions.java = 'javaapi#complete'
+    let g:neocomplete#sources#omni#functions.javascript = 'javascriptcomplete#CompleteJS'
 
     " オムニ補完関数呼び出し時の条件
     let g:neocomplete#sources#omni#input_patterns = get(g:, 'neocomplete#sources#omni#input_patterns', {})
     let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
     " let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\.\%(\h\w*\)\?\|[a-zA-Z].*'
 
+    " コマンドの引数補完時に呼び出される
     let g:neocomplete#sources#vim#complete_functions = get(g:, 'neocomplete#sources#vim#complete_functions', {})
     let g:neocomplete#sources#vim#complete_functions.Ref = 'ref#complete'
     let g:neocomplete#sources#vim#complete_functions.Unite = 'unite#complete_source'
     let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
     let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
+
+    " syntaxファイル内での候補に使われる最小文字数
+    let g:neocomplete#sources#syntax#min_keyword_length = 3
 
     let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
 
@@ -1287,6 +1298,9 @@ augroup general
 
     " for lightline
     autocmd BufWritePost * call s:update_syntastic()
+
+    " Java script
+    " autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 augroup END
 
 syntax enable           " 強調表示有効
