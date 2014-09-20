@@ -57,7 +57,6 @@ set foldopen=block,hor,insert,jump,mark,percent,quickfix,search,tag,undo " fold�
 " 履歴など
 set history=500                 " コマンドの保存履歴数
 set viminfo='1000,<500,f1       " viminfoへの保存設定
-set tags=./tags,tags            " タグが検索されるファイル
 set viewoptions=cursor,folds    " :mkviewで保存する設定
 if isdirectory(expand('~/.vim/undo'))
     set undodir=~/.vim/undo
@@ -75,23 +74,21 @@ set matchpairs+=<:>             " 括弧のハイライト追加
 "     set spelllang+=cjk              " 日本語などの文字をスペルミスとしない
 " endif
 " set spell
-let g:loaded_netrwPlugin = 1    " 標準Pluginを読み込まない
-let g:loaded_tar = 1
-let g:loaded_tarPlugin= 1
+let g:loaded_2html_plugin  = 1  " 標準Pluginを読み込まない
+let g:loaded_gzip          = 1
+let g:loaded_netrwPlugin   = 1
+let g:loaded_rrhelper      = 1
+let g:loaded_tar           = 1
+let g:loaded_tarPlugin     = 1
 let g:loaded_vimballPlugin = 1
-let g:loaded_zip = 1
-let g:loaded_zipPlugin = 1
-let g:loaded_gzip = 1
-let g:loaded_rrhelper = 1
-let g:loaded_2html_plugin = 1
+let g:loaded_zip           = 1
+let g:loaded_zipPlugin     = 1
 
 " 外観設定
 set ambiwidth=double    " マルチバイト文字や記号でずれないようにする
 set cmdheight=2         " コマンドラインの行数
 set cursorline          " 現在行に下線表示
 set laststatus=2        " ステータスラインを表示する時
-set list
-set listchars=tab:>\ ,trail:\|,extends:<,precedes:<
 set nowrap              " はみ出しの折り返し設定
 set number              " 行番号表示
 set ruler               " カーソルの現在地表示
@@ -99,11 +96,13 @@ set showcmd             " 入力中のコマンド表示
 set showmatch           " 括弧強調
 set showtabline=2       " タブバーを常に表示
 set t_Co=256
+set list
+set listchars=tab:>\ ,trail:\|,extends:<,precedes:<
 set statusline=%<%F\ %m%r%h%w%y%{'['.(&fenc!=''?&fenc:&enc).']['.&fileformat.']'}%=%l/%L,%c%V%8P
-let g:lisp_rainbow = 1
-let g:lisp_instring = 1
+let g:lisp_rainbow     = 1
+let g:lisp_instring    = 1
 let g:lispsyntax_clisp = 1
-let g:c_syntax_for_h = 1
+let g:c_syntax_for_h   = 1
 
 
 "-------------------------------------------------------------------------------"
@@ -201,8 +200,6 @@ noremap <Leader>to :tabnew<Space>
 noremap <Leader>tc :tabclose<CR>
 noremap <Leader>j gT
 noremap <Leader>k gt
-" 現在バッファをTabで開く
-noremap <Leader>tsp :tab split<CR>
 
 " 画面分割
 noremap <Leader>sp :split<Space>
@@ -215,10 +212,10 @@ nnoremap <silent> [O :<C-u>lfirst<CR>
 nnoremap <silent> ]O :<C-u>llast<CR>
 
 " Windowサイズ変更
-noremap <silent> <S-Left> :<C-U>wincmd <<CR>
+noremap <silent> <S-Left>  :<C-U>wincmd <<CR>
 noremap <silent> <S-Right> :<C-U>wincmd ><CR>
-noremap <silent> <S-Up> :<C-U>wincmd -<CR>
-noremap <silent> <S-Down> :<C-U>wincmd +<CR>
+noremap <silent> <S-Up>    :<C-U>wincmd -<CR>
+noremap <silent> <S-Down>  :<C-U>wincmd +<CR>
 
 " <C-Space> で <NUL> が来るため
 map <NUL> <C-Space>
@@ -340,7 +337,7 @@ imap <C-G><C-B> <C-G>b
 imap <C-G><C-H> <C-G>h
 
 function! s:str2nr_possible(str)
-    return (len(substitute(a:str, '\d*', '', 'g')) == 0 )? str2nr(a:str) : a:str
+    return (len(substitute(a:str, '\d*', '', 'g')) == 0 ) ? str2nr(a:str) : a:str
 endfunction
 
 function! s:tab_buffer(buf)
@@ -428,7 +425,7 @@ endif
 
 " neobundle
 if has('vim_starting')
-    set nocompatible
+    " set nocompatible
     set runtimepath+=~/.vim/bundle/neobundle.vim
 endif
 let g:neobundle#types#git#default_protocol = 'git'
@@ -548,6 +545,8 @@ NeoBundleLazy 'osyo-manga/vim-reanimate', { 'autoload' : { 'unite_sources' : ['R
 NeoBundleLazy 'osyo-manga/unite-quickfix', { 'autoload' : { 'unite_sources' : ['quickfix'],} }
 NeoBundleLazy 'thinca/vim-unite-history', { 'autoload' : { 'unite_sources' : ['history/command', 'history/yank', 'history/search'],} }
 NeoBundleLazy 'rhysd/unite-codic.vim', { 'depends' : 'koron/codic-vim', 'autoload' : { 'unite_sources' : ['codic'] } }
+NeoBundleLazy 'junkblocker/unite-tasklist', { 'autoload' : { 'unite_sources' : [ 'tasklist' ], } }
+
 
 call neobundle#end()
 
@@ -558,11 +557,9 @@ if !has('vim_starting')
 endif
 
 " Unite
-nmap f [Unite]
 nnoremap [Unite] <Nop>
-nnoremap [Unite] f
+nmap <Leader>f [Unite]
 nnoremap <silent> [Unite]re      :<C-u>UniteResume<CR>
-nnoremap <silent> [Unite]b       :<C-u>Unite -buffer-name=Buffers buffer:!<CR>
 nnoremap <silent> [Unite]k       :<C-u>Unite -buffer-name=Bookmark bookmark -default-action=vimfiler<CR>
 nnoremap <silent> [Unite]s       :<C-u>Unite -buffer-name=Files file_mru<CR>
 nnoremap <silent> [Unite]f       :<C-u>Unite -buffer-name=Sources source<CR>
@@ -577,8 +574,8 @@ nnoremap <silent> [Unite]me      :<C-u>Unite -buffer-name=Messages output:messag
 nnoremap <silent> [Unite]o       :<C-u>Unite -buffer-name=Outlines outline<CR>
 nnoremap <silent> [Unite]l       :<C-u>Unite -buffer-name=Line line:all -no-quit<CR>
 nnoremap <silent> [Unite]r       :<C-u>Unite -buffer-name=Ref/man ref/man<CR>
-nnoremap <silent> [Unite]n       :<C-u>Unite -buffer-name=Snippet snippet<CR>
-nnoremap <silent> [Unite]tb      :<C-u>Unite -buffer-name=Tab tab<CR>
+nnoremap <silent> [Unite]n       :<C-u>Unite -buffer-name=Snippet neosnippet<CR>
+nnoremap <silent> [Unite]t       :<C-u>Unite -buffer-name=TaskList tasklist<CR>
 nnoremap <silent> [Unite]q       :<C-u>Unite -buffer-name=QuickFix quickfix -no-quit -direction=botright<CR>
 nnoremap <silent> [Unite]a       :<C-u>Unite -buffer-name=Reanimate Reanimate<CR>
 let g:unite_quickfix_is_multiline = 0
@@ -994,9 +991,6 @@ noremap ]rr :ReanimateLoad <CR>
 noremap [rn :ReanimateSave <C-R>%<CR>
 noremap ]rn :ReanimateLoad <C-R>%<CR>
 
-" VimConsole
-let g:vimconsole#auto_redraw = 1
-
 " syntastic
 let s:bundle = neobundle#get('syntastic')
 function! s:bundle.hooks.on_source(bundle)
@@ -1040,10 +1034,6 @@ let g:layoutplugin#is_append_vimrc = 1
 
 " small
 map <Leader>sm <Plug>(smalls)
-
-" sonictemplate
-let g:sonictemplate_key = '<C-G>s'
-let g:sonictemplate_intelligent_key = '<C-G>i'
 
 " fugitive
 let s:bundle = neobundle#get('vim-fugitive')
@@ -1180,16 +1170,12 @@ let g:next_alter#search_dir = [ './include', '.' , '..', '../include' ]
 " mopkai
 let g:mopkai_is_not_set_normal_ctermbg = or(!has('mac'), ($USER != 'mopp'))
 
-" minibufexpl
-let g:miniBufExplBRSplit = 1
-let g:miniBufExplorerAutoStart = 0
-
 " sudo.vim
 command! -nargs=0 Sw :w sudo:%
 command! -nargs=0 Swq :wq sudo:%
 
 " easy-align
-vmap <Enter> <Plug>(LiveEasyAlign)
+vmap <Enter>    <Plug>(LiveEasyAlign)
 nmap <Leader>aa <Plug>(LiveEasyAlign)
 
 " SrcExpl
@@ -1282,7 +1268,7 @@ augroup general
     autocmd BufWinEnter *.nas nested setlocal filetype=nasm
 
     " C, C++
-    autocmd BufWinEnter *.{c,cpp,h,hpp} setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*\ ,ex:*/,://
+    " autocmd BufWinEnter *.{c,cpp,h,hpp} setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*\ ,ex:*/,://
 
     " json
     autocmd BufWinEnter *.json nested setlocal filetype=json
