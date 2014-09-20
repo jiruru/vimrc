@@ -435,8 +435,6 @@ call neobundle#begin()
 
 NeoBundleFetch 'Shougo/neobundle.vim'
 
-" NeoBundle 'fholgado/minibufexpl.vim'
-" NeoBundle 'osyo-manga/vim-brightest'
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
@@ -479,9 +477,10 @@ NeoBundleLazy 'mopp/next-alter.vim', { 'autoload' : { 'commands' : 'OpenNAlter',
 NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : [ '<Plug>(openvimrc-open)' ] } }
 NeoBundleLazy 'mopp/tailCleaner.vim', '', 'loadInsert'
 NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [ ['n', '<Plug>(anzu-' ] ] } }
+NeoBundleLazy 'osyo-manga/vim-brightest', { 'autoload' : { 'commands' : [ 'BrightestEnable', 'BrightestDisable']} }
 NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : { 'commands' : 'OverCommandLine' } }
-NeoBundleLazy 'osyo-manga/vim-snowdrop'
+NeoBundleLazy 'osyo-manga/vim-snowdrop', { 'autoload' : { 'filetypes' : 'cpp' } }
 NeoBundleLazy 'osyo-manga/vim-stargate', { 'autoload' : { 'commands' : [ { 'name' : 'StargateInclude', 'complete' : 'customlist,stargate#command_complete' } ] } }
 NeoBundleLazy 'rhysd/vim-clang-format', { 'autoload' : { 'commands' : [ 'ClangFormat', 'ClangFormatEchoFormattedCode' ] } }
 NeoBundleLazy 'rosenfeld/conque-term', { 'autoload' : { 'commands' : ['ConqueTerm', 'ConqueTermSplit', 'ConqueTermTab', 'ConqueTermVSplit'] } }
@@ -489,7 +488,7 @@ NeoBundleLazy 'scrooloose/nerdcommenter', { 'autoload' : { 'mappings' : [ [ 'nx'
 NeoBundleLazy 'scrooloose/syntastic', '', 'loadInsert'
 NeoBundleLazy 'sk1418/blockit', { 'autoload' : { 'commands' : 'Block', 'mappings' : [ [ 'v', '<Plug>BlockitVisual' ] ] } }
 NeoBundleLazy 't9md/vim-smalls', { 'autoload' : { 'mappings'  : [ '<Plug>(smalls)' ] } }
-NeoBundleLazy 'taichouchou2/alpaca_english', { 'disabled' : (!has('ruby')), 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources' : [ 'english_dictionary', 'english_example', 'english_thesaurus' ], } }
+NeoBundleLazy 'taichouchou2/alpaca_english', { 'build' : { 'mac' : 'bundle', }, 'autoload' : { 'unite_sources' : [ 'english_dictionary', 'english_example', 'english_thesaurus' ], } }
 NeoBundleLazy 'taku-o/vim-copypath', { 'autoload' : { 'commands'  : ['CopyFileName', 'CopyPath'] } }
 NeoBundleLazy 'thinca/vim-ft-help_fold', { 'autoload' : {'commands' : 'help'} }
 NeoBundleLazy 'thinca/vim-painter'
@@ -498,7 +497,7 @@ NeoBundleLazy 'thinca/vim-ref', { 'autoload' : { 'commands' : [ { 'name' : 'Ref'
 NeoBundleLazy 'thinca/vim-scouter'
 NeoBundleLazy 'tpope/vim-fugitive', { 'external_commands' : [ 'git' ], 'disabled' : (!executable('git')), 'autoload' : { 'commands' : [ 'Gstatus', 'Gcommit', 'Gwrite', 'Gdiff', 'Gblame', 'Git', 'Ggrep' ] } }
 NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(openbrowser-open)'], 'function_prefix' : 'openbrowser' } }
-NeoBundleLazy 'ujihisa/neco-look', { 'disabled' : (has('ruby')) }
+NeoBundleLazy 'ujihisa/neco-look'
 NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : [ 'SrcExpl', 'SrcExplToggle' ] } }
 
 NeoBundleLazy 'Nemo157/scala.vim', { 'autoload' : { 'filetypes' : 'scala' } }
@@ -622,8 +621,9 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#enable_prefetch = 1
     let g:neocomplete#enable_auto_delimiter = 1
     let g:neocomplete#data_directory = expand('~/.vim/neocomplete')
-    let g:neocomplete#skip_auto_completion_time = ''    "オムニ補完と相性が悪いかもしれない
-    let g:neocomplete#enable_fuzzy_completion = 1
+    let g:neocomplete#skip_auto_completion_time = ''        " オムニ補完と相性が悪いかもしれない
+    let g:neocomplete#sources#syntax#min_keyword_length = 3 " syntaxファイル内での候補に使われる最小文字数
+    let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
 
     " 英単語補完用に以下のfiletypeをtextと同様に扱う
     let g:neocomplete#text_mode_filetypes = get(g:, 'neocomplete#text_mode_filetypes', {})
@@ -637,18 +637,14 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#same_filetypes._ = '_'
 
     let g:neocomplete#delimiter_patterns = get(g:, 'neocomplete#delimiter_patterns', {})
-    let g:neocomplete#delimiter_patterns.vim = ['#', '.']
-    let g:neocomplete#delimiter_patterns.cpp = [' ::', '.']
-    let g:neocomplete#delimiter_patterns.c = ['.', '->']
-    let g:neocomplete#delimiter_patterns.java = ['.']
+    let g:neocomplete#delimiter_patterns.vim = [ '#', '.' ]
 
     " 外部オムニ補完関数を直接呼び出す
-    let g:neocomplete#force_overwrite_completefunc = 1
-    let g:neocomplete#force_omni_input_patterns = get(g:, 'neocomplete#force_omni_input_patterns', {})
-    let g:neocomplete#force_omni_input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
-    let g:neocomplete#force_omni_input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-    let g:neocomplete#force_omni_input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
-    let g:neocomplete#force_omni_input_patterns.objc = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#force_overwrite_completefunc     = 1
+    let g:neocomplete#force_omni_input_patterns        = get(g:, 'neocomplete#force_omni_input_patterns', {})
+    let g:neocomplete#force_omni_input_patterns.c      = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#force_omni_input_patterns.cpp    = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
+    let g:neocomplete#force_omni_input_patterns.objc   = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
     " 数字記号類以外の後に.か->が来た場合に補完実行する
 
@@ -660,7 +656,8 @@ function! s:bundle.hooks.on_source(bundle)
     " オムニ補完関数呼び出し時の条件
     let g:neocomplete#sources#omni#input_patterns = get(g:, 'neocomplete#sources#omni#input_patterns', {})
     let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
-    " let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\.\%(\h\w*\)\?\|[a-zA-Z].*'
+    let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
+    let g:neocomplete#sources#omni#input_patterns.javascript = '[^.[:digit:] *\t]\.'
 
     " コマンドの引数補完時に呼び出される
     let g:neocomplete#sources#vim#complete_functions = get(g:, 'neocomplete#sources#vim#complete_functions', {})
@@ -669,15 +666,10 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#sources#vim#complete_functions.VimFiler = 'vimfiler#complete'
     let g:neocomplete#sources#vim#complete_functions.Vinarise = 'vinarise#complete'
 
-    " syntaxファイル内での候補に使われる最小文字数
-    let g:neocomplete#sources#syntax#min_keyword_length = 3
-
-    let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
-
-    imap <C-b> <Plug>(neocomplete_start_unite_quick_match)
-    imap <C-g><C-q> <Plug>(neocomplete_start_unite_complete)
-    inoremap<expr> <C-g><C-c> neocomplete#undo_completion()
-    inoremap<expr> <C-l> neocomplete#complete_common_string()
+    imap <C-g><C-q> <Plug>(neocomplete_start_unite_quick_match)
+    imap <C-g><C-u> <Plug>(neocomplete_start_unite_complete)
+    inoremap <expr> <C-g><C-c> neocomplete#undo_completion()
+    inoremap <expr> <C-l> neocomplete#complete_common_string()
 endfunction
 
 function! s:bundle.hooks.on_post_source(bundle)
@@ -686,6 +678,7 @@ function! s:bundle.hooks.on_post_source(bundle)
     endif
 
     if has('ruby')
+        let g:alpaca_english_enable = 1
         NeoBundleSource alpaca_english
     else
         NeoBundleSource neco-look
@@ -732,6 +725,7 @@ unlet s:bundle
 
 " snowdrop
 let g:snowdrop#libclang_path = has('mac') ? '/Library/Developer/CommandLineTools/usr/lib' : '/usr/local/lib'
+let g:snowdrop#libclang_file = has('mac') ? 'libclang.dylib' : 'libclang.so'
 let g:snowdrop#command_options = { 'cpp' : '-std=c++1y', }
 
 " clang-format
@@ -975,11 +969,6 @@ vmap aw <Plug>(textobj-word-a)
 vmap ib <Plug>(textobj-block-i)
 vmap ab <Plug>(textobj-block-a)
 
-" Alpaca_english
-if has('ruby')
-    let g:alpaca_english_enable = 1
-endif
-
 " Gist
 let g:gist_detect_filetype = 1
 let g:gist_open_browser_after_post = 1
@@ -1204,6 +1193,9 @@ cmap <C-\>D <Plug>(cmdlineplus-dF)
 let g:snumber_enable_startup = 1
 nnoremap <silent> <Leader>n :SNumbersToggleRelative<CR>
 
+" brightest
+let g:brightest#enable_filetypes = { '_'   : 0 }
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -1284,9 +1276,6 @@ augroup general
 
     " for lightline
     autocmd BufWritePost * call s:update_syntastic()
-
-    " Java script
-    " autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 augroup END
 
 syntax enable           " 強調表示有効
