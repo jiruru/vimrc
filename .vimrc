@@ -284,11 +284,6 @@ command! -nargs=0 Reload execute "edit" expand('%:p')
 " カーソル位置のハイライト情報表示
 command! -nargs=0 EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
-function! RedGem()
-ruby << EOF
-EOF
-endfunction
-
 function! s:to_bin(number)
     let map = {   '0' : '0000', '1' : '0001', '2' : '0010', '3' : '0011',
                 \ '4' : '0100', '5' : '0101', '6' : '0110', '7' : '0111',
