@@ -284,8 +284,22 @@ command! -nargs=0 Reload execute "edit" expand('%:p')
 " カーソル位置のハイライト情報表示
 command! -nargs=0 EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
 
+function! RedGem()
+ruby << EOF
+EOF
+endfunction
+
+function! s:to_bin(number)
+    let map = {   '0' : '0000', '1' : '0001', '2' : '0010', '3' : '0011',
+                \ '4' : '0100', '5' : '0101', '6' : '0110', '7' : '0111',
+                \ '8' : '1000', '9' : '1001', 'a' : '1010', 'b' : '1011',
+                \ 'c' : '1100', 'd' : '1101', 'e' : '1110', 'f' : '1111'
+                \ }
+    return join(map(split(printf('%x', a:number), '\zs'), 'map[v:val]'), ' ')
+endfunction
+
 " 式を実行させてその返り値を指定した基数の数値で出力する.
-function! s:exp_conv(s, base)
+function! s:exp_conv(s, base) abort
     if a:s == ''
         return
     endif
@@ -297,32 +311,9 @@ function! s:exp_conv(s, base)
 
     " execute expression.
     execute 'let t =' a:s
+
     let num = str2nr(t, 10)
-    if num < 0
-        let num = -1 * num
-    endif
-
-    let str = ''
-    if a:base == 2
-        while 0 < num
-            let str = string(num % 2) . str
-            let num = num / 2
-
-            " insert space every 4digit.
-            let m = strlen(substitute(str, '\s', '', 'g')) % 4
-            if m == 0
-                let str = ' ' . str
-            endif
-        endwhile
-
-        if m != 0
-            for i in range(4 - m)
-                let str = '0' . str
-            endfor
-        endif
-    else
-        let str = printf(((a:base == 10) ? "%d" : ((a:base == 16) ? "0x%x" : "%o")), num)
-    endif
+    let str = (a:base == 2) ? (s:to_bin(num)) : (printf(((a:base == 10) ? "%d" : ((a:base == 16) ? "0x%x" : "%o")), num))
 
     echomsg str
     return str
@@ -441,9 +432,10 @@ NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'u
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'luochen1990/rainbow'
+NeoBundle 'mopp/ExtraSyntax.vim'
 NeoBundle 'mopp/mopbuf.vim'
-NeoBundle 'mopp/smartnumber.vim'
 NeoBundle 'mopp/mopkai.vim'
+NeoBundle 'mopp/smartnumber.vim'
 NeoBundle 'sudo.vim'
 NeoBundle 'thinca/vim-visualstar'
 NeoBundle 'tpope/vim-repeat'
@@ -473,6 +465,7 @@ NeoBundleLazy 'mopp/DoxyDoc.vim', { 'autoload' : { 'commands' : [ 'DoxyDoc', 'Do
 NeoBundleLazy 'mopp/autodirmake.vim', '', 'loadInsert'
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
 NeoBundleLazy 'mopp/makecomp.vim', { 'autoload' : { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] } }
+NeoBundleLazy 'mopp/marker.vim', { 'autoload' : { 'mappings' : [ '<Plug>(Marker-auto_mark)' ] } }
 NeoBundleLazy 'mopp/next-alter.vim', { 'autoload' : { 'commands' : 'OpenNAlter', 'mappings'  : [ [ 'n', '<Plug>(next-alter-open)' ] ] } }
 NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : [ '<Plug>(openvimrc-open)' ] } }
 NeoBundleLazy 'mopp/tailCleaner.vim', '', 'loadInsert'
@@ -504,11 +497,10 @@ NeoBundleLazy 'Nemo157/scala.vim', { 'autoload' : { 'filetypes' : 'scala' } }
 NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
 NeoBundleLazy 'info.vim', { 'autoload' : { 'commands'  : 'Info'} }
 NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
-NeoBundleLazy 'octol/vim-cpp-enhanced-highlight', { 'autoload' : { 'filetypes' : 'cpp' } }
 NeoBundleLazy 'othree/html5.vim', { 'autoload' : { 'filetypes' : [ 'eruby', 'html' ] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
-NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : 'cpp' } }
+NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
@@ -867,7 +859,7 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 unlet s:bundle
 
-" QuickRun FIXME
+" FIXME: QuickRun
 let g:quickrun_config = {}
 let g:quickrun_config._ = { 'outputter' : 'quickfix', 'outputter/buffer/split' : ' :vertical rightbelow', 'runner' : 'vimproc' }
 let g:quickrun_config.lisp = { 'command' : 'clisp', 'exec' : '%c < %s:p' }
@@ -1195,6 +1187,14 @@ nnoremap <silent> <Leader>n :SNumbersToggleRelative<CR>
 
 " brightest
 let g:brightest#enable_filetypes = { '_'   : 0 }
+
+" marker.vim
+nnoremap [Mark] <Nop>
+nmap m [Mark]
+nmap [Mark]m <Plug>(Marker-auto_mark)
+nnoremap [Mark]n ]`
+nnoremap [Mark]p [`
+nnoremap [Mark]l :<C-u>marks<CR>
 
 
 "-------------------------------------------------------------------------------"
