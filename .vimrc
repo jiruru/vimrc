@@ -74,7 +74,7 @@ set matchpairs+=<:>             " 括弧のハイライト追加
 "     set spelllang+=cjk              " 日本語などの文字をスペルミスとしない
 " endif
 " set spell
-let g:loaded_2html_plugin  = 1  " 標準Pluginを読み込まない
+" let g:loaded_2html_plugin  = 1  " 標準Pluginを読み込まない
 let g:loaded_gzip          = 1
 let g:loaded_netrwPlugin   = 1
 let g:loaded_rrhelper      = 1
@@ -496,6 +496,10 @@ NeoBundleLazy 'othree/html5.vim', { 'autoload' : { 'filetypes' : [ 'eruby', 'htm
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
 NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
+NeoBundleLazy 'adimit/prolog.vim', { 'autoload' : { 'filetypes' : 'prolog' } }
+NeoBundleLazy 'awk.vim', { 'autoload' : { 'filetypes' : 'awk' } }
+NeoBundleLazy 'gnuplot.vim', { 'autoload' : { 'filetypes' : 'gnuplot' } }
+
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
@@ -971,12 +975,13 @@ noremap ]rn :ReanimateLoad <C-R>%<CR>
 let s:bundle = neobundle#get('syntastic')
 function! s:bundle.hooks.on_source(bundle)
     let g:syntastic_mode_map = { 'mode' : 'passive' }
+    " let op = '-m32 -Wall -Wextra -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
     let op = '-Wall -Wextra -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
     let t = s:check_clang()
     let g:syntastic_c_compiler = ((t == '') ? 'gcc' : t)
     let g:syntastic_cpp_compiler = ((t == '') ? 'g++' : t . '++')
     let g:syntastic_c_compiler_options = ($USER == 'mopp' ? '-std=c11 ' : '') . op
-    let g:syntastic_cpp_compiler_options = ($USER == 'mopp' ? '-std=c++11 -stdlib=libc++ ' : '') . op
+    let g:syntastic_cpp_compiler_options = ($USER == 'mopp' ? '-std=c++14 ' : '') . op
     let g:syntastic_loc_list_height = 5
 endfunction
 unlet s:bundle
@@ -1265,6 +1270,9 @@ augroup general
 
     " markdown
     autocmd BufWinEnter *.{md,mdwn,mkd,mkdn,mark*} nested setlocal filetype=markdown
+
+    " gnuplot
+    autocmd BufWinEnter *.plt nested setlocal filetype=gnuplot
 
     " Java
     autocmd CompleteDone *.java call javaapi#showRef()
