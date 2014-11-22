@@ -70,11 +70,11 @@ set timeout                     " マッピングのタイムアウト有効
 set timeoutlen=1000             " マッピングのタイムアウト時間
 set ttimeoutlen=0               " キーコードのタイムアウト時間
 set matchpairs+=<:>             " 括弧のハイライト追加
-" if !has('gui_running')
-"     set spelllang+=cjk              " 日本語などの文字をスペルミスとしない
-" endif
+if !has('gui_running')
+    set spelllang+=cjk              " 日本語などの文字をスペルミスとしない
+endif
 " set spell
-" let g:loaded_2html_plugin  = 1  " 標準Pluginを読み込まない
+let g:loaded_2html_plugin  = 1  " 標準Pluginを読み込まない
 let g:loaded_gzip          = 1
 let g:loaded_netrwPlugin   = 1
 let g:loaded_rrhelper      = 1
@@ -173,6 +173,9 @@ noremap <Left> <Nop>
 noremap <Right> <Nop>
 noremap <Up> <Nop>
 noremap <Down> <Nop>
+
+noremap j gj
+noremap k gk
 
 " 移動
 cnoremap <C-A> <Home>
@@ -280,6 +283,8 @@ nnoremap <Leader>w :write<CR>
 " Commands
 "-------------------------------------------------------------------------------"
 command! -nargs=0 Reload execute "edit" expand('%:p')
+
+command! -nargs=0 SpellCheckToggle :setlocal spell!
 
 " カーソル位置のハイライト情報表示
 command! -nargs=0 EchoHiID echomsg synIDattr(synID(line('.'), col('.'), 1), 'name')
@@ -500,14 +505,16 @@ NeoBundleLazy 'adimit/prolog.vim', { 'autoload' : { 'filetypes' : 'prolog' } }
 NeoBundleLazy 'awk.vim', { 'autoload' : { 'filetypes' : 'awk' } }
 NeoBundleLazy 'gnuplot.vim', { 'autoload' : { 'filetypes' : 'gnuplot' } }
 
+NeoBundleLazy 'ahayman/vim-nodejs-complete', { 'autoload' : { 'filetypes' : ['javascript'] } }
+NeoBundleLazy 'jelera/vim-javascript-syntax', { 'autoload' : { 'filetypes' : ['javascript'] } }
+NeoBundleLazy 'jiangmiao/simple-javascript-indenter', { 'autoload' : { 'filetypes' : ['javascript'] } }
+NeoBundleLazy 'mopp/rik_octave.vim', { 'autoload' : { 'filetypes' : ['octave'] } }
+NeoBundleLazy 'osyo-manga/vim-monster', { 'autoload' : { 'filetypes' : ['ruby'] }, 'build' : 'gem install rcodetools' }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh' ] } }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
-NeoBundleLazy 'jelera/vim-javascript-syntax', { 'autoload' : { 'filetypes' : ['javascript'] } }
-NeoBundleLazy 'jiangmiao/simple-javascript-indenter', { 'autoload' : { 'filetypes' : ['javascript'] } }
-NeoBundleLazy 'ahayman/vim-nodejs-complete', { 'autoload' : { 'filetypes' : ['javascript'] } }
 
 NeoBundleLazy 'rhysd/vim-operator-surround', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-surround-' ] ] } }
 NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings' : [ [ 'nv', '<Plug>(operator-replace)' ] ] } }
@@ -637,6 +644,7 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#force_omni_input_patterns.cpp    = '[^.[:digit:] *\t]\%(\.\|->\)\w*\|\h\w*::\w*'
     let g:neocomplete#force_omni_input_patterns.objc   = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
+    let g:neocomplete#force_omni_input_patterns.ruby   = '[^. *\t]\.\w*\|\h\w*::'
     " 数字記号類以外の後に.か->が来た場合に補完実行する
 
     " neocompleteが呼び出すオムニ補完関数名
@@ -649,6 +657,7 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
     let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:neocomplete#sources#omni#input_patterns.javascript = '[^.[:digit:] *\t]\.'
+    let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 
     " コマンドの引数補完時に呼び出される
     let g:neocomplete#sources#vim#complete_functions = get(g:, 'neocomplete#sources#vim#complete_functions', {})
@@ -1196,6 +1205,9 @@ nnoremap [Mark]n ]`
 nnoremap [Mark]p [`
 nnoremap [Mark]l :<C-u>marks<CR>
 
+" vim-monster
+let g:monster#completion#rcodetools#backend = "async_rct_complete"
+
 
 "-------------------------------------------------------------------------------"
 " autocmd
@@ -1259,9 +1271,6 @@ augroup general
     " nask
     autocmd BufWinEnter *.nas nested setlocal filetype=nasm
 
-    " C, C++
-    " autocmd BufWinEnter *.{c,cpp,h,hpp} setlocal comments=sO:*\ -,mO:*\ \ ,exO:*/,s1:/*,mb:*\ ,ex:*/,://
-
     " json
     autocmd BufWinEnter *.json nested setlocal filetype=json
 
@@ -1277,8 +1286,14 @@ augroup general
     " Java
     autocmd CompleteDone *.java call javaapi#showRef()
 
-    " for lightline
+    " lightline
     autocmd BufWritePost * call s:update_syntastic()
+
+    " Octave
+    autocmd BufWinEnter *.m,*.oct setlocal filetype=octave
+
+    " enable wrap in text.
+    autocmd BufWinEnter *.txt setlocal wrap
 augroup END
 
 syntax enable           " 強調表示有効
