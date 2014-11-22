@@ -505,16 +505,16 @@ NeoBundleLazy 'adimit/prolog.vim', { 'autoload' : { 'filetypes' : 'prolog' } }
 NeoBundleLazy 'awk.vim', { 'autoload' : { 'filetypes' : 'awk' } }
 NeoBundleLazy 'gnuplot.vim', { 'autoload' : { 'filetypes' : 'gnuplot' } }
 
-NeoBundleLazy 'ahayman/vim-nodejs-complete', { 'autoload' : { 'filetypes' : ['javascript'] } }
+NeoBundleLazy 'ahayman/vim-nodejs-complete', { 'autoload' : { 'insert' : 1, 'filetypes' : ['javascript'] } }
 NeoBundleLazy 'jelera/vim-javascript-syntax', { 'autoload' : { 'filetypes' : ['javascript'] } }
 NeoBundleLazy 'jiangmiao/simple-javascript-indenter', { 'autoload' : { 'filetypes' : ['javascript'] } }
 NeoBundleLazy 'mopp/rik_octave.vim', { 'autoload' : { 'filetypes' : ['octave'] } }
-NeoBundleLazy 'osyo-manga/vim-monster', { 'autoload' : { 'filetypes' : ['ruby'] }, 'build' : 'gem install rcodetools' }
+NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : { 'insert' : 1, 'filetypes': 'ruby', }}
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh' ] } }
-NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'filetypes' : 'java' } }
+NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'insert' : 1, 'filetypes' : 'java' } }
 
 NeoBundleLazy 'rhysd/vim-operator-surround', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-surround-' ] ] } }
 NeoBundleLazy 'kana/vim-operator-replace', { 'autoload' : { 'mappings' : [ [ 'nv', '<Plug>(operator-replace)' ] ] } }
@@ -657,7 +657,6 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\%(\h\w*\)\?\|\h\w*::\%(\h\w*\)\?'
     let g:neocomplete#sources#omni#input_patterns.java = '[^.[:digit:] *\t]\%(\.\|->\)'
     let g:neocomplete#sources#omni#input_patterns.javascript = '[^.[:digit:] *\t]\.'
-    let g:neocomplete#sources#omni#input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
 
     " コマンドの引数補完時に呼び出される
     let g:neocomplete#sources#vim#complete_functions = get(g:, 'neocomplete#sources#vim#complete_functions', {})
@@ -1205,8 +1204,8 @@ nnoremap [Mark]n ]`
 nnoremap [Mark]p [`
 nnoremap [Mark]l :<C-u>marks<CR>
 
-" vim-monster
-let g:monster#completion#rcodetools#backend = "async_rct_complete"
+" neocomplete-rsense
+let g:neocomplete#sources#rsense#home_directory = '/usr/bin/rsense'
 
 
 "-------------------------------------------------------------------------------"
