@@ -424,6 +424,11 @@ let g:neobundle#default_options = { 'loadInsert' : { 'autoload' : { 'insert' : '
 
 call neobundle#begin()
 
+" NeoBundle 'ap/vim-css-color'
+" NeoBundle 'kyuhi/vim-emoji-complete'
+" NeoBundle 'FooSoft/vim-argwrap'
+" nnoremap <silent> <leader>aw :call argwrap#toggle()<CR>
+
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 NeoBundle 'LeafCage/yankround.vim'
@@ -450,6 +455,7 @@ NeoBundleLazy 'Shougo/vinarise', { 'autoload' : { 'commands' : 'Vinarise'} }
 NeoBundleLazy 'deris/vim-rengbang', { 'autoload' : { 'commands' : [ 'RengBang', 'RengBangUsePrev' ] } }
 NeoBundleLazy 'gregsexton/gitv', { 'depends' : 'tpope/vim-fugitive', 'autoload' : { 'commands' : 'Gitv' } }
 NeoBundleLazy 'honza/vim-snippets'
+NeoBundleLazy 'idanarye/vim-casetrate', { 'autoload' : { 'commands' : [{ 'name' : 'Casetrate', 'complete' : 'customlist,casetrate#completeCases' } ] } }
 NeoBundleLazy 'kana/vim-niceblock', { 'autoload' : { 'mappings' : [['v', 'I'], ['v', 'A']] }}
 NeoBundleLazy 'kana/vim-smartchr', '', 'loadInsert'
 NeoBundleLazy 'kana/vim-smartinput', '', 'loadInsert'
@@ -458,7 +464,7 @@ NeoBundleLazy 'koron/codic-vim', { 'autoload' : { 'commands' : [ 'Codic' ] } }
 NeoBundleLazy 'koron/nyancat-vim', { 'autoload' : { 'commands' : [ 'Nyancat', 'Nyancat2',], } }
 NeoBundleLazy 'majutsushi/tagbar', { 'autoload' : { 'commands'  : 'TagbarToggle' } }
 NeoBundleLazy 'mattn/benchvimrc-vim', { 'autoload' : {'commands' : 'BenchVimrc'} }
-NeoBundleLazy 'mattn/gist-vim', { 'autoload' : {'commands' : 'Gist'} }
+NeoBundleLazy 'mattn/gist-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : {'commands' : 'Gist'} }
 NeoBundleLazy 'mattn/learn-vimscript'
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'mopp/DoxyDoc.vim', { 'autoload' : { 'commands' : [ 'DoxyDoc', 'DoxyDocAuthor' ] } }
@@ -494,22 +500,22 @@ NeoBundleLazy 'ujihisa/neco-look'
 NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : [ 'SrcExpl', 'SrcExplToggle' ] } }
 
 NeoBundleLazy 'Nemo157/scala.vim', { 'autoload' : { 'filetypes' : 'scala' } }
-NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
-NeoBundleLazy 'info.vim', { 'autoload' : { 'commands'  : 'Info'} }
-NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
-NeoBundleLazy 'othree/html5.vim', { 'autoload' : { 'filetypes' : [ 'eruby', 'html' ] } }
-NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
-NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
-NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
 NeoBundleLazy 'adimit/prolog.vim', { 'autoload' : { 'filetypes' : 'prolog' } }
-NeoBundleLazy 'awk.vim', { 'autoload' : { 'filetypes' : 'awk' } }
-NeoBundleLazy 'gnuplot.vim', { 'autoload' : { 'filetypes' : 'gnuplot' } }
-
 NeoBundleLazy 'ahayman/vim-nodejs-complete', { 'autoload' : { 'insert' : 1, 'filetypes' : ['javascript'] } }
+NeoBundleLazy 'awk.vim', { 'autoload' : { 'filetypes' : 'awk' } }
+NeoBundleLazy 'bbchung/clighter', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
+NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
+NeoBundleLazy 'gnuplot.vim', { 'autoload' : { 'filetypes' : 'gnuplot' } }
+NeoBundleLazy 'info.vim', { 'autoload' : { 'commands'  : 'Info'} }
 NeoBundleLazy 'jelera/vim-javascript-syntax', { 'autoload' : { 'filetypes' : ['javascript'] } }
 NeoBundleLazy 'jiangmiao/simple-javascript-indenter', { 'autoload' : { 'filetypes' : ['javascript'] } }
+NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
 NeoBundleLazy 'mopp/rik_octave.vim', { 'autoload' : { 'filetypes' : ['octave'] } }
+NeoBundleLazy 'othree/html5.vim', { 'autoload' : { 'filetypes' : [ 'eruby', 'html' ] } }
+NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : { 'insert' : 1, 'filetypes': 'ruby', }}
+NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
+NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
@@ -731,18 +737,18 @@ let g:snowdrop#command_options = { 'cpp' : '-std=c++1y', }
 let s:bundle = neobundle#get('vim-clang-format')
 function! s:bundle.hooks.on_source(bundle)
     let g:clang_format#style_options = {
-                \ 'AccessModifierOffset' : -4,
-                \ 'AlignTrailingComments' : 'true',
-                \ 'AllowShortFunctionsOnASingleLine' : 'false',
+                \ 'AccessModifierOffset'                : -4,
+                \ 'AlignTrailingComments'               : 'true',
+                \ 'AllowShortFunctionsOnASingleLine'    : 'false',
                 \ 'AllowShortIfStatementsOnASingleLine' : 'false',
-                \ 'AllowShortLoopsOnASingleLine' : 'false',
-                \ 'AlwaysBreakTemplateDeclarations' : 'true',
-                \ 'BinPackParameters' : 'false',
-                \ 'BreakBeforeBraces' : 'Attach',
-                \ 'ColumnLimit' : '9999',
-                \ 'MaxEmptyLinesToKeep' : '3',
-                \ 'PointerBindsToType' : 'true',
-                \ 'Standard' : "Auto"
+                \ 'AllowShortLoopsOnASingleLine'        : 'false',
+                \ 'AlwaysBreakTemplateDeclarations'     : 'true',
+                \ 'BinPackParameters'                   : 'false',
+                \ 'BreakBeforeBraces'                   : 'Attach',
+                \ 'ColumnLimit'                         : '9999',
+                \ 'MaxEmptyLinesToKeep'                 : '3',
+                \ 'PointerBindsToType'                  : 'true',
+                \ 'Standard'                            : 'Auto'
                 \ }
 
     for t in [ 'clang-format-3.5', 'clang-format-3.4', 'clang-format' ]
@@ -983,8 +989,8 @@ noremap ]rn :ReanimateLoad <C-R>%<CR>
 let s:bundle = neobundle#get('syntastic')
 function! s:bundle.hooks.on_source(bundle)
     let g:syntastic_mode_map = { 'mode' : 'passive' }
-    " let op = '-m32 -Wall -Wextra -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
-    let op = '-Wall -Wextra -Winit-self -Wconversion -Wno-unused-parameter -Wwrite-strings -Wno-sign-compare -Wno-pointer-sign -Wno-missing-field-initializers -Wcast-qual -Wformat=2 -Wstrict-aliasing=2 -Wdisabled-optimization -Wfloat-equal -Wpointer-arith -Wbad-function-cast -Wcast-align -Wredundant-decls -Winline'
+    let op = '-m32 -Weverything'
+    " let op = '-Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
     let t = s:check_clang()
     let g:syntastic_c_compiler = ((t == '') ? 'gcc' : t)
     let g:syntastic_cpp_compiler = ((t == '') ? 'g++' : t . '++')
@@ -1206,6 +1212,26 @@ nnoremap [Mark]l :<C-u>marks<CR>
 
 " neocomplete-rsense
 let g:neocomplete#sources#rsense#home_directory = '/usr/bin/rsense'
+
+" clighter
+let g:clighter_cursor_hl_default = 0
+let s:bundle = neobundle#get('clighter')
+function! s:bundle.hooks.on_post_source(bundle)
+    hi m_decl cterm=bold
+    hi link clighterMacroInstantiation Define
+    hi link clighterTypeRef            Type
+    hi link clighterStructDecl         m_decl
+    hi link clighterClassDecl          m_decl
+    hi link clighterEnumDecl           m_decl
+    hi link clighterEnumConstantDecl   Number
+    hi link clighterDeclRefExprEnum    Identifier
+    hi link clighterCursorSymbolRef    IncSearch
+    hi link clighterFunctionDecl       None
+    hi link clighterDeclRefExprCall    None
+    hi link clighterMemberRefExpr      None
+    hi link clighterNamespace          None
+endfunction
+unlet s:bundle
 
 
 "-------------------------------------------------------------------------------"
