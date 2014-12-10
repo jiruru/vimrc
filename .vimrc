@@ -476,7 +476,6 @@ NeoBundleLazy 'mopp/next-alter.vim', { 'autoload' : { 'commands' : 'OpenNAlter',
 NeoBundleLazy 'mopp/openvimrc.vim' , { 'autoload' : { 'mappings'  : [ '<Plug>(openvimrc-open)' ] } }
 NeoBundleLazy 'mopp/tailCleaner.vim', '', 'loadInsert'
 NeoBundleLazy 'osyo-manga/vim-anzu', { 'autoload' : { 'mappings' : [ ['n', '<Plug>(anzu-' ] ] } }
-NeoBundleLazy 'osyo-manga/vim-brightest', { 'autoload' : { 'commands' : [ 'BrightestEnable', 'BrightestDisable']} }
 NeoBundleLazy 'osyo-manga/vim-marching'
 NeoBundleLazy 'osyo-manga/vim-over', { 'autoload' : { 'commands' : 'OverCommandLine' } }
 NeoBundleLazy 'osyo-manga/vim-snowdrop', { 'autoload' : { 'filetypes' : 'cpp' } }
@@ -736,6 +735,8 @@ let g:snowdrop#command_options = { 'cpp' : '-std=c++1y', }
 " clang-format
 let s:bundle = neobundle#get('vim-clang-format')
 function! s:bundle.hooks.on_source(bundle)
+    let g:clang_format#auto_format_on_insert_leave = 0
+    let g:clang_format#auto_formatexpr = 1
     let g:clang_format#style_options = {
                 \ 'AccessModifierOffset'                : -4,
                 \ 'AlignTrailingComments'               : 'true',
@@ -1199,9 +1200,6 @@ cmap <C-\>D <Plug>(cmdlineplus-dF)
 let g:snumber_enable_startup = 1
 nnoremap <silent> <Leader>n :SNumbersToggleRelative<CR>
 
-" brightest
-let g:brightest#enable_filetypes = { '_'   : 0 }
-
 " marker.vim
 nnoremap [Mark] <Nop>
 nmap m [Mark]
@@ -1217,6 +1215,8 @@ let g:neocomplete#sources#rsense#home_directory = '/usr/bin/rsense'
 let g:clighter_cursor_hl_default = 0
 let s:bundle = neobundle#get('clighter')
 function! s:bundle.hooks.on_post_source(bundle)
+    let g:clighter_rename_prompt_level = 0
+    let g:clighter_enable_cross_rename = 0
     hi m_decl cterm=bold
     hi link clighterMacroInstantiation Define
     hi link clighterTypeRef            Type
