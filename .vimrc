@@ -787,17 +787,14 @@ nnoremap <silent> fvs :VimFiler -explorer<CR>
 nnoremap <silent> fvb :VimFilerBufferDir -explorer<CR>
 nnoremap <silent> fvo :VimFilerTab -status<CR>
 nnoremap <silent> fvc :VimFilerCreate -status<CR>
-let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
 let g:vimfiler_as_default_explorer = 1
-let g:vimfiler_safe_mode_by_default = 0
-" let g:vimfiler_tree_closed_icon = '▶'
-let g:vimfiler_tree_opened_icon = '▼'
-let g:vimfiler_directory_display_top = 1
-let g:vimfiler_preview_action = 'below'
-let g:vimfiler_split_action = 'right'
-let g:vimfiler_enable_auto_cd = 0
+let g:vimfiler_data_directory = expand('~/.vim/vimfiler')
 let g:vimfiler_force_overwrite_statusline = 0
+call vimfiler#custom#profile('default', 'context', {
+            \ 'safe' : 0,
+            \ })
 function! s:config_vimfiler()
+    unmap <buffer> <Space>
     nmap <buffer> : <Plug>(vimfiler_toggle_mark_current_line)
     nmap <buffer> <C-H> <Plug>(vimfiler_switch_to_parent_directory)
     vmap <buffer> : <Plug>(vimfiler_toggle_mark_selected_lines)
