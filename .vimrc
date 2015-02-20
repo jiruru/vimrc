@@ -990,14 +990,13 @@ noremap ]rn :ReanimateLoad <C-R>%<CR>
 let s:bundle = neobundle#get('syntastic')
 function! s:bundle.hooks.on_source(bundle)
     let g:syntastic_mode_map = { 'mode' : 'passive' }
-    let op = '-m32 -Weverything'
-    " let op = '-Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
+    let op = '-Wall -Wextra -Wconversion -Wno-unused-parameter -Wno-sign-compare -Wno-pointer-sign -Wcast-qual'
     let t = s:check_clang()
-    let g:syntastic_c_compiler = ((t == '') ? 'gcc' : t)
-    let g:syntastic_cpp_compiler = ((t == '') ? 'g++' : t . '++')
-    let g:syntastic_c_compiler_options = ($USER == 'mopp' ? '-std=c11 ' : '') . op
+    let g:syntastic_c_compiler           = ((t == '') ? 'gcc' : t)
+    let g:syntastic_cpp_compiler         = ((t == '') ? 'g++' : t . '++')
+    let g:syntastic_c_compiler_options   = ($USER == 'mopp' ? '-std=c11 ' : '') . op
     let g:syntastic_cpp_compiler_options = ($USER == 'mopp' ? '-std=c++14 ' : '') . op
-    let g:syntastic_loc_list_height = 5
+    let g:syntastic_loc_list_height      = 5
 endfunction
 unlet s:bundle
 
@@ -1211,12 +1210,11 @@ nnoremap [Mark]l :<C-u>marks<CR>
 " neocomplete-rsense
 let g:neocomplete#sources#rsense#home_directory = '/usr/bin/rsense'
 
-" clighter
+" Clighter
 let g:clighter_cursor_hl_default = 0
 let s:bundle = neobundle#get('clighter')
 function! s:bundle.hooks.on_post_source(bundle)
-    let g:clighter_rename_prompt_level = 0
-    let g:clighter_enable_cross_rename = 0
+    let g:clighter_libclang_file='/usr/local/lib/'
     hi m_decl cterm=bold
     hi link clighterMacroInstantiation Define
     hi link clighterTypeRef            Type
