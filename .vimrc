@@ -498,26 +498,26 @@ NeoBundleLazy 'tyru/open-browser.vim', { 'autoload' : { 'mappings'  : ['<Plug>(o
 NeoBundleLazy 'ujihisa/neco-look'
 NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : [ 'SrcExpl', 'SrcExplToggle' ] } }
 
-NeoBundleLazy 'Nemo157/scala.vim', { 'autoload' : { 'filetypes' : 'scala' } }
-NeoBundleLazy 'adimit/prolog.vim', { 'autoload' : { 'filetypes' : 'prolog' } }
-NeoBundleLazy 'ahayman/vim-nodejs-complete', { 'autoload' : { 'insert' : 1, 'filetypes' : ['javascript'] } }
-NeoBundleLazy 'awk.vim', { 'autoload' : { 'filetypes' : 'awk' } }
+" NeoBundleLazy 'Nemo157/scala.vim', { 'autoload' : { 'filetypes' : 'scala' } }
+" NeoBundleLazy 'adimit/prolog.vim', { 'autoload' : { 'filetypes' : 'prolog' } }
+" NeoBundleLazy 'ahayman/vim-nodejs-complete', { 'autoload' : { 'insert' : 1, 'filetypes' : ['javascript'] } }
+" NeoBundleLazy 'awk.vim', { 'autoload' : { 'filetypes' : 'awk' } }
 NeoBundleLazy 'bbchung/clighter', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
-NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
-NeoBundleLazy 'gnuplot.vim', { 'autoload' : { 'filetypes' : 'gnuplot' } }
-NeoBundleLazy 'info.vim', { 'autoload' : { 'commands'  : 'Info'} }
-NeoBundleLazy 'jelera/vim-javascript-syntax', { 'autoload' : { 'filetypes' : ['javascript'] } }
-NeoBundleLazy 'jiangmiao/simple-javascript-indenter', { 'autoload' : { 'filetypes' : ['javascript'] } }
-NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
+" NeoBundleLazy 'elzr/vim-json', { 'autoload' : { 'filetypes' : 'json' } }
+" NeoBundleLazy 'gnuplot.vim', { 'autoload' : { 'filetypes' : 'gnuplot' } }
+" NeoBundleLazy 'info.vim', { 'autoload' : { 'commands'  : 'Info'} }
+" NeoBundleLazy 'jelera/vim-javascript-syntax', { 'autoload' : { 'filetypes' : ['javascript'] } }
+" NeoBundleLazy 'jiangmiao/simple-javascript-indenter', { 'autoload' : { 'filetypes' : ['javascript'] } }
+" NeoBundleLazy 'mips.vim', { 'autoload' : { 'filetypes' : 'mips' } }
 NeoBundleLazy 'mopp/rik_octave.vim', { 'autoload' : { 'filetypes' : ['octave'] } }
-NeoBundleLazy 'othree/html5.vim', { 'autoload' : { 'filetypes' : [ 'eruby', 'html' ] } }
+" NeoBundleLazy 'othree/html5.vim', { 'autoload' : { 'filetypes' : [ 'eruby', 'html' ] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
 NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : { 'insert' : 1, 'filetypes': 'ruby', }}
-NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
+" NeoBundleLazy 'verilog.vim', { 'autoload' : { 'filetypes' : 'verilog' } }
 NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-jp/vital.vim'
-NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
+" NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh' ] } }
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'insert' : 1, 'filetypes' : 'java' } }
 
