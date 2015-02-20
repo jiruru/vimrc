@@ -617,30 +617,17 @@ endfunction
 " neocomplete
 let s:bundle = neobundle#get('neocomplete.vim')
 function! s:bundle.hooks.on_source(bundle)
-    let g:neocomplete#enable_at_startup = 1
-    let g:neocomplete#enable_smart_case = 1
-    let g:neocomplete#enable_auto_delimiter = 1
-    let g:neocomplete#min_keyword_length = 3
-    let g:neocomplete#enable_prefetch = 1
-    let g:neocomplete#enable_auto_delimiter = 1
-    let g:neocomplete#data_directory = expand('~/.vim/neocomplete')
-    let g:neocomplete#skip_auto_completion_time = ''        " オムニ補完と相性が悪いかもしれない
-    let g:neocomplete#sources#syntax#min_keyword_length = 3 " syntaxファイル内での候補に使われる最小文字数
-    let g:neocomplete#lock_buffer_name_pattern = '^zsh.*'
-
-    " 英単語補完用に以下のfiletypeをtextと同様に扱う
-    let g:neocomplete#text_mode_filetypes = get(g:, 'neocomplete#text_mode_filetypes', {})
-    let g:neocomplete#text_mode_filetypes.markdown = 1
-    let g:neocomplete#text_mode_filetypes.gitcommit = 1
-    let g:neocomplete#text_mode_filetypes.text = 1
-    let g:neocomplete#text_mode_filetypes.txt = 1
-
-    " 補完時に他のfiletypeの候補も参照する
-    let g:neocomplete#same_filetypes = get(g:, 'neocomplete#same_filetypes', {})
-    let g:neocomplete#same_filetypes._ = '_'
-
-    let g:neocomplete#delimiter_patterns = get(g:, 'neocomplete#delimiter_patterns', {})
-    let g:neocomplete#delimiter_patterns.vim = [ '#', '.' ]
+    let g:neocomplete#enable_at_startup            = 1
+    let g:neocomplete#auto_completion_start_length = 3
+    let g:neocomplete#min_keyword_length           = 3
+    let g:neocomplete#enable_ignore_case           = 0
+    let g:neocomplete#enable_smart_case            = 1
+    let g:neocomplete#enable_cursor_hold_i         = 1
+    let g:neocomplete#enable_insert_char_pre       = 1
+    let g:neocomplete#enable_auto_delimiter        = 1
+    let g:neocomplete#lock_buffer_name_pattern     = '^zsh.*'
+    let g:neocomplete#data_directory               = expand('~/.vim/neocomplete')
+    let g:neocomplete#enable_prefetch              = 1
 
     " 外部オムニ補完関数を直接呼び出す
     let g:neocomplete#force_overwrite_completefunc     = 1
@@ -651,6 +638,26 @@ function! s:bundle.hooks.on_source(bundle)
     let g:neocomplete#force_omni_input_patterns.objcpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
     let g:neocomplete#force_omni_input_patterns.ruby   = '[^. *\t]\.\w*\|\h\w*::'
     " 数字記号類以外の後に.か->が来た場合に補完実行する
+
+    " 補完時に参照する他のfiletype
+    let g:neocomplete#same_filetypes = get(g:, 'neocomplete#same_filetypes', {})
+    let g:neocomplete#same_filetypes.c = 'cpp'
+    let g:neocomplete#same_filetypes.cpp = 'c'
+
+    " 英単語補完用に以下のfiletypeをtextと同様に扱う
+    let g:neocomplete#text_mode_filetypes = get(g:, 'neocomplete#text_mode_filetypes', {})
+    let g:neocomplete#text_mode_filetypes.markdown = 1
+    let g:neocomplete#text_mode_filetypes.gitcommit = 1
+    let g:neocomplete#text_mode_filetypes.text = 1
+    let g:neocomplete#text_mode_filetypes.txt = 1
+
+    let g:neocomplete#delimiter_patterns = get(g:, 'neocomplete#delimiter_patterns', {})
+    let g:neocomplete#delimiter_patterns.vim = [ '#', '.' ]
+    let g:neocomplete#delimiter_patterns.cpp = [ '::' ]
+    let g:neocomplete#delimiter_patterns.c = [ '.' ]
+
+    let g:neocomplete#skip_auto_completion_time = ''
+    let g:neocomplete#fallback_mappings = ["\<C-x>\<C-o>", "\<C-x>\<C-n>"]
 
     " neocompleteが呼び出すオムニ補完関数名
     let g:neocomplete#sources#omni#functions = get(g:, 'neocomplete#sources#omni#functions', {})
