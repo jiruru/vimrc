@@ -174,6 +174,7 @@ noremap <Right> <Nop>
 noremap <Up> <Nop>
 noremap <Down> <Nop>
 
+inoremap <silent> jj <ESC>
 noremap j gj
 noremap k gk
 
@@ -434,6 +435,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 NeoBundle 'LeafCage/yankround.vim'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundle 'Shougo/vimproc.vim', { 'build' : { 'mac' : 'make -f make_mac.mak', 'unix' : 'make -f make_unix.mak' } }
+NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'luochen1990/rainbow'
@@ -466,6 +468,7 @@ NeoBundleLazy 'mattn/gist-vim', { 'depends' : 'mattn/webapi-vim', 'autoload' : {
 NeoBundleLazy 'mattn/learn-vimscript'
 NeoBundleLazy 'mattn/webapi-vim', { 'autoload' : { 'function_prefix' : 'webapi' } }
 NeoBundleLazy 'mopp/DoxyDoc.vim', { 'autoload' : { 'commands' : [ 'DoxyDoc', 'DoxyDocAuthor' ] } }
+NeoBundleLazy 'mopp/battery.vim', '', 'loadInsert'
 NeoBundleLazy 'mopp/autodirmake.vim', '', 'loadInsert'
 NeoBundleLazy 'mopp/layoutplugin.vim', { 'autoload' : { 'commands' : 'LayoutPlugin'} }
 NeoBundleLazy 'mopp/makecomp.vim', { 'autoload' : { 'commands' : [ { 'name' : 'Make', 'complete' : 'customlist,makecomp#get_make_argument' } ] } }
@@ -512,7 +515,9 @@ NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : { 'insert' :
 NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-jp/vital.vim'
-NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh' ] } }
+NeoBundleLazy 'vim-ruby/vim-ruby', { 'autoload' : { 'filetypes' : [ 'ruby' ] } }
+NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh', 'bash'] } }
+
 NeoBundleLazy 'yuratomo/java-api-complete', { 'autoload' : { 'insert' : 1, 'filetypes' : 'java' } }
 
 NeoBundleLazy 'rhysd/vim-operator-surround', { 'autoload' : { 'mappings' : [ [ 'n', '<Plug>(operator-surround-' ] ] } }
@@ -741,7 +746,7 @@ function! s:bundle.hooks.on_source(bundle)
                 \ 'AllowShortLoopsOnASingleLine'        : 'false',
                 \ 'AlwaysBreakTemplateDeclarations'     : 'true',
                 \ 'BinPackParameters'                   : 'false',
-                \ 'BreakBeforeBraces'                   : 'Attach',
+                \ 'BreakBeforeBraces'                   : 'Linux',
                 \ 'ColumnLimit'                         : '9999',
                 \ 'MaxEmptyLinesToKeep'                 : '3',
                 \ 'PointerBindsToType'                  : 'true',
@@ -1028,7 +1033,7 @@ let g:lightline = {
             \ 'colorscheme' : 'mopkai',
             \ 'active' : {
             \   'left'  : [ [ 'mode', 'paste' ], [ 'fugitive' ], [ 'filename', 'modified' ], [ 'readonly' ], [ 'buflist' ] ],
-            \   'right' : [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ] ,[ 'tagbar' ] ],
+            \   'right' : [ [ 'syntastic', 'fileencoding', 'fileformat', 'lineinfo', 'percent' ], [ 'filetype' ], [ 'tagbar' ], [ 'battery' ] ],
             \ },
             \ 'inactive' : {
             \   'left'  : [ [ 'filename' ] ],
@@ -1045,6 +1050,7 @@ let g:lightline = {
             \   'paste'         : "%{ &modifiable && &paste ? 'Paste' : '' }",
             \   'readonly'      : "%{ &readonly ? 'RO' : '' }",
             \   'tagbar'        : "%{ exists('*tagbar#currenttag') ? tagbar#currenttag('%s','', 'f') : '' }",
+            \   'battery'       : "%{ exists(':Battery') ? (battery#battery('Battery: %p%')) : 'N/A' }",
             \ },
             \ 'component_function' : {
             \   'mode'          : 'Mline_mode',
@@ -1067,7 +1073,7 @@ let s:cp = {
 let s:pa = { 'base_glay' : [ s:cp.fg, s:cp.glay ], 'base_dark' : [ s:cp.fg, s:cp.dark ], 'base_deep' : [ s:cp.fg, [ '#2e2930', 235 ] ], }
 let s:p.normal.left     = [ [ s:cp.dark, s:cp.blue ], [ s:cp.orange, s:cp.dark ], s:pa.base_dark, [ s:cp.red, s:cp.dark ] ]
 let s:p.normal.middle   = [ s:pa.base_glay ]
-let s:p.normal.right    = [ s:pa.base_deep, [ s:cp.purple, s:cp.dark ], [ s:cp.dark, [ '#201C26', 68 ] ] ]
+let s:p.normal.right    = [ s:pa.base_deep, [ s:cp.purple, s:cp.dark ], [ s:cp.dark, [ '#201C26', 68 ] ], [s:cp.blue, s:cp.glay ] ]
 let s:p.insert.left     = [ [ s:cp.dark, [ '#87ff00', 118 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
 let s:p.replace.left    = [ [ s:cp.dark, [ '#ff0087', 198 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
 let s:p.visual.left     = [ [ s:cp.dark, [ '#d7ff5f', 191 ] ], s:p.normal.left[1], s:p.normal.left[2], s:p.normal.left[3] ]
