@@ -511,7 +511,7 @@ NeoBundleLazy 'wesleyche/SrcExpl', { 'autoload' : { 'commands' : [ 'SrcExpl', 'S
 " NeoBundleLazy 'vim-scripts/Arduino-syntax-file', { 'autoload' : { 'filetypes' : 'arduino' } }
 NeoBundleLazy 'mopp/rik_octave.vim', { 'autoload' : { 'filetypes' : ['octave'] } }
 NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdown' } }
-NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : { 'insert' : 1, 'filetypes': 'ruby', }}
+NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : { 'filetypes': 'ruby', }}
 NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
 NeoBundleLazy 'vim-jp/vital.vim'
@@ -1197,6 +1197,11 @@ nnoremap [Mark]l :<C-u>marks<CR>
 
 " neocomplete-rsense
 let g:neocomplete#sources#rsense#home_directory = '/usr/bin/rsense'
+
+" vim-ruby
+let g:ruby_indent_access_modifier_style = 'indent'
+let g:ruby_operators = 1
+let g:ruby_space_errors = 1
 
 " Clighter
 let g:clighter_cursor_hl_default = 0
