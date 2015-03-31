@@ -439,7 +439,6 @@ NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'itchyny/lightline.vim'
 NeoBundle 'junegunn/vim-easy-align'
 NeoBundle 'luochen1990/rainbow'
-NeoBundle 'mopp/ExtraSyntax.vim'
 NeoBundle 'mopp/mopbuf.vim'
 NeoBundle 'mopp/mopkai.vim'
 NeoBundle 'mopp/smartnumber.vim'
@@ -514,7 +513,6 @@ NeoBundleLazy 'plasticboy/vim-markdown', { 'autoload' : { 'filetypes' : 'markdow
 NeoBundleLazy 'supermomonga/neocomplete-rsense.vim', { 'autoload' : { 'filetypes': 'ruby', }}
 NeoBundleLazy 'vim-jp/cpp-vim', { 'autoload' : { 'filetypes' : [ 'c', 'cpp' ] } }
 NeoBundleLazy 'vim-jp/vimdoc-ja'
-NeoBundleLazy 'vim-jp/vital.vim'
 NeoBundleLazy 'vim-ruby/vim-ruby', { 'autoload' : { 'filetypes' : [ 'ruby' ] } }
 NeoBundleLazy 'vim-scripts/sh.vim--Cla', { 'autoload' : { 'filetypes' : [ 'zsh', 'sh', 'bash'] } }
 
