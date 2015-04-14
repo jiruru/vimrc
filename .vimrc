@@ -745,10 +745,14 @@ function! s:bundle.hooks.on_source(bundle)
                 \ 'AlwaysBreakTemplateDeclarations'     : 'true',
                 \ 'BinPackParameters'                   : 'false',
                 \ 'BreakBeforeBraces'                   : 'Linux',
-                \ 'ColumnLimit'                         : '9999',
+                \ 'ColumnLimit'                         : '0',
+                \ 'IndentCaseLabels'                    : 'true',
                 \ 'MaxEmptyLinesToKeep'                 : '3',
                 \ 'PointerBindsToType'                  : 'true',
-                \ 'Standard'                            : 'Auto'
+                \ 'Standard'                            : 'Auto',
+                \ 'TabWidth'                            : '4',
+                \ 'UseTab'                              : 'Never',
+                \ 'IndentWidth'                         : '4',
                 \ }
 
     for t in [ 'clang-format-3.5', 'clang-format-3.4', 'clang-format' ]
