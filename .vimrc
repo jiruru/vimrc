@@ -1,4 +1,3 @@
-"---------------------------------------------------------------------------------------"
 " Vimrc By mopp :)
 " __      __  _                              ____             __  __
 " \ \    / / (_)                            |  _ \           |  \/  |
@@ -103,6 +102,7 @@ let g:lisp_rainbow     = 1
 let g:lisp_instring    = 1
 let g:lispsyntax_clisp = 1
 let g:c_syntax_for_h   = 1
+let g:tex_conceal=''
 
 
 "-------------------------------------------------------------------------------"
@@ -1206,10 +1206,10 @@ let g:ruby_operators = 1
 let g:ruby_space_errors = 1
 
 " Clighter
-let g:clighter_cursor_hl_default = 0
+let g:clighter_libclang_file='/usr/local/lib/libclang.so'
 let s:bundle = neobundle#get('clighter')
 function! s:bundle.hooks.on_post_source(bundle)
-    let g:clighter_libclang_file='/usr/local/lib/'
+    let g:clighter_occurrences_mode = 1
     hi m_decl cterm=bold
     hi link clighterMacroInstantiation Define
     hi link clighterTypeRef            Type
@@ -1225,6 +1225,9 @@ function! s:bundle.hooks.on_post_source(bundle)
     hi link clighterNamespace          None
 endfunction
 unlet s:bundle
+
+" Casetrate
+let g:casetrate_leader = '<leader>a'
 
 
 "-------------------------------------------------------------------------------"
